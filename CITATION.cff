@@ -1,0 +1,22 @@
+# vim: filetype=yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/citation-file-format/citation-file-format/main/schema.json
+# DOCS https://github.com/citation-file-format/citation-file-format/blob/main/schema-guide.md
+#───────────────────────────────────────────────────────────────────────────────
+
+message: If you use this software, please cite it using these metadata.
+title: Qualitative Data Analysis in Obsidian
+abstract: Obsidian Plugin for Qualitative Data Analysis (QDA).
+type: software
+authors:
+  - family-names: Grieser
+    given-names: Christopher
+    orcid: "https://orcid.org/0000-0002-0767-9496"
+version: "0.5.0"
+date-released: "2023-12-04"
+repository-code: "https://github.com/chrisgrieser/obsidian-qualitative-data-analysis"
+keywords:
+  - obsidian
+  - qualitative data analysis
+  - coding
+cff-version: 1.2.0
+license: MIT
