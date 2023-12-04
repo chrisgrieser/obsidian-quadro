@@ -1,0 +1,12 @@
+{
+	"id": "{{plugin-id}}",
+	"name": "{{plugin-name}}",
+	"description": "{{plugin-desc}}",
+	"version": "0.1.0",
+	"minAppVersion": "1.0",
+	"isDesktopOnly": false,
+	"author": "pseudometa",
+	"fundingUrl": "https://ko-fi.com/pseudometa",
+	"authorUrl": "https://chris-grieser.de/",
+	"helpUrl": "https://github.com/{{plugin-repo}}#readme"
+}
