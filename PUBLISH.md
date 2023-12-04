@@ -4,10 +4,10 @@
 ```json
 },
   {
-    "id": "{{plugin-id}}",
-    "name": "{{plugin-name}}",
+    "id": "qualitative-data-analysis",
+    "name": "Qualitative Data Analysis",
     "author": "pseudometa",
-    "description": "{{plugin-desc}}",
-    "repo": "chrisgrieser/{{plugin-id}}"
+    "description": "Obsidian Plugin for Qualitative Data Analysis.",
+    "repo": "chrisgrieser/qualitative-data-analysis"
   }
 ```

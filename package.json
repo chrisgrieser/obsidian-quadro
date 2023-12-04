@@ -1,6 +1,6 @@
 {
-	"name": "{{plugin-name}}",
-	"description": "{{plugin-desc}}",
+	"name": "Qualitative Data Analysis",
+	"description": "Obsidian Plugin for Qualitative Data Analysis.",
 	"author": "Chris Grieser",
 	"version": "0.1.0",
 	"keywords": [],
