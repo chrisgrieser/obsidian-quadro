@@ -1,4 +1,4 @@
 .PHONY: release
 release:
-	zsh ./release.sh
+	zsh ./.release.sh
 
