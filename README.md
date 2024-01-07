@@ -2,6 +2,9 @@
 ![Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22qualitative-data-analysis%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
 ![Last Release](https://img.shields.io/github/v/release/chrisgrieser/qualitative-data-analysis?label=Latest%20Release&style=plastic)
 
+!> [!WARNING]
+> This plugin is still WIP and as such not yet usable.
+
 Obsidian Plugin for Qualitative Data Analysis.
 
 <!-- toc -->
@@ -24,7 +27,7 @@ _"Qualitative Data Analysis"_
 Please cite this software project as (APA):
 
 ```txt
-Grieser, C. (2023). Qualitative Data Analysis in Obsidian [Computer software]. 
+Grieser, C. (2024). Qualitative Data Analysis in Obsidian [Computer software]. 
 https://github.com/chrisgrieser/obsidian-qualitative-data-analysis
 ```
 
