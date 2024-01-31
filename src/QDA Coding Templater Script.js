@@ -77,5 +77,3 @@ const blockRef = `![[${tp.file.title}#${id}]]`;
 const curContent = await this.app.vault.read(targetNote);
 const newContents = curContent + "**" + tp.file.title + "** " + blockRef + "\n\n";
 await this.app.vault.modify(targetNote, newContents);
-%>
-%>
