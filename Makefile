@@ -1,7 +1,10 @@
-.PHONY: release build
+.PHONY: release build init
 
 build:
-	npm run build
+	node esbuild.config.mjs production
+
+init:
+	npm install
 
 release:
 	zsh ./.release.sh
