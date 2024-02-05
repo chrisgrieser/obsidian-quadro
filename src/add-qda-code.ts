@@ -1,14 +1,30 @@
 // SOURCE example for a suggester from the obsidian dev docs
 // https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
 // DOCS https://docs.obsidian.md/Reference/TypeScript+API/SuggestModal
-//──────────────────────────────────────────────────────────────────────────────
 
-import { Notice, SuggestModal } from "obsidian";
+import { SuggestModal } from "obsidian";
 import type { App, Editor, TFile } from "obsidian";
 
 // CONFIG values are hardcoded for now, will be made configurable later
 const codeFolderName = "Codes";
-// const delimiter = "♦︎"; // icon for meta-information at the end of a block
+
+//──────────────────────────────────────────────────────────────────────────────
+
+async function newBlockId(editor: Editor): Promise<string> {
+	const tfile = editor.editorComponent.view.file;
+	const fullText = await this.app.vault.cachedRead(tfile);
+	const blockIdsInText = fullText.match(/\^\w+(?=\n)/g);
+	let counter = blockIdsInText ? blockIdsInText.length : 0;
+	let newId: string;
+
+	// ensure blockId is unique (e.g. user changed blockId manually)
+	do {
+		counter++;
+		newId = "^id" + counter;
+	} while (blockIdsInText.includes(newId));
+
+	return newId;
+}
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -24,7 +40,8 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 
 	// TODO use fuzzy suggester instead of regular search
 	getSuggestions(query: string): TFile[] {
-		const matchingCodeNotes: TFile[] = this.app.vault.getMarkdownFiles().filter((tFile) => {
+		const allFiles: TFile[] = this.app.vault.getMarkdownFiles();
+		const matchingCodeNotes = allFiles.filter((tFile) => {
 			const relPathInCodeFolder = tFile.path.slice(codeFolderName.length + 1);
 			const matchesQuery = relPathInCodeFolder.toLowerCase().includes(query.toLowerCase());
 			const isInCodeFolder = tFile.path.startsWith(codeFolderName + "/");
@@ -41,15 +58,34 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 	}
 
 	async onChooseSuggestion(targetNote: TFile, _evt: MouseEvent | KeyboardEvent) {
-		const curLine = this.editor.getCursor().line;
-		const codedText = this.editor.getLine(curLine);
-		const wikilinkToCurrentNote = `[[${this.editor.editorComponent.view.file.basename}]]`;
+		// DATA-NOTE: Add blockID & link to Code-Note
+		const cursorPos = this.editor.getCursor();
+		const ln = cursorPos.line;
+		let lineContent = this.editor.getLine(ln);
+		const linkToCodeNote = `[[${targetNote.basename}]]`;
+		const blockIdOfLine = lineContent.match(/\^\w+$/);
 
-		// const newContents = curContent + "**" + tp.file.title + "** " + blockRef + "\n\n";
-		const textToAppend = `\n${codedText} ${wikilinkToCurrentNote}`;
+		// TODO use selection for highlighting
+		// const selectedText = tp.file.selection();
+		// if (selectedText !== "") {
+		// 	// ensures that no leading space of the selection disrupts highlighting markup
+		// 	const highlightedText = selectedText.replace(/^( ?)(.+?)( ?)$/, "$1==$2==$3");
+		// 	blockText = blockText.replace(selectedText, highlightedText);
+		// }
+
+		let id: string;
+		if (blockIdOfLine) {
+			id = blockIdOfLine[0];
+			lineContent = lineContent.slice(0, -id.length); // remove blockID from line
+		} else {
+			id = await newBlockId(this.editor);
+		}
+		this.editor.setLine(ln, lineContent.trim() + " " + linkToCodeNote + " " + id);
+		this.editor.setCursor(cursorPos); // setLine moves cursor, thus we need to move it back
+
+		// CODE-NOTE: Insert Embedded Block from Data-Note
+		const dataNoteName = this.editor.editorComponent.view.file.basename;
+		const textToAppend = `\n- [[${dataNoteName}]] ![[${dataNoteName}#${id}]]`;
 		await this.app.vault.append(targetNote, textToAppend);
-
-		const relPathInCodeFolder = targetNote.path.slice(codeFolderName.length + 1, -3);
-		new Notice(`Added Code "${relPathInCodeFolder}"`);
 	}
 }
