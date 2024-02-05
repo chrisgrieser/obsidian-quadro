@@ -15,7 +15,8 @@ const codeFolderName = "Codes";
 export class SuggesterForAddingQdaCode extends SuggestModal<CodeNote> {
 	getSuggestions(query: string): CodeNote[] {
 		const matchingCodeNotes: CodeNote[] = this.app.vault.getMarkdownFiles().filter((tFile) => {
-			const matchesQuery = tFile.basename.toLowerCase().includes(query.toLowerCase());
+			const relPathInCodeFolder = tFile.path.slice(codeFolderName.length + 1)
+			const matchesQuery = relPathInCodeFolder.toLowerCase().includes(query.toLowerCase());
 			const isInCodeFolder = tFile.path.startsWith(codeFolderName + "/");
 			return matchesQuery && isInCodeFolder;
 		});
@@ -23,10 +24,10 @@ export class SuggesterForAddingQdaCode extends SuggestModal<CodeNote> {
 	}
 
 	renderSuggestion(codeNote: CodeNote, el: HTMLElement) {
-		const relPathInCodeFolder = codeNote.parent.path.slice(codeFolderName.length + 1);
+		const parentInCodeFolder = codeNote.parent.path.slice(codeFolderName.length + 1);
 		const codeName = codeNote.basename;
 		el.createEl("div", { text: codeName });
-		el.createEl("small", { text: relPathInCodeFolder });
+		el.createEl("small", { text: parentInCodeFolder });
 	}
 
 	onChooseSuggestion(codeNote: CodeNote, _evt: MouseEvent | KeyboardEvent) {
