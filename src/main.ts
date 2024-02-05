@@ -1,4 +1,5 @@
 import { Plugin } from "obsidian";
+import type { Editor } from "obsidian";
 import { SuggesterForAddingQdaCode } from "./add-qda-code";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -10,8 +11,8 @@ export default class QualitativeDataAnalysis extends Plugin {
 		this.addCommand({
 			id: "add-code",
 			name: "Add Code",
-			callback: () => {
-				new SuggesterForAddingQdaCode(this.app).open();
+			editorCallback: (editor: Editor) => {
+				new SuggesterForAddingQdaCode(this.app, editor).open();
 			},
 		});
 	}
