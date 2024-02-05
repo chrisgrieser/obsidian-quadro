@@ -1,0 +1,9 @@
+/* Hide Block Id on non-active line */
+.cm-line:not(.cm-active) .cm-blockid {
+	display: none;
+}
+
+/* Make them less visible */
+.cm-line .cm-blockid {
+	opacity: 0.3;
+}
