@@ -5,42 +5,31 @@
 
 import { Notice, SuggestModal } from "obsidian";
 
-interface Book {
-	title: string;
-	author: string;
-}
+import type { TFile } from "obsidian";
+type CodeNote = TFile & {};
 
-const ALL_BOOKS = [
-	{
-		title: "How to Take Smart Notes",
-		author: "Sönke Ahrens",
-	},
-	{
-		title: "Thinking, Fast and Slow",
-		author: "Daniel Kahneman",
-	},
-	{
-		title: "Deep Work",
-		author: "Cal Newport",
-	},
-];
-
+// CONFIG values are hardcoded for now, will be made configurable later
+const codeFolderName = "Codes";
 //──────────────────────────────────────────────────────────────────────────────
 
-export class SuggesterForAddingQdaCode extends SuggestModal<Book> {
-	// Returns all available suggestions.
-	getSuggestions(query: string): Book[] {
-		return ALL_BOOKS.filter((book) => book.title.toLowerCase().includes(query.toLowerCase()));
+export class SuggesterForAddingQdaCode extends SuggestModal<CodeNote> {
+	getSuggestions(query: string): CodeNote[] {
+		const matchingCodeNotes: CodeNote[] = this.app.vault.getMarkdownFiles().filter((tFile) => {
+			const matchesQuery = tFile.basename.toLowerCase().includes(query.toLowerCase());
+			const isInCodeFolder = tFile.path.startsWith(codeFolderName + "/");
+			return matchesQuery && isInCodeFolder;
+		});
+		return matchingCodeNotes;
 	}
 
-	// Renders each suggestion item.
-	renderSuggestion(book: Book, el: HTMLElement) {
-		el.createEl("div", { text: book.title });
-		el.createEl("small", { text: book.author });
+	renderSuggestion(codeNote: CodeNote, el: HTMLElement) {
+		const relPathInCodeFolder = codeNote.parent.path.slice(codeFolderName.length + 1);
+		const codeName = codeNote.basename;
+		el.createEl("div", { text: codeName });
+		el.createEl("small", { text: relPathInCodeFolder });
 	}
 
-	// Perform action on the selected suggestion.
-	onChooseSuggestion(book: Book, _evt: MouseEvent | KeyboardEvent) {
-		new Notice(`Selected ${book.title}`);
+	onChooseSuggestion(codeNote: CodeNote, _evt: MouseEvent | KeyboardEvent) {
+		new Notice(`Selected: ${codeNote.basename}`);
 	}
 }
