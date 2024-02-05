@@ -5,6 +5,7 @@ build:
 
 init:
 	npm install
+	node esbuild.config.mjs production
 
 release:
 	zsh ./.release.sh

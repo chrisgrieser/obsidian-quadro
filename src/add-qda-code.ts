@@ -2,6 +2,7 @@
 // https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
 // DOCS https://docs.obsidian.md/Reference/TypeScript+API/SuggestModal
 //──────────────────────────────────────────────────────────────────────────────
+
 import { Notice, SuggestModal } from "obsidian";
 
 interface Book {
