@@ -29,10 +29,16 @@ async function newBlockId(editor: Editor): Promise<string> {
 //──────────────────────────────────────────────────────────────────────────────
 
 export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
-	// patch constructor to pass editor from editorCallback
+	// patch constructor
 	constructor(app: App, editor: Editor) {
 		super(app);
-		this.editor = editor;
+		this.setPlaceholder("Select Code");
+		this.setInstructions([
+			{ command: "⏎: ", purpose: "Select" },
+		]);
+		// save reference to editor from `editorCallback`, so we do not need to
+		// retrieve the editor manually
+		this.editor = editor; 
 	}
 	editor: Editor;
 

@@ -12,9 +12,7 @@ export default class QualitativeDataAnalysis extends Plugin {
 			id: "add-code",
 			name: "Add Code",
 			editorCallback: (editor: Editor) => {
-				const suggester = new SuggesterForAddingQdaCode(this.app, editor)
-				suggester.setPlaceholder("Select Code")
-				suggester.open();
+				new SuggesterForAddingQdaCode(this.app, editor).open();
 			},
 		});
 	}
