@@ -14,9 +14,9 @@ research codes.
 - [Introduction](#introduction)
 	* [For Academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
 	* [For Obsidian Users](#for-obsidian-users)
-- [To-do](#to-do)
 - [Usage](#usage)
 - [Installation](#installation)
+- [Roadmap](#roadmap)
 - [Recommended Citation](#recommended-citation)
 - [About the developer](#about-the-developer)
 
@@ -82,15 +82,6 @@ markdown files by inserting wikilinks at both files. It makes use of Obsidian's
 [note-embedding](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note)
 functionality to keep track of coded text segments.
 
-## To-do
-- [ ] Define Specification for `qda-markdown` format.
-- [ ] Add ==highlights== for to code segments of text inside a paragraph.
-- [ ] New Code creation.
-- [ ] Fuzzy-matching suggester.
-- [ ] Detailed usage instructions.
-- [ ] Submit to Obsidian Community Plugin Store.
-- [ ] Configurable Code-folder
-
 ## Usage
 Use `alt+c` to add a code to the current segment. The hotkey can be customized
 in the Obsidian settings, the command name is `Quadro: Add Code`.
@@ -112,6 +103,15 @@ also install the plugin via [BRAT](https://github.com/TfTHacker/obsidian42-brat)
 When published in the Obsidian Community Store, it is going to be available in
 Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` →
 Search for *"Quadro"*
+
+## Roadmap
+- [ ] Define Specification for `qda-markdown` format.
+- [ ] Add ==highlights== for to code segments of text inside a paragraph.
+- [ ] New Code creation.
+- [ ] Fuzzy-matching suggester.
+- [ ] Detailed usage instructions.
+- [ ] Submit to Obsidian Community Plugin Store.
+- [ ] Configurable Code-folder
 
 ## Recommended Citation
 Please cite this software project as (APA):
