@@ -41,28 +41,28 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 	// TODO use fuzzy suggester instead of regular search
 	getSuggestions(query: string): TFile[] {
 		const allFiles: TFile[] = this.app.vault.getMarkdownFiles();
-		const matchingCodeNotes = allFiles.filter((tFile) => {
+		const matchingCodeFiles = allFiles.filter((tFile) => {
 			const relPathInCodeFolder = tFile.path.slice(codeFolderName.length + 1);
 			const matchesQuery = relPathInCodeFolder.toLowerCase().includes(query.toLowerCase());
 			const isInCodeFolder = tFile.path.startsWith(codeFolderName + "/");
 			return matchesQuery && isInCodeFolder;
 		});
-		return matchingCodeNotes;
+		return matchingCodeFiles;
 	}
 
-	renderSuggestion(codeNote: TFile, el: HTMLElement) {
-		const parentInCodeFolder = codeNote.parent.path.slice(codeFolderName.length + 1);
-		const codeName = codeNote.basename;
+	renderSuggestion(codeFile: TFile, el: HTMLElement) {
+		const parentInCodeFolder = codeFile.parent.path.slice(codeFolderName.length + 1);
+		const codeName = codeFile.basename;
 		el.createEl("div", { text: codeName });
 		el.createEl("small", { text: parentInCodeFolder });
 	}
 
-	async onChooseSuggestion(targetNote: TFile, _evt: MouseEvent | KeyboardEvent) {
-		// DATA-NOTE: Add blockID & link to Code-Note
+	async onChooseSuggestion(codeFile: TFile, _evt: MouseEvent | KeyboardEvent) {
+		// DATA-FILE: Add blockID & link to Code-file in the current line
 		const cursorPos = this.editor.getCursor();
 		const ln = cursorPos.line;
 		let lineContent = this.editor.getLine(ln);
-		const linkToCodeNote = `[[${targetNote.basename}]]`;
+		const linkToCodeFile = `[[${codeFile.basename}]]`;
 		const blockIdOfLine = lineContent.match(/\^\w+$/);
 
 		// TODO use selection for highlighting
@@ -80,12 +80,12 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 		} else {
 			id = await newBlockId(this.editor);
 		}
-		this.editor.setLine(ln, lineContent.trim() + " " + linkToCodeNote + " " + id);
+		this.editor.setLine(ln, lineContent.trim() + " " + linkToCodeFile + " " + id);
 		this.editor.setCursor(cursorPos); // setLine moves cursor, thus we need to move it back
 
-		// CODE-NOTE: Insert Embedded Block from Data-Note
-		const dataNoteName = this.editor.editorComponent.view.file.basename;
-		const textToAppend = `\n- [[${dataNoteName}]] ![[${dataNoteName}#${id}]]`;
-		await this.app.vault.append(targetNote, textToAppend);
+		// CODE-FILE: Append embedded block from Data-file
+		const dataFileName = this.editor.editorComponent.view.file.basename;
+		const textToAppend = `\n- [[${dataFileName}]] ![[${dataFileName}#${id}]]`;
+		await this.app.vault.append(codeFile, textToAppend);
 	}
 }
