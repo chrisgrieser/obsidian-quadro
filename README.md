@@ -122,8 +122,8 @@ https://github.com/chrisgrieser/obsidian-qualitative-data-analysis
 ```
 
 For other citation styles, use the following metadata:
-- [Citation File Format](./CITATION.cff)
-- [BibTeX](./CITATION.bib)
+- [Citation File Format](./recommended-citation/CITATION.cff)
+- [BibTeX](./recommended-citation/CITATION.bib)
 
 <!-- vale Google.FirstPerson = NO -->
 ## About the developer
