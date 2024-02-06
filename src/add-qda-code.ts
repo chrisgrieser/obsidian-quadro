@@ -53,11 +53,14 @@ export class SuggesterForAddCode extends SuggestModal<TFile> {
 		return matchingCodeFiles;
 	}
 
-	renderSuggestion(codeFile: TFile, el: HTMLElement) {
-		const parentInCodeFolder = codeFile.parent.path.slice(codeFolderName.length + 1);
-		const codeName = codeFile.basename;
+	async renderSuggestion(codeFile: TFile, el: HTMLElement) {
+		const codeName = codeFile.path.slice(codeFolderName.length + 1);
 		el.createEl("div", { text: codeName });
-		el.createEl("small", { text: parentInCodeFolder });
+
+		// PERF reading the linecount of a file could have performance impact,
+		// investigate later if this is a problem on larger vaults
+		const codeCount = (await this.app.vault.cachedRead(codeFile)).split("\n").length;
+		el.createEl("small", { text: `${codeCount}x` });
 	}
 
 	async onChooseSuggestion(codeFile: TFile, _evt: MouseEvent | KeyboardEvent) {
