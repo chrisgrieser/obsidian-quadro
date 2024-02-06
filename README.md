@@ -95,11 +95,20 @@ Use `alt+c` to add a code to the current segment. The hotkey can be customized
 in the Obsidian settings, the command name is `Quadro: Add Code`.
 
 ## Installation
-For now, the plugin is still in beta. It can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).
+**Manual**
+1. Download the `.zip` file from the [latest
+   release](https://github.com/chrisgrieser/quadro/releases/latest). 
+2. Extract the `.zip` file into the `{your-vault-path}/.obsidian/plugins/quadro`.
+3. In Obsidian, go to `Settings` → `Community Plugins`. Press the Refresh
+   button.
+4. A new entry for `Quadro` will appear in the plugin list. Enable the plugin
+   by checking the box.
 
-When published, it is going to be available in Obsidian's Community Plugin
-Browser via: `Settings` → `Community Plugins` → `Browse` → Search for
-*"Qualitative Data Analysis"*
+Alternatively, it can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).
+
+When published in the Obsidian Community Store, it is going to be available in
+Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` →
+Search for *"Quadro"*
 
 ## Recommended Citation
 Please cite this software project as (APA):
