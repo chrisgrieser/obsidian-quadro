@@ -1,6 +1,6 @@
 import { Plugin } from "obsidian";
 import type { Editor } from "obsidian";
-import { SuggesterForAddingQdaCode } from "./add-qda-code";
+import { SuggesterForAddCode } from "./add-qda-code";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -12,7 +12,7 @@ export default class Quadro extends Plugin {
 			id: "add-code",
 			name: "Add Code",
 			editorCallback: (editor: Editor) => {
-				new SuggesterForAddingQdaCode(this.app, editor).open();
+				new SuggesterForAddCode(this.app, editor).open();
 			},
 			// INFO Adding a hotkey by default, since this plugin is going to be
 			// used by many people not familiar with Obsidian. Requiring them to

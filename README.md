@@ -105,11 +105,10 @@ Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` �
 Search for *"Quadro"*
 
 ## Roadmap
-- [ ] Define Specification for `qda-markdown` format.
-- [ ] Add ==highlights== for to code segments of text inside a paragraph.
 - [ ] New Code creation.
 - [ ] Fuzzy-matching suggester.
 - [ ] Detailed usage instructions.
+- [ ] Define Specification for `qda-markdown` format.
 - [ ] Submit to Obsidian Community Plugin Store.
 - [ ] Configurable Code-folder
 

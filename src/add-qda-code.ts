@@ -30,12 +30,10 @@ async function newBlockId(editor: Editor): Promise<string> {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
-	// patch constructor
+export class SuggesterForAddCode extends SuggestModal<TFile> {
 	constructor(app: App, editor: Editor) {
 		super(app);
 		this.setPlaceholder("Select Code");
-		this.setInstructions([{ command: "⏎ :", purpose: "Select" }]);
 		// save reference to editor from `editorCallback`, so we do not need to
 		// retrieve the editor manually
 		this.editor = editor;
@@ -65,26 +63,23 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 	async onChooseSuggestion(codeFile: TFile, _evt: MouseEvent | KeyboardEvent) {
 		// DATA-FILE: Add blockID & link to Code-file in the current line
 		const cursor = this.editor.getCursor();
-		let lineContent = this.editor.getLine(cursor.line);
-		const linkToCodeFile = `[[${codeFile.basename}]]`;
-		const blockIdOfLine = lineContent.match(/\^\w+$/);
-
-		// highlight selected text
-		if (this.editor.somethingSelected()) {
-			const selection = this.editor.getSelection();
-			lineContent = lineContent.replace(selection, ` ==${selection.trim()}== `);
-		}
+		const selection = this.editor.getSelection();
+		if (selection) this.editor.replaceSelection(`==${selection.trim()}==`);
+		let lineText = this.editor.getLine(cursor.line);
 
 		// determine block-id
+		const blockIdOfLine = lineText.match(/\^\w+$/);
 		let id: string;
 		if (blockIdOfLine) {
 			id = blockIdOfLine[0];
-			lineContent = lineContent.slice(0, -id.length); // remove blockID from line
+			lineText = lineText.slice(0, -id.length); // remove blockID from line
 		} else {
 			id = await newBlockId(this.editor);
 		}
-		this.editor.setLine(cursor.line, lineContent.trim() + " " + linkToCodeFile + " " + id);
-		this.editor.setCursor(cursor); // `setLine` moves cursor, thus we need to move it back
+
+		lineText = lineText.trim().replace(/ {2,}/g, " "); // `replaceSelection` can result in double-spaces
+		this.editor.setLine(cursor.line, `${lineText} [[${codeFile.basename}]] ${id}`);
+		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 		// CODE-FILE: Append embedded block from Data-file
 		const dataFileName = this.editor.editorComponent.view.file.basename;
