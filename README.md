@@ -91,8 +91,8 @@ functionality to keep track of coded text segments.
 - [ ] Configurable Code-folder
 
 ## Usage
-The plugin adds a command `Qualitative Data Analysis: Add Code`, which you can
-bind to a hotkey.
+Use `alt+c` to add a code to the current segment. The hotkey can be customized
+in the Obsidian settings, the command name is `Quadro: Add Code`.
 
 ## Installation
 For now, the plugin is still in beta. It can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).

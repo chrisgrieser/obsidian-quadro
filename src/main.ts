@@ -14,6 +14,12 @@ export default class QualitativeDataAnalysis extends Plugin {
 			editorCallback: (editor: Editor) => {
 				new SuggesterForAddingQdaCode(this.app, editor).open();
 			},
+			// INFO Adding a hotkey by default, since this plugin is going to be
+			// used by many people not familiar with Obsidian. Requiring them to
+			// add an hotkey would unnecessarily complicate the onboarding for
+			// them. Using `alt+c` as a combination, as it is unlikely to conflict
+			// with other hotkeys.
+			hotkeys: [{ modifiers: ["Alt"], key: "c" }],
 		});
 	}
 
