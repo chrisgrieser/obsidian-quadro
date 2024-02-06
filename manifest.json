@@ -1,6 +1,6 @@
 {
 	"id": "quadro",
-	"name": "Quadro – Qualitative Data Analysis Realized in Obsidian",
+	"name": "Quadro",
 	"description": "Qualitative Data Analysis (QDA) for social scientists. An open alternative to `MAXQDA` and `atlas.ti`, using Markdown to store data and research codes.",
 	"version": "0.11.0",
 	"minAppVersion": "1.4",
