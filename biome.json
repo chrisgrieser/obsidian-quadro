@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/biomejs/biome/main/packages/%40biomejs/biome/configuration_schema.json",
 	"files": {
-		"ignore": ["node_modules"]
+		"include": ["*.json", "src/**/*.ts"]
 	},
 	"formatter": {
 		"lineWidth": 100,
@@ -18,10 +18,7 @@
 				"useTemplate": "off",
 				"noParameterAssign": "off",
 				"useSingleVarDeclarator": "off",
-				"useNamingConvention": {
-					"level": "warn",
-					"options": { "strictCase": false }
-				}
+				"useNamingConvention": { "level": "warn", "options": { "strictCase": false } }
 			}
 		}
 	}

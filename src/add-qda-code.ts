@@ -33,12 +33,10 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 	constructor(app: App, editor: Editor) {
 		super(app);
 		this.setPlaceholder("Select Code");
-		this.setInstructions([
-			{ command: "⏎: ", purpose: "Select" },
-		]);
+		this.setInstructions([{ command: "⏎: ", purpose: "Select" }]);
 		// save reference to editor from `editorCallback`, so we do not need to
 		// retrieve the editor manually
-		this.editor = editor; 
+		this.editor = editor;
 	}
 	editor: Editor;
 
