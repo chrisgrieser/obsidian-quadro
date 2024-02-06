@@ -1,9 +1,10 @@
-# Qualitative Data Analysis in Obsidian (`qda.o`)
-![Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22qualitative-data-analysis%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
-![Last Release](https://img.shields.io/github/v/release/chrisgrieser/qualitative-data-analysis?label=Latest%20Release&style=plastic)
+# Quadro – Qualitative Data analysis Realized in Obsidian
+![Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22quadro%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
+![Last Release](https://img.shields.io/github/v/release/chrisgrieser/obsidian-quadro?label=Latest%20Release&style=plastic)
 
-Obsidian Plugin for Qualitative Data Analysis (QDA). An open alternative to `MAXQDA`
-and `atlas.ti`.
+Obsidian Plugin for social-scientific Qualitative Data Analysis (QDA). An open
+alternative to `MAXQDA` and `atlas.ti`, using Markdown to store data and
+research codes.
 
 > [!WARNING]
 > This plugin is still WIP and as such not yet usable.
@@ -63,8 +64,8 @@ extensive functionality and plugin ecosystem of Obsidian:
   is a key demand of qualitative research (which strictly speaking is not
   truly fulfilled when using standardized, proprietary research software).
 
-If there is a more tech-savvy researcher in the research team, the advantages go
-even further:
+If there is a more tech-savvy researcher in the research team, the advantages of
+Quadro go even further:
 - Being Open Source, this plugin can be modified and customized to fit their
   needs. (It is written is TypeScript / JavaScript, a particularly accessible
   and commonly used programming language.)
@@ -72,7 +73,7 @@ even further:
   version-controlled with `git`.
 
 Obsidian is [free to use for academic purposes](https://obsidian.md/license),
-and this plugin is also free to use. Especially for students writing their
+and Quadro is also free to use. Especially for students writing their
 theses, this saves a lot of unnecessary hassle with licenses.
 
 ### For Obsidian Users
@@ -97,15 +98,17 @@ in the Obsidian settings, the command name is `Quadro: Add Code`.
 ## Installation
 **Manual**
 1. Download the `.zip` file from the [latest
-   release](https://github.com/chrisgrieser/quadro/releases/latest). 
+   release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).
 2. Extract the `.zip` file into the `{your-vault-path}/.obsidian/plugins/quadro`.
 3. In Obsidian, go to `Settings` → `Community Plugins`. Press the Refresh
    button.
-4. A new entry for `Quadro` will appear in the plugin list. Enable the plugin
-   by checking the box.
+4. Look for a new entry `Quadro` in the plugin list. Enable the plugin by
+   checking the box.
 
-Alternatively, it can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).
+Alternatively, if you are already familiar with the Obsidian Ecosystem, you can
+also install the plugin via [BRAT](https://github.com/TfTHacker/obsidian42-brat).
 
+**Obsidian Community Plugin Store**
 When published in the Obsidian Community Store, it is going to be available in
 Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` →
 Search for *"Quadro"*
@@ -114,7 +117,7 @@ Search for *"Quadro"*
 Please cite this software project as (APA):
 
 ```txt
-Grieser, C. (2024). Qualitative Data Analysis in Obsidian [Computer software]. 
+Grieser, C. (2024). Quadro – Qualitative Data Analysis Realized in Obsidian [Computer software]. 
 https://github.com/chrisgrieser/obsidian-qualitative-data-analysis
 ```
 
@@ -139,10 +142,6 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
 
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'>
-<img
-	height='36'
-	style='border:0px;height:36px;'
-	src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
-	border='0'
-	alt='Buy Me a Coffee at ko-fi.com'
-/></a>
+<img height='36' style='border:0px;height:36px;'
+src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at
+ko-fi.com' /></a>

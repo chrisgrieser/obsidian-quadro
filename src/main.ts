@@ -4,7 +4,7 @@ import { SuggesterForAddingQdaCode } from "./add-qda-code";
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export default class QualitativeDataAnalysis extends Plugin {
+export default class Quadro extends Plugin {
 	async onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
 

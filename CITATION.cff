@@ -4,19 +4,22 @@
 #───────────────────────────────────────────────────────────────────────────────
 
 message: If you use this software, please cite it using these metadata.
-title: Qualitative Data Analysis in Obsidian
-abstract: Obsidian Plugin for Qualitative Data Analysis (QDA).
+title: Quadro – Qualitative Data Analysis Realized in Obsidian
+abstract: |
+  Obsidian Plugin for Qualitative Data Analysis (QDA). An open alternative to 
+  `MAXQDA` and `atlas.ti`, using Markdown to store data and research codes.
 type: software
 authors:
   - family-names: Grieser
     given-names: Christopher
     orcid: "https://orcid.org/0000-0002-0767-9496"
-version: "0.5.0"
-date-released: "2024-01-15"
-repository-code: "https://github.com/chrisgrieser/obsidian-qualitative-data-analysis"
+version: "0.10.0"
+date-released: "2024-02-06"
+repository-code: "https://github.com/chrisgrieser/quadro"
 keywords:
-  - obsidian
   - qualitative data analysis
   - coding
+  - extraction
+  - obsidian
 cff-version: 1.2.0
 license: MIT

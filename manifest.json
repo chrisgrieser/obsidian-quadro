@@ -1,12 +1,12 @@
 {
-	"id": "qualitative-data-analysis",
-	"name": "Qualitative Data Analysis",
-	"description": "Obsidian Plugin for Qualitative Data Analysis.",
+	"id": "quadro",
+	"name": "Quadro – Qualitative Data Analysis Realized in Obsidian",
+	"description": "Qualitative Data Analysis (QDA) for social scientists. An open alternative to `MAXQDA` and `atlas.ti`, using Markdown to store data and research codes.",
 	"version": "0.10.0",
 	"minAppVersion": "1.4",
 	"isDesktopOnly": true,
-	"author": "pseudometa",
+	"author": "Christopher Grieser (aka pseudometa)",
 	"fundingUrl": "https://ko-fi.com/pseudometa",
 	"authorUrl": "https://chris-grieser.de/",
-	"helpUrl": "https://github.com/chrisgrieser/obsidian-qualitative-data-analysis#readme"
+	"helpUrl": "https://github.com/chrisgrieser/quadro#readme"
 }
