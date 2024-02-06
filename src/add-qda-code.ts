@@ -12,8 +12,10 @@ const codeFolderName = "Codes";
 
 async function newBlockId(editor: Editor): Promise<string> {
 	const tfile = editor.editorComponent.view.file;
-	const fullText = await this.app.vault.cachedRead(tfile);
+	const fullText: string = await this.app.vault.cachedRead(tfile);
 	const blockIdsInText = fullText.match(/\^\w+(?=\n)/g);
+	if (!blockIdsInText) return "^id1";
+
 	let counter = blockIdsInText ? blockIdsInText.length : 0;
 	let newId: string;
 
@@ -33,7 +35,7 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 	constructor(app: App, editor: Editor) {
 		super(app);
 		this.setPlaceholder("Select Code");
-		this.setInstructions([{ command: "⏎: ", purpose: "Select" }]);
+		this.setInstructions([{ command: "⏎ :", purpose: "Select" }]);
 		// save reference to editor from `editorCallback`, so we do not need to
 		// retrieve the editor manually
 		this.editor = editor;
@@ -75,6 +77,7 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 		// 	blockText = blockText.replace(selectedText, highlightedText);
 		// }
 
+		// determine block-id
 		let id: string;
 		if (blockIdOfLine) {
 			id = blockIdOfLine[0];
