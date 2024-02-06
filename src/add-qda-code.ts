@@ -62,9 +62,8 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 
 	async onChooseSuggestion(codeFile: TFile, _evt: MouseEvent | KeyboardEvent) {
 		// DATA-FILE: Add blockID & link to Code-file in the current line
-		const cursorPos = this.editor.getCursor();
-		const ln = cursorPos.line;
-		let lineContent = this.editor.getLine(ln);
+		const cursor = this.editor.getCursor();
+		let lineContent = this.editor.getLine(cursor.line);
 		const linkToCodeFile = `[[${codeFile.basename}]]`;
 		const blockIdOfLine = lineContent.match(/\^\w+$/);
 
@@ -83,8 +82,8 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 		} else {
 			id = await newBlockId(this.editor);
 		}
-		this.editor.setLine(ln, lineContent.trim() + " " + linkToCodeFile + " " + id);
-		this.editor.setCursor(cursorPos); // setLine moves cursor, thus we need to move it back
+		this.editor.setLine(cursor.line, lineContent.trim() + " " + linkToCodeFile + " " + id);
+		this.editor.setCursor(cursor); // `setLine` moves cursor, thus we need to move it back
 
 		// CODE-FILE: Append embedded block from Data-file
 		const dataFileName = this.editor.editorComponent.view.file.basename;
