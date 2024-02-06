@@ -17,6 +17,8 @@ research codes.
 - [Usage](#usage)
 - [Installation](#installation)
 - [Roadmap](#roadmap)
+	* [Short-term](#short-term)
+	* [Long-term](#long-term)
 - [Recommended Citation](#recommended-citation)
 - [About the developer](#about-the-developer)
 
@@ -105,12 +107,19 @@ Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` �
 Search for *"Quadro"*
 
 ## Roadmap
+
+### Short-term
 - [ ] New Code creation.
 - [ ] Fuzzy-matching suggester.
-- [ ] Detailed usage instructions.
 - [ ] Define Specification for `qda-markdown` format.
+- [ ] Rename Code.
+- [ ] Detailed usage instructions.
 - [ ] Submit to Obsidian Community Plugin Store.
-- [ ] Configurable Code-folder
+
+### Long-term
+- [ ] Delete Code from Code-File and Data-File.
+- [ ] Settings Menu (Code-Folder, Data-Folder).
+- [ ] Download website content directly into data folder.
 
 ## Recommended Citation
 Please cite this software project as (APA):
