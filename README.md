@@ -82,10 +82,13 @@ markdown files by inserting wikilinks at both files. It makes use of Obsidian's
 functionality to keep track of coded text segments.
 
 ## To-do
+- [ ] Define Specification for `qda-markdown` format.
 - [ ] Add ==highlights== for to code segments of text inside a paragraph.
 - [ ] New Code creation.
-- [ ] Write detailed usage.
+- [ ] Fuzzy-matching suggester.
+- [ ] Detailed usage instructions.
 - [ ] Submit to Obsidian Community Plugin Store.
+- [ ] Configurable Code-folder
 
 ## Usage
 The plugin adds a command `Qualitative Data Analysis: Add Code`, which you can

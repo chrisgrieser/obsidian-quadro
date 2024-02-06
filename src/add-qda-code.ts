@@ -5,7 +5,7 @@
 import { SuggestModal } from "obsidian";
 import type { App, Editor, TFile } from "obsidian";
 
-// CONFIG values are hardcoded for now, will be made configurable later
+// CONFIG values are hardcoded for now
 const codeFolderName = "Codes";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -38,7 +38,6 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	// TODO use fuzzy suggester instead of regular search
 	getSuggestions(query: string): TFile[] {
 		const allFiles: TFile[] = this.app.vault.getMarkdownFiles();
 		const matchingCodeFiles = allFiles.filter((tFile) => {
