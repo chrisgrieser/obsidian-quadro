@@ -69,13 +69,11 @@ export class SuggesterForAddingQdaCode extends SuggestModal<TFile> {
 		const linkToCodeFile = `[[${codeFile.basename}]]`;
 		const blockIdOfLine = lineContent.match(/\^\w+$/);
 
-		// TODO use selection for highlighting
-		// const selectedText = tp.file.selection();
-		// if (selectedText !== "") {
-		// 	// ensures that no leading space of the selection disrupts highlighting markup
-		// 	const highlightedText = selectedText.replace(/^( ?)(.+?)( ?)$/, "$1==$2==$3");
-		// 	blockText = blockText.replace(selectedText, highlightedText);
-		// }
+		// highlight selected text
+		if (this.editor.somethingSelected()) {
+			const selection = this.editor.getSelection();
+			lineContent = lineContent.replace(selection, ` ==${selection.trim()}== `);
+		}
 
 		// determine block-id
 		let id: string;
