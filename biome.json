@@ -1,5 +1,8 @@
 {
 	"$schema": "https://raw.githubusercontent.com/biomejs/biome/main/packages/%40biomejs/biome/configuration_schema.json",
+	"files": {
+		"ignore": ["node_modules"]
+	},
 	"formatter": {
 		"lineWidth": 100,
 		"indentStyle": "tab",
