@@ -37,7 +37,6 @@ async function ensureBlockId(
 
 //──────────────────────────────────────────────────────────────────────────────
 
-// SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
 export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
 	editor: Editor;
 
@@ -57,6 +56,7 @@ export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-c
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
+	// SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
 
 	getItems(): (TFile | "new-code-file")[] {
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
@@ -108,14 +108,14 @@ export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-c
 		}
 		const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
 
-		// Data-File
+		// Data-File Changes
 		const updatedLine = `${lineWithoutId} [[${nameOfCode}]] ${blockId}`;
 		this.editor.setLine(cursor.line, updatedLine);
 		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
-		// Code-File
+		// Code-File Changes
 		const dataFilePath = dataFile.path.slice(0, -3);
-		const textToAppend = `- [[${dataFilePath}]] ![[${dataFilePath}#${blockId}]]\n`;
+		const textToAppend = `- ![[${dataFilePath}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
 	}
 }

@@ -9,8 +9,8 @@ export function createFile(prompt: string, callback: (codeFile: TFile) => void) 
 	new InputModal(this.app, prompt, async (input) => {
 		const codeName = input.replace(/\.md$/, "").replace(/\\:/g, "-");
 		const parts = codeName.split("/");
-		const name = parts.pop() || "Untitled Code";
-		const subfolder = parts.length ? "/" + parts.join("/") : "";
+		const name = input ? parts.pop() : "Untitled Code";
+		const subfolder = input && parts.length ? "/" + parts.join("/") : "";
 
 		const folder = CODE_FOLDER_NAME + subfolder;
 		if (!this.app.vault.getAbstractFileByPath(folder)) await this.app.vault.createFolder(folder);
