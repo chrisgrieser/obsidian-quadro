@@ -7,16 +7,13 @@ alternative to [MAXQDA](https://www.maxqda.com/) and
 [atlas.ti](https://atlasti.com/), using Markdown to store data and research
 codes.
 
-> [!WARNING]
-> This plugin is still WIP and as such not yet usable.
-
 <!-- toc -->
 
 - [Introduction](#introduction)
 	* [For Academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
 	* [For Obsidian Users](#for-obsidian-users)
 - [Usage](#usage)
-	* [How codes works in Quadro](#how-codes-works-in-quadro)
+	* [How coding works in Quadro](#how-coding-works-in-quadro)
 	* [Assign a code](#assign-a-code)
 	* [Renaming codes](#renaming-codes)
 	* [Delete codes](#delete-codes)
@@ -25,7 +22,7 @@ codes.
 - [Roadmap](#roadmap)
 - [Build](#build)
 - [Recommended Citation](#recommended-citation)
-- [Credits](#credits)
+- [Acknowledgments](#acknowledgments)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
@@ -94,7 +91,7 @@ functionality to keep track of coded text segments.
 
 ## Usage
 
-### How codes works in Quadro
+### How coding works in Quadro
 There are two basic types of files for the analysis, Code Files and Data Files,
 which are both stored is [Markdown](https://www.markdownguide.org/).
 
@@ -220,9 +217,11 @@ For other citation styles, use the following metadata:
 - [BibTeX](./recommended-citation/CITATION.bib)
 
 <!-- vale Google.FirstPerson = NO -->
-## Credits
-Thanks to Ryan Murphy, who gave me the idea for this project with a [blogpost of
-his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
+## Acknowledgments
+- [Ryan Murphy](https://fulcra.design/About/), who gave me the idea for this
+  project with a [blogpost of
+  his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
+- [Grit Laudel](http://www.laudel.info/), for providing sample interview data.
 
 ## About the developer
 I am a sociologist studying the social mechanisms underlying the
