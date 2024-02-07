@@ -119,14 +119,14 @@ consectetur cupidatat. [[MyCode]] ^id42
 ```
 
 **Code Files**
-All markdown files in the folder `{vault-root}/Code-Files` are considered code
+All markdown files in the folder `{vault-root}/Codes` are considered code
 files.
 
 When a code is assigned, a link back to the original location in the data file
 is appended to the code file.
 
 ```md
-Filepath: Code-Files/MyCode.md
+Filepath: Codes/MyCode.md
 
 - ![[Interview 1#^id42]]
 ```
@@ -155,7 +155,7 @@ Use `alt+c` to assign a code to the current paragraph.
   assigned.
 
 > [!TIP]
-> You can create new codes in bulk by adding multiple `.md` to the `Code-Files`
+> You can create new codes in bulk by adding multiple `.md` to the `Codes`
 > folder in the `Windows Explorer` / `Finder.app`. Any file created outside of
 > Obsidian is nonetheless available inside Obsidian as an assignable code.
 
