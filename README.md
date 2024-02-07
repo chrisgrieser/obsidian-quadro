@@ -112,7 +112,6 @@ Search for *"Quadro"*
 ## Roadmap
 
 ### Short-term
-- [ ] New Code creation.
 - [ ] Extraction as separate mode.
 - [ ] Fuzzy-matching suggester.
 - [ ] Define Specification for `qda-markdown` format.

@@ -2,13 +2,35 @@
 // https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
 // DOCS https://docs.obsidian.md/Reference/TypeScript+API/SuggestModal
 
-import { SuggestModal } from "obsidian";
-import type { App, Editor, TFile } from "obsidian";
+import { Notice, SuggestModal } from "obsidian";
+import type { App, Editor, TFile, Vault } from "obsidian";
 
 // CONFIG values are hardcoded for now
-const codeFolderName = "Codes";
+const CODE_FOLDER_NAME = "Codes-Files";
 
-type CodeFile = TFile & { codeCount: number };
+type CodeFile = TFile & { codeCount?: number };
+
+class CreateCodeFileIntent {
+	constructor(newName: string, vault: Vault) {
+		this.intendedName = newName.replace(/\.md$/, "").replace(/\\:/g, "-");
+		this.vault = vault;
+	}
+	intendedName: string;
+	vault: Vault;
+
+	async realize(): Promise<CodeFile> {
+		const parts = this.intendedName.split("/");
+		const name = parts.pop() || "Untitled Code";
+		const subfolder = parts.join("/");
+
+		const folder = subfolder ? CODE_FOLDER_NAME + "/" + subfolder : CODE_FOLDER_NAME;
+		if (!this.vault.getAbstractFileByPath(folder)) await this.vault.createFolder(folder);
+
+		const codeFile = await this.vault.create(`${folder}/${name}.md`, "");
+		new Notice(`Created new code file: "${this.intendedName}"`);
+		return codeFile;
+	}
+}
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -45,7 +67,7 @@ async function ensureBlockId(
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export class SuggesterForAddCode extends SuggestModal<CodeFile> {
+export class SuggesterForAddCode extends SuggestModal<CodeFile | CreateCodeFileIntent> {
 	constructor(app: App, editor: Editor) {
 		super(app);
 		this.setPlaceholder("Select Code");
@@ -57,14 +79,17 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile> {
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	async getSuggestions(query: string): Promise<CodeFile[]> {
+	async getSuggestions(query: string): Promise<(CodeFile | CreateCodeFileIntent)[]> {
 		const allFiles = this.app.vault.getMarkdownFiles();
 		const matchingCodeFiles: TFile[] = allFiles.filter((tFile) => {
-			const relPathInCodeFolder = tFile.path.slice(codeFolderName.length + 1);
+			const relPathInCodeFolder = tFile.path.slice(CODE_FOLDER_NAME.length + 1);
 			const matchesQuery = relPathInCodeFolder.toLowerCase().includes(query.toLowerCase());
-			const isInCodeFolder = tFile.path.startsWith(codeFolderName + "/");
+			const isInCodeFolder = tFile.path.startsWith(CODE_FOLDER_NAME + "/");
 			return matchesQuery && isInCodeFolder;
 		});
+
+		// when no matching code found, suggest creation of new code with query
+		if (!matchingCodeFiles.length) return [new CreateCodeFileIntent(query, this.app.vault)];
 
 		// PERF reading the linecount of a file could have performance impact,
 		// investigate later if this is a problem on larger vaults
@@ -77,13 +102,20 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile> {
 		return codeFilesOrderedByCount;
 	}
 
-	renderSuggestion(codeFile: CodeFile, el: HTMLElement) {
-		const codeName = codeFile.path.slice(codeFolderName.length + 1, -3);
-		el.createEl("div", { text: codeName });
-		el.createEl("small", { text: `${codeFile.codeCount}x` });
+	renderSuggestion(item: CodeFile | CreateCodeFileIntent, el: HTMLElement) {
+		if (item instanceof CreateCodeFileIntent) {
+			el.createEl("div", { text: `Create new code file: "${item.intendedName}"` });
+		} else {
+			const codeName = item.path.slice(CODE_FOLDER_NAME.length + 1, -3);
+			el.createEl("div", { text: codeName });
+			el.createEl("small", { text: `${item.codeCount}x` });
+		}
 	}
 
-	async onChooseSuggestion(codeFile: CodeFile, _evt: MouseEvent | KeyboardEvent) {
+	async onChooseSuggestion(userChoice: CodeFile | CreateCodeFileIntent) {
+		const codeFile: CodeFile =
+			userChoice instanceof CreateCodeFileIntent ? await userChoice.realize() : userChoice;
+
 		// DATA-FILE: Add blockID & link to Code-file in the current line
 		const cursor = this.editor.getCursor();
 		const selection = this.editor.getSelection();
@@ -101,7 +133,7 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile> {
 
 		// CODE-FILE: Append embedded block from Data-file
 		const dataFileName = this.editor.editorComponent.view.file.basename;
-		const textToAppend = `\n- [[${dataFileName}]] ![[${dataFileName}#${blockId}]]`;
+		const textToAppend = `- [[${dataFileName}]] ![[${dataFileName}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
 	}
 }
