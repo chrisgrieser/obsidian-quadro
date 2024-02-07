@@ -3,8 +3,9 @@
 ![Last Release](https://img.shields.io/github/v/release/chrisgrieser/obsidian-quadro?label=Latest%20Release&style=plastic)
 
 Obsidian Plugin for social-scientific Qualitative Data Analysis (QDA). An open
-alternative to `MAXQDA` and `atlas.ti`, using Markdown to store data and
-research codes.
+alternative to [MAXQDA](https://www.maxqda.com/) and
+[atlas.ti](https://atlasti.com/), using Markdown to store data and research
+codes.
 
 > [!WARNING]
 > This plugin is still WIP and as such not yet usable.
@@ -44,7 +45,9 @@ standard for plaintext files. This means:
   conducted with proprietary research software such as `MAXQDA` or `atlas.ti`.
 - The data is interoperable with other applications, meaning it can easily be
   combined with other text analysis tools such as
-  [AntConc](https://www.laurenceanthony.net/software/antconc/).
+  [AntConc](https://www.laurenceanthony.net/software/antconc/), or with browser
+  extensions like [Markdownload](https://chromewebstore.google.com/detail/markdownload-markdown-web/pcmpcfapbekmbjjkdalcgopdkipoggdi)
+  to fetch website contents.
 - The markdown files are stored offline by default, meeting the key requirements
   for research ethics and protection of research data.
 
@@ -110,6 +113,7 @@ Search for *"Quadro"*
 
 ### Short-term
 - [ ] New Code creation.
+- [ ] Extraction as separate mode.
 - [ ] Fuzzy-matching suggester.
 - [ ] Define Specification for `qda-markdown` format.
 - [ ] Rename Code.
@@ -134,8 +138,12 @@ For other citation styles, use the following metadata:
 - [BibTeX](./recommended-citation/CITATION.bib)
 
 <!-- vale Google.FirstPerson = NO -->
+## Credits
+Thanks to Ryan Murphy, who gave me the idea for this project with a [blogpost of
+his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
+
 ## About the developer
-In my day job, I am a sociologist studying the social mechanisms underlying the
+I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
 compatibility. If you are interested in this subject, feel free to get in touch.
