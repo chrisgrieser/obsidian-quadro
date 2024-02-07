@@ -16,11 +16,13 @@ codes.
 	* [For Academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
 	* [For Obsidian Users](#for-obsidian-users)
 - [Usage](#usage)
+	* [Commands](#commands)
+	* [How assigning codes works in Quadro](#how-assigning-codes-works-in-quadro)
 - [Installation](#installation)
 - [Roadmap](#roadmap)
-	* [Short-term](#short-term)
-	* [Long-term](#long-term)
+- [Build](#build)
 - [Recommended Citation](#recommended-citation)
+- [Credits](#credits)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
@@ -46,7 +48,7 @@ standard for plaintext files. This means:
 - The data is interoperable with other applications, meaning it can easily be
   combined with other text analysis tools such as
   [AntConc](https://www.laurenceanthony.net/software/antconc/), or with browser
-  extensions like [Markdownload](https://chromewebstore.google.com/detail/markdownload-markdown-web/pcmpcfapbekmbjjkdalcgopdkipoggdi)
+  extensions like [MarkDownload](https://chromewebstore.google.com/detail/markdownload-markdown-web/pcmpcfapbekmbjjkdalcgopdkipoggdi)
   to fetch website contents.
 - The markdown files are stored offline by default, meeting the key requirements
   for research ethics and protection of research data.
@@ -97,7 +99,50 @@ functionality to keep track of coded text segments.
 - Select the item `Create New Code` to create a new code, which is then
   assigned.
 
-*(Placeholder for demo image)*
+### How assigning codes works in Quadro
+There are two basic types of files for the analysis, Code Files and Data Files,
+which are both stored is [Markdown](https://www.markdownguide.org/).
+
+**Data Files**
+The empirical material as text files. They can be stored anywhere in the vault
+as `.md` files. (A separate subfolder named `Data` is recommended though.) As
+Quadro assigns codes to whole paragraphs, these data files should
+be split up into smaller segments.
+
+When a code is assigned, a link to the corresponding code file and a unique
+ID are appended to the paragraph:
+
+```md
+Filename: Data/Interview 1.md
+
+Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
+consectetur cupidatat. [[MyCode]] ^id42
+```
+
+**Code Files**
+All markdown files in the folder `{vault-root}/Code-Files` are considered code
+files.
+
+When a code is assigned, a link back to the original location in the data file
+is appended to the code file.
+
+```md
+Filepath: Code-Files/MyCode.md
+
+- ![[Interview 1#^id42]]
+```
+
+As the link is a so-called [embedded
+link](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note),
+Obsidian renders the respective paragraph of the data file inside the code
+file:
+
+![Embedded block link in reading & source Mode](./assets/embedded-blocklink_reading-and-source-mode.png)
+
+> [!TIP]
+> You can batch-create codes by adding multiple `.md` to the `Codes` folder in
+> the `Windows Explorer` / `Finder.app`. Any file created outside of Obsidian
+> is nonetheless available inside Obsidian as an assignable code.
 
 ## Installation
 **Manual**
@@ -118,17 +163,10 @@ Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` �
 Search for *"Quadro"*
 
 ## Roadmap
-
-### Short-term
-- [ ] Extraction as separate mode.
-- [ ] Define Specification for `qda-markdown` format.
-- [ ] Detailed usage instructions.
-- [ ] Submit to Obsidian Community Plugin Store.
-
-### Long-term
 - [ ] Delete Code from Code-File and Data-File.
-- [ ] Settings Menu (Code-Folder, Data-Folder).
-- [ ] Download website content directly into data folder.
+- [ ] Extraction as separate mode.
+- [ ] Submit to Obsidian Community Plugin Store.
+- [ ] Example Vault.
 
 ## Build
 
