@@ -16,8 +16,11 @@ codes.
 	* [For Academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
 	* [For Obsidian Users](#for-obsidian-users)
 - [Usage](#usage)
-	* [Commands](#commands)
-	* [How assigning codes works in Quadro](#how-assigning-codes-works-in-quadro)
+	* [How codes works in Quadro](#how-codes-works-in-quadro)
+	* [Assign a code](#assign-a-code)
+	* [Renaming codes](#renaming-codes)
+	* [Delete codes](#delete-codes)
+	* [Investigate Code Co-occurrence](#investigate-code-co-occurrence)
 - [Installation](#installation)
 - [Roadmap](#roadmap)
 - [Build](#build)
@@ -91,15 +94,7 @@ functionality to keep track of coded text segments.
 
 ## Usage
 
-### Commands
-**Assign Code**: Use `alt+c` to assign a code to the current paragraph.
-- Any selected text is also highlighted.
-- The hotkey can be customized in the Obsidian settings (command name `Quadro:
-  Add Code`).
-- Select the item `Create New Code` to create a new code, which is then
-  assigned.
-
-### How assigning codes works in Quadro
+### How codes works in Quadro
 There are two basic types of files for the analysis, Code Files and Data Files,
 which are both stored is [Markdown](https://www.markdownguide.org/).
 
@@ -143,6 +138,44 @@ file:
 > You can batch-create codes by adding multiple `.md` to the `Codes` folder in
 > the `Windows Explorer` / `Finder.app`. Any file created outside of Obsidian
 > is nonetheless available inside Obsidian as an assignable code.
+
+### Assign a code
+Use `alt+c` to assign a code to the current paragraph.
+- The hotkey can be customized in the Obsidian settings (command name `Quadro:
+  Add Code`).
+- Any selected text is also highlighted. (Note that overlapping highlights are
+  not supported in Markdown.)
+- Select the item `Create New Code` to create a new code, which is then
+  assigned.
+
+### Renaming codes
+Use `F2` when at a code file to rename it.
+- The hotkey can be customized in the Obsidian settings (command name `Rename
+  file`).
+- Right-clicking the file in the file explorer also works.
+- All references to the code file will automatically be updated.
+
+> [!WARNING]
+> Renaming code files outside of Obsidian does not trigger any updates of the
+> references. This would therefore result in loss of research data.
+
+### Delete codes
+WIP.
+
+### Investigate Code Co-occurrence
+Co-occurrences of Codes can be reviewed by using the [built-in Obsidian feature
+for embedded search results](https://help.obsidian.md/Plugins/Search#Embed+search+results+in+a+note).
+
+````md
+```query
+line:("[[MyCodeOne]]" "[[MyCodeTwo]]")
+```
+````
+
+You can also perform fine-grained searches, such as boolean operators or
+restricting the search scope to certain files. [See the documentation of
+Obsidian's search syntax for more
+details.](https://help.obsidian.md/Plugins/Search#Search+operators)
 
 ## Installation
 **Manual**
