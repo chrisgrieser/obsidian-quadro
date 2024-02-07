@@ -67,7 +67,7 @@ export class SuggesterForAddCode extends SuggestModal<TFile> {
 	}
 
 	async renderSuggestion(codeFile: TFile, el: HTMLElement) {
-		const codeName = codeFile.path.slice(codeFolderName.length + 1);
+		const codeName = codeFile.path.slice(codeFolderName.length + 1, -3);
 		el.createEl("div", { text: codeName });
 
 		// PERF reading the linecount of a file could have performance impact,
