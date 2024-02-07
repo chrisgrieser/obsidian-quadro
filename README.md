@@ -76,6 +76,7 @@ extensive functionality and plugin ecosystem of Obsidian:
   needs of their research. Case-specific adaption of research methods
   is a key demand of qualitative research (which strictly speaking is not
   truly fulfilled when using standardized, proprietary research software).
+- Obsidian, as well as Quadro, both [have mobile support (Android and iOS)](https://obsidian.md/mobile).
 
 If there is a more tech-savvy researcher in the research team, the advantages of
 Quadro go even further:

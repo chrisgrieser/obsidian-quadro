@@ -4,7 +4,7 @@
 	"description": "Qualitative Data Analysis (QDA) for social scientists. An open alternative to `MAXQDA` and `atlas.ti`, using Markdown to store data and research codes.",
 	"version": "0.14.1",
 	"minAppVersion": "1.4",
-	"isDesktopOnly": true,
+	"isDesktopOnly": false,
 	"author": "Christopher Grieser (aka pseudometa)",
 	"fundingUrl": "https://ko-fi.com/pseudometa",
 	"authorUrl": "https://chris-grieser.de/",
