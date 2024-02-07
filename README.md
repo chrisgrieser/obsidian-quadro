@@ -114,7 +114,6 @@ Search for *"Quadro"*
 ### Short-term
 - [ ] Extraction as separate mode.
 - [ ] Define Specification for `qda-markdown` format.
-- [ ] Rename Code.
 - [ ] Detailed usage instructions.
 - [ ] Submit to Obsidian Community Plugin Store.
 
