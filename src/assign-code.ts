@@ -1,7 +1,7 @@
 import { FuzzySuggestModal, Notice, TFile } from "obsidian";
 import type { App, Editor } from "obsidian";
 import { CODE_FOLDER_NAME } from "./const";
-import { createFile } from "./create-new-file";
+import { createCodeFile } from "./create-new-file";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -78,7 +78,7 @@ export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-c
 		if (file instanceof TFile) {
 			this.assignCode(file, dataFile);
 		} else {
-			createFile("Create new code", (codeFile) => this.assignCode(codeFile, dataFile));
+			createCodeFile((codeFile) => this.assignCode(codeFile, dataFile));
 		}
 	}
 

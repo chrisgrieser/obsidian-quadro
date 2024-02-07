@@ -5,8 +5,8 @@ import { CODE_FOLDER_NAME } from "./const";
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Prompts for name of new file, then runs callback on it. */
-export function createFile(prompt: string, callback: (codeFile: TFile) => void) {
-	new InputModal(this.app, prompt, async (input) => {
+export function createCodeFile(callback: (codeFile: TFile) => void) {
+	new InputModal(this.app, async (input) => {
 		const codeName = input.replace(/\.md$/, "").replace(/\\:/g, "-");
 		const parts = codeName.split("/");
 		const name = input ? parts.pop() : "Untitled Code";
@@ -26,15 +26,13 @@ export function createFile(prompt: string, callback: (codeFile: TFile) => void) 
 class InputModal extends Modal {
 	result: string;
 	onSubmit: (result: string) => void;
-	prompt: string;
-	constructor(app: App, prompt: string, onSubmit: (result: string) => void) {
+	constructor(app: App, onSubmit: (result: string) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
-		this.prompt = prompt;
 	}
 	onOpen() {
 		const { contentEl } = this;
-		contentEl.createEl("h3", { text: this.prompt });
+		contentEl.createEl("h3", { text: "Create new code" });
 		new Setting(contentEl).setName("Name").addText((text) =>
 			text.onChange((value) => {
 				this.result = value;
