@@ -1,6 +1,6 @@
 import { Notice, Plugin } from "obsidian";
 import type { Editor } from "obsidian";
-import { SuggesterForAddCode } from "./add-qda-code";
+import { SuggesterForCodeAssignment } from "./assign-code";
 import { CODE_FOLDER_NAME } from "./const";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -10,8 +10,8 @@ export default class Quadro extends Plugin {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		this.addCommand({
-			id: "add-code",
-			name: "Add Code",
+			id: "assign-code-to-paragraph",
+			name: "Assign Code to Paragraph",
 			editorCallback: (editor: Editor) => {
 				const currentFilePath = editor.editorComponent.view.file.path;
 				const isInCodeFolder = currentFilePath.startsWith(CODE_FOLDER_NAME + "/");
@@ -19,7 +19,7 @@ export default class Quadro extends Plugin {
 					new Notice("Current file may not be a Code File.");
 					return;
 				}
-				new SuggesterForAddCode(this.app, editor).open();
+				new SuggesterForCodeAssignment(this.app, editor).open();
 			},
 			// INFO Adding a hotkey by default, since this plugin is going to be
 			// used by many people not familiar with Obsidian. Requiring them to

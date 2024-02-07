@@ -38,7 +38,7 @@ async function ensureBlockId(
 //──────────────────────────────────────────────────────────────────────────────
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
-export class SuggesterForAddCode extends FuzzySuggestModal<TFile | "new-code-file"> {
+export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
 	editor: Editor;
 
 	constructor(app: App, editor: Editor) {
@@ -76,17 +76,17 @@ export class SuggesterForAddCode extends FuzzySuggestModal<TFile | "new-code-fil
 		const dataFile: TFile = this.editor.editorComponent.view.file;
 
 		if (file instanceof TFile) {
-			this.addCode(file, dataFile);
+			this.assignCode(file, dataFile);
 		} else {
-			createFile("Create new code", (codeFile) => this.addCode(codeFile, dataFile));
+			createFile("Create new code", (codeFile) => this.assignCode(codeFile, dataFile));
 		}
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	/** DATA-FILE: Add blockID & link to Code-file in the current line
-	 * CODE-FILE: Append embedded block from Data-file */
-	async addCode(codeFile: TFile, dataFile: TFile) {
+	/** Data-File: Add blockID & link to Code-File in the current line
+	 * Code-File: Append embedded blocklink to Data-File */
+	async assignCode(codeFile: TFile, dataFile: TFile) {
 		const cursor = this.editor.getCursor();
 		const nameOfCode = codeFile.path.slice(CODE_FOLDER_NAME.length + 1, -3);
 		let lineText = this.editor.getLine(cursor.line).trim();

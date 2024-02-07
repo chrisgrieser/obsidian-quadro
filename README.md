@@ -88,8 +88,16 @@ markdown files by inserting wikilinks at both files. It makes use of Obsidian's
 functionality to keep track of coded text segments.
 
 ## Usage
-Use `alt+c` to add a code to the current segment. The hotkey can be customized
-in the Obsidian settings, the command name is `Quadro: Add Code`.
+
+### Commands
+**Assign Code**: Use `alt+c` to assign a code to the current paragraph.
+- Any selected text is also highlighted.
+- The hotkey can be customized in the Obsidian settings (command name `Quadro:
+  Add Code`).
+- Select the item `Create New Code` to create a new code, which is then
+  assigned.
+
+*(Placeholder for demo image)*
 
 ## Installation
 **Manual**
