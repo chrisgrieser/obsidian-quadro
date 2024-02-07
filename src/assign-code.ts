@@ -1,7 +1,7 @@
 import { FuzzySuggestModal, Notice, TFile } from "obsidian";
 import type { App, Editor } from "obsidian";
 import { CODE_FOLDER_NAME, MINIGRAPH } from "./const";
-import { createCodeFile } from "./create-new-file";
+import { createCodeFile } from "./create-new-code-file";
 
 //──────────────────────────────────────────────────────────────────────────────
 
