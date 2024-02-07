@@ -124,6 +124,12 @@ Search for *"Quadro"*
 - [ ] Settings Menu (Code-Folder, Data-Folder).
 - [ ] Download website content directly into data folder.
 
+## Build
+
+```bash
+make init
+```
+
 ## Recommended Citation
 Please cite this software project as (APA):
 
