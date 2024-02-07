@@ -48,7 +48,7 @@ async function ensureBlockId(
 	}
 
 	const tfile = editor.editorComponent.view.file;
-	const fullText: string = await this.app.vault.cachedRead(tfile);
+	const fullText: string = await this.app.vault.read(tfile);
 	const blockIdsInText = fullText.match(/\^\w+(?=\n)/g);
 	if (!blockIdsInText) return { blockId: "^id1", lineWithoutId: lineText };
 
@@ -95,7 +95,7 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile | CreateCodeFileI
 		// investigate later if this is a problem on larger vaults
 		const codeFilesOrderedByCount: Promise<CodeFile[]> = Promise.all(
 			matchingCodeFiles.map(async (tFile) => {
-				const content = await this.app.vault.cachedRead(tFile);
+				const content = await this.app.vault.read(tFile);
 				return {
 					...tFile,
 					codeCount: content ? content.split("\n").length - 1 : 0,
@@ -137,6 +137,12 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile | CreateCodeFileI
 		// CODE-FILE: Append embedded block from Data-file
 		const dataFileName = this.editor.editorComponent.view.file.basename;
 		const textToAppend = `- [[${dataFileName}]] ![[${dataFileName}#${blockId}]]\n`;
-		await this.app.vault.append(codeFile, textToAppend);
+
+		// HACK https://discord.com/channels/686053708261228577/840286264964022302/1204750762823913472
+		try {
+			await this.app.vault.append(codeFile, textToAppend);
+		} catch (error) {
+			console.warn(error);
+		}
 	}
 }
