@@ -58,7 +58,8 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile> {
 	//───────────────────────────────────────────────────────────────────────────
 
 	async getSuggestions(query: string): Promise<CodeFile[]> {
-		const matchingFiles: TFile[] = this.app.vault.getMarkdownFiles().filter((tFile) => {
+		const allFiles = this.app.vault.getMarkdownFiles();
+		const matchingCodeFiles: TFile[] = allFiles.filter((tFile) => {
 			const relPathInCodeFolder = tFile.path.slice(codeFolderName.length + 1);
 			const matchesQuery = relPathInCodeFolder.toLowerCase().includes(query.toLowerCase());
 			const isInCodeFolder = tFile.path.startsWith(codeFolderName + "/");
@@ -67,12 +68,13 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile> {
 
 		// PERF reading the linecount of a file could have performance impact,
 		// investigate later if this is a problem on larger vaults
-		const matchingCodeFiles: Promise<CodeFile[]> = Promise.all(matchingFiles
-			.map(async (tFile: CodeFile) => {
-				tFile.codeCount = (await this.app.vault.cachedRead(tFile)).split("\n").length;
-				return tFile;
-			}))
-		return matchingCodeFiles;
+		const codeFilesOrderedByCount: Promise<CodeFile[]> = Promise.all(
+			matchingCodeFiles.map(async (tFile) => ({
+				...tFile,
+				codeCount: (await this.app.vault.cachedRead(tFile)).split("\n").length,
+			})),
+		).then((file) => file.sort((a, b) => b.codeCount - a.codeCount));
+		return codeFilesOrderedByCount;
 	}
 
 	renderSuggestion(codeFile: CodeFile, el: HTMLElement) {
