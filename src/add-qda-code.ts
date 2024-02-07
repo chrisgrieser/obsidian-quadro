@@ -8,6 +8,8 @@ import type { App, Editor, TFile } from "obsidian";
 // CONFIG values are hardcoded for now
 const codeFolderName = "Codes";
 
+type CodeFile = TFile & { codeCount: number };
+
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Given a line, returns the blockID and the line without the blockID. If the
@@ -43,7 +45,7 @@ async function ensureBlockId(
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export class SuggesterForAddCode extends SuggestModal<TFile> {
+export class SuggesterForAddCode extends SuggestModal<CodeFile> {
 	constructor(app: App, editor: Editor) {
 		super(app);
 		this.setPlaceholder("Select Code");
@@ -55,33 +57,37 @@ export class SuggesterForAddCode extends SuggestModal<TFile> {
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	getSuggestions(query: string): TFile[] {
-		const allFiles: TFile[] = this.app.vault.getMarkdownFiles();
-		const matchingCodeFiles = allFiles.filter((tFile) => {
+	async getSuggestions(query: string): Promise<CodeFile[]> {
+		const matchingFiles: TFile[] = this.app.vault.getMarkdownFiles().filter((tFile) => {
 			const relPathInCodeFolder = tFile.path.slice(codeFolderName.length + 1);
 			const matchesQuery = relPathInCodeFolder.toLowerCase().includes(query.toLowerCase());
 			const isInCodeFolder = tFile.path.startsWith(codeFolderName + "/");
 			return matchesQuery && isInCodeFolder;
 		});
-		return matchingCodeFiles;
-	}
-
-	async renderSuggestion(codeFile: TFile, el: HTMLElement) {
-		const codeName = codeFile.path.slice(codeFolderName.length + 1, -3);
-		el.createEl("div", { text: codeName });
 
 		// PERF reading the linecount of a file could have performance impact,
 		// investigate later if this is a problem on larger vaults
-		const codeCount = (await this.app.vault.cachedRead(codeFile)).split("\n").length;
-		el.createEl("small", { text: `${codeCount}x` });
+		const matchingCodeFiles: Promise<CodeFile[]> = Promise.all(matchingFiles
+			.map(async (tFile: CodeFile) => {
+				tFile.codeCount = (await this.app.vault.cachedRead(tFile)).split("\n").length;
+				return tFile;
+			}))
+		return matchingCodeFiles;
 	}
 
-	async onChooseSuggestion(codeFile: TFile, _evt: MouseEvent | KeyboardEvent) {
+	renderSuggestion(codeFile: CodeFile, el: HTMLElement) {
+		const codeName = codeFile.path.slice(codeFolderName.length + 1, -3);
+		el.createEl("div", { text: codeName });
+		el.createEl("small", { text: `${codeFile.codeCount}x` });
+	}
+
+	async onChooseSuggestion(codeFile: CodeFile, _evt: MouseEvent | KeyboardEvent) {
 		// DATA-FILE: Add blockID & link to Code-file in the current line
 		const cursor = this.editor.getCursor();
 		const selection = this.editor.getSelection();
 
-		// `replaceSelection` can result in double-spaces, thus removing them
+		// Depending on the selection the user made, `replaceSelection` can result
+		// in double-spaces, thus removing them
 		if (selection) this.editor.replaceSelection(`==${selection.trim()}==`);
 		const lineText = this.editor.getLine(cursor.line).trim().replace(/ {2,}/g, " ");
 
