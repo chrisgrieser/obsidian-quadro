@@ -10,22 +10,35 @@ const codeFolderName = "Codes";
 
 //──────────────────────────────────────────────────────────────────────────────
 
-async function newBlockId(editor: Editor): Promise<string> {
+/** Given a line, returns the blockID and the line without the blockID. If the
+ * blockID does not exist, a unique id will be created. */
+async function ensureBlockId(
+	editor: Editor,
+	lineText: string,
+): Promise<{ blockId: string; lineWithoutId: string }> {
+	const blockIdOfLine = lineText.match(/\^\w+$/);
+	if (blockIdOfLine) {
+		const blockId = blockIdOfLine[0];
+		const lineWithoutId = lineText.slice(0, -blockId.length);
+		return { blockId: blockId, lineWithoutId: lineWithoutId };
+	}
+
 	const tfile = editor.editorComponent.view.file;
 	const fullText: string = await this.app.vault.cachedRead(tfile);
 	const blockIdsInText = fullText.match(/\^\w+(?=\n)/g);
-	if (!blockIdsInText) return "^id1";
+	if (!blockIdsInText) return { blockId: "^id1", lineWithoutId: lineText };
 
 	let counter = blockIdsInText ? blockIdsInText.length : 0;
-	let newId: string;
+	let newBlockId: string;
 
-	// ensure blockId is unique (e.g. user changed blockId manually)
+	// ensure blockId does not exist yet
+	// (this can happen if user changed the id manually)
 	do {
 		counter++;
-		newId = "^id" + counter;
-	} while (blockIdsInText.includes(newId));
+		newBlockId = "^id" + counter;
+	} while (blockIdsInText.includes(newBlockId));
 
-	return newId;
+	return { blockId: newBlockId, lineWithoutId: lineText };
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -67,26 +80,20 @@ export class SuggesterForAddCode extends SuggestModal<TFile> {
 		// DATA-FILE: Add blockID & link to Code-file in the current line
 		const cursor = this.editor.getCursor();
 		const selection = this.editor.getSelection();
+
+		// `replaceSelection` can result in double-spaces, thus removing them
 		if (selection) this.editor.replaceSelection(`==${selection.trim()}==`);
-		let lineText = this.editor.getLine(cursor.line);
+		const lineText = this.editor.getLine(cursor.line).trim().replace(/ {2,}/g, " ");
 
-		// determine block-id
-		const blockIdOfLine = lineText.match(/\^\w+$/);
-		let id: string;
-		if (blockIdOfLine) {
-			id = blockIdOfLine[0];
-			lineText = lineText.slice(0, -id.length); // remove blockID from line
-		} else {
-			id = await newBlockId(this.editor);
-		}
+		const { blockId, lineWithoutId } = await ensureBlockId(this.editor, lineText);
+		const updatedLine = `${lineWithoutId} [[${codeFile.basename}]] ${blockId}`;
 
-		lineText = lineText.trim().replace(/ {2,}/g, " "); // `replaceSelection` can result in double-spaces
-		this.editor.setLine(cursor.line, `${lineText} [[${codeFile.basename}]] ${id}`);
+		this.editor.setLine(cursor.line, updatedLine);
 		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 		// CODE-FILE: Append embedded block from Data-file
 		const dataFileName = this.editor.editorComponent.view.file.basename;
-		const textToAppend = `\n- [[${dataFileName}]] ![[${dataFileName}#${id}]]`;
+		const textToAppend = `\n- [[${dataFileName}]] ![[${dataFileName}#${blockId}]]`;
 		await this.app.vault.append(codeFile, textToAppend);
 	}
 }
