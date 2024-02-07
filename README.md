@@ -7,6 +7,8 @@ alternative to [MAXQDA](https://www.maxqda.com/) and
 [atlas.ti](https://atlasti.com/), using Markdown to store data and research
 codes.
 
+## Table of Contents
+
 <!-- toc -->
 
 - [Introduction](#introduction)
@@ -15,15 +17,17 @@ codes.
 - [Usage](#usage)
 	* [How coding works in Quadro](#how-coding-works-in-quadro)
 	* [Assign a code](#assign-a-code)
-	* [Renaming codes](#renaming-codes)
+	* [Rename codes](#rename-codes)
 	* [Delete codes](#delete-codes)
 	* [Investigate Code Co-occurrence](#investigate-code-co-occurrence)
 - [Installation](#installation)
-- [Roadmap](#roadmap)
-- [Build](#build)
-- [Recommended Citation](#recommended-citation)
-- [Acknowledgments](#acknowledgments)
-- [About the developer](#about-the-developer)
+- [Development](#development)
+	* [Roadmap](#roadmap)
+	* [Build](#build)
+- [Credits](#credits)
+	* [Acknowledgments](#acknowledgments)
+	* [Recommended Citation](#recommended-citation)
+	* [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
@@ -145,7 +149,7 @@ Use `alt+c` to assign a code to the current paragraph.
 - Select the item `Create New Code` to create a new code, which is then
   assigned.
 
-### Renaming codes
+### Rename codes
 Use `F2` when at a code file to rename it.
 - The hotkey can be customized in the Obsidian settings (command name `Rename
   file`).
@@ -192,19 +196,35 @@ When published in the Obsidian Community Store, it is going to be available in
 Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` →
 Search for *"Quadro"*
 
-## Roadmap
+## Development
+
+### Roadmap
 - [ ] Delete Code from Code-File and Data-File.
 - [ ] Extraction as separate mode.
 - [ ] Submit to Obsidian Community Plugin Store.
 - [ ] Example Vault.
 
-## Build
+### Build
 
 ```bash
+git clone "git@github.com:chrisgrieser/obsidian-quadro.git"
 make init
 ```
 
-## Recommended Citation
+<!-- vale Google.FirstPerson = NO -->
+## Credits
+
+### Acknowledgments
+- [Ryan Murphy](https://fulcra.design/About/), who gave me the idea for this
+  project with a [blogpost of
+  his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
+- [Grit Laudel](http://www.laudel.info/), for providing sample interview data.# Acknowledgments
+- [Ryan Murphy](https://fulcra.design/About/), who gave me the idea for this
+  project with a [blogpost of
+  his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
+- [Grit Laudel](http://www.laudel.info/), for providing sample interview data.
+
+### Recommended Citation
 Please cite this software project as (APA):
 
 ```txt
@@ -216,14 +236,7 @@ For other citation styles, use the following metadata:
 - [Citation File Format](./recommended-citation/CITATION.cff)
 - [BibTeX](./recommended-citation/CITATION.bib)
 
-<!-- vale Google.FirstPerson = NO -->
-## Acknowledgments
-- [Ryan Murphy](https://fulcra.design/About/), who gave me the idea for this
-  project with a [blogpost of
-  his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
-- [Grit Laudel](http://www.laudel.info/), for providing sample interview data.
-
-## About the developer
+### About the developer
 I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
