@@ -94,10 +94,13 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile | CreateCodeFileI
 		// PERF reading the linecount of a file could have performance impact,
 		// investigate later if this is a problem on larger vaults
 		const codeFilesOrderedByCount: Promise<CodeFile[]> = Promise.all(
-			matchingCodeFiles.map(async (tFile) => ({
-				...tFile,
-				codeCount: (await this.app.vault.cachedRead(tFile)).split("\n").length,
-			})),
+			matchingCodeFiles.map(async (tFile) => {
+				const content = await this.app.vault.cachedRead(tFile);
+				return {
+					...tFile,
+					codeCount: content ? content.split("\n").length - 1 : 0,
+				};
+			}),
 		).then((file) => file.sort((a, b) => b.codeCount - a.codeCount));
 		return codeFilesOrderedByCount;
 	}
