@@ -2,7 +2,7 @@
 	"id": "quadro",
 	"name": "Quadro",
 	"description": "Qualitative Data Analysis (QDA) for social scientists. An open alternative to `MAXQDA` and `atlas.ti`, using Markdown to store data and research codes.",
-	"version": "0.13.0",
+	"version": "0.14.0",
 	"minAppVersion": "1.4",
 	"isDesktopOnly": true,
 	"author": "Christopher Grieser (aka pseudometa)",
