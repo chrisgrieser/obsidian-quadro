@@ -1,4 +1,4 @@
-import type { TFile } from "obsidian";
+import type { TFile, App } from "obsidian";
 
 declare module "obsidian" {
 	interface Editor {
@@ -6,6 +6,7 @@ declare module "obsidian" {
 			view: {
 				file: TFile;
 			};
+			app: App;
 		};
 	}
 }

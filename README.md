@@ -113,7 +113,6 @@ Search for *"Quadro"*
 
 ### Short-term
 - [ ] Extraction as separate mode.
-- [ ] Fuzzy-matching suggester.
 - [ ] Define Specification for `qda-markdown` format.
 - [ ] Rename Code.
 - [ ] Detailed usage instructions.
