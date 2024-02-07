@@ -68,8 +68,12 @@ export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-c
 
 	getItemText(item: TFile | "new-code-file"): string {
 		if (item === "new-code-file") return "🞜 Create new code";
+
+		const { char, charsPerBlock, maxLength } = MINIGRAPH;
+		const miniGraph = "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock));
+
 		const codeName = item.path.slice(CODE_FOLDER_NAME.length + 1, -3);
-		return codeName;
+		return codeName + miniGraph;
 	}
 
 	onChooseItem(file: TFile | "new-code-file") {
