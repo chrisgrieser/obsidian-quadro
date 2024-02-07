@@ -1,4 +1,4 @@
-import { FuzzySuggestModal, TFile } from "obsidian";
+import { FuzzySuggestModal, Notice, TFile } from "obsidian";
 import type { App, Editor } from "obsidian";
 import { CODE_FOLDER_NAME } from "./const";
 import { createFile } from "./create-new-file";
@@ -67,7 +67,7 @@ export class SuggesterForAddCode extends FuzzySuggestModal<TFile | "new-code-fil
 	}
 
 	getItemText(item: TFile | "new-code-file"): string {
-		if (item === "new-code-file") return "🆕  Create new code";
+		if (item === "new-code-file") return "🞜 Create new code";
 		const codeName = item.path.slice(CODE_FOLDER_NAME.length + 1, -3);
 		return codeName;
 	}
@@ -88,16 +88,28 @@ export class SuggesterForAddCode extends FuzzySuggestModal<TFile | "new-code-fil
 	 * CODE-FILE: Append embedded block from Data-file */
 	async addCode(codeFile: TFile, dataFile: TFile) {
 		const cursor = this.editor.getCursor();
+		const nameOfCode = codeFile.path.slice(CODE_FOLDER_NAME.length + 1, -3);
+		let lineText = this.editor.getLine(cursor.line).trim();
+
+		// GUARD
+		const lineAlreadyHasCode =
+			lineText.includes(`[[${nameOfCode}]]`) || lineText.includes(`[[${codeFile.basename}]]`);
+		if (lineAlreadyHasCode) {
+			new Notice(`Paragraph already has code "${nameOfCode}"`);
+			return;
+		}
+
 		const selection = this.editor.getSelection();
-		// Depending on the selection the user made, `replaceSelection` can result
-		// in double-spaces, thus removing them
-		if (selection) this.editor.replaceSelection(`==${selection.trim()}==`);
-		const lineText = this.editor.getLine(cursor.line).trim().replace(/ {2,}/g, " ");
+		if (selection) {
+			// Depending on the selection the user made, `replaceSelection` can result
+			// in double-spaces, thus removing them
+			this.editor.replaceSelection(`==${selection.trim()}==`);
+			lineText = this.editor.getLine(cursor.line).trim().replace(/ {2,}/g, " ");
+		}
 		const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
 
 		// Data-File
-		const codeFilePathInCodeFolder = codeFile.path.slice(CODE_FOLDER_NAME.length + 1, -3);
-		const updatedLine = `${lineWithoutId} [[${codeFilePathInCodeFolder}]] ${blockId}`;
+		const updatedLine = `${lineWithoutId} [[${nameOfCode}]] ${blockId}`;
 		this.editor.setLine(cursor.line, updatedLine);
 		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
