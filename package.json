@@ -6,10 +6,6 @@
 	"keywords": [],
 	"license": "MIT",
 	"main": "main.js",
-	"scripts": {
-		"dev": "node esbuild.config.mjs",
-		"build": "node esbuild.config.mjs production"
-	},
 	"devDependencies": {
 		"@types/node": "^16.11.6",
 		"builtin-modules": "^3.2.0",

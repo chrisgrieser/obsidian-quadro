@@ -8,7 +8,7 @@ if you want to view the source, please visit the github repository of this plugi
 */
 `;
 
-const prod = process.argv[2] === "production";
+const minified = process.argv[2] === "minified";
 
 esbuild
 	.build({
@@ -17,12 +17,11 @@ esbuild
 		bundle: true,
 		external: ["obsidian", "electron", ...builtins],
 		format: "cjs",
-		watch: !prod,
 		target: "es2021",
 		logLevel: "info",
-		sourcemap: prod ? false : "inline",
+		sourcemap: false,
 		treeShaking: true,
-		minify: prod,
+		minify: minified,
 		outfile: "main.js",
 	})
 	.catch(() => process.exit(1));
