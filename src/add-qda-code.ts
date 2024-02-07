@@ -4,9 +4,7 @@
 
 import { Notice, SuggestModal } from "obsidian";
 import type { App, Editor, TFile, Vault } from "obsidian";
-
-// CONFIG values are hardcoded for now
-const CODE_FOLDER_NAME = "Codes-Files";
+import { CODE_FOLDER_NAME } from "./const";
 
 type CodeFile = TFile & { codeCount?: number };
 

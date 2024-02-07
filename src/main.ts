@@ -1,6 +1,7 @@
-import { Plugin } from "obsidian";
+import { Notice, Plugin } from "obsidian";
 import type { Editor } from "obsidian";
 import { SuggesterForAddCode } from "./add-qda-code";
+import { CODE_FOLDER_NAME } from "./const";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -12,6 +13,12 @@ export default class Quadro extends Plugin {
 			id: "add-code",
 			name: "Add Code",
 			editorCallback: (editor: Editor) => {
+				const currentFilePath = editor.editorComponent.view.file.path;
+				const isInCodeFolder = currentFilePath.startsWith(CODE_FOLDER_NAME + "/");
+				if (isInCodeFolder) {
+					new Notice("Current file may not be a Code File.");
+					return;
+				}
 				new SuggesterForAddCode(this.app, editor).open();
 			},
 			// INFO Adding a hotkey by default, since this plugin is going to be
