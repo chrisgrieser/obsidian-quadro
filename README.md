@@ -55,8 +55,8 @@ standard for plaintext files. This means:
 
 Being an Obsidian plugin, the Qualitative Data Analysis is embedded in the
 extensive functionality and plugin ecosystem of Obsidian:
-- The data analysis can employ the full feature-set of Obsidian, which already
-  focuses on linked files. For instance, the [Graph
+- The data analysis can employ the feature-set of Obsidian, which already has a
+  strong focus on linked files. For instance, the [Graph
   View](https://help.obsidian.md/Plugins/Graph+view) can be used to create a
   visual network of codes, and [Outgoing
   Links](https://help.obsidian.md/Plugins/Outgoing+links) provides an overview
@@ -132,9 +132,9 @@ file:
 ![Embedded block link in reading & source Mode](./assets/embedded-blocklink_reading-and-source-mode.png)
 
 > [!TIP]
-> You can batch-create codes by adding multiple `.md` to the `Codes` folder in
-> the `Windows Explorer` / `Finder.app`. Any file created outside of Obsidian
-> is nonetheless available inside Obsidian as an assignable code.
+> You can batch-create codes by adding multiple `.md` to the `Code-Files`
+> folder in the `Windows Explorer` / `Finder.app`. Any file created outside of
+> Obsidian is nonetheless available inside Obsidian as an assignable code.
 
 ### Assign a code
 Use `alt+c` to assign a code to the current paragraph.
@@ -150,7 +150,7 @@ Use `F2` when at a code file to rename it.
 - The hotkey can be customized in the Obsidian settings (command name `Rename
   file`).
 - Right-clicking the file in the file explorer also works.
-- All references to the code file will automatically be updated.
+- All references to the code file are automatically updated.
 
 > [!WARNING]
 > Renaming code files outside of Obsidian does not trigger any updates of the
