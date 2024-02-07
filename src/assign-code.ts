@@ -1,6 +1,6 @@
 import { FuzzySuggestModal, Notice, TFile } from "obsidian";
 import type { App, Editor } from "obsidian";
-import { CODE_FOLDER_NAME } from "./const";
+import { CODE_FOLDER_NAME, MINIGRAPH } from "./const";
 import { createCodeFile } from "./create-new-file";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -58,14 +58,17 @@ export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-c
 	//───────────────────────────────────────────────────────────────────────────
 	// SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
 
+	// code-files, sorted by last use (which is relevant when query is empty)
 	getItems(): (TFile | "new-code-file")[] {
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
 			.getMarkdownFiles()
-			.filter((tFile) => tFile.path.startsWith(CODE_FOLDER_NAME + "/"));
+			.filter((tFile) => tFile.path.startsWith(CODE_FOLDER_NAME + "/"))
+			.sort((a, b) => b.stat.mtime - a.stat.mtime); // relevant for empty query
 		allCodeFiles.push("new-code-file");
 		return allCodeFiles;
 	}
 
+	// display codename + minigraph, and an extra item for creating a new code file
 	getItemText(item: TFile | "new-code-file"): string {
 		if (item === "new-code-file") return "🞜 Create new code";
 
