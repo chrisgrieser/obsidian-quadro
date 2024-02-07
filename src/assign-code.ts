@@ -48,7 +48,7 @@ export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-c
 		// retrieve the editor manually
 		this.editor = editor;
 
-		this.setPlaceholder("Select Code");
+		this.setPlaceholder("Select code");
 		this.setInstructions([
 			{ command: "↑↓", purpose: "Navigate" },
 			{ command: "⏎", purpose: "Select" },

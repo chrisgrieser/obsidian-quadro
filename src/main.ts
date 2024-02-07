@@ -11,12 +11,12 @@ export default class Quadro extends Plugin {
 
 		this.addCommand({
 			id: "assign-code-to-paragraph",
-			name: "Assign Code to Paragraph",
+			name: "Assign code to paragraph",
 			editorCallback: (editor: Editor) => {
 				const currentFilePath = editor.editorComponent.view.file.path;
 				const isInCodeFolder = currentFilePath.startsWith(CODE_FOLDER_NAME + "/");
 				if (isInCodeFolder) {
-					new Notice("Current file may not be a Code File.");
+					new Notice("You cannot assign a code to a code file.");
 					return;
 				}
 				new SuggesterForCodeAssignment(this.app, editor).open();
