@@ -37,7 +37,7 @@ class CreateCodeFileIntent {
 /** Given a line, returns the blockID and the line without the blockID. If the
  * blockID does not exist, a unique id will be created. */
 async function ensureBlockId(
-	editor: Editor,
+	file: TFile,
 	lineText: string,
 ): Promise<{ blockId: string; lineWithoutId: string }> {
 	const blockIdOfLine = lineText.match(/\^\w+$/);
@@ -47,8 +47,7 @@ async function ensureBlockId(
 		return { blockId: blockId, lineWithoutId: lineWithoutId };
 	}
 
-	const tfile = editor.editorComponent.view.file;
-	const fullText: string = await this.app.vault.read(tfile);
+	const fullText: string = await this.app.vault.cachedRead(file);
 	const blockIdsInText = fullText.match(/\^\w+(?=\n)/g);
 	if (!blockIdsInText) return { blockId: "^id1", lineWithoutId: lineText };
 
@@ -95,7 +94,7 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile | CreateCodeFileI
 		// investigate later if this is a problem on larger vaults
 		const codeFilesOrderedByCount: Promise<CodeFile[]> = Promise.all(
 			matchingCodeFiles.map(async (tFile) => {
-				const content = await this.app.vault.read(tFile);
+				const content = await this.app.vault.cachedRead(tFile);
 				return {
 					...tFile,
 					codeCount: content ? content.split("\n").length - 1 : 0,
@@ -128,7 +127,8 @@ export class SuggesterForAddCode extends SuggestModal<CodeFile | CreateCodeFileI
 		if (selection) this.editor.replaceSelection(`==${selection.trim()}==`);
 		const lineText = this.editor.getLine(cursor.line).trim().replace(/ {2,}/g, " ");
 
-		const { blockId, lineWithoutId } = await ensureBlockId(this.editor, lineText);
+		const dataTFile = this.editor.editorComponent.view.file;
+		const { blockId, lineWithoutId } = await ensureBlockId(dataTFile, lineText);
 		const updatedLine = `${lineWithoutId} [[${codeFile.basename}]] ${blockId}`;
 
 		this.editor.setLine(cursor.line, updatedLine);
