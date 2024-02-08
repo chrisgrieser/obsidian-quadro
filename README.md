@@ -17,7 +17,7 @@ the style of *Qualitative Content Analysis*.
 - [Introduction](#introduction)
 	* [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
 	* [For Obsidian users](#for-obsidian-users)
-	* [Methodological comparison with other QDA software](#methodological-comparison-with-other-qda-software)
+	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Coding](#coding)
 	* [Implementation of coding in Quadro](#implementation-of-coding-in-quadro)
 	* [Overview of coding capabilities](#overview-of-coding-capabilities)
@@ -103,7 +103,7 @@ such as having separate file per code.
 *Extraction* is implemented by creating separate extract files containing, where
 extraction aspects are saved as ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)).
 
-### Methodological comparison with other QDA software
+### Brief methodological comparison with other QDA software
 
 **Advantages**
 - **Interoperability**: Can be freely combined with other QDA software.
@@ -185,6 +185,9 @@ file:
 [graph]: https://help.obsidian.md/Plugins/Graph+view
 [search]: https://help.obsidian.md/Plugins/Search#Search+operators
 
+Every hotkey can be customized by search in the Obsidian hotkey settings for the
+command name.
+
 > [!WARNING]
 > Renaming, moving, or deleting Code or Data Files **must** be done from within
 > Obsidian. Doing so in the Windows Explorer or macOS Finder does not trigger
@@ -240,6 +243,9 @@ Some optional notes.
 | Data aggregation    | TODO  | /              | /            | [Community Plugin: Dataview][dataview]              |
 
 [dataview]: https://blacksmithgu.github.io/obsidian-dataview/
+
+Every hotkey can be customized by search in the Obsidian hotkey settings for the
+command name.
 
 ## Installation
 **Manual**
