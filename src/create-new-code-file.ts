@@ -32,8 +32,12 @@ class InputModal extends Modal {
 	}
 	onOpen() {
 		const { contentEl } = this;
-		contentEl.createEl("h3", { text: "Create new code" });
-		new Setting(contentEl).setName("Name").addText((text) =>
+		contentEl.createEl("h3", { text: "New code creation" });
+		contentEl.createEl("p", {
+			text: 'Use a "/" create a subfolder and place the code file there (grouped code).',
+		});
+
+		new Setting(contentEl).setName("Name of new code").addText((text) =>
 			text.onChange((value) => {
 				this.result = value;
 			}),

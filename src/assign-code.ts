@@ -80,11 +80,11 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		return codeName + miniGraph;
 	}
 
-	onChooseItem(file: TFile | "new-code-file") {
+	onChooseItem(codeFile: TFile | "new-code-file") {
 		const dataFile: TFile = this.editor.editorComponent.view.file;
 
-		if (file instanceof TFile) {
-			this.assignCode(file, dataFile);
+		if (codeFile instanceof TFile) {
+			this.assignCode(codeFile, dataFile);
 		} else {
 			createCodeFile((codeFile) => this.assignCode(codeFile, dataFile));
 		}
