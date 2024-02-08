@@ -7,35 +7,37 @@ alternative to [MAXQDA](https://www.maxqda.com/) and
 [atlas.ti](https://atlasti.com/), using Markdown to store data and research
 codes.
 
+Quadro supports both, coding in the style of *Grounded Theory* and extraction in
+the style of *Qualitative Content Analysis*.
+
 ## Table of Contents
 
 <!-- toc -->
 
 - [Introduction](#introduction)
-	* [For Academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
-	* [For Obsidian Users](#for-obsidian-users)
-- [Usage](#usage)
-	* [Coding in Quadro (Grounded Theory Methodology)](#coding-in-quadro-grounded-theory-methodology)
-		+ [Assign codes](#assign-codes)
-		+ [Rename codes](#rename-codes)
-		+ [Delete codes](#delete-codes)
-		+ [Investigate code co-occurrence](#investigate-code-co-occurrence)
-		+ [Visualization of code relationships](#visualization-of-code-relationships)
-	* [Extraction in Quadro (Qualitative Content Analysis)](#extraction-in-quadro-qualitative-content-analysis)
+	* [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
+	* [For Obsidian users](#for-obsidian-users)
+	* [Methodological comparison with other QDA software](#methodological-comparison-with-other-qda-software)
+- [Coding](#coding)
+	* [Implementation of coding in Quadro](#implementation-of-coding-in-quadro)
+	* [Overview of coding capabilities](#overview-of-coding-capabilities)
+- [Extraction](#extraction)
+	* [Implementation of extractions in Quadro](#implementation-of-extractions-in-quadro)
+	* [Overview of extraction capabilities](#overview-of-extraction-capabilities)
 - [Installation](#installation)
 - [Development](#development)
 	* [Roadmap](#roadmap)
 	* [Build](#build)
 - [Credits](#credits)
 	* [Acknowledgments](#acknowledgments)
-	* [Recommended Citation](#recommended-citation)
+	* [Recommended citation](#recommended-citation)
 	* [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
 ## Introduction
 
-### For Academics not familiar with Obsidian
+### For academics not familiar with Obsidian
 This plugin utilizes the rich text-processing capabilities of
 [Obsidian](https://obsidian.md/) to provide a lightweight application for
 qualitative data analysis.
@@ -90,16 +92,36 @@ Obsidian is [free to use for academic purposes](https://obsidian.md/license),
 and Quadro is also free to use. Especially for students writing their
 theses, this saves a lot of unnecessary hassle with licenses.
 
-### For Obsidian Users
-This plugin basically creates "bidirectional" links between data files and
+### For Obsidian users
+*Coding* is implemented via "bidirectional" links between data files and
 markdown files by inserting wikilinks at both files. It makes use of Obsidian's
 [note-embedding](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note)
-functionality to keep track of coded text segments.
+functionality to keep track of coded text segments. Codes are implemented as
+`[[wikilinks]]` instead of `#tags`, as the former allows for more flexibility,
+such as having separate file per code.
 
-## Usage
+*Extraction* is implemented by creating separate extract files containing, where
+extraction aspects are saved as ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)).
 
-### Coding in Quadro (Grounded Theory Methodology)
-There are two basic types of files for the analysis, Code Files and Data Files,
+### Methodological comparison with other QDA software
+
+**Advantages**
+- **Interoperability**: Can be freely combined with other QDA software.
+- **Flexibility**: You can use codes, extractions, or freely combine both.
+- **Customizability**: Implicit assumptions of QDA software, such as the initial
+  order in which codes are presented in the code selection modal, can be
+  customized to deal with different kinds of coder biases.
+
+**Disadvantages**
+- The unit of coding is restricted to paragraphs and, to a degree, segments of a
+  paragraph. Coding of initial words is not supported.
+- Due to the nature of Markdown markup, partially overlapping code segments are
+  not supported.
+
+## Coding
+
+### Implementation of coding in Quadro
+There are two basic types of files for the analysis, Data Files and Code Files,
 which are both stored as [Markdown files](https://www.markdownguide.org/).
 
 **Data Files**
@@ -108,7 +130,7 @@ as `.md` files. (A separate subfolder named `Data` is recommended though.) As
 Quadro assigns codes to whole paragraphs, these data files should
 be split up into smaller segments.
 
-When a code is assigned, a link to the corresponding code file and a unique
+When a code is assigned, a link to the corresponding Code File and a unique
 ID are appended to the paragraph:
 
 ```md
@@ -136,7 +158,7 @@ link](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+
 Obsidian renders the respective paragraph of the data file inside the code
 file:
 
-![Embedded block link in reading & source Mode](./assets/embedded-blocklink_reading-and-source-mode.png)
+![Embedded block link in reading & source mode](./assets/embedded-blocklink_reading-and-source-mode.png)
 
 > [!NOTE]
 > The main caveat of this approach is that the assignment of codes is mostly
@@ -145,62 +167,79 @@ file:
 > Assignment of codes to individual words and coded segments with overlap are
 > not supported.
 
-#### Assign codes
-Use `alt+c` to assign a code to the current paragraph.
-- The hotkey can be customized in the Obsidian settings (command name `Quadro:
-  Add Code`).
-- Any selected text is also highlighted. (Note that overlapping highlights are
-  not supported in Markdown.)
-- Select the item `Create New Code` to create a new code, which is then
-  assigned.
+### Overview of coding capabilities
 
-> [!TIP]
-> You can create new codes in bulk by adding multiple `.md` to the `Codes`
-> folder in the `Windows Explorer` / `Finder.app`. Any file created outside of
-> Obsidian is nonetheless available inside Obsidian as an assignable code.
+| Action                               | Notes                                                                                                                                          | Default Hotkey                                    | Command Name                                           | Capability Provider                             |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------- |
+| Assign codes                         | Any selected text is also highlighted (overlapping highlights not supported).                                                                  | `alt+c`                                           | "Quadro: Assign code to paragraph"                     | Quadro                                          |
+| Create new code                      | When assigning code, select `Create new code` in the code selection modal. Using `/` places the code file in a subfolder.                  | `alt+c`                                           | "Quadro: Assign code to paragraph"                     | Quadro                                          |
+| Rename codes                         | All references to the code file are automatically updated. Can also rename by right-clicking file in the File Explorer.                        | `F2`                                              | "Rename File"                                          | [Obsidian Built-in][rename]                     |
+| Remove codes                         | TODO                                                                                                                                           | /                                                 | /                                                      | Quadro                                          |
+| Merge codes                          | All references to the code file are automatically updated.                                                                                     | /                                                 | "Note Refactor: Merge current file with another file…" | [Obsidian Core Plugin: Note Composer][composer] |
+| Code grouping                        | Codes can simply be arranged in subfolders: Drag-and-drop them in the File Explorer, or use a `/` when creating a new code.                    | /                                                 | /                                                      | Obsidian Built-in                               |
+| Visualization of code relationships  | In the Graph View, use a query like `path:Folder` to display only relationships of files in that folder. <br><br>[Further Documentation][graph] | `ctrl+g` (Windows)<br>`cmd+g` (macOS)             | "Graph View: Open Graph"                               | [Obsidian Code Plugin: Graph View][graph]       |
+| Investigation of code co-occurrences | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                       | `ctrl+shift+f` (Windows)<br>`cmd+shift+f` (macOS) | "Search: Search in all Files"                          | [Obsidian Code Plugin: Search][search]          |
 
-#### Rename codes
-Use `F2` when at a code file to rename it.
-- The hotkey can be customized in the Obsidian settings (command name `Rename
-  file`).
-- Right-clicking the file in the file explorer also works.
-- All references to the code file are automatically updated.
+[composer]: https://help.obsidian.md/Plugins/Note+composer
+[rename]: https://help.obsidian.md/Files+and+folders/Manage+notes#Rename+a+note
+[graph]: https://help.obsidian.md/Plugins/Graph+view
+[search]: https://help.obsidian.md/Plugins/Search#Search+operators
 
 > [!WARNING]
-> Renaming code files outside of Obsidian does not trigger any updates of the
-> references. This would therefore result in loss of research data.
+> Renaming, moving, or deleting Code or Data Files **must** be done from within
+> Obsidian. Doing so in the Windows Explorer or macOS Finder does not trigger
+> the automatic updating of references, meaning a loss of information.
 
-#### Delete codes
-WIP.
+## Extraction
 
-#### Investigate code co-occurrence
-Co-occurrences of codes can be reviewed by using the [built-in Obsidian feature
-for embedded search results](https://help.obsidian.md/Plugins/Search#Embed+search+results+in+a+note).
+### Implementation of extractions in Quadro
+Extraction is implemented similarly to coding, using two basic file types, Data
+Files and Extraction Files.
 
-````md
-```query
-line:("[[MyCodeOne]]" "[[MyCodeTwo]]")
-```
-````
+**Data Files**
+The empirical material as text files. They can be stored anywhere in the vault
+as `.md` files.
 
-You can also perform fine-grained searches, such as boolean operators or
-restricting the search scope to certain files. [See the documentation of
-Obsidian's search syntax for more
-details.](https://help.obsidian.md/Plugins/Search#Search+operators)
+When making an extraction, a link to the corresponding Extraction File and a
+unique ID are appended to the paragraph, just like with coding:
 
-#### Visualization of code relationships
-WIP.
+```md
+Filename: Data/Interview 2.md
 
-```txt
+Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
+consectetur cupidatat. [[Extraction 1]] ^id23
 ```
 
-[See the documentation of Obsidian's Graph View for more details.](https://help.obsidian.md/Plugins/Graph+view)
-
-### Extraction in Quadro (Qualitative Content Analysis)
+**Extraction Files**
 Extraction is implemented via Markdown metadata ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)),
 which is supported via [Obsidian Properties](https://help.obsidian.md/Editing+and+formatting/Properties).
 
-WIP.
+When making an extraction, a new file is created in the folder
+`{vault-root}/Extractions`. As such, each file corresponds to a single extraction.
+
+The metadata keys correspond to the input fields of the extraction form. The
+`source` key contains a link back to the corresponding Data File.
+
+```md
+Filepath: Extractions/Extraction 1.md
+
+---
+dimension_one: "value"
+dimension_two: "another value"
+source: "[[Interview 2#^id23]]"
+---
+
+Some optional notes.
+```
+
+### Overview of extraction capabilities
+
+| Action              | Notes | Default Hotkey | Command Name | Capability Provider                     |
+| ------------------- | ----- | -------------- | ------------ | --------------------------------------- |
+| Extract information | TODO  | /              | /            | Quadro                                  |
+| Data aggregation    | TODO  | /              | /            | [Community Plugin: Dataview][dataview]              |
+
+[dataview]: https://blacksmithgu.github.io/obsidian-dataview/
 
 ## Installation
 **Manual**
@@ -223,7 +262,6 @@ Search for *"Quadro"*
 ## Development
 
 ### Roadmap
-- [ ] Add Graph View Example.
 - [ ] Delete Code from Code-File and Data-File.
 - [ ] Implement Extraction.
 - [ ] Submit to Obsidian Community Plugin Store.
@@ -240,12 +278,12 @@ make init
 ## Credits
 
 ### Acknowledgments
-- [Ryan Murphy](https://fulcra.design/About/), who gave me the idea for this
+- [Ryan Murphy](https://fulcra.design/About/) who gave me the idea for this
   project with a [blogpost of
   his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
-- [Grit Laudel](http://www.laudel.info/), for providing sample interview data.# Acknowledgments
+- [Grit Laudel](http://www.laudel.info/) for providing sample interview data.# Acknowledgments
 
-### Recommended Citation
+### Recommended citation
 Please cite this software project as (APA):
 
 ```txt
@@ -274,4 +312,4 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'>
 <img height='36' style='border:0px;height:36px;'
 src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at
-ko-fi.com' /></a>
+ko-fi.com'/></a>

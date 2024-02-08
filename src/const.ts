@@ -1,6 +1,7 @@
 import type { TFile } from "obsidian";
 
 export const CODE_FOLDER_NAME = "Codes";
+export const EXTRACTION_FOLDER_NAME = "Extractions";
 
 export const MINIGRAPH = {
 	char: "🬋",
