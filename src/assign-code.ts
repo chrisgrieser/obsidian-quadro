@@ -86,7 +86,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		if (codeFile instanceof TFile) {
 			this.assignCode(codeFile, dataFile);
 		} else {
-			createCodeFile((codeFile) => this.assignCode(codeFile, dataFile));
+			createCodeFile(this.app, (codeFile) => this.assignCode(codeFile, dataFile));
 		}
 	}
 
