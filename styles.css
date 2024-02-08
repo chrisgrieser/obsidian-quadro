@@ -1,5 +1,4 @@
-/* VARIABLE SAFETY FOR OBSIDIAN CORE VARIABLES */
-.variable-safety-for-obsidian {
+.variable-safety-for-obsidian-css {
 	--text-faint: "";
 }
 
@@ -54,4 +53,11 @@
 /* spacing added by some themes (e.g. Prism) */
 body .internal-embed .markdown-embed-content {
 	padding: 0 0 0 4px;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* QUADRO MODALS */
+
+.quadro-code-creation-input input {
+	width: 100%;
 }

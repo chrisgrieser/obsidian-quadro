@@ -15,7 +15,7 @@ export function createCodeFile(callback: (codeFile: TFile) => void) {
 		const folder = CODE_FOLDER_NAME + subfolder;
 		if (!this.app.vault.getAbstractFileByPath(folder)) await this.app.vault.createFolder(folder);
 
-		const codeFile = await this.app.vault.create(`${folder}/${name}.md`, "");
+		const codeFile = await this.app.vault.create(`${folder}/${name}.md`, "\n\n");
 		callback(codeFile);
 
 		new Notice(`Created new code file: "${codeName}"`);
@@ -32,25 +32,34 @@ class InputModal extends Modal {
 	}
 	onOpen() {
 		const { contentEl } = this;
-		contentEl.createEl("h3", { text: "New code creation" });
+
+		// info text
+		contentEl.createEl("h4", { text: "New code creation" });
 		contentEl.createEl("p", {
 			text: 'Use a "/" create a subfolder and place the code file there (grouped code).',
 		});
 
-		new Setting(contentEl).setName("Name of new code").addText((text) =>
-			text.onChange((value) => {
-				this.result = value;
-			}),
-		);
-		new Setting(contentEl).addButton((btn) =>
-			btn
-				.setButtonText("Submit")
-				.setCta()
-				.onClick(() => {
-					this.close();
-					this.onSubmit(this.result);
+		// input field
+		new Setting(contentEl)
+			.setName("Name of new code")
+			.setClass("quadro-code-creation-input")
+			.addText((text) =>
+				text.onChange((value) => {
+					this.result = value;
 				}),
-		);
+			);
+		// submit & cancel button
+		new Setting(contentEl)
+			.addButton((btn) =>
+				btn
+					.setButtonText("Submit")
+					.setCta()
+					.onClick(() => {
+						this.close();
+						this.onSubmit(this.result);
+					}),
+			)
+			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}
 	onClose() {
 		const { contentEl } = this;
