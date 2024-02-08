@@ -1,12 +1,19 @@
-/* BLOCK IDS */
-/* Hide Block Id on non-active line */
-.cm-line:not(.cm-active) .cm-blockid {
-	display: none;
+/* VARIABLE SAFETY FOR OBSIDIAN CORE VARIABLES */
+.variable-safety-for-obsidian {
+	--text-faint: "";
 }
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* BLOCK IDS */
 
 /* Make them less visible */
 .cm-line .cm-blockid {
 	opacity: 0.3;
+}
+
+/* Hide Block Id on non-active line */
+.cm-line:not(.cm-active) .cm-blockid {
+	display: none;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -23,7 +30,6 @@
 .markdown-embed.internal-embed.inline-embed::after {
 	/* destination is saved in `alt` attribute */
 	content: attr(alt);
-
 	color: var(--text-faint);
 	padding-left: 1.75rem;
 	padding-top: 4px;
@@ -35,8 +41,6 @@
 	bottom: var(--between-embeds-spacing);
 	left: 0;
 }
-
-/* ────────────────────────────────────────────────────────────────────────── */
 
 /* remove wasted space */
 .markdown-embed.internal-embed.inline-embed .markdown-embed-title {
@@ -51,4 +55,3 @@
 body .internal-embed .markdown-embed-content {
 	padding: 0 0 0 4px;
 }
-
