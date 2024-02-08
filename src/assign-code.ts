@@ -35,9 +35,7 @@ async function ensureBlockId(
 	return { blockId: newBlockId, lineWithoutId: lineText };
 }
 
-//──────────────────────────────────────────────────────────────────────────────
-
-export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
+class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
 	editor: Editor;
 
 	constructor(app: App, editor: Editor) {
@@ -125,4 +123,18 @@ export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-c
 		const textToAppend = `![[${dataFilePath}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
 	}
+}
+
+//──────────────────────────────────────────────────────────────────────────────
+
+export function assignCode(editor: Editor) {
+	// GUARD 1: do not assign code to a code file
+	const currentFilePath = editor.editorComponent.view.file.path;
+	const isInCodeFolder = currentFilePath.startsWith(CODE_FOLDER_NAME + "/");
+	if (isInCodeFolder) {
+		new Notice("You cannot assign a code to a code file.");
+		return;
+	}
+
+	new SuggesterForCodeAssignment(editor.editorComponent.app, editor).open();
 }
