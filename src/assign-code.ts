@@ -1,6 +1,6 @@
 import { FuzzySuggestModal, Notice, TFile } from "obsidian";
 import type { App, Editor } from "obsidian";
-import { CODE_FOLDER_NAME, MINIGRAPH } from "./const";
+import { ASSIGN_CODE_INITIAL_ORDER, CODE_FOLDER_NAME, MINIGRAPH, TFILE_SORT_FUNC } from "./const";
 import { createCodeFile } from "./create-new-code-file";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -58,10 +58,13 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 	// code-files, sorted by last use (which is relevant when query is empty)
 	getItems(): (TFile | "new-code-file")[] {
+		const initialOrderOnEmptyQuery = TFILE_SORT_FUNC[ASSIGN_CODE_INITIAL_ORDER];
+
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
 			.getMarkdownFiles()
 			.filter((tFile) => tFile.path.startsWith(CODE_FOLDER_NAME + "/"))
-			.sort((a, b) => b.stat.mtime - a.stat.mtime); // relevant for empty query
+			.sort(initialOrderOnEmptyQuery);
+
 		allCodeFiles.push("new-code-file");
 		return allCodeFiles;
 	}
