@@ -6,8 +6,8 @@ export default class Quadro extends Plugin {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		this.addCommand({
-			id: "assign-code-to-paragraph",
-			name: "Assign code to paragraph",
+			id: "assign-code",
+			name: "Assign code",
 			editorCallback: assignCode,
 
 			// Adding a hotkey by default, since this plugin is going to be
@@ -17,6 +17,8 @@ export default class Quadro extends Plugin {
 			// with other hotkeys.
 			hotkeys: [{ modifiers: ["Alt"], key: "c" }],
 		});
+
+		this.addRibbonIcon("plus-circle", "Quadro: Assign code", () => assignCode(this.app));
 	}
 
 	onunload() {

@@ -1,5 +1,5 @@
-import { FuzzySuggestModal, Notice, TFile } from "obsidian";
-import type { App, Editor } from "obsidian";
+import { App, FuzzySuggestModal, MarkdownView, Notice, TFile } from "obsidian";
+import type { Editor } from "obsidian";
 import { ASSIGN_CODE_INITIAL_ORDER, CODE_FOLDER_NAME, MINIGRAPH, TFILE_SORT_FUNC } from "./const";
 import { createCodeFile } from "./create-new-code-file";
 
@@ -130,8 +130,20 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function assignCode(editor: Editor) {
+export function assignCode(editorOrApp: Editor|App) {
 	// GUARD
+	let editor: Editor;
+	if (editorOrApp instanceof App) {
+		const view = editorOrApp.workspace.getActiveViewOfType(MarkdownView);
+		if (!view) {
+			new Notice("No active editor.");
+			return;
+		}
+		editor = view.editor;
+	} else {
+		editor = editorOrApp;
+	}
+
 	const isInCodeFolder = editor.editorComponent.view.file.path.startsWith(CODE_FOLDER_NAME + "/");
 	if (isInCodeFolder) {
 		new Notice("You cannot assign a code to a code file.");
