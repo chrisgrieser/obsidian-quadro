@@ -128,11 +128,15 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 //──────────────────────────────────────────────────────────────────────────────
 
 export function assignCode(editor: Editor) {
-	// GUARD 1: do not assign code to a code file
-	const currentFilePath = editor.editorComponent.view.file.path;
-	const isInCodeFolder = currentFilePath.startsWith(CODE_FOLDER_NAME + "/");
+	// GUARD
+	const isInCodeFolder = editor.editorComponent.view.file.path.startsWith(CODE_FOLDER_NAME + "/");
 	if (isInCodeFolder) {
 		new Notice("You cannot assign a code to a code file.");
+		return;
+	}
+	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
+	if (hasHighlightMarkupInSel) {
+		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
 		return;
 	}
 
