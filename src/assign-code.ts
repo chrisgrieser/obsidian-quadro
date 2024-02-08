@@ -122,7 +122,7 @@ export class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-c
 
 		// Code-File Changes
 		const dataFilePath = dataFile.path.slice(0, -3);
-		const textToAppend = `- ![[${dataFilePath}#${blockId}]]\n`;
+		const textToAppend = `![[${dataFilePath}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
 	}
 }

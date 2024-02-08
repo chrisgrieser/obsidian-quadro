@@ -128,7 +128,7 @@ is appended to the code file.
 ```md
 Filepath: Codes/MyCode.md
 
-- ![[Interview 1#^id42]]
+![[Interview 1#^id42]]
 ```
 
 As the link is a so-called [embedded
