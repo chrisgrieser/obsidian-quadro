@@ -34,11 +34,11 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		return fullCode;
 	}
 	onChooseItem(code: Code) {
-		rmCodeFromBothFiles(this.editor, this.dataFile, code);
+		rmCodeWhileInDataFile(this.editor, this.dataFile, code);
 	}
 }
 
-async function rmCodeFromBothFiles(editor: Editor, dataFile: TFile, code: Code) {
+async function rmCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code) {
 	const vault = editor.editorComponent.app.vault;
 
 	// REMOVE FROM DATAFILE
@@ -57,18 +57,51 @@ async function rmCodeFromBothFiles(editor: Editor, dataFile: TFile, code: Code) 
 	// no leading [[ since it is not ensured that dataFile has not been moved
 	const refInCodeFile = `${dataFile.basename}#${blockId[0]}]]`;
 	const updatedCodeTFile = (await vault.read(code.file))
-		.split("")
+		.split("\n")
 		.filter((line) => !line.endsWith(refInCodeFile))
 		.join("\n");
 	await vault.modify(code.file, updatedCodeTFile);
 }
 
+async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
+	// Identify DATAFILE
+	const lineText = editor.getLine(editor.getCursor().line);
+	const [_, linkPath, blockId] = lineText.match(/^!\[\[(.+?)#(\^\w+)\]\]$/) || [];
+	if (!blockId || !linkPath) {
+		new Notice("Current line has no correct reference.");
+		return;
+	}
+
+	const codeFile = editor.editorComponent.view.file;
+	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath, codeFile.path);
+
+	// update DATAFILE
+	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
+	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
+	if (lnumInDataFile < 0) {
+		new Notice(`Line with ID ${blockId} not found in Data-File.`);
+		return;
+	}
+	// using only basename with regex, since user may have renamed, updating
+	// wikilinks in the process
+	const codeFileRefRegex = new RegExp(" ?\\[\\[.*?" + codeFile.basename + "]]");
+	dataFileLines[lnumInDataFile] = dataFileLines[lnumInDataFile].replace(codeFileRefRegex, "");
+	await app.vault.modify(dataFile, dataFileLines.join("\n"));
+
+	// CODEFILE: simply delete current line via Obsidian command :)
+	app.commands.executeCommandById("editor:delete-paragraph");
+	editor.setCursor({ line: editor.getCursor().line, ch: 0 });
+}
+
 //──────────────────────────────────────────────────────────────────────────────
 
-/** Determines codes assigned to paragraph, if more than one, then prompts user
- * to select one via the suggester */
+/** Unassigning code has to deal with 3 scenarios (disregarding invalid cases):
+ * 1. code file -> determine datafile and code to remove from code file reference
+ * 2. data file, line has 1 code -> remove code, and its reference from code file
+ * 3. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
+ */
 export async function unAssignCode(app: App) {
-	// GUARD 
+	// GUARD
 	const view = app.workspace.getActiveViewOfType(MarkdownView);
 	if (!view) {
 		new Notice("No active editor.");
@@ -77,13 +110,13 @@ export async function unAssignCode(app: App) {
 	const editor = view.editor;
 	const isInCodeFolder = editor.editorComponent.view.file.path.startsWith(CODE_FOLDER_NAME + "/");
 	if (isInCodeFolder) {
-		new Notice("You cannot remove from a code file.");
+		rmCodeWhileInCodeFile(app, editor);
 		return;
 	}
 
+	const dataFile = editor.editorComponent.view.file;
 	const lineText = editor.getLine(editor.getCursor().line);
 	const wikilinksInParagraph = lineText.match(/\[\[.+?\]\]/g) || [];
-	const dataFile = editor.editorComponent.view.file;
 
 	// determine valid codes assigned to paragraph
 	const codeFilesInParagraph = wikilinksInParagraph.reduce((acc: Code[], wikilink) => {
@@ -96,7 +129,7 @@ export async function unAssignCode(app: App) {
 	if (codeFilesInParagraph.length === 0) {
 		new Notice("Paragraph does not contain any valid codes.");
 	} else if (codeFilesInParagraph.length === 1) {
-		rmCodeFromBothFiles(editor, dataFile, codeFilesInParagraph[0]);
+		rmCodeWhileInDataFile(editor, dataFile, codeFilesInParagraph[0]);
 	} else {
 		new SuggesterForCodeToUnassign(app, editor, dataFile, codeFilesInParagraph).open();
 	}

@@ -9,4 +9,9 @@ declare module "obsidian" {
 			app: App;
 		};
 	}
+	interface App {
+		commands: {
+			executeCommandById: (commandId: string) => void;
+		};
+	}
 }
