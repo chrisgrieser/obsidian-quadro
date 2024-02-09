@@ -178,16 +178,16 @@ file:
 
 ### Overview of coding capabilities
 
-| Action                               | Notes                                                                                                                                           | Default Hotkey | Capability Provider                             |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ----------------------------------------------- |
-| Assign code                          | Assign a code to the current paragraph, any selected text is highlighted. (overlapping highlights not supported though).                        | `mod+shift+c`  | Quadro                                          |
-| Create new code                      | When assigning code, select `Create new code` in the code selection modal. Using `/` places the code file in a subfolder.                       | `mod+shift+c`  | Quadro                                          |
-| Rename code                          | All references to the code file are automatically updated. Can also rename by right-clicking a file or link and selecting "Rename."             | `mod+shift+r`  | [Obsidian Built-in][rename]                     |
-| Remove code from paragraph           | Removes a code from the current paragraph of a data or code file. The reference is also removed from the corresponding other file.              | `mod+shift+u`  | Quadro                                          |
-| Merge codes                          | All references to the code file are automatically updated.                                                                                      | `mod+shift+m`  | [Obsidian Core Plugin: Note Composer][composer] |
-| Code grouping                        | Codes can simply be arranged in subfolders: Drag-and-drop them in the File Explorer, or use a `/` when creating a new code.                     | /              | Obsidian Built-in                               |
-| Visualization of code relationships  | In the Graph View, use a query like `path:Folder` to display only relationships of files in that folder. <br><br>[Further Documentation][graph] | `mod+g`        | [Obsidian Code Plugin: Graph View][graph]       |
-| Investigation of code co-occurrences | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                       | `mod+shift+f`  | [Obsidian Code Plugin: Search][search]          |
+| Action                               | Notes                                                                                                                                                | Default Hotkey | Capability Provider                             |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ----------------------------------------------- |
+| Assign code                          | Assign a code to the current paragraph, any selected text is highlighted. (overlapping highlights not supported though).                             | `mod+shift+c`  | Quadro                                          |
+| Create new code                      | When assigning code, select `Create new code` in the code selection modal. Using `/` places the code file in a subfolder.                            | `mod+shift+c`  | Quadro                                          |
+| Rename code                          | All references to the code file are automatically updated. Can also rename by right-clicking a file or link and selecting "Rename".                  | `mod+shift+r`  | [Obsidian Built-in][rename]                     |
+| Remove code from paragraph           | Removes a code from the current paragraph of a data or code file. The reference is also removed from the corresponding other file.                   | `mod+shift+u`  | Quadro                                          |
+| Merge codes                          | All references to the code file are automatically updated.                                                                                           | `mod+shift+m`  | [Obsidian Core Plugin: Note Composer][composer] |
+| Code grouping                        | Codes can simply be arranged in subfolders via drag-and-drop in the File Explorer.                                                                   | /              | Obsidian Built-in                               |
+| Visualization of code relationships  | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph] | `mod+g`        | [Obsidian Code Plugin: Graph View][graph]       |
+| Investigation of code co-occurrences | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                            | `mod+shift+f`  | [Obsidian Code Plugin: Search][search]          |
 
 [composer]: https://help.obsidian.md/Plugins/Note+composer
 [rename]: https://help.obsidian.md/Files+and+folders/Manage+notes#Rename+a+note
