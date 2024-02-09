@@ -83,8 +83,8 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
 		new Notice(`Line with ID "${blockId}" not found in Data-File.`);
 		return;
 	}
-	// using only basename with regex, since user may have renamed, updating
-	// wikilinks in the process
+	// using only basename with regex, since user may have renamed the file,
+	// updating wikilinks in the process
 	const codeFileRefRegex = new RegExp(" ?\\[\\[.*?" + codeFile.basename + "]]");
 	dataFileLines[lnumInDataFile] = dataFileLines[lnumInDataFile].replace(codeFileRefRegex, "");
 	await app.vault.modify(dataFile, dataFileLines.join("\n"));

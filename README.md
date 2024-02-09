@@ -96,16 +96,21 @@ theses, this saves a lot of unnecessary hassle with licenses.
 *Coding* is implemented via "bidirectional" links between data files and
 markdown files by inserting wikilinks at both files. It makes use of Obsidian's
 [note-embedding](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note)
-functionality to keep track of coded text segments. 
-- Codes are implemented as
-`[[wikilinks]]` instead of `#tags`, as the former allows for more flexibility,
-such as having separate file per code. 
+functionality to keep track of coded text segments.
+- Codes are implemented as `[[wikilinks]]` instead of `#tags`, as the former
+  allows for more flexibility, such as having separate file per code.
 - The distinct feature of this plugin is that its commands *always* make edits
   to two files (the data and the code file) *at the same time*, which is
   necessary to adequately handle the workflow common to coding in QDA.
 
 *Extraction* is implemented by creating separate extract files containing, where
 extraction aspects are saved as ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)).
+
+> [!TIP]
+> It is recommended to create a separate vault for data analysis and install the
+> plugin there, since QDA does not follow the "common logic of note-taking,"
+> thus often requiring a different set of plugins and settings from your regular
+> vault.
 
 ### Brief methodological comparison with other QDA software
 
@@ -255,7 +260,10 @@ command name.
 **Manual**
 1. Download the `.zip` file from the [latest
    release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).
-2. Extract the `.zip` file into the `{your-vault-path}/.obsidian/plugins/quadro`.
+2. Extract the `.zip` file into the
+   `{your-vault-path}/.obsidian/plugins/quadro`. (Note that on macOS,
+   `.obsidian` is a hidden folder. You can make hidden folders visible by
+   pressing `cmd+shift+.` in the Finder.)
 3. In Obsidian, go to `Settings` → `Community Plugins`. Press the Refresh
    button.
 4. Look for a new entry `Quadro` in the plugin list. Enable the plugin by
