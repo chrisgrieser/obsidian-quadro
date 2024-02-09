@@ -97,7 +97,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	async assignCode(codeFile: TFile, dataFile: TFile) {
 		const cursor = this.editor.getCursor();
 		const nameOfCode = codeFile.path.slice(CODE_FOLDER_NAME.length + 1, -3);
-		let lineText = this.editor.getLine(cursor.line).trim();
+		let lineText = this.editor.getLine(cursor.line);
 
 		// GUARD
 		const lineAlreadyHasCode =
@@ -109,10 +109,10 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 		const selection = this.editor.getSelection();
 		if (selection) {
-			// Depending on the selection the user made, `replaceSelection` can result
-			// in double-spaces, thus removing them
-			this.editor.replaceSelection(`==${selection.trim()}==`);
-			lineText = this.editor.getLine(cursor.line).trim().replace(/ {2,}/g, " ");
+			// spaces need to be moved outside, as otherwise they make the highlights invalid
+			const highlightAdded = selection.replace(/^( ?)(.+?)( ?)$/g, "$1==$2==$3");
+			this.editor.replaceSelection(highlightAdded);
+			lineText = this.editor.getLine(cursor.line);
 		}
 		const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
 
