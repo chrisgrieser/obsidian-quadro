@@ -138,7 +138,7 @@ export function assignCode(app: App) {
 		return;
 	}
 	const editor = view.editor;
-	const isInCodeFolder = editor.editorComponent.view.file.path.startsWith(CODE_FOLDER_NAME + "/");
+	const isInCodeFolder = app.workspace.getActiveFile()?.path.startsWith(CODE_FOLDER_NAME + "/");
 	if (isInCodeFolder) {
 		new Notice("You cannot remove from a code file.");
 		return;

@@ -108,7 +108,7 @@ export async function unAssignCode(app: App) {
 		return;
 	}
 	const editor = view.editor;
-	const isInCodeFolder = editor.editorComponent.view.file.path.startsWith(CODE_FOLDER_NAME + "/");
+	const isInCodeFolder = app.workspace.getActiveFile()?.path.startsWith(CODE_FOLDER_NAME + "/");
 	if (isInCodeFolder) {
 		rmCodeWhileInCodeFile(app, editor);
 		return;
