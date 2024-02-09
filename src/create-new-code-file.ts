@@ -6,12 +6,12 @@ import { CODE_FOLDER_NAME } from "./const";
 
 /** Prompts for name of new file, then runs callback on it. */
 export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
-	new InputModal(app, async (input) => {
-		const fullCode = input
+	new InputModal(app, async (fullCode, codeDesc) => {
+		fullCode = fullCode
 			.replace(/\.md$/, "") // no extension
 			.replace(/\\:/g, "-") // no illegal characters
 			.replace(/^\.|\/\./g, ""); // no hidden files/folders
-		if (!input) input = "Unnamed Code";
+		if (!fullCode) fullCode = "Unnamed Code";
 
 		const parts = fullCode.split("/");
 		const codeName = parts.pop();
@@ -21,7 +21,9 @@ export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 		const folderExists = app.vault.getAbstractFileByPath(parent) instanceof TFolder;
 		if (!folderExists) await app.vault.createFolder(parent);
 
-		const codeFile = await app.vault.create(`${parent}/${codeName}.md`, "");
+		codeDesc = codeDesc.replace(/"/g, "'");
+		const initialContent = `---\ndescription: "${codeDesc}"\n---\n\n\n---\n`;
+		const codeFile = await app.vault.create(`${parent}/${codeName}.md`, initialContent);
 		callback(codeFile);
 
 		new Notice(`Created new code file: "${fullCode}"`);
@@ -30,9 +32,10 @@ export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
 class InputModal extends Modal {
-	codeName: string;
-	onSubmit: (codeName: string) => void;
-	constructor(app: App, onSubmit: (codeName: string) => void) {
+	fullCode: string;
+	codeDesc: string;
+	onSubmit: (fullCode: string, codeDesc: string) => void;
+	constructor(app: App, onSubmit: (fullCode: string, codeDesc: string) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
 	}
@@ -42,7 +45,7 @@ class InputModal extends Modal {
 		// info text
 		contentEl.createEl("h4", { text: "New code creation" });
 		contentEl.createEl("p", {
-			text: 'Use a "/" create a subfolder and place the code file there (grouped code).',
+			text: 'Use a slash ("/") to create a subfolder for the code file (grouped code).',
 		});
 
 		// name input field
@@ -51,7 +54,17 @@ class InputModal extends Modal {
 			.setClass("quadro-code-creation-input")
 			.addText((text) =>
 				text.onChange((value) => {
-					this.codeName = value;
+					this.fullCode = value;
+				}),
+			);
+
+		// description input field
+		new Setting(contentEl)
+			.setName("Description")
+			.setClass("quadro-code-creation-input")
+			.addText((text) =>
+				text.onChange((value) => {
+					this.codeDesc = value;
 				}),
 			);
 
@@ -63,7 +76,7 @@ class InputModal extends Modal {
 					.setCta()
 					.onClick(() => {
 						this.close();
-						this.onSubmit(this.codeName);
+						this.onSubmit(this.fullCode, this.codeDesc);
 					}),
 			)
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
