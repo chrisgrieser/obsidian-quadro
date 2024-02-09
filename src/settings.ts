@@ -1,7 +1,7 @@
 import type { TFile } from "obsidian";
 
+// CODING
 export const CODE_FOLDER_NAME = "Codes";
-export const EXTRACTION_FOLDER_NAME = "Extractions";
 
 export const MINIGRAPH = {
 	char: "🬋",
@@ -24,3 +24,8 @@ export const TFILE_SORT_FUNC = {
 };
 
 export const ASSIGN_CODE_INITIAL_ORDER = "lastUsedFirst";
+
+//──────────────────────────────────────────────────────────────────────────────
+// EXTRACTION
+
+export const EXTRACTION_FOLDER_NAME = "Extractions";

@@ -15,7 +15,7 @@ export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 		if (!fullCode) fullCode = "Unnamed Code";
 
 		// GUARD
-		const absolutePath = CODE_FOLDER_NAME + "/" + fullCode + ".md";
+		const absolutePath = `${CODE_FOLDER_NAME}/${fullCode}.md`;
 		const fileExists = app.vault.getAbstractFileByPath(absolutePath) instanceof TFile;
 		if (fileExists) {
 			new Notice(`Code "${fullCode}" already exists, aborting.`);
@@ -31,8 +31,8 @@ export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 		if (!folderExists) await app.vault.createFolder(parent);
 
 		codeDesc = codeDesc.replace(/"/g, "'");
-		const initialContent = `---\ndescription: "${codeDesc}"\n---\n\n\n---\n`;
-		const codeFile = await app.vault.create(`${parent}/${codeName}.md`, initialContent);
+		const descAsYamlFrontmatter = `---\ndescription: "${codeDesc}"\n---\n\n\n---\n`;
+		const codeFile = await app.vault.create(`${parent}/${codeName}.md`, descAsYamlFrontmatter);
 		callback(codeFile);
 
 		new Notice(`Created new code file: "${fullCode}"`);

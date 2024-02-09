@@ -5,11 +5,11 @@ export default class Quadro extends Plugin {
 	onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
 
+		this.addRibbonIcon("plus-circle", "Quadro: Assign code", () => assignCode(this.app));
 		this.addCommand({
 			id: "assign-code",
 			name: "Assign code",
 			editorCallback: assignCode,
-
 			// Adding a hotkey by default, since this plugin is going to be
 			// used by many people not familiar with Obsidian. Requiring them to
 			// add an hotkey would unnecessarily complicate the onboarding for
@@ -17,8 +17,6 @@ export default class Quadro extends Plugin {
 			// with other hotkeys.
 			hotkeys: [{ modifiers: ["Alt"], key: "c" }],
 		});
-
-		this.addRibbonIcon("plus-circle", "Quadro: Assign code", () => assignCode(this.app));
 	}
 
 	onunload() {
