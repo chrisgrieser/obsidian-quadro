@@ -57,11 +57,11 @@ async function rmCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code
 	}
 	// no leading [[ since it is not ensured that dataFile has not been moved
 	const refInCodeFile = `${dataFile.basename}#${blockId[0]}]]`;
-	const updatedCodeTFile = (await vault.read(code.file))
+	const updatedCodeFileText = (await vault.read(code.file))
 		.split("\n")
 		.filter((line) => !line.endsWith(refInCodeFile))
 		.join("\n");
-	await vault.modify(code.file, updatedCodeTFile);
+	await vault.modify(code.file, updatedCodeFileText);
 }
 
 async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
@@ -113,23 +113,23 @@ export async function unAssignCode(app: App) {
 	} else {
 		const dataFile = editor.editorComponent.view.file;
 		const lineText = editor.getLine(editor.getCursor().line);
-		const wikilinksInParagraph = lineText.match(/\[\[.+?\]\]/g) || [];
+		const wikilinksInParagr = lineText.match(/\[\[.+?\]\]/g) || [];
 
-		const codeFilesInParagraph = wikilinksInParagraph.reduce((acc: Code[], wikilink) => {
+		const codesInParagr = wikilinksInParagr.reduce((acc: Code[], wikilink) => {
 			wikilink = wikilink.slice(2, -2);
 			const codeFile = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
 			if (codeFile instanceof TFile) acc.push({ file: codeFile, wikilink: wikilink });
 			return acc;
 		}, []);
 
-		if (codeFilesInParagraph.length === 0) {
-			new Notice("Paragraph does not contain any valid codes.");
-		} else if (codeFilesInParagraph.length === 1) {
+		if (codesInParagr.length === 0) {
+			new Notice("Line does not contain any valid codes.");
+		} else if (codesInParagr.length === 1) {
 			// B: in data file, line has 1 code
-			rmCodeWhileInDataFile(editor, dataFile, codeFilesInParagraph[0]);
+			rmCodeWhileInDataFile(editor, dataFile, codesInParagr[0]);
 		} else {
 			// C: in data file, line has 2+ codes
-			new SuggesterForCodeToUnassign(app, editor, dataFile, codeFilesInParagraph).open();
+			new SuggesterForCodeToUnassign(app, editor, dataFile, codesInParagr).open();
 		}
 	}
 }
