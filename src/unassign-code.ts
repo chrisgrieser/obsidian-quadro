@@ -97,36 +97,38 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Unassigning code has to deal with 3 scenarios (disregarding invalid cases):
- * 1. code file -> determine datafile and code to remove from code file reference
- * 2. data file, line has 1 code -> remove code, and its reference from code file
- * 3. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
+ * A. code file -> determine datafile and code to remove from code file reference
+ * B. data file, line has 1 code -> remove code, and its reference from code file
+ * C. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
  */
 export async function unAssignCode(app: App) {
 	// GUARD
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
+
 	if (currentlyInCodeFolder(app, "silent")) {
+		// A: in code file
 		rmCodeWhileInCodeFile(app, editor);
-		return;
-	}
-
-	const dataFile = editor.editorComponent.view.file;
-	const lineText = editor.getLine(editor.getCursor().line);
-	const wikilinksInParagraph = lineText.match(/\[\[.+?\]\]/g) || [];
-
-	// determine valid codes assigned to paragraph
-	const codeFilesInParagraph = wikilinksInParagraph.reduce((acc: Code[], wikilink) => {
-		wikilink = wikilink.slice(2, -2);
-		const codeFile = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-		if (codeFile instanceof TFile) acc.push({ file: codeFile, wikilink: wikilink });
-		return acc;
-	}, []);
-
-	if (codeFilesInParagraph.length === 0) {
-		new Notice("Paragraph does not contain any valid codes.");
-	} else if (codeFilesInParagraph.length === 1) {
-		rmCodeWhileInDataFile(editor, dataFile, codeFilesInParagraph[0]);
 	} else {
-		new SuggesterForCodeToUnassign(app, editor, dataFile, codeFilesInParagraph).open();
+		const dataFile = editor.editorComponent.view.file;
+		const lineText = editor.getLine(editor.getCursor().line);
+		const wikilinksInParagraph = lineText.match(/\[\[.+?\]\]/g) || [];
+
+		const codeFilesInParagraph = wikilinksInParagraph.reduce((acc: Code[], wikilink) => {
+			wikilink = wikilink.slice(2, -2);
+			const codeFile = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
+			if (codeFile instanceof TFile) acc.push({ file: codeFile, wikilink: wikilink });
+			return acc;
+		}, []);
+
+		if (codeFilesInParagraph.length === 0) {
+			new Notice("Paragraph does not contain any valid codes.");
+		} else if (codeFilesInParagraph.length === 1) {
+			// B: in data file, line has 1 code
+			rmCodeWhileInDataFile(editor, dataFile, codeFilesInParagraph[0]);
+		} else {
+			// C: in data file, line has 2+ codes
+			new SuggesterForCodeToUnassign(app, editor, dataFile, codeFilesInParagraph).open();
+		}
 	}
 }
