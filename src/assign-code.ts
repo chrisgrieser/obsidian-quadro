@@ -44,12 +44,8 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 	constructor(app: App, editor: Editor) {
 		super(app);
-
-		// save reference to editor from `editorCallback`, so we do not need to
-		// retrieve the editor manually
 		this.editor = editor;
-
-		this.setPlaceholder("Select code");
+		this.setPlaceholder("Select code to assign");
 		this.setInstructions([
 			{ command: "↑↓", purpose: "Navigate" },
 			{ command: "⏎", purpose: "Select" },
@@ -80,8 +76,8 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const { char, charsPerBlock, maxLength } = MINIGRAPH;
 		const miniGraph = "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock));
 
-		const codeName = item.path.slice(CODE_FOLDER_NAME.length + 1, -3);
-		return codeName + miniGraph;
+		const fullCode = item.path.slice(CODE_FOLDER_NAME.length + 1, -3);
+		return fullCode + miniGraph;
 	}
 
 	onChooseItem(codeFile: TFile | "new-code-file") {
