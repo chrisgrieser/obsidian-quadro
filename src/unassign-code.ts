@@ -23,6 +23,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		this.setInstructions([
 			{ command: "↑↓", purpose: "Navigate" },
 			{ command: "⏎", purpose: "Select" },
+			{ command: "esc", purpose: "Dismiss" },
 		]);
 	}
 
@@ -79,7 +80,7 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
 	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
 	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
 	if (lnumInDataFile < 0) {
-		new Notice(`Line with ID ${blockId} not found in Data-File.`);
+		new Notice(`Line with ID "${blockId}" not found in Data-File.`);
 		return;
 	}
 	// using only basename with regex, since user may have renamed, updating

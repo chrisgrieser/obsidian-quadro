@@ -49,6 +49,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		this.setInstructions([
 			{ command: "↑↓", purpose: "Navigate" },
 			{ command: "⏎", purpose: "Select" },
+			{ command: "esc", purpose: "Dismiss" },
 			{ command: 'type "new"', purpose: "Create new code" },
 		]);
 	}

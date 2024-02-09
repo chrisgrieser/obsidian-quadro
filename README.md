@@ -96,9 +96,13 @@ theses, this saves a lot of unnecessary hassle with licenses.
 *Coding* is implemented via "bidirectional" links between data files and
 markdown files by inserting wikilinks at both files. It makes use of Obsidian's
 [note-embedding](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note)
-functionality to keep track of coded text segments. Codes are implemented as
+functionality to keep track of coded text segments. 
+- Codes are implemented as
 `[[wikilinks]]` instead of `#tags`, as the former allows for more flexibility,
-such as having separate file per code.
+such as having separate file per code. 
+- The distinct feature of this plugin is that its commands *always* make edits
+  to two files (the data and the code file) *at the same time*, which is
+  necessary to adequately handle the workflow common to coding in QDA.
 
 *Extraction* is implemented by creating separate extract files containing, where
 extraction aspects are saved as ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)).
@@ -268,9 +272,9 @@ Search for *"Quadro"*
 ## Development
 
 ### Roadmap
-- [ ] Delete Codes Completely.
 - [ ] Implement Extraction.
 - [ ] Submit to Obsidian Community Plugin Store.
+- [ ] Delete Codes Completely.
 - [ ] Example Vault.
 
 ### Build
