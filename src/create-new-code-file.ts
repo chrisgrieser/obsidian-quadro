@@ -1,5 +1,5 @@
-import type { App, TFile } from "obsidian";
-import { Modal, Notice, Setting, TFolder } from "obsidian";
+import type { App } from "obsidian";
+import { Modal, Notice, Setting, TFile, TFolder } from "obsidian";
 import { CODE_FOLDER_NAME } from "./settings";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -7,11 +7,20 @@ import { CODE_FOLDER_NAME } from "./settings";
 /** Prompts for name of new file, then runs callback on it. */
 export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 	new InputModal(app, async (fullCode, codeDesc) => {
+		// VALIDATE
 		fullCode = fullCode
 			.replace(/\.md$/, "") // no extension
 			.replace(/\\:/g, "-") // no illegal characters
 			.replace(/^\.|\/\./g, ""); // no hidden files/folders
 		if (!fullCode) fullCode = "Unnamed Code";
+
+		// GUARD
+		const absolutePath = CODE_FOLDER_NAME + "/" + fullCode + ".md";
+		const fileExists = app.vault.getAbstractFileByPath(absolutePath) instanceof TFile;
+		if (fileExists) {
+			new Notice(`Code "${fullCode}" already exists, aborting.`);
+			return;
+		}
 
 		const parts = fullCode.split("/");
 		const codeName = parts.pop();
