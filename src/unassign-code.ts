@@ -84,12 +84,13 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
 		return;
 	}
 	// using only basename with regex, since user may have renamed the file,
-	// updating wikilinks in the process
-	const codeFileRefRegex = new RegExp(" ?\\[\\[.*?" + codeFile.basename + "]]");
-	dataFileLines[lnumInDataFile] = dataFileLines[lnumInDataFile].replace(codeFileRefRegex, "");
+	// updating wikilinks in the process. (The negative lookahead ensures that the
+	// patterns does not match two consecutive wikilinks https://regex101.com/r/25T8so/1)
+	const codeFileLinkRegex = new RegExp(" ?\\[\\[(.(?!]]))*?" + codeFile.basename + "\\]\\]");
+	dataFileLines[lnumInDataFile] = dataFileLines[lnumInDataFile].replace(codeFileLinkRegex, "");
 	await app.vault.modify(dataFile, dataFileLines.join("\n"));
 
-	// CODEFILE: simply delete current line via Obsidian command :)
+	// CODEFILE: simply delete current line via Obsidian command :P
 	app.commands.executeCommandById("editor:delete-paragraph");
 	editor.setCursor({ line: editor.getCursor().line, ch: 0 });
 }
