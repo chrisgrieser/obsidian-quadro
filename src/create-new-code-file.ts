@@ -9,7 +9,7 @@ export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 		// VALIDATE
 		fullCode = fullCode
 			.replace(/\.md$/, "") // no extension
-			.replace(/\\:/g, "-") // no illegal characters
+			.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
 			.replace(/^\.|\/\./g, ""); // no hidden files/folders
 		if (!fullCode) fullCode = "Unnamed Code";
 
