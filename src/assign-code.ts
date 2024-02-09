@@ -1,7 +1,11 @@
-import { App, FuzzySuggestModal, MarkdownView, Notice, TFile } from "obsidian";
-import type { Editor } from "obsidian";
-import { ASSIGN_CODE_INITIAL_ORDER, CODE_FOLDER_NAME, MINIGRAPH, TFILE_SORT_FUNC } from "./settings";
+import { App, Editor, FuzzySuggestModal, MarkdownView, Notice, TFile } from "obsidian";
 import { createCodeFile } from "./create-new-code-file";
+import {
+   ASSIGN_CODE_INITIAL_ORDER,
+   CODE_FOLDER_NAME,
+   MINIGRAPH,
+   TFILE_SORT_FUNC
+} from "./settings";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -130,7 +134,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function assignCode(editorOrApp: Editor|App) {
+export function assignCode(editorOrApp: Editor | App) {
 	// GUARD
 	let editor: Editor;
 	if (editorOrApp instanceof App) {
