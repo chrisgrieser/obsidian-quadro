@@ -10,7 +10,12 @@ export const MINIGRAPH = {
 };
 
 export const TFILE_SORT_FUNC = {
-	alphabetical: (a: TFile, b: TFile) => a.basename.localeCompare(b.basename),
+	alphabeticalByCodeName: (a: TFile, b: TFile) => a.basename.localeCompare(b.basename),
+	alphabeticalByFullCode: (a: TFile, b: TFile) => {
+		const aFullCode = a.path.slice(CODE_FOLDER_NAME.length + 1);
+		const bFullCode = b.path.slice(CODE_FOLDER_NAME.length + 1);
+		return aFullCode.localeCompare(bFullCode);
+	},
 	lastUsedFirst: (a: TFile, b: TFile) => b.stat.mtime - a.stat.mtime,
 	oldestUsedFirst: (a: TFile, b: TFile) => a.stat.mtime - b.stat.mtime,
 	frequentlyUsedFirst: (a: TFile, b: TFile) => b.stat.size - a.stat.size,
