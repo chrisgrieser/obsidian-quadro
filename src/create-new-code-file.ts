@@ -29,7 +29,7 @@ export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 		const folderExists = app.vault.getAbstractFileByPath(parent) instanceof TFolder;
 		if (!folderExists) await app.vault.createFolder(parent);
 
-		codeDesc = codeDesc.replaceAll('"', "'");
+		codeDesc = codeDesc.replaceAll('"', "'"); // escape for YAML
 		const descAsYamlFrontmatter = `---\ndescription: "${codeDesc}"\n---\n\n\n---\n`;
 		const codeFile = await app.vault.create(`${parent}/${codeName}.md`, descAsYamlFrontmatter);
 		callback(codeFile);

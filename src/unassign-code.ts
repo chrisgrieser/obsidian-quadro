@@ -1,5 +1,5 @@
-import { App, Editor, FuzzySuggestModal, MarkdownView, Notice, TFile } from "obsidian";
-import { CODE_FOLDER_NAME } from "./settings";
+import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
+import { currentlyInCodeFolder, getFullCodeName, safelyGetActiveEditor } from "./utils";
 
 interface Code {
 	file: TFile;
@@ -31,8 +31,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		return this.codesInParagraph;
 	}
 	getItemText(code: Code): string {
-		const fullCode = code.file.path.slice(CODE_FOLDER_NAME.length + 1, -3);
-		return fullCode;
+		return getFullCodeName(code.file);
 	}
 	onChooseItem(code: Code) {
 		rmCodeWhileInDataFile(this.editor, this.dataFile, code);
@@ -46,13 +45,14 @@ async function rmCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code
 	const ln = editor.getCursor().line;
 	const lineText = editor.getLine(ln);
 	// needs to use wikilink instead of basename or the fullCode, since renaming
-	// operations could have changed what the wikilink actually looks like
-	editor.setLine(ln, lineText.replace(` [[${code.wikilink}]]`, ""));
+	// operations could have changed what the link actually looks like
+	const regex = new RegExp(" ?\\[\\[" + code.wikilink + "\\]\\]");
+	editor.setLine(ln, lineText.replace(regex, ""));
 
 	// REMOVE FROM CODEFILE
 	const blockId = lineText.match(/\^\w+$/);
 	if (!blockId) {
-		new Notice("Could not find block ID in line. Reference in Code-File not deleted.");
+		new Notice("Could not find block ID in line. Reference in Code-File is not deleted.");
 		return;
 	}
 	// no leading [[ since it is not ensured that dataFile has not been moved
@@ -103,14 +103,9 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
  */
 export async function unAssignCode(app: App) {
 	// GUARD
-	const view = app.workspace.getActiveViewOfType(MarkdownView);
-	if (!view) {
-		new Notice("No active editor.");
-		return;
-	}
-	const editor = view.editor;
-	const isInCodeFolder = app.workspace.getActiveFile()?.path.startsWith(CODE_FOLDER_NAME + "/");
-	if (isInCodeFolder) {
+	const editor = safelyGetActiveEditor(app);
+	if (!editor) return;
+	if (currentlyInCodeFolder(app, "silent")) {
 		rmCodeWhileInCodeFile(app, editor);
 		return;
 	}

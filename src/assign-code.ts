@@ -1,4 +1,4 @@
-import { App, Editor, FuzzySuggestModal, MarkdownView, Notice, TFile } from "obsidian";
+import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { createCodeFile } from "./create-new-code-file";
 import {
    ASSIGN_CODE_INITIAL_ORDER,
@@ -6,6 +6,7 @@ import {
    MINIGRAPH,
    TFILE_SORT_FUNC
 } from "./settings";
+import { getFullCodeName, safelyGetActiveEditor } from "./utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -77,8 +78,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const { char, charsPerBlock, maxLength } = MINIGRAPH;
 		const miniGraph = "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock));
 
-		const fullCode = item.path.slice(CODE_FOLDER_NAME.length + 1, -3);
-		return fullCode + miniGraph;
+		return getFullCodeName(item) + miniGraph;
 	}
 
 	onChooseItem(codeFile: TFile | "new-code-file") {
@@ -97,14 +97,14 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	 * Code-File: Append embedded blocklink to Data-File */
 	async assignCode(codeFile: TFile, dataFile: TFile) {
 		const cursor = this.editor.getCursor();
-		const nameOfCode = codeFile.path.slice(CODE_FOLDER_NAME.length + 1, -3);
+		const fullCode = getFullCodeName(codeFile);
 		let lineText = this.editor.getLine(cursor.line);
 
 		// GUARD
 		const lineAlreadyHasCode =
-			lineText.includes(`[[${nameOfCode}]]`) || lineText.includes(`[[${codeFile.basename}]]`);
+			lineText.includes(`[[${fullCode}]]`) || lineText.includes(`[[${codeFile.basename}]]`);
 		if (lineAlreadyHasCode) {
-			new Notice(`Paragraph already has code "${nameOfCode}"`);
+			new Notice(`Paragraph already has code "${fullCode}"`);
 			return;
 		}
 
@@ -118,7 +118,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
 
 		// Data-File Changes
-		const updatedLine = `${lineWithoutId} [[${nameOfCode}]] ${blockId}`;
+		const updatedLine = `${lineWithoutId} [[${fullCode}]] ${blockId}`;
 		this.editor.setLine(cursor.line, updatedLine);
 		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
@@ -133,17 +133,8 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 export function assignCode(app: App) {
 	// GUARD
-	const view = app.workspace.getActiveViewOfType(MarkdownView);
-	if (!view) {
-		new Notice("No active editor.");
-		return;
-	}
-	const editor = view.editor;
-	const isInCodeFolder = app.workspace.getActiveFile()?.path.startsWith(CODE_FOLDER_NAME + "/");
-	if (isInCodeFolder) {
-		new Notice("You cannot remove from a code file.");
-		return;
-	}
+	const editor = safelyGetActiveEditor(app);
+	if (!editor) return;
 	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
 	if (hasHighlightMarkupInSel) {
 		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
