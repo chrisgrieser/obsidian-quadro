@@ -56,9 +56,8 @@ async function rmCodeFromBothFiles(editor: Editor, dataFile: TFile, code: Code) 
 	}
 	// no leading [[ since it is not ensured that dataFile has not been moved
 	const refInCodeFile = `${dataFile.basename}#${blockId[0]}]]`;
-
 	const updatedCodeTFile = (await vault.read(code.file))
-		.split("\n")
+		.split("")
 		.filter((line) => !line.endsWith(refInCodeFile))
 		.join("\n");
 	await vault.modify(code.file, updatedCodeTFile);
@@ -68,23 +67,14 @@ async function rmCodeFromBothFiles(editor: Editor, dataFile: TFile, code: Code) 
 
 /** Determines codes assigned to paragraph, if more than one, then prompts user
  * to select one via the suggester */
-export async function unAssignCode(editorOrApp: Editor | App) {
-	// GUARD
-	let editor: Editor;
-	let app: App;
-	if (editorOrApp instanceof App) {
-		const view = editorOrApp.workspace.getActiveViewOfType(MarkdownView);
-		if (!view) {
-			new Notice("No active editor.");
-			return;
-		}
-		editor = view.editor;
-		app = editorOrApp;
-	} else {
-		editor = editorOrApp;
-		app = editor.editorComponent.app;
+export async function unAssignCode(app: App) {
+	// GUARD 
+	const view = app.workspace.getActiveViewOfType(MarkdownView);
+	if (!view) {
+		new Notice("No active editor.");
+		return;
 	}
-
+	const editor = view.editor;
 	const isInCodeFolder = editor.editorComponent.view.file.path.startsWith(CODE_FOLDER_NAME + "/");
 	if (isInCodeFolder) {
 		new Notice("You cannot remove from a code file.");

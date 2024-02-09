@@ -9,23 +9,23 @@ export default class Quadro extends Plugin {
 		// INFO Adding a hotkey by default, since this plugin is going to be
 		// used by many people not familiar with Obsidian. Requiring them to
 		// add an hotkey would unnecessarily complicate the onboarding for
-		// them. Using `alt+c` as a combination, as it is unlikely to conflict
-		// with other hotkeys.
-		this.addRibbonIcon("plus-circle", "Quadro: Assign code", () => assignCode(this.app));
+		// them. We are, however, using combinations that are unlikely to
+		// conflict with other plugins with other hotkeys.
+		const assignCmdName = "Assign code to paragraph";
+		this.addRibbonIcon("plus-circle", `Quadro: ${assignCmdName}`, () => assignCode(this.app));
 		this.addCommand({
 			id: "assign-code",
-			name: "Assign code to paragraph",
-			editorCallback: assignCode,
+			name: assignCmdName,
+			editorCallback: () => assignCode(this.app),
 			hotkeys: [{ modifiers: ["Mod", "Shift"], key: "a" }],
 		});
 
-		this.addRibbonIcon("minus-circle", "Quadro: Remove code from paragraph", () =>
-			unAssignCode(this.app),
-		);
+		const removeCmdName = "Remove code from paragraph";
+		this.addRibbonIcon("minus-circle", `Quadro: ${removeCmdName}`, () => unAssignCode(this.app));
 		this.addCommand({
 			id: "unassign-code",
-			name: "Remove code from paragraph",
-			editorCallback: unAssignCode,
+			name: removeCmdName,
+			editorCallback: () => unAssignCode(this.app),
 			hotkeys: [{ modifiers: ["Mod", "Shift"], key: "r" }],
 		});
 	}

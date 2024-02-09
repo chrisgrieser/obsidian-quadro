@@ -18,13 +18,13 @@ async function ensureBlockId(
 	const blockIdOfLine = lineText.match(/\^\w+$/);
 	if (blockIdOfLine) {
 		const blockId = blockIdOfLine[0];
-		const lineWithoutId = lineText.slice(0, -blockId.length);
+		const lineWithoutId = lineText.slice(0, -blockId.length).trim();
 		return { blockId: blockId, lineWithoutId: lineWithoutId };
 	}
 
 	const fullText: string = await this.app.vault.cachedRead(file);
 	const blockIdsInText = fullText.match(/\^\w+(?=\n)/g);
-	if (!blockIdsInText) return { blockId: "^id1", lineWithoutId: lineText };
+	if (!blockIdsInText) return { blockId: "^id1", lineWithoutId: lineText.trim() };
 
 	let counter = blockIdsInText ? blockIdsInText.length : 0;
 	let newBlockId: string;
@@ -36,7 +36,7 @@ async function ensureBlockId(
 		newBlockId = "^id" + counter;
 	} while (blockIdsInText.includes(newBlockId));
 
-	return { blockId: newBlockId, lineWithoutId: lineText };
+	return { blockId: newBlockId, lineWithoutId: lineText.trim() };
 }
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
@@ -130,23 +130,17 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function assignCode(editorOrApp: Editor | App) {
+export function assignCode(app: App) {
 	// GUARD
-	let editor: Editor;
-	if (editorOrApp instanceof App) {
-		const view = editorOrApp.workspace.getActiveViewOfType(MarkdownView);
-		if (!view) {
-			new Notice("No active editor.");
-			return;
-		}
-		editor = view.editor;
-	} else {
-		editor = editorOrApp;
+	const view = app.workspace.getActiveViewOfType(MarkdownView);
+	if (!view) {
+		new Notice("No active editor.");
+		return;
 	}
-
+	const editor = view.editor;
 	const isInCodeFolder = editor.editorComponent.view.file.path.startsWith(CODE_FOLDER_NAME + "/");
 	if (isInCodeFolder) {
-		new Notice("You cannot assign a code to a code file.");
+		new Notice("You cannot remove from a code file.");
 		return;
 	}
 	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
