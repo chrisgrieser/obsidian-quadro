@@ -1,6 +1,6 @@
 import { App, FuzzySuggestModal, MarkdownView, Notice, TFile } from "obsidian";
 import type { Editor } from "obsidian";
-import { ASSIGN_CODE_INITIAL_ORDER, CODE_FOLDER_NAME, MINIGRAPH, TFILE_SORT_FUNC } from "./const";
+import { ASSIGN_CODE_INITIAL_ORDER, CODE_FOLDER_NAME, MINIGRAPH, TFILE_SORT_FUNC } from "./settings";
 import { createCodeFile } from "./create-new-code-file";
 
 //──────────────────────────────────────────────────────────────────────────────

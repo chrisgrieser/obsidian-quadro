@@ -1,6 +1,6 @@
 import type { App, TFile } from "obsidian";
 import { Modal, Notice, Setting, TFolder } from "obsidian";
-import { CODE_FOLDER_NAME } from "./const";
+import { CODE_FOLDER_NAME } from "./settings";
 
 //──────────────────────────────────────────────────────────────────────────────
 
