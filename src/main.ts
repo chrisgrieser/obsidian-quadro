@@ -4,7 +4,7 @@ import { unAssignCode } from "./unassign-code";
 import { mergeCodes, renameCode } from "./wrapper-funcs";
 
 export default class Quadro extends Plugin {
-	onload() {
+	override onload() {
 		// INFO Adding a hotkey by default, since this plugin is going to be
 		// used by many people not familiar with Obsidian. Requiring them to
 		// add an hotkey would unnecessarily complicate the onboarding for
@@ -54,7 +54,7 @@ export default class Quadro extends Plugin {
 		console.info(this.manifest.name + " Plugin loaded.");
 	}
 
-	onunload() {
+	override onunload() {
 		console.info(this.manifest.name + " Plugin unloaded.");
 	}
 }

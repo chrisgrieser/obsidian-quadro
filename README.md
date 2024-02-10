@@ -20,10 +20,10 @@ the style of *Qualitative Content Analysis*.
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Coding](#coding)
 	* [Implementation of coding in Quadro](#implementation-of-coding-in-quadro)
-	* [Overview of coding capabilities](#overview-of-coding-capabilities)
+	* [Coding capabilities](#coding-capabilities)
 - [Extraction](#extraction)
 	* [Implementation of extractions in Quadro](#implementation-of-extractions-in-quadro)
-	* [Overview of extraction capabilities](#overview-of-extraction-capabilities)
+	* [Extraction capabilities](#extraction-capabilities)
 - [Installation](#installation)
 - [Development](#development)
 	* [Roadmap](#roadmap)
@@ -176,21 +176,18 @@ file:
 > Assignment of codes to individual words and coded segments with overlap are
 > not supported.
 
-### Overview of coding capabilities
+### Coding capabilities
 
-| Action                               | Notes                                                                                                                                                | Sidebar Button                                                                                                                                                                                                                                                                                                                                                                             | Default Hotkey | Capability Provider                             |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | -------------- | ----------------------------------------------- |
-| Assign code                          | Assign a code to the current paragraph, any selected text is highlighted. (overlapping highlights not supported though).                             | <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-circle"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>                                                                                          | `mod+shift+c`  | Quadro                                          |
-| Create new code                      | When assigning code, select `Create new code` in the code selection modal. Using `/` places the code file in a subfolder.                            | <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-circle"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>                                                                                          | `mod+shift+c`  | Quadro                                          |
-| Rename code                          | All references to the code file are automatically updated. Can also rename by right-clicking a file or link and selecting "Rename."                  | <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen-line"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>                                                                                       | `mod+shift+r`  | [Obsidian Built-in][rename]                     |
-| Remove code from paragraph           | Removes a code from the current paragraph of a data or code file. The reference is also removed from the corresponding other file.                   | <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-circle"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>                                                                                                            | `mod+shift+u`  | Quadro                                          |
-| Merge codes                          | All references to the code file are automatically updated.                                                                                           | <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-merge"><path d="m8 6 4-4 4 4"/><path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22"/><path d="m20 22-5-5"/></svg>                                                                       | `mod+shift+m`  | [Obsidian Core Plugin: Note Composer][composer] |
-| Code grouping                        | Codes can simply be arranged in subfolders via drag-and-drop in the File Explorer.                                                                   | —                                                                                                                                                                                                                                                                                                                                                                                            | —              | Obsidian Built-in                               |
-| Visualization of code relationships  | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph] | &ZeroWidthSpace;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-fork"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>| `mod+g`        | [Obsidian Code Plugin: Graph View][graph]  |
-| Investigation of code co-occurrences | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                            | —                                                                                                                                                                                                                                                                                                                                                                                            | `mod+shift+f`  | [Obsidian Code Plugin: Search][search]          |
-
-<!-- HACK &ZeroWidthSpace; suppresses spurious ltex error without affecting the
-table layout-->
+| Action                               | Notes                                                                                                                                                |           Sidebar Button           | Default Hotkey | Capability Provider                             |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------: | :------------: | ----------------------------------------------- |
+| Assign code                          | Assign a code to the current paragraph, any selected text is highlighted. (overlapping highlights not supported though).                             | ![Icon](./assets/plus-circle.svg)  | `mod+shift+c`  | Quadro                                          |
+| Create new code                      | When assigning code, select `Create new code` in the code selection modal. Using `/` places the code file in a subfolder.                            | ![Icon](./assets/plus-circle.svg)  | `mod+shift+c`  | Quadro                                          |
+| Rename code                          | All references to the code file are automatically updated. Can also rename by right-clicking a file or link and selecting "Rename."                  |   ![Icon](./assets/pen-line.svg)   | `mod+shift+r`  | [Obsidian Built-in][rename]                     |
+| Remove code from paragraph           | Removes a code from the current paragraph of a data or code file. The reference is also removed from the corresponding other file.                   | ![Icon](./assets/minus-circle.svg) | `mod+shift+u`  | Quadro                                          |
+| Merge codes                          | All references to the code file are automatically updated.                                                                                           |    ![Icon](./assets/merge.svg)     | `mod+shift+m`  | [Obsidian Core Plugin: Note Composer][composer] |
+| Code grouping                        | Codes can simply be arranged in subfolders via drag-and-drop in the File Explorer.                                                                   |                 —                  | —              | Obsidian Built-in                               |
+| Visualization of code relationships  | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph] |   ![Icon](./assets/git-fork.svg)   | `mod+g`        | [Obsidian Core Plugin: Graph View][graph]       |
+| Investigation of code co-occurrences | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                            |                 —                  | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]          |
 
 [composer]: https://help.obsidian.md/Plugins/Note+composer
 [rename]: https://help.obsidian.md/Files+and+folders/Manage+notes#Rename+a+note
@@ -247,7 +244,7 @@ source: "[[Interview 2#^id23]]"
 Some optional notes.
 ```
 
-### Overview of extraction capabilities
+### Extraction capabilities
 
 | Action              | Notes | Default Hotkey | Command Name | Capability Provider                     |
 | ------------------- | ----- | -------------- | ------------ | --------------------------------------- |
