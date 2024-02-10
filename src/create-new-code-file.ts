@@ -46,8 +46,10 @@ class InputModal extends Modal {
 	constructor(app: App, onSubmit: (fullCode: string, codeDesc: string) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
+		this.fullCode = "";
+		this.codeDesc = "";
 	}
-	onOpen() {
+	override onOpen() {
 		const { contentEl } = this;
 
 		// info text
@@ -89,7 +91,7 @@ class InputModal extends Modal {
 			)
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}
-	onClose() {
+	override onClose() {
 		const { contentEl } = this;
 		contentEl.empty();
 	}

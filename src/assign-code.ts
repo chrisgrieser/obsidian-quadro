@@ -13,7 +13,7 @@ import { getFullCodeName, safelyGetActiveEditor } from "./utils";
 /** Given a line, returns the blockID and the line without the blockID. If the
  * blockID does not exist, a unique id will be created. */
 async function ensureBlockId(
-	file: TFile,
+	tFile: TFile,
 	lineText: string,
 ): Promise<{ blockId: string; lineWithoutId: string }> {
 	const blockIdOfLine = lineText.match(/\^\w+$/);
@@ -23,7 +23,7 @@ async function ensureBlockId(
 		return { blockId: blockId, lineWithoutId: lineWithoutId };
 	}
 
-	const fullText: string = await this.app.vault.cachedRead(file);
+	const fullText: string = await tFile.vault.cachedRead(tFile);
 	const blockIdsInText = fullText.match(/\^\w+(?=\n)/g);
 	if (!blockIdsInText) return { blockId: "^id1", lineWithoutId: lineText.trim() };
 

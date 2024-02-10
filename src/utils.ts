@@ -5,7 +5,7 @@ import { CODE_FOLDER_NAME } from "./settings";
 export function currentlyInCodeFolder(app: App, silent?: boolean | "silent"): boolean {
 	const inCodeFolder = app.workspace.getActiveFile()?.path.startsWith(CODE_FOLDER_NAME + "/");
 	if (!inCodeFolder && !silent) new Notice("Not in a code file.");
-	return inCodeFolder;
+	return Boolean(inCodeFolder);
 }
 
 /** if not there is no active markdown view, also display a notice */

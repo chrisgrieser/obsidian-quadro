@@ -75,6 +75,10 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
 
 	const codeFile = editor.editorComponent.view.file;
 	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath, codeFile.path);
+	if (!dataFile) {
+		new Notice("Data file reference is invalid.");
+		return;
+	}
 
 	// update DATAFILE
 	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
@@ -87,7 +91,7 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
 	// updating wikilinks in the process. (The negative lookahead ensures that the
 	// patterns does not match two consecutive wikilinks https://regex101.com/r/25T8so/1)
 	const codeFileLinkRegex = new RegExp(" ?\\[\\[(.(?!]]))*?" + codeFile.basename + "\\]\\]");
-	dataFileLines[lnumInDataFile] = dataFileLines[lnumInDataFile].replace(codeFileLinkRegex, "");
+	dataFileLines[lnumInDataFile] = (dataFileLines[lnumInDataFile] || "").replace(codeFileLinkRegex, "");
 	await app.vault.modify(dataFile, dataFileLines.join("\n"));
 
 	// CODEFILE: simply delete current line via Obsidian command :P
@@ -126,7 +130,7 @@ export async function unAssignCode(app: App) {
 			new Notice("Line does not contain any valid codes.");
 		} else if (codesInParagr.length === 1) {
 			// B: in data file, line has 1 code
-			rmCodeWhileInDataFile(editor, dataFile, codesInParagr[0]);
+			rmCodeWhileInDataFile(editor, dataFile, codesInParagr[0] as Code);
 		} else {
 			// C: in data file, line has 2+ codes
 			new SuggesterForCodeToUnassign(app, editor, dataFile, codesInParagr).open();

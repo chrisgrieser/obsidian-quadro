@@ -1,9 +1,10 @@
-import type { TFile, App } from "obsidian";
+import "obsidian";
 
 declare module "obsidian" {
 	interface Editor {
 		editorComponent: {
 			view: {
+				// biome-ignore lint/correctness/noUndeclaredVariables: not needed here
 				file: TFile;
 			};
 			app: App;
