@@ -2,7 +2,7 @@ import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { currentlyInCodeFolder, getFullCodeName, safelyGetActiveEditor } from "./utils";
 
 interface Code {
-	file: TFile;
+	tFile: TFile;
 	wikilink: string;
 }
 
@@ -38,7 +38,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		return this.codesInParagraph;
 	}
 	getItemText(code: Code): string {
-		return getFullCodeName(code.file);
+		return getFullCodeName(code.tFile);
 	}
 	onChooseItem(code: Code) {
 		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);
@@ -46,30 +46,47 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 }
 
 async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code) {
-	const vault = editor.editorComponent.app.vault;
-
-	// REMOVE FROM DATAFILE
+	const app = editor.editorComponent.app;
 	const ln = editor.getCursor().line;
 	const lineText = editor.getLine(ln);
+
+	// remove link from DATAFILE
 	// needs to use wikilink instead of basename or the fullCode, since renaming
 	// operations could have changed what the link actually looks like
 	const regex = new RegExp(" ?\\[\\[" + code.wikilink + "\\]\\]");
 	editor.setLine(ln, lineText.replace(regex, ""));
 
-	// REMOVE FROM CODEFILE
-	const blockId = lineText.match(/\^\w+$/);
+	// find corresponding line in CODEFILE
+	const [blockId] = lineText.match(/\^\w+$/) || [];
 	if (!blockId) {
-		new Notice("Could not find block ID in line. Reference in Code-File is not deleted.");
+		new Notice("No ID found in current line.\nReference in Code File thus not deleted.");
 		return;
 	}
-	// no leading [[ since it is not ensured that dataFile has not been moved
-	// BUG will remove references to datafile with same name!
-	const refInCodeFile = `${dataFile.basename}#${blockId[0]}]]`;
-	const updatedCodeFileText = (await vault.read(code.file))
-		.split("\n")
-		.filter((line) => !line.endsWith(refInCodeFile))
-		.join("\n");
-	await vault.modify(code.file, updatedCodeFileText);
+	const codeFileLines = (await app.vault.read(code.tFile)).split("\n");
+	const refInCodeFile = codeFileLines.findIndex((line) => {
+		if (!line.includes(blockId)) return false;
+		const linksInLine = line.match(/\[\[.+?\]\]/g) || [];
+		for (const link of linksInLine) {
+			const linkPath = link.slice(2, -2).split("#")[0] || "";
+			const linkedFile = app.metadataCache.getFirstLinkpathDest(linkPath, code.tFile.path);
+			if (linkedFile?.path === dataFile.path) return true;
+		}
+		return false;
+	});
+
+	if (refInCodeFile < 0) {
+		new Notice(
+			`"Code File "${code.tFile.basename}" contains not reference to ` +
+				`to Data File "${dataFile.basename}" with the ID "${blockId}".` +
+				"Reference in Code File is thus not deleted.",
+			7000,
+		);
+		return;
+	}
+	codeFileLines.splice(refInCodeFile, 1);
+
+	// remove corresponding line in CODEFILE
+	await app.vault.modify(code.tFile, codeFileLines.join("\n"));
 }
 
 /** If not successful, returns an error, otherwise undefined */
@@ -144,7 +161,7 @@ export async function unassignCode(app: App) {
 		const codesInParagr = wikilinksInParagr.reduce((acc: Code[], wikilink) => {
 			wikilink = wikilink.slice(2, -2);
 			const codeFile = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-			if (codeFile instanceof TFile) acc.push({ file: codeFile, wikilink: wikilink });
+			if (codeFile instanceof TFile) acc.push({ tFile: codeFile, wikilink: wikilink });
 			return acc;
 		}, []);
 
@@ -198,5 +215,5 @@ export async function deleteCodeEverywhere(app: App) {
 	let msg = `Code File "${codeFile.basename}" and ${successes} references to it deleted.\n`;
 	if (errorMsgs.length > 0)
 		msg += `⚠️ ${errorMsgs.length} references could not be deleted:\n` + errorMsgs.join("\n");
-	new Notice(msg, (5 + errorMsgs.length) * 1000)
+	new Notice(msg, (5 + errorMsgs.length) * 1000);
 }
