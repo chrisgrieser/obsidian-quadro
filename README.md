@@ -182,10 +182,11 @@ file:
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------: | :------------: | ----------------------------------------------- |
 | Assign code                          | Assign a code to the current paragraph, any selected text is highlighted. (overlapping highlights not supported though).                             | ![Icon](./assets/plus-circle.svg)  | `mod+shift+c`  | Quadro                                          |
 | Create new code                      | When assigning code, select `Create new code` in the code selection modal. Using `/` places the code file in a subfolder.                            | ![Icon](./assets/plus-circle.svg)  | `mod+shift+c`  | Quadro                                          |
+| Bulk-create new codes                | Create multiple new codes at once (without assigning them any text segment).                                                                         |  ![Icon](./assets/copy-plus.svg)   |       —        | Quadro                                          |
 | Rename code                          | All references to the code file are automatically updated. Can also rename by right-clicking a file or link and selecting "Rename."                  |   ![Icon](./assets/pen-line.svg)   | `mod+shift+r`  | [Obsidian Built-in][rename]                     |
 | Remove code from paragraph           | Removes a code from the current paragraph of a data or code file. The reference is also removed from the corresponding other file.                   | ![Icon](./assets/minus-circle.svg) | `mod+shift+u`  | Quadro                                          |
-| Delete code everywhere               | Deletes the code file, and *all* references to it. (Not reversible!)                                                                                 |  ![Icon](./assets/file-minus.svg)  |       —        | Quadro                                          |
-| Merge codes                          | All references to the code file are automatically updated.                                                                                           |    ![Icon](./assets/merge.svg)     | `mod+shift+m`  | [Obsidian Core Plugin: Note Composer][composer] |
+| Delete code everywhere               | Deletes the code file, *and* all references to it. (The Code File is moved to the trash, but the deletion of references is not reversible.)          |  ![Icon](./assets/file-minus.svg)  |       —        | Quadro                                          |
+| Merge codes                          | All references to the original Code Files are updated to point to the Code File.                                                                      |    ![Icon](./assets/merge.svg)     |       —        | [Obsidian Core Plugin: Note Composer][composer] |
 | Code grouping                        | Codes can simply be arranged in subfolders via drag-and-drop in the File Explorer.                                                                   |                 —                  |       —        | Obsidian Built-in                               |
 | Visualization of code relationships  | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph] |   ![Icon](./assets/git-fork.svg)   |    `mod+g`     | [Obsidian Core Plugin: Graph View][graph]       |
 | Investigation of code co-occurrences | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                            |                 —                  | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]          |
@@ -281,7 +282,6 @@ Search for *"Quadro"*
 ## Development
 
 ### Roadmap
-- [ ] Bulk Create Codes.
 - [ ] Implement Extraction.
 - [ ] Example Vault.
 - [ ] Settings page.

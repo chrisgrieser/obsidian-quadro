@@ -58,6 +58,15 @@ body .internal-embed .markdown-embed-content {
 /* ────────────────────────────────────────────────────────────────────────── */
 /* QUADRO MODALS */
 
-.quadro-code-creation-input input {
+.quadro input {
 	width: 100%;
+}
+
+.quadro-textarea .setting-item-info {
+	display: none;
+}
+
+.quadro textarea {
+	width: 100%;
+	min-height: 10rem;
 }

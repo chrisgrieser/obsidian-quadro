@@ -2,6 +2,7 @@ import { Command, Plugin } from "obsidian";
 import { assignCode } from "./assign-code";
 import { deleteCodeEverywhere, unassignCode } from "./unassign-code";
 import { mergeCodes, renameCode } from "./wrapper-funcs";
+import { bulkCreateCodeFiles } from "./create-new-code-file";
 
 export default class Quadro extends Plugin {
 	override onload() {
@@ -17,6 +18,12 @@ export default class Quadro extends Plugin {
 				func: assignCode,
 				hotkeyLetter: "a",
 				icon: "plus-circle",
+			},
+			{
+				id: "bulk-create-new-code-files",
+				name: "Bulk create new code files",
+				func: bulkCreateCodeFiles,
+				icon: "copy-plus",
 			},
 			{
 				id: "rename-code",
@@ -42,7 +49,6 @@ export default class Quadro extends Plugin {
 				id: "merge-codes",
 				name: "Merge codes",
 				func: mergeCodes,
-				hotkeyLetter: "m",
 				icon: "merge",
 			},
 		];
