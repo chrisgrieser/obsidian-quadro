@@ -19,10 +19,10 @@ the style of *Qualitative Content Analysis*.
 	* [For Obsidian users](#for-obsidian-users)
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Coding](#coding)
-	* [Implementation of coding in Quadro](#implementation-of-coding-in-quadro)
+	* [How coding works in Quadro](#how-coding-works-in-quadro)
 	* [Coding capabilities](#coding-capabilities)
 - [Extraction](#extraction)
-	* [Implementation of extractions in Quadro](#implementation-of-extractions-in-quadro)
+	* [How extraction works in Quadro](#how-extraction-works-in-quadro)
 	* [Extraction capabilities](#extraction-capabilities)
 - [Installation](#installation)
 - [Development](#development)
@@ -129,7 +129,7 @@ extraction aspects are saved as ([YAML frontmatter](https://docs.zettlr.com/en/c
 
 ## Coding
 
-### Implementation of coding in Quadro
+### How coding works in Quadro
 There are two basic types of files for the analysis, Data Files and Code Files,
 which are both stored as [Markdown files](https://www.markdownguide.org/).
 
@@ -204,7 +204,7 @@ customized by search in the Obsidian hotkey settings.
 
 ## Extraction
 
-### Implementation of extractions in Quadro
+### How extraction works in Quadro
 Extraction is implemented similarly to coding, using two basic file types, Data
 Files and Extraction Files.
 
@@ -280,10 +280,11 @@ Search for *"Quadro"*
 ## Development
 
 ### Roadmap
-- [ ] Implement Extraction.
-- [ ] Submit to Obsidian Community Plugin Store.
 - [ ] Delete Codes Completely.
+- [ ] Bulk Create Codes.
+- [ ] Implement Extraction.
 - [ ] Example Vault.
+- [ ] Submit to Obsidian Community Plugin Store.
 
 ### Build
 
