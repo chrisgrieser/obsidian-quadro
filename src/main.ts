@@ -1,8 +1,8 @@
 import { Command, Plugin } from "obsidian";
-import { assignCode } from "./assign-code";
-import { deleteCodeEverywhere, unassignCode } from "./unassign-code";
-import { mergeCodes, renameCode } from "./wrapper-funcs";
-import { bulkCreateCodeFiles } from "./create-new-code-file";
+import { assignCode } from "./coding/assign-code";
+import { bulkCreateCodeFiles } from "./coding/create-new-code-file";
+import { deleteCodeEverywhere, unassignCode } from "./coding/unassign-code";
+import { mergeCodes, renameCode } from "./coding/wrapper-funcs";
 
 export default class Quadro extends Plugin {
 	override onload() {

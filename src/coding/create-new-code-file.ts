@@ -1,5 +1,5 @@
 import { App, Modal, Notice, Setting, TFile, TFolder } from "obsidian";
-import { CODE_FOLDER_NAME } from "./settings";
+import { CODE_FOLDER_NAME } from "src/settings";
 //──────────────────────────────────────────────────────────────────────────────
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input

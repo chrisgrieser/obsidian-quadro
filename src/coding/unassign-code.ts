@@ -1,5 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import { currentlyInCodeFolder, getFullCodeName, safelyGetActiveEditor } from "./utils";
+import { getFullCodeName, safelyGetActiveEditor, currentlyInCodeFolder } from "src/utils";
 
 interface Code {
 	tFile: TFile;

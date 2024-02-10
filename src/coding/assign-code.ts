@@ -5,8 +5,8 @@ import {
    CODE_FOLDER_NAME,
    MINIGRAPH,
    TFILE_SORT_FUNC,
-} from "./settings";
-import { currentlyInCodeFolder, getFullCodeName, safelyGetActiveEditor } from "./utils";
+} from "../settings";
+import { currentlyInCodeFolder, getFullCodeName, safelyGetActiveEditor } from "../utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 

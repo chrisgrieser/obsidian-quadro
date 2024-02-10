@@ -5,7 +5,7 @@
 // validation.
 
 import { App, Notice } from "obsidian";
-import { currentlyInCodeFolder } from "./utils";
+import { currentlyInCodeFolder } from "src/utils";
 
 export function renameCode(app: App) {
 	if (!currentlyInCodeFolder(app)) {
