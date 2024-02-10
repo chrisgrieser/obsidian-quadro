@@ -6,6 +6,13 @@ interface Code {
 	wikilink: string;
 }
 
+interface DataFileReference {
+	file: TFile;
+	blockId: string;
+}
+
+const embeddedBlockLinkRegex = /^!\[\[(.+?)#(\^\w+)\]\]$/;
+
 //──────────────────────────────────────────────────────────────────────────────
 
 /** suggester used when more than one code is assigned to the paragraph */
@@ -34,11 +41,11 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		return getFullCodeName(code.file);
 	}
 	onChooseItem(code: Code) {
-		rmCodeWhileInDataFile(this.editor, this.dataFile, code);
+		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);
 	}
 }
 
-async function rmCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code) {
+async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code) {
 	const vault = editor.editorComponent.app.vault;
 
 	// REMOVE FROM DATAFILE
@@ -56,6 +63,7 @@ async function rmCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code
 		return;
 	}
 	// no leading [[ since it is not ensured that dataFile has not been moved
+	// BUG will remove references to datafile with same name!
 	const refInCodeFile = `${dataFile.basename}#${blockId[0]}]]`;
 	const updatedCodeFileText = (await vault.read(code.file))
 		.split("\n")
@@ -64,10 +72,38 @@ async function rmCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code
 	await vault.modify(code.file, updatedCodeFileText);
 }
 
-async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
+/** If not successful, returns an error, otherwise undefined */
+async function removeCodeFileRefInDataFile(
+	app: App,
+	codeFile: TFile,
+	dataFile: TFile,
+	blockId: string,
+): Promise<string | undefined> {
+	// retrieve referenced Line in DATAFILE
+	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
+	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
+	if (lnumInDataFile < 0)
+		return `Data File ${dataFile.basename}, has no line with the ID "${blockId}".`;
+	const dataFileLine = dataFileLines[lnumInDataFile] || "";
+
+	// remove link to CODFILE from DATAFILE line
+	const linksInDataFileLine = dataFileLine.match(/\[\[.+?\]\]/g) || [];
+	const linkToCodeFile = linksInDataFileLine.find((link) => {
+		link = link.slice(2, -2);
+		const linkedTFile = app.metadataCache.getFirstLinkpathDest(link, dataFile.path);
+		return linkedTFile instanceof TFile && linkedTFile.path === codeFile.path;
+	});
+	if (!linkToCodeFile)
+		return `Data File ${dataFile.basename}, line "${blockId}" has no valid link to the Code-File.`;
+	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "").replace(/ {2,}/g, " ");
+	await app.vault.modify(dataFile, dataFileLines.join("\n"));
+	return;
+}
+
+async function unassignCodeWhileInCodeFile(app: App, editor: Editor) {
 	// Identify DATAFILE
 	const lineText = editor.getLine(editor.getCursor().line);
-	const [_, linkPath, blockId] = lineText.match(/^!\[\[(.+?)#(\^\w+)\]\]$/) || [];
+	const [_, linkPath, blockId] = lineText.match(embeddedBlockLinkRegex) || [];
 	const codeFile = editor.editorComponent.view.file;
 	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath || "", codeFile.path);
 	if (!blockId || !linkPath || !dataFile) {
@@ -75,30 +111,11 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
 		return;
 	}
 
-	// retrieve referenced Line in DATAFILE
-	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
-	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
-	if (lnumInDataFile < 0) {
-		new Notice(`Line with ID "${blockId}" not found in Data-File.`);
+	const errorMsg = await removeCodeFileRefInDataFile(app, codeFile, dataFile, blockId);
+	if (!errorMsg) {
+		new Notice(errorMsg + "\n\nAborting removal of Code.", 4000);
 		return;
 	}
-	const dataFileLine = dataFileLines[lnumInDataFile] || "";
-
-	// remove link to Code-File from DATAFILE line
-	const linksInDataFileLine = dataFileLine.match(/\[\[.+?\]\]/g) || [];
-	const linkToCodeFile = linksInDataFileLine.find((link) => {
-		link = link.slice(2, -2);
-		const linkedTFile = app.metadataCache.getFirstLinkpathDest(link, dataFile.path);
-		return linkedTFile instanceof TFile && linkedTFile.path === codeFile.path;
-	});
-	if (!linkToCodeFile) {
-		new Notice(`Line with ID "${blockId}" Data File has no valid link to Code File.`);
-		return;
-	}
-	dataFileLines[lnumInDataFile] = dataFileLine
-		.replace(linkToCodeFile, "")
-		.replace(/ {2,}/g, " ");
-	await app.vault.modify(dataFile, dataFileLines.join("\n"));
 
 	// CODEFILE: simply delete current line via Obsidian command :P
 	app.commands.executeCommandById("editor:delete-paragraph");
@@ -112,14 +129,13 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
  * B. data file, line has 1 code -> remove code, and its reference from code file
  * C. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
  */
-export async function unAssignCode(app: App) {
-	// GUARD
+export async function unassignCode(app: App) {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
 	if (currentlyInCodeFolder(app)) {
 		// A: in code file
-		rmCodeWhileInCodeFile(app, editor);
+		unassignCodeWhileInCodeFile(app, editor);
 	} else {
 		const dataFile = editor.editorComponent.view.file;
 		const lineText = editor.getLine(editor.getCursor().line);
@@ -136,10 +152,51 @@ export async function unAssignCode(app: App) {
 			new Notice("Line does not contain any valid codes.");
 		} else if (codesInParagr.length === 1) {
 			// B: in data file, line has 1 code
-			rmCodeWhileInDataFile(editor, dataFile, codesInParagr[0] as Code);
+			unassignCodeWhileInDataFile(editor, dataFile, codesInParagr[0] as Code);
 		} else {
 			// C: in data file, line has 2+ codes
 			new SuggesterForCodeToUnassign(app, editor, dataFile, codesInParagr).open();
 		}
 	}
+}
+
+export async function deleteCodeEverywhere(app: App) {
+	const editor = safelyGetActiveEditor(app);
+	if (!editor) return;
+
+	if (!currentlyInCodeFolder(app)) {
+		new Notice("Must be in Code File to delete the code everywhere.");
+		return;
+	}
+
+	// determine all DATAFILES that are referenced in CODEFILE, and their blockID
+	// (`app.metadataCache.resolvedLinks` does not contain blockIDs, so we need
+	// to read and parse the file manually)
+	const codeFile = editor.editorComponent.view.file;
+	const allReferences =
+		((await app.vault.cachedRead(codeFile)) || "").match(/!\[\[.+?\]\]/g) || [];
+	const referencedParasInDataFiles = allReferences.reduce((acc: DataFileReference[], link) => {
+		const [_, linkPath, blockId] = link.match(embeddedBlockLinkRegex) || [];
+		if (!linkPath || !blockId) return acc;
+		const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath, codeFile.path);
+		if (dataFile instanceof TFile) acc.push({ file: dataFile, blockId: blockId });
+		return acc;
+	}, []);
+
+	// delete the reference in each DATAFILE
+	const errorMsgs: string[] = [];
+	for (const { file, blockId } of referencedParasInDataFiles) {
+		const errorMsg = await removeCodeFileRefInDataFile(app, codeFile, file, blockId);
+		if (errorMsg) errorMsgs.push(errorMsg);
+	}
+
+	// CODEFILE: can simply be deleted
+	await app.vault.trash(codeFile, true);
+
+	// REPORT
+	const successes = referencedParasInDataFiles.length - errorMsgs.length;
+	let msg = `Code File "${codeFile.basename}" and ${successes} references to it deleted.\n`;
+	if (errorMsgs.length > 0)
+		msg += `⚠️ ${errorMsgs.length} references could not be deleted:\n` + errorMsgs.join("\n");
+	new Notice(msg, (5 + errorMsgs.length) * 1000)
 }

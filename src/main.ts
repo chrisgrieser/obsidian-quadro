@@ -1,6 +1,6 @@
-import { Plugin } from "obsidian";
+import { Command, Plugin } from "obsidian";
 import { assignCode } from "./assign-code";
-import { unAssignCode } from "./unassign-code";
+import { deleteCodeEverywhere, unassignCode } from "./unassign-code";
 import { mergeCodes, renameCode } from "./wrapper-funcs";
 
 export default class Quadro extends Plugin {
@@ -19,18 +19,24 @@ export default class Quadro extends Plugin {
 				icon: "plus-circle",
 			},
 			{
-				id: "unassign-code",
-				name: "Remove code from paragraph",
-				func: unAssignCode,
-				hotkeyLetter: "u",
-				icon: "minus-circle",
-			},
-			{
 				id: "rename-code",
 				name: "Rename code",
 				func: renameCode,
 				hotkeyLetter: "r",
 				icon: "pen-line",
+			},
+			{
+				id: "unassign-code",
+				name: "Remove code from paragraph",
+				func: unassignCode,
+				hotkeyLetter: "u",
+				icon: "minus-circle",
+			},
+			{
+				id: "delete-code-everywhere",
+				name: "Delete code file and all references to it",
+				func: deleteCodeEverywhere,
+				icon: "file-minus",
 			},
 			{
 				id: "merge-codes",
@@ -43,12 +49,15 @@ export default class Quadro extends Plugin {
 
 		for (const cmd of commands) {
 			this.addRibbonIcon(cmd.icon, `Quadro: ${cmd.name}`, () => cmd.func(this.app));
-			this.addCommand({
+			const cmdObj: Command = {
 				id: cmd.id,
 				name: cmd.name,
 				editorCallback: () => cmd.func(this.app),
-				hotkeys: [{ modifiers: ["Mod", "Shift"], key: cmd.hotkeyLetter }],
-			});
+			};
+			if (cmd.hotkeyLetter) {
+				cmdObj.hotkeys = [{ modifiers: ["Mod", "Shift"], key: cmd.hotkeyLetter }];
+			}
+			this.addCommand(cmdObj);
 		}
 
 		console.info(this.manifest.name + " Plugin loaded.");
