@@ -20,12 +20,6 @@ export default class Quadro extends Plugin {
 				icon: "plus-circle",
 			},
 			{
-				id: "bulk-create-new-code-files",
-				name: "Bulk create new code files",
-				func: bulkCreateCodeFiles,
-				icon: "copy-plus",
-			},
-			{
 				id: "rename-code",
 				name: "Rename code",
 				func: renameCode,
@@ -34,9 +28,9 @@ export default class Quadro extends Plugin {
 			},
 			{
 				id: "unassign-code",
-				name: "Remove code from paragraph",
+				name: "Delete code from paragraph",
 				func: unassignCode,
-				hotkeyLetter: "u",
+				hotkeyLetter: "d",
 				icon: "minus-circle",
 			},
 			{
@@ -50,6 +44,12 @@ export default class Quadro extends Plugin {
 				name: "Merge codes",
 				func: mergeCodes,
 				icon: "merge",
+			},
+			{
+				id: "bulk-create-new-code-files",
+				name: "Bulk create new code files",
+				func: bulkCreateCodeFiles,
+				icon: "copy-plus",
 			},
 		];
 

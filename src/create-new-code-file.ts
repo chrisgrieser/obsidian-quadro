@@ -79,7 +79,7 @@ class InputForMultipleFiles extends Modal {
 		// textarea field
 		new Setting(contentEl)
 			.setClass("quadro")
-			.setClass("quadro-textarea")
+			.setClass("quadro-bulk-code-creation")
 			.addTextArea((text) =>
 				text.onChange((value) => {
 					this.input = value;
