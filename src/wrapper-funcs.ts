@@ -13,14 +13,9 @@ export function renameCode(app: App) {
 }
 
 export function mergeCodes(app: App) {
-	const noteComposerEnabled = app.internalPlugins.plugins["note-composer"].enabled;
-	if (!noteComposerEnabled) {
-		new Notice(
-			'The "Note Composer" plugin needs to be enabled.\n' +
-				'You can enable it in the Obsidian settings under "Core plugins."',
-		);
-		return;
-	}
+	// ensure plugin is enabled, to save new users the trouble of enabling it
+	app.internalPlugins.plugins["note-composer"]?.enable()
+
 	if (!currentlyInCodeFolder(app)) return;
 	new Notice("Select a code file from the list.");
 	app.commands.executeCommandById("note-composer:merge-file");
