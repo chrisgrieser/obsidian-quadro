@@ -111,7 +111,7 @@ export async function unAssignCode(app: App) {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
-	if (currentlyInCodeFolder(app, "silent")) {
+	if (currentlyInCodeFolder(app)) {
 		// A: in code file
 		rmCodeWhileInCodeFile(app, editor);
 	} else {

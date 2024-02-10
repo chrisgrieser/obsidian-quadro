@@ -19,6 +19,7 @@ declare module "obsidian" {
 			plugins: {
 				[key: string]: {
 					enabled: boolean;
+					enable: () => void;
 				};
 			};
 		};

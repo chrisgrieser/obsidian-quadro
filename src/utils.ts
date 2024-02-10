@@ -2,9 +2,8 @@ import { App, Editor, MarkdownView, Notice, TFile } from "obsidian";
 import { CODE_FOLDER_NAME } from "./settings";
 
 /** if not in a code file, also display a notice */
-export function currentlyInCodeFolder(app: App, silent?: boolean | "silent"): boolean {
+export function currentlyInCodeFolder(app: App): boolean {
 	const inCodeFolder = app.workspace.getActiveFile()?.path.startsWith(CODE_FOLDER_NAME + "/");
-	if (!inCodeFolder && !silent) new Notice("Not in a code file.");
 	return Boolean(inCodeFolder);
 }
 

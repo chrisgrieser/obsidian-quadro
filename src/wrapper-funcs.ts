@@ -8,15 +8,21 @@ import { App, Notice } from "obsidian";
 import { currentlyInCodeFolder } from "./utils";
 
 export function renameCode(app: App) {
-	if (!currentlyInCodeFolder(app)) return;
-	app.commands.executeCommandById("workspace:edit-file-title");
+	if (!currentlyInCodeFolder(app)) {
+		new Notice("You must be in a code file.");
+	} else {
+		app.commands.executeCommandById("workspace:edit-file-title");
+	}
 }
 
 export function mergeCodes(app: App) {
-	// ensure plugin is enabled, to save new users the trouble of enabling it
-	app.internalPlugins.plugins["note-composer"]?.enable()
+	if (!currentlyInCodeFolder(app)) {
+		new Notice("You must be in a code file.");
+	} else {
+		// ensure plugin is enabled, to save new users the trouble of enabling it
+		app.internalPlugins.plugins["note-composer"]?.enable();
 
-	if (!currentlyInCodeFolder(app)) return;
-	new Notice("Select a code file from the list.");
-	app.commands.executeCommandById("note-composer:merge-file");
+		new Notice("Select a Code File from the list.");
+		app.commands.executeCommandById("note-composer:merge-file");
+	}
 }

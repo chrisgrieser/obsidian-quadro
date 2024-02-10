@@ -4,9 +4,9 @@ import {
    ASSIGN_CODE_INITIAL_ORDER,
    CODE_FOLDER_NAME,
    MINIGRAPH,
-   TFILE_SORT_FUNC
+   TFILE_SORT_FUNC,
 } from "./settings";
-import { getFullCodeName, safelyGetActiveEditor } from "./utils";
+import { currentlyInCodeFolder, getFullCodeName, safelyGetActiveEditor } from "./utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -135,6 +135,12 @@ export function assignCode(app: App) {
 	// GUARD
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
+
+	if (currentlyInCodeFolder(app)) {
+		new Notice("You cannot assign codes to a code file.");
+		return;
+	}
+
 	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
 	if (hasHighlightMarkupInSel) {
 		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
