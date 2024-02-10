@@ -11,33 +11,35 @@ import { currentlyInCodeFolder, getFullCodeName, safelyGetActiveEditor } from ".
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Given a line, returns the blockID and the line without the blockID. If the
- * blockID does not exist, a unique id will be created. */
+ * blockID does not exist, a random 6-digit ID is created. A random ID is
+ * preferable over counting the number of IDs, it is less likely that content
+ * will be deleted due to the same blockID being used multiple times in
+ * different files. */
 async function ensureBlockId(
 	tFile: TFile,
 	lineText: string,
 ): Promise<{ blockId: string; lineWithoutId: string }> {
-	const blockIdOfLine = lineText.match(/\^\w+$/);
+	const randomSixDigits = () =>
+		Math.ceil(Math.random() * 1000000)
+			.toString()
+			.padStart(6, "0");
+
+	// line already has blockID
+	const [blockIdOfLine] = lineText.match(/\^\w+$/) || [];
 	if (blockIdOfLine) {
-		const blockId = blockIdOfLine[0];
-		const lineWithoutId = lineText.slice(0, -blockId.length).trim();
-		return { blockId: blockId, lineWithoutId: lineWithoutId };
+		const lineWithoutId = lineText.slice(0, -blockIdOfLine.length).trim();
+		return { blockId: blockIdOfLine, lineWithoutId: lineWithoutId };
 	}
 
-	const fullText: string = await tFile.vault.cachedRead(tFile);
-	const blockIdsInText = fullText.match(/\^\w+(?=\n)/g);
-	if (!blockIdsInText) return { blockId: "^id1", lineWithoutId: lineText.trim() };
-
-	let counter = blockIdsInText ? blockIdsInText.length : 0;
-	let newBlockId: string;
-
-	// ensure blockId does not exist yet
-	// (this can happen if user changed the id manually)
+	// line has no blockID
+	const fullText = await tFile.vault.cachedRead(tFile);
+	const blockIdsInText: string[] = fullText.match(/\^\w+(?=\n)/g) || [];
+	let newId: string;
 	do {
-		counter++;
-		newBlockId = "^id" + counter;
-	} while (blockIdsInText.includes(newBlockId));
+		newId = "^id-" + randomSixDigits();
+	} while (blockIdsInText.includes(newId));
 
-	return { blockId: newBlockId, lineWithoutId: lineText.trim() };
+	return { blockId: newId, lineWithoutId: lineText.trim() };
 }
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
