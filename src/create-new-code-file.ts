@@ -17,7 +17,7 @@ class InputForOneFile extends Modal {
 		// info text
 		contentEl.createEl("h4", { text: "New code creation" });
 		contentEl.createEl("p", {
-			text: 'Use a slash ("/") in the name of the code to create a subfolder for the code file (grouped code).',
+			text: 'Use a slash ("/") in the name of the code to create the Code File in a subfolder.',
 		});
 
 		// name input field
@@ -73,7 +73,7 @@ class InputForMultipleFiles extends Modal {
 		contentEl.createEl("h4", { text: "Bulk-create new codes" });
 		contentEl.createEl("p", { text: "Every line will result in a new code file." });
 		contentEl.createEl("p", {
-			text: 'Use a slash ("/") to create a subfolder for the code file (grouped code).',
+			text: 'Use a slash ("/") to create the Code File in a subfolder.',
 		});
 
 		// textarea field
