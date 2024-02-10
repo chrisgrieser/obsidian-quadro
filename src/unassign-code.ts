@@ -68,35 +68,41 @@ async function rmCodeWhileInCodeFile(app: App, editor: Editor) {
 	// Identify DATAFILE
 	const lineText = editor.getLine(editor.getCursor().line);
 	const [_, linkPath, blockId] = lineText.match(/^!\[\[(.+?)#(\^\w+)\]\]$/) || [];
-	if (!blockId || !linkPath) {
+	const codeFile = editor.editorComponent.view.file;
+	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath || "", codeFile.path);
+	if (!blockId || !linkPath || !dataFile) {
 		new Notice("Current line has no correct reference.");
 		return;
 	}
 
-	const codeFile = editor.editorComponent.view.file;
-	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath, codeFile.path);
-	if (!dataFile) {
-		new Notice("Data file reference is invalid.");
-		return;
-	}
-
-	// update DATAFILE
+	// retrieve referenced Line in DATAFILE
 	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
 	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
 	if (lnumInDataFile < 0) {
 		new Notice(`Line with ID "${blockId}" not found in Data-File.`);
 		return;
 	}
-	// using only basename with regex, since user may have renamed the file,
-	// updating wikilinks in the process. (The negative lookahead ensures that the
-	// patterns does not match two consecutive wikilinks https://regex101.com/r/25T8so/1)
-	const codeFileLinkRegex = new RegExp(" ?\\[\\[(.(?!]]))*?" + codeFile.basename + "\\]\\]");
-	dataFileLines[lnumInDataFile] = (dataFileLines[lnumInDataFile] || "").replace(codeFileLinkRegex, "");
+	const dataFileLine = dataFileLines[lnumInDataFile] || "";
+
+	// remove link to Code-File from DATAFILE line
+	const linksInDataFileLine = dataFileLine.match(/\[\[.+?\]\]/g) || [];
+	const linkToCodeFile = linksInDataFileLine.find((link) => {
+		link = link.slice(2, -2);
+		const linkedTFile = app.metadataCache.getFirstLinkpathDest(link, dataFile.path);
+		return linkedTFile instanceof TFile && linkedTFile.path === codeFile.path;
+	});
+	if (!linkToCodeFile) {
+		new Notice(`Line with ID "${blockId}" Data File has no valid link to Code File.`);
+		return;
+	}
+	dataFileLines[lnumInDataFile] = dataFileLine
+		.replace(linkToCodeFile, "")
+		.replace(/ {2,}/g, " ");
 	await app.vault.modify(dataFile, dataFileLines.join("\n"));
 
 	// CODEFILE: simply delete current line via Obsidian command :P
 	app.commands.executeCommandById("editor:delete-paragraph");
-	editor.setCursor({ line: editor.getCursor().line, ch: 0 });
+	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); // prevents suggester opening
 }
 
 //──────────────────────────────────────────────────────────────────────────────
