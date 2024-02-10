@@ -30,7 +30,7 @@ export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 		if (!folderExists) await app.vault.createFolder(parent);
 
 		codeDesc = codeDesc.replaceAll('"', "'"); // escape for YAML
-		const descAsYamlFrontmatter = `---\ndescription: "${codeDesc}"\n---\n\n\n---\n`;
+		const descAsYamlFrontmatter = `---\ndescription: "${codeDesc}"\n---\n\n\n---\n\n`;
 		const codeFile = await app.vault.create(`${parent}/${codeName}.md`, descAsYamlFrontmatter);
 		callback(codeFile);
 
@@ -40,14 +40,12 @@ export function createCodeFile(app: App, callback: (codeFile: TFile) => void) {
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
 class InputModal extends Modal {
-	fullCode: string;
-	codeDesc: string;
+	fullCode = "";
+	codeDesc = "";
 	onSubmit: (fullCode: string, codeDesc: string) => void;
 	constructor(app: App, onSubmit: (fullCode: string, codeDesc: string) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
-		this.fullCode = "";
-		this.codeDesc = "";
 	}
 	override onOpen() {
 		const { contentEl } = this;
