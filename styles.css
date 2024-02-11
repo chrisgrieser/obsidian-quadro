@@ -56,6 +56,24 @@ body .internal-embed .markdown-embed-content {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
+/* FILE EXPLORER */
+
+.nav-folder-title:is([data-path="Codes"], [data-path="Extractions"], [data-path="Data"]) .nav-folder-title-content {
+	font-weight: 800;
+}
+
+/* icons for Code Files and Extraction Files */
+.nav-file-title[data-path^="Codes/"]::before {
+	content: "○";
+	padding-right: 3px;
+}
+
+.nav-file-title[data-path^="Extractions/"]::before {
+	content: "🞏";
+	padding-right: 3px;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
 /* QUADRO MODALS */
 
 .quadro input {

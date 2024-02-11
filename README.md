@@ -178,14 +178,14 @@ file:
 
 ### Coding capabilities
 
-| Action                                    | Notes                                                                                                                                                                                                               |           Sidebar Button           | Default Hotkey | Capability Provider                             |
+| Action                                    | Description                                                                                                                                                                                                         |           Sidebar Button           | Default Hotkey | Capability Provider                             |
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------: | :------------: | ----------------------------------------------- |
 | Assign code                               | Assign a code to the current paragraph, any selected text is highlighted. (overlapping highlights not supported though). <br><br>Select `Create new code` to create a new code file and assign it to the paragraph. | ![Icon](./assets/plus-circle.svg)  | `mod+shift+a`  | Quadro                                          |
-| Rename code                               | All references to the Code File are automatically updated. (You can also rename by right-clicking a file or link and selecting "Rename.")                                                                           |   ![Icon](./assets/pen-line.svg)   | `mod+shift+r`  | [Obsidian Built-in][rename]                     |
+| Rename code                               | All references to the Code File are automatically updated. (You can also rename by right-clicking a file or link and selecting "Rename.")                                                                           | ![Icon](./assets/circle-slash.svg) | `mod+shift+r`  | [Obsidian Built-in][rename]                     |
 | Delete code from paragraph                | Removes a code from the current paragraph of a Data File or Code File. The reference is also removed from the corresponding other file.                                                                             | ![Icon](./assets/minus-circle.svg) | `mod+shift+d`  | Quadro                                          |
-| Delete Code File and all references to it | Moves the Code File to the trash, *and* deletes all references to it.                                                                                                                                               |  ![Icon](./assets/file-minus.svg)  |       —        | Quadro                                          |
-| Merge codes                               | All references to the original Code Files are updated to point to the Code File.                                                                                                                                    |    ![Icon](./assets/merge.svg)     |       —        | [Obsidian Core Plugin: Note Composer][composer] |
-| Bulk-create new codes                     | Create multiple new codes at once (without assigning them to a paragraph).                                                                                                                                          |  ![Icon](./assets/copy-plus.svg)   |       —        | Quadro                                          |
+| Delete Code File and all references to it | Moves the Code File to the trash, *and* deletes all references to it.                                                                                                                                               |   ![Icon](./assets/x-circle.svg)   |       —        | Quadro                                          |
+| Merge codes                               | All references to the original Code Files are updated to point to the Code File.                                                                                                                                    |    ![Icon](./assets/radius.svg)    |       —        | [Obsidian Core Plugin: Note Composer][composer] |
+| Bulk-create new codes                     | Create multiple new codes at once (without assigning them to a paragraph).                                                                                                                                          |  ![Icon](./assets/circle-dot.svg)  |       —        | Quadro                                          |
 | Code grouping                             | Codes can simply be arranged in subfolders via drag-and-drop in the File Explorer.                                                                                                                                  |                 —                  |       —        | Obsidian Built-in                               |
 | Visualization of code relationships       | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph]                                                                |   ![Icon](./assets/git-fork.svg)   |    `mod+g`     | [Obsidian Core Plugin: Graph View][graph]       |
 | Investigation of code co-occurrences      | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                                                                                           |                 —                  | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]          |
@@ -247,10 +247,10 @@ Some optional notes.
 
 ### Extraction capabilities
 
-| Action              | Notes | Default Hotkey | Command Name | Capability Provider                     |
-| ------------------- | ----- | -------------- | ------------ | --------------------------------------- |
-| Extract information | TODO  | /              | /            | Quadro                                  |
-| Data aggregation    | TODO  | /              | /            | [Community Plugin: Dataview][dataview]              |
+| Action                 | Description                                                                                   |              Sidebar Button              | Default Hotkey | Capability Provider                    |
+| ---------------------- | --------------------------------------------------------------------------------------------- | :--------------------------------------: | :------------: | -------------------------------------- |
+| Extract from paragraph | Creates an Extraction File from Extraction Template. (WIP)                                    |    ![Icon](./assets/plus-square.svg)     | `mod+shift+e`  | Quadro                                 |
+| Aggregate extractions  | Create table that aggregates Extraction Files. (WIP)<br><br>[Further Documentation][dataview] | ![Icon](./assets/gantt-chart-square.svg) |       /        | [Community Plugin: Dataview][dataview] |
 
 [dataview]: https://blacksmithgu.github.io/obsidian-dataview/
 
@@ -282,6 +282,8 @@ Search for *"Quadro"*
 
 ### Roadmap
 - [ ] Implement Extraction.
+	* [ ] Anchor examples as notices?
+	* [ ] New YAML window
 - [ ] Example Vault.
 - [ ] Settings page.
 - [ ] Submit to Obsidian Community Plugin Store.

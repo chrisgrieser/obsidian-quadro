@@ -1,5 +1,5 @@
 import { App, Notice } from "obsidian";
 
-export function extractFromParagraph(app: App) {
+export function aggregateExtractions(app: App) {
 	new Notice("WIP");
 }
