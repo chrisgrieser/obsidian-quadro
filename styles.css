@@ -1,6 +1,6 @@
 .variable-safety-for-obsidian-css {
 	--text-faint: "";
-	--background-primary: "";
+	--background-secondary-alt: "";
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -95,5 +95,5 @@ body .internal-embed .markdown-embed-content {
 /* QUADRO RIBBON BUTTONS */
 
 .side-dock-ribbon-action[aria-label^="Quadro: "] {
-	background: var(--background-primary);
+	background: var(--background-secondary-alt);
 }
