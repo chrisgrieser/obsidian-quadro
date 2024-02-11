@@ -1,5 +1,6 @@
 .variable-safety-for-obsidian-css {
 	--text-faint: "";
+	--background-primary: "";
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -58,6 +59,7 @@ body .internal-embed .markdown-embed-content {
 /* ────────────────────────────────────────────────────────────────────────── */
 /* FILE EXPLORER */
 
+/* bold to all the folders with special function for Quadro */
 .nav-folder-title:is([data-path="Codes"], [data-path="Extractions"], [data-path="Data"]) .nav-folder-title-content {
 	font-weight: 800;
 }
@@ -87,4 +89,11 @@ body .internal-embed .markdown-embed-content {
 .quadro textarea {
 	width: 100%;
 	min-height: 10rem;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* QUADRO RIBBON BUTTONS */
+
+.side-dock-ribbon-action[aria-label^="Quadro: "] {
+	background: var(--background-primary);
 }
