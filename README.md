@@ -26,8 +26,6 @@ the style of *Qualitative Content Analysis*.
 	* [Extraction capabilities](#extraction-capabilities)
 - [Installation](#installation)
 - [Development](#development)
-	* [Roadmap](#roadmap)
-	* [Build](#build)
 - [Credits](#credits)
 	* [Acknowledgments](#acknowledgments)
 	* [Recommended citation](#recommended-citation)
@@ -279,17 +277,6 @@ Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` �
 Search for *"Quadro"*
 
 ## Development
-
-### Roadmap
-- [ ] Implement Extraction
-	* [ ] Anchor examples as notices?
-	* [ ] New YAML window
-- [ ] Submit to Obsidian Community Plugin Store
-- [ ] Example Vault.
-- [ ] Code / Extraction Counter Status bar item
-- [ ] Settings page.
-
-### Build
 
 ```bash
 git clone "git@github.com:chrisgrieser/obsidian-quadro.git"
