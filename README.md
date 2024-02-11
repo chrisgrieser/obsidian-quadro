@@ -281,12 +281,13 @@ Search for *"Quadro"*
 ## Development
 
 ### Roadmap
-- [ ] Implement Extraction.
+- [ ] Implement Extraction
 	* [ ] Anchor examples as notices?
 	* [ ] New YAML window
+- [ ] Submit to Obsidian Community Plugin Store
 - [ ] Example Vault.
+- [ ] Code / Extraction Counter Status bar item
 - [ ] Settings page.
-- [ ] Submit to Obsidian Community Plugin Store.
 
 ### Build
 
