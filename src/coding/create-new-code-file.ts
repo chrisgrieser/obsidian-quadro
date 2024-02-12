@@ -13,7 +13,7 @@ class InputForOneFile extends Modal {
 	}
 	override onOpen() {
 		const { contentEl } = this;
-		contentEl.addClass("quadro")
+		contentEl.addClass("quadro");
 		contentEl.createEl("h4", { text: "New code creation" });
 
 		// name input field
@@ -64,7 +64,7 @@ class InputForMultipleFiles extends Modal {
 	}
 	override onOpen() {
 		const { contentEl } = this;
-		contentEl.addClass("quadro")
+		contentEl.addClass("quadro");
 
 		// info text
 		contentEl.createEl("h4", { text: "Bulk-create new codes" });
@@ -74,13 +74,11 @@ class InputForMultipleFiles extends Modal {
 		});
 
 		// textarea field
-		new Setting(contentEl)
-			.setClass("quadro-bulk-code-creation")
-			.addTextArea((text) =>
-				text.onChange((value) => {
-					this.input = value;
-				}),
-			);
+		new Setting(contentEl).setClass("quadro-bulk-code-creation").addTextArea((text) =>
+			text.onChange((value) => {
+				this.input = value;
+			}),
+		);
 
 		// create & cancel button
 		new Setting(contentEl)

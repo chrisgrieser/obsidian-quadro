@@ -65,8 +65,8 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	/** Data-File: Add blockID & link to Code-File in the current line
-	 * Code-File: Append embedded blocklink to Data-File */
+	/** DATAFILE: Add blockID & link to Code-File in the current line
+	 * CODEFILE: Append embedded blocklink to Data-File */
 	async assignCode(codeFile: TFile, dataFile: TFile) {
 		const cursor = this.editor.getCursor();
 		const fullCode = getFullTokenName(codeFile, "Codes");
@@ -89,12 +89,12 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		}
 		const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
 
-		// Data-File Changes
+		// DATAFILE Changes
 		const updatedLine = `${lineWithoutId} [[${fullCode}]] ${blockId}`;
 		this.editor.setLine(cursor.line, updatedLine);
 		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
-		// Code-File Changes
+		// CODEFILE Changes
 		const dataFilePath = dataFile.path.slice(0, -3);
 		const textToAppend = `![[${dataFilePath}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
