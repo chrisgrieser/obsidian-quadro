@@ -143,7 +143,7 @@ When a code is assigned, a link to the corresponding Code File and a unique
 ID are appended to the paragraph:
 
 ```md
-Filename: Data/Interview 1.md
+Filename: ./Data/Interview 1.md
 
 Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
 consectetur cupidatat. [[MyCode]] ^id42
@@ -157,7 +157,7 @@ When a code is assigned, a link back to the original location in the data file
 is appended to the code file.
 
 ```md
-Filepath: Codes/MyCode.md
+Filepath: ./Codes/MyCode.md
 
 ![[Interview 1#^id42]]
 ```
@@ -168,6 +168,24 @@ Obsidian renders the respective paragraph of the data file inside the code
 file:
 
 ![Embedded block link in reading & source mode](./assets/embedded-blocklink_reading-and-source-mode.png)
+
+The underlying folder structure for coding looks like this (with the colors
+representing codes):
+
+```txt
+.
+├── Data
+│   ├── Interview 1.md
+│   ├── Field Notes 1.md
+│   └── …
+└── Coding
+    ├── blue.md
+    ├── red.md
+    └── Group 1
+         ├── white.md
+         ├── black.md
+         └── …
+```
 
 > [!NOTE]
 > The main caveat of this approach is that the assignment of codes is mostly
@@ -217,32 +235,81 @@ When making an extraction, a link to the corresponding Extraction File and a
 unique ID are appended to the paragraph, just like with coding:
 
 ```md
-Filename: Data/Interview 2.md
+Filename: ./Data/Interview 2.md
 
 Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
-consectetur cupidatat. [[Extraction 1]] ^id23
+consectetur cupidatat. [[Career Visions/1]] ^id23
 ```
 
 **Extraction Files**
 Extraction is implemented via Markdown metadata ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)),
 which is supported via [Obsidian Properties](https://help.obsidian.md/Editing+and+formatting/Properties).
 
-When making an extraction, a new file is created in the folder
-`{vault-root}/Extractions`. As such, each file corresponds to a single extraction.
+When making an extraction, you are presented with a choice of your extraction
+types. Upon selection, a new file is created in the folder that groups
+extractions, that is `{vault-root}/Extractions/{Extraction Group}/`. As
+such, each file corresponds to a single extraction, with its parent folder
+indicating what type of extraction it is.
 
-The metadata keys correspond to the input fields of the extraction form. The
-`source` key contains a link back to the corresponding Data File.
+You can then fill out the fields of newly created file. The
+`extraction source` key contains a link back to the location in the Data File
+where you initiated the extraction. In the rendered view, the file contains a
+`Properties` headily that can conveniently be filled out:
+
+![Showcase Extraction](./assets/showcase-extraction.png)
+
+The underlying plaintext view of the file looks like this:
 
 ```md
-Filepath: Extractions/Extraction 1.md
+Filepath: ./Extractions/Career Visions/1.md
 
 ---
-dimension_one: "value"
-dimension_two: "another value"
-source: "[[Interview 2#^id23]]"
+occupation: "painter"
+career stage: "novice"
+year of experience: 4
+extraction date: 2024-02-12
+extraction source: "[[Field Notes 3#^id42]]"
 ---
 
 Some optional notes.
+```
+
+**Extraction Templates (Extraction Types)**
+The available extraction types are determined by the subfolders of
+`{vault-root}/Extractions/`. The fields that are created for filling in
+information are determined by the `Template.md` file located in that subfolder.
+For the example above, the Extraction Template looks like this:
+The corresponding template for the extraction type is located in the same
+folder, but has the filename `Template.md`.
+
+```md
+Filepath: ./Extractions/Career Visions/Template.md
+
+---
+occupation: ""
+career stage: ""
+year of experience: 
+---
+```
+
+All in all, the underlying folder structure for extractions looks like this:
+
+```txt
+.
+├── Data
+│   ├── Interview 1.md
+│   ├── Field Notes 1.md
+│   └── …
+└── Extractions
+    ├── Career Obstacles
+    │    ├── Template.md
+    │    ├── 1.md
+    │    ├── 2.md
+    │    └── …
+    └── Career Visions
+         ├── Template.md
+         ├── 1.md
+         └── …
 ```
 
 ### Extraction capabilities
@@ -292,7 +359,7 @@ make init
 - [Ryan Murphy](https://fulcra.design/About/) who gave me the idea for this
   project with a [blogpost of
   his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
-- [Grit Laudel](http://www.laudel.info/) for providing sample interview data.# Acknowledgments
+- [Grit Laudel](http://www.laudel.info/) who provided sample interview data.
 
 ### Recommended citation
 Please cite this software project as (APA):
