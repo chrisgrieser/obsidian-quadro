@@ -1,4 +1,4 @@
-import { App, Modal, Notice, Setting, TFile, TFolder } from "obsidian";
+import { App, Modal, Notice, Setting, TFile, TFolder, normalizePath } from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -116,7 +116,7 @@ async function createCodeFile(app: App, fullCode: string, codeDesc: string) {
 	if (!fullCode) fullCode = "Unnamed Code";
 
 	// GUARD
-	const absolutePath = `${CODE_FOLDER_NAME}/${fullCode}.md`;
+	const absolutePath = normalizePath(`${CODE_FOLDER_NAME}/${fullCode}.md`);
 	const fileExists = app.vault.getAbstractFileByPath(absolutePath) instanceof TFile;
 	if (fileExists) {
 		new Notice(`Code "${fullCode}" already exists, Code File not created.`);
