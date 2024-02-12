@@ -73,8 +73,12 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		let lineText = this.editor.getLine(cursor.line);
 
 		// GUARD
-		const lineAlreadyHasCode =
-			lineText.includes(`[[${fullCode}]]`) || lineText.includes(`[[${codeFile.basename}]]`);
+		const wikilinksInParagr = lineText.match(/\[\[.+?\]\]/g) || [];
+		const lineAlreadyHasCode = wikilinksInParagr.find((wikilink) => {
+			wikilink = wikilink.slice(2, -2);
+			const target = this.app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
+			return target instanceof TFile && target.path === codeFile.path;
+		});
 		if (lineAlreadyHasCode) {
 			new Notice(`Paragraph already has code "${fullCode}"`);
 			return;
