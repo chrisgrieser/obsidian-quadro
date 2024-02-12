@@ -14,16 +14,12 @@ class InputForOneFile extends Modal {
 	override onOpen() {
 		const { contentEl } = this;
 		contentEl.addClass("quadro")
-
-		// info text
 		contentEl.createEl("h4", { text: "New code creation" });
-		contentEl.createEl("p", {
-			text: 'Use a slash ("/") in the name of the code to create the Code File in a subfolder.',
-		});
 
 		// name input field
 		new Setting(contentEl)
-			.setName("Code name")
+			.setName("Name of the Code")
+			.setDesc('Use a slash ("/") in the name of the code to create the Code File in a subfolder.')
 			.addText((text) =>
 				text.onChange((value) => {
 					this.fullCode = value;
@@ -32,7 +28,8 @@ class InputForOneFile extends Modal {
 
 		// description input field
 		new Setting(contentEl)
-			.setName("Description")
+			.setName("Code Description")
+			.setDesc('Will be added as metadata with the key "description".')
 			.addText((text) =>
 				text.onChange((value) => {
 					this.codeDesc = value;

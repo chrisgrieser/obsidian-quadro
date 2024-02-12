@@ -79,6 +79,7 @@ body .internal-embed .markdown-embed-content {
 /* QUADRO MODALS */
 
 .quadro input {
+	min-width: 20rem;
 	width: 100%;
 }
 
