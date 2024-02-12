@@ -1,5 +1,6 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import { getFullCode, safelyGetActiveEditor, currentlyInFolder } from "src/utils";
+import { CODE_FOLDER_NAME } from "src/settings";
+import { currentlyInFolder, getFullCode, safelyGetActiveEditor } from "src/utils";
 
 interface Code {
 	tFile: TFile;
@@ -32,7 +33,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 			{ command: "⏎", purpose: "Select" },
 			{ command: "esc", purpose: "Dismiss" },
 		]);
-		this.modalEl.addClass("quadro")
+		this.modalEl.addClass("quadro");
 	}
 
 	getItems(): Code[] {
@@ -139,7 +140,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor) {
 	app.commands.executeCommandById("editor:delete-paragraph");
 
 	// moving to start of line prevents EditorSuggester from opening
-	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); 
+	editor.setCursor({ line: editor.getCursor().line, ch: 0 });
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -163,8 +164,11 @@ export async function unassignCode(app: App) {
 
 		const codesInParagr = wikilinksInParagr.reduce((acc: Code[], wikilink) => {
 			wikilink = wikilink.slice(2, -2);
-			const codeFile = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-			if (codeFile instanceof TFile) acc.push({ tFile: codeFile, wikilink: wikilink });
+			const linkTarget = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
+			if (linkTarget instanceof TFile) {
+				const isInCodeFolder = linkTarget.path.startsWith(CODE_FOLDER_NAME + "/");
+				if (isInCodeFolder) acc.push({ tFile: linkTarget, wikilink: wikilink });
+			}
 			return acc;
 		}, []);
 
