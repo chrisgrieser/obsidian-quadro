@@ -269,10 +269,10 @@ occupation: "painter"
 career stage: "novice"
 year of experience: 4
 extraction date: 2024-02-12
-extraction source: "[[Field Notes 3#^id42]]"
+extraction source: "[[Field Notes 3]]"
 ---
 
-Some optional notes.
+**Paragraph extracted from:** ![[Field Notes 3#^id-42]]
 ```
 
 **Extraction Templates (Extraction Types)**

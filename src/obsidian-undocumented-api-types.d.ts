@@ -4,7 +4,7 @@ declare module "obsidian" {
 	interface Editor {
 		editorComponent: {
 			view: {
-				// biome-ignore lint/correctness/noUndeclaredVariables: not needed here
+				// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
 				file: TFile;
 			};
 			app: App;
@@ -18,7 +18,6 @@ declare module "obsidian" {
 		internalPlugins: {
 			plugins: {
 				[key: string]: {
-					enabled: boolean;
 					enable: () => void;
 				};
 			};

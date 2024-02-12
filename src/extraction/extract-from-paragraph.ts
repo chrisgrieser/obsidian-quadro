@@ -1,4 +1,12 @@
-import { App, Editor, FuzzySuggestModal, Notice, OpenViewState, TFile, TFolder } from "obsidian";
+import {
+   App,
+   Editor,
+   FuzzySuggestModal,
+   Notice,
+   OpenViewState,
+   TFile,
+   TFolder
+} from "obsidian";
 import { ensureBlockId } from "src/coding/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import { SUGGESTER_INSTRUCTIONS, currentlyInFolder, safelyGetActiveEditor } from "src/utils";
@@ -89,18 +97,24 @@ async function extractOfType(
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
 	const dateYamlLine = `extraction date: ${isoDate}`;
-	const sourceYamlLine = `extraction source: "[[${dataFile.path}#${blockId}]]"`;
+	const sourceYamlLine = `extraction source: "[[${dataFile.path}]]"`;
 	const yamlFrontmatterEnd = templateLines.findLastIndex((l) => l === "---");
 	templateLines.splice(yamlFrontmatterEnd, 0, dateYamlLine, sourceYamlLine);
-	// two spaces for markdown line break ---------------v
-	templateLines.push("", "**Paragraph extracted from**  ", lineText);
+	templateLines.push("", `**Paragraph extracted from:** ![[${dataFile.path}#${blockId}]]`);
 
 	// Create and open EXTRACTION-FILE in split to the right
 	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));
 	const currentLeaf = app.workspace.getLeaf();
 	const leafToTheRight = app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
 	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
+
 	leafToTheRight.openFile(extractionFile, livePreview);
+
+	// INFO timeout needed, without it, there is apparently some race condition
+	// and the embedded blocklink is not rendered correctly – unsure how to avoid
+	// the race condition without a timeout, saving the view does not seem to work.
+	setTimeout(() => leafToTheRight.openFile(extractionFile, livePreview), 1);
+
 	// TODO figure out how to move cursor to 1st property (`editor.setCursor` does not work)
 }
 

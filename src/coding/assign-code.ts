@@ -99,8 +99,8 @@ export function assignCode(app: App): void {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
-	if (currentlyInFolder(app, "Codes")) {
-		new Notice("You cannot assign codes to a code file.");
+	if (currentlyInFolder(app, "Codes") || currentlyInFolder(app, "Extractions")) {
+		new Notice("You must be in a Data File to assign a code.", 3000);
 		return;
 	}
 
