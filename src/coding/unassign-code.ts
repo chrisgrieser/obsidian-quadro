@@ -32,6 +32,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 			{ command: "⏎", purpose: "Select" },
 			{ command: "esc", purpose: "Dismiss" },
 		]);
+		this.modalEl.addClass("quadro")
 	}
 
 	getItems(): Code[] {

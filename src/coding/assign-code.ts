@@ -55,6 +55,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 			{ command: "esc", purpose: "Dismiss" },
 			{ command: 'type "new"', purpose: "Create new code" },
 		]);
+		this.modalEl.addClass("quadro")
 	}
 
 	//───────────────────────────────────────────────────────────────────────────

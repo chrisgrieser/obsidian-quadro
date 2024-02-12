@@ -13,6 +13,7 @@ class InputForOneFile extends Modal {
 	}
 	override onOpen() {
 		const { contentEl } = this;
+		contentEl.addClass("quadro")
 
 		// info text
 		contentEl.createEl("h4", { text: "New code creation" });
@@ -23,7 +24,6 @@ class InputForOneFile extends Modal {
 		// name input field
 		new Setting(contentEl)
 			.setName("Code name")
-			.setClass("quadro")
 			.addText((text) =>
 				text.onChange((value) => {
 					this.fullCode = value;
@@ -33,7 +33,6 @@ class InputForOneFile extends Modal {
 		// description input field
 		new Setting(contentEl)
 			.setName("Description")
-			.setClass("quadro")
 			.addText((text) =>
 				text.onChange((value) => {
 					this.codeDesc = value;
@@ -68,6 +67,7 @@ class InputForMultipleFiles extends Modal {
 	}
 	override onOpen() {
 		const { contentEl } = this;
+		contentEl.addClass("quadro")
 
 		// info text
 		contentEl.createEl("h4", { text: "Bulk-create new codes" });
@@ -78,7 +78,6 @@ class InputForMultipleFiles extends Modal {
 
 		// textarea field
 		new Setting(contentEl)
-			.setClass("quadro")
 			.setClass("quadro-bulk-code-creation")
 			.addTextArea((text) =>
 				text.onChange((value) => {
