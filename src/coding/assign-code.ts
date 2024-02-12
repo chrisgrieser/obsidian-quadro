@@ -65,7 +65,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		return fullCode + miniGraph;
 	}
 
-	onChooseItem(codeFile: TFile | "new-code-file") {
+	onChooseItem(codeFile: TFile | "new-code-file"): void {
 		if (codeFile instanceof TFile) {
 			this.assignCode(codeFile, this.dataFile);
 		} else {
@@ -77,14 +77,14 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 	/** DATAFILE: Add blockID & link to Code-File in the current line
 	 * CODEFILE: Append embedded blocklink to Data-File */
-	async assignCode(codeFile: TFile, dataFile: TFile) {
+	async assignCode(codeFile: TFile, dataFile: TFile): Promise<void> {
 		const cursor = this.editor.getCursor();
 		const fullCode = getFullCode(codeFile);
 		let lineText = this.editor.getLine(cursor.line);
 
 		const selection = this.editor.getSelection();
 		if (selection) {
-			// spaces need to be moved outside, as otherwise they make the highlights invalid
+			// spaces need to be moved outside, otherwise they make the highlights invalid
 			const highlightAdded = selection.replace(/^( ?)(.+?)( ?)$/g, "$1==$2==$3");
 			this.editor.replaceSelection(highlightAdded);
 			lineText = this.editor.getLine(cursor.line);
@@ -105,7 +105,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function assignCode(app: App) {
+export function assignCode(app: App): void {
 	// GUARD
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;

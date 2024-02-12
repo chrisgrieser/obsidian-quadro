@@ -101,7 +101,11 @@ class InputForMultipleFiles extends Modal {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-async function createCodeFile(app: App, fullCode: string, codeDesc: string) {
+async function createCodeFile(
+	app: App,
+	fullCode: string,
+	codeDesc: string,
+): Promise<TFile | false> {
 	// VALIDATE
 	fullCode = fullCode
 		.replace(/\.md$/, "") // no extension
@@ -114,7 +118,7 @@ async function createCodeFile(app: App, fullCode: string, codeDesc: string) {
 	const fileExists = app.vault.getAbstractFileByPath(absolutePath) instanceof TFile;
 	if (fileExists) {
 		new Notice(`Code "${fullCode}" already exists, Code File not created.`);
-		return undefined;
+		return false;
 	}
 
 	const parts = fullCode.split("/");
@@ -133,7 +137,7 @@ async function createCodeFile(app: App, fullCode: string, codeDesc: string) {
 }
 
 /** Prompts for name of new file, then runs callback on it. */
-export function createOneCodeFile(app: App, callback: (codeFile: TFile) => void) {
+export function createOneCodeFile(app: App, callback: (codeFile: TFile) => void): void {
 	new InputForOneFile(app, async (fullCode, codeDesc) => {
 		const codeFile = await createCodeFile(app, fullCode, codeDesc);
 		if (codeFile) {
@@ -145,7 +149,7 @@ export function createOneCodeFile(app: App, callback: (codeFile: TFile) => void)
 	}).open();
 }
 
-export async function bulkCreateCodeFiles(app: App) {
+export async function bulkCreateCodeFiles(app: App): Promise<void> {
 	// TEST-variable only
 	// const userInput = "colors/red\ncolors/purple\nblubb/yellow";
 

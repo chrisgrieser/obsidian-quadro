@@ -43,12 +43,16 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 	getItemText(code: Code): string {
 		return getFullCode(code.tFile);
 	}
-	onChooseItem(code: Code) {
+	onChooseItem(code: Code): void {
 		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);
 	}
 }
 
-async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code) {
+async function unassignCodeWhileInDataFile(
+	editor: Editor,
+	dataFile: TFile,
+	code: Code,
+): Promise<void> {
 	const app = editor.editorComponent.app;
 	const ln = editor.getCursor().line;
 	const lineText = editor.getLine(ln);
@@ -92,13 +96,13 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	await app.vault.modify(code.tFile, codeFileLines.join("\n"));
 }
 
-/** If not successful, returns an error, otherwise undefined */
+/** returns an error msg; returns empty string if no error */
 async function removeCodeFileRefInDataFile(
 	app: App,
 	codeFile: TFile,
 	dataFile: TFile,
 	blockId: string,
-): Promise<string | undefined> {
+): Promise<string | ""> {
 	// retrieve referenced line in DATAFILE
 	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
 	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
@@ -117,10 +121,10 @@ async function removeCodeFileRefInDataFile(
 		return `Data File ${dataFile.basename}, line "${blockId}" has no valid link to the Code-File.`;
 	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "").replace(/ {2,}/g, " ");
 	await app.vault.modify(dataFile, dataFileLines.join("\n"));
-	return;
+	return "";
 }
 
-async function unassignCodeWhileInCodeFile(app: App, editor: Editor) {
+async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<void> {
 	// Identify DATAFILE
 	const lineText = editor.getLine(editor.getCursor().line);
 	const [_, linkPath, blockId] = lineText.match(embeddedBlockLinkRegex) || [];
@@ -151,7 +155,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor) {
  * B. data file, line has 1 code -> remove code, and its reference from code file
  * C. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
  */
-export async function unassignCode(app: App) {
+export async function unassignCode(app: App): Promise<void> {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
@@ -185,7 +189,7 @@ export async function unassignCode(app: App) {
 	}
 }
 
-export async function deleteCodeEverywhere(app: App) {
+export async function deleteCodeEverywhere(app: App): Promise<void> {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 

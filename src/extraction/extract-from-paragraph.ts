@@ -1,4 +1,4 @@
-import { App, Editor, FuzzySuggestModal, Notice, TFile, TFolder } from "obsidian";
+import { App, Editor, FuzzySuggestModal, Notice, OpenViewState, TFile, TFolder } from "obsidian";
 import { ensureBlockId } from "src/coding/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import { SUGGESTER_INSTRUCTIONS, currentlyInFolder, safelyGetActiveEditor } from "src/utils";
@@ -34,12 +34,16 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 		return extractionType.name + appendix;
 	}
 
-	onChooseItem(extractionType: TFolder) {
+	onChooseItem(extractionType: TFolder): void {
 		extractOfType(this.editor, this.dataFile, extractionType);
 	}
 }
 
-async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFolder: TFolder) {
+async function extractOfType(
+	editor: Editor,
+	dataFile: TFile,
+	extractionTypeFolder: TFolder,
+): Promise<void> {
 	const app = editor.editorComponent.app;
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;
@@ -89,19 +93,19 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const sourceYamlLine = `extraction source: "[[${dataFile.path}#${blockId}]]"`;
 	const yamlFrontmatterEnd = templateLines.findLastIndex((l) => l === "---");
 	templateLines.splice(yamlFrontmatterEnd, 0, dateYamlLine, sourceYamlLine);
-	templateLines.push("", "**Paragraph extracted from**  ", lineText); 
+	templateLines.push("", "**Paragraph extracted from**  ", lineText);
 
 	// Create and open EXTRACTION-FILE in split to the right
 	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));
 	const currentLeaf = app.workspace.getLeaf();
 	const leafToTheRight = app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
-	const livePreview = { source: false, mode: "source" }; // SIC it's counterintuitive, yes
-	leafToTheRight.openFile(extractionFile, { state: livePreview });
+	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
+	leafToTheRight.openFile(extractionFile, livePreview);
 
 	// TODO figure out how to move cursor to 1st property (`editor.setCursor` does not work)
 }
 
-export async function extractFromParagraph(app: App) {
+export async function extractFromParagraph(app: App): Promise<void> {
 	// GUARD
 	if (currentlyInFolder(app, "Codes") || currentlyInFolder(app, "Extractions")) {
 		new Notice("You must be in a Data File to make an extraction.", 3000);
@@ -121,7 +125,6 @@ export async function extractFromParagraph(app: App) {
 	const dataFile = editor.editorComponent.view.file;
 	const extractionTypes = extractionTFolder.children.filter((f) => f instanceof TFolder);
 	if (extractionTypes.length === 0) {
-		// TODO bootstrap extraction folders for the user?
 		new Notice(
 			`The folder "${EXTRACTION_FOLDER_NAME}" does not contain any subfolders (Extraction Types).\n` +
 				"You need to create at least one subfolder before you can make an extraction.",
