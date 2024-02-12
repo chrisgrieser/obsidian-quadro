@@ -7,7 +7,7 @@ alternative to [MAXQDA](https://www.maxqda.com/) and
 [atlas.ti](https://atlasti.com/), using Markdown to store data and research
 codes.
 
-Quadro supports both, coding in the style of *Grounded Theory* and extraction in
+*Quadro* supports both, coding in the style of *Grounded Theory* and extraction in
 the style of *Qualitative Content Analysis*.
 
 ## Table of Contents
@@ -25,6 +25,7 @@ the style of *Qualitative Content Analysis*.
 	* [How extraction works in Quadro](#how-extraction-works-in-quadro)
 	* [Extraction capabilities](#extraction-capabilities)
 - [Installation](#installation)
+- [Update](#update)
 - [Development](#development)
 - [Credits](#credits)
 	* [Acknowledgments](#acknowledgments)
@@ -76,10 +77,10 @@ extensive functionality and plugin ecosystem of Obsidian:
   needs of their research. Case-specific adaption of research methods
   is a key demand of qualitative research (which strictly speaking is not
   truly fulfilled when using standardized, proprietary research software).
-- Obsidian, as well as Quadro, both [have mobile support (Android and iOS)](https://obsidian.md/mobile).
+- Obsidian, as well as *Quadro*, both [have mobile support (Android and iOS)](https://obsidian.md/mobile).
 
 If there is a more tech-savvy researcher in the research team, the advantages of
-Quadro go even further:
+*Quadro* go even further:
 - Being Open Source, this plugin can be modified and customized to fit their
   needs. (It is written is TypeScript / JavaScript, a particularly accessible
   and commonly used programming language.)
@@ -87,7 +88,7 @@ Quadro go even further:
   version-controlled with `git`.
 
 Obsidian is [free to use for academic purposes](https://obsidian.md/license),
-and Quadro is also free to use. Especially for students writing their
+and *Quadro* is also free to use. Especially for students writing their
 theses, this saves a lot of unnecessary hassle with licenses.
 
 ### For Obsidian users
@@ -136,7 +137,7 @@ which are both stored as [Markdown files](https://www.markdownguide.org/).
 **Data Files**
 The empirical material as text files. They can be stored anywhere in the vault
 as `.md` files. (A separate subfolder named `Data` is recommended though.) As
-Quadro assigns codes to whole paragraphs, these data files should
+*Quadro* assigns codes to whole paragraphs, these data files should
 be split up into smaller segments.
 
 When a code is assigned, a link to the corresponding Code File and a unique
@@ -332,18 +333,39 @@ command name.
    `{your-vault-path}/.obsidian/plugins/quadro`. (Note that on macOS,
    `.obsidian` is a hidden folder. You can make hidden folders visible by
    pressing `cmd+shift+.` in the Finder.)
-3. In Obsidian, go to `Settings` → `Community Plugins`. Press the Refresh
+3. In Obsidian, go to `Settings` → `Community plugins`. Press the Refresh
    button.
 4. Look for a new entry `Quadro` in the plugin list. Enable the plugin by
    checking the box.
 
+**BRAT (Beta Reviewers Auto-update Tester)**
 Alternatively, if you are already familiar with the Obsidian Ecosystem, you can
 also install the plugin via [BRAT](https://github.com/TfTHacker/obsidian42-brat).
 
 **Obsidian Community Plugin Store**
-When published in the Obsidian Community Store, it is going to be available in
-Obsidian's Plugin Browser via: `Settings` → `Community Plugins` → `Browse` →
-Search for *"Quadro"*
+Once published in the Obsidian Community Plugin Store, *Quadro* is going to be
+available in Obsidian's Plugin Browser via: `Settings` → `Community plugins` →
+`Browse` → Search for *"Quadro"*
+
+## Update
+**Manual**
+1. Close Obsidian.
+2. Download the `.zip` file from the [latest
+   release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).
+3. Extract the `.zip` file into the
+   `{your-vault-path}/.obsidian/plugins/quadro`, replacing the existing files in
+   that folder.
+4. Launch Obsidian again.
+
+**BRAT (Beta Reviewers Auto-update Tester)**
+If you have added the plugin via *BRAT*, it automatically checks for new
+updates every time you start Obsidian and automatically updates *Quadro* if there
+is a new version available.
+
+**Obsidian Community Plugin Store**
+Once published in the Obsidian Community Plugin Store, you can update *Quadro*
+(and all other plugins you have installed) via: `Settings` → `Community plugins`
+→ `Check for updates` → `Update All`.
 
 ## Development
 
