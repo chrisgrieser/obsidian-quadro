@@ -21,15 +21,10 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 		this.modalEl.addClass("quadro");
 	}
 
-	//───────────────────────────────────────────────────────────────────────────
-	// SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
-
-	// code-files, sorted by last use (which is relevant when query is empty)
 	getItems(): TFolder[] {
 		return this.extractionTypes;
 	}
 
-	// display codename + minigraph, and an extra item for creating a new code file
 	getItemText(extractionType: TFolder): string {
 		const templateFile = extractionType.children.find(
 			(f) => f instanceof TFile && f.name === "Template.md",
@@ -94,7 +89,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const sourceYamlLine = `extraction source: "[[${dataFile.path}#${blockId}]]"`;
 	const yamlFrontmatterEnd = templateLines.findLastIndex((l) => l === "---");
 	templateLines.splice(yamlFrontmatterEnd, 0, dateYamlLine, sourceYamlLine);
-	templateLines.push("", lineText); // add a copy of the line text itself for reference
+	templateLines.push("", "**Paragraph extracted from**  ", lineText); 
 
 	// Create and open EXTRACTION-FILE in split to the right
 	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));

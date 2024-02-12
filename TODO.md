@@ -1,6 +1,7 @@
 # Main To-dos
 - [ ] Example Vault.
 - [ ] Code / Extraction Counter Status bar item
+- [ ] Dataview Example.
 - [ ] Settings page.
 
 ## Submission to Obsidian Community Store
