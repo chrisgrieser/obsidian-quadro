@@ -1,6 +1,11 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
-import { currentlyInFolder, getFullCode, safelyGetActiveEditor } from "src/utils";
+import {
+   SUGGESTER_INSTRUCTIONS,
+   currentlyInFolder,
+   getFullCode,
+   safelyGetActiveEditor,
+} from "src/utils";
 
 interface Code {
 	tFile: TFile;
@@ -28,11 +33,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		this.dataFile = dataFile;
 		this.editor = editor;
 		this.setPlaceholder("Select code to remove from paragraph");
-		this.setInstructions([
-			{ command: "↑↓", purpose: "Navigate" },
-			{ command: "⏎", purpose: "Select" },
-			{ command: "esc", purpose: "Dismiss" },
-		]);
+		this.setInstructions(SUGGESTER_INSTRUCTIONS);
 		this.modalEl.addClass("quadro");
 	}
 

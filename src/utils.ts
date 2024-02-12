@@ -20,3 +20,9 @@ export function safelyGetActiveEditor(app: App): null | Editor {
 	}
 	return view.editor;
 }
+
+export const SUGGESTER_INSTRUCTIONS = [
+	{ command: "↑↓", purpose: "Navigate" },
+	{ command: "⏎", purpose: "Select" },
+	{ command: "esc", purpose: "Dismiss" },
+];

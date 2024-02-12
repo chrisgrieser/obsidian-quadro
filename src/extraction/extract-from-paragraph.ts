@@ -1,7 +1,7 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile, TFolder } from "obsidian";
 import { ensureBlockId } from "src/coding/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
-import { currentlyInFolder, safelyGetActiveEditor } from "src/utils";
+import { SUGGESTER_INSTRUCTIONS, currentlyInFolder, safelyGetActiveEditor } from "src/utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -17,11 +17,7 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 		this.dataFile = dataFile;
 
 		this.setPlaceholder("Select extraction type");
-		this.setInstructions([
-			{ command: "↑↓", purpose: "Navigate" },
-			{ command: "⏎", purpose: "Select" },
-			{ command: "esc", purpose: "Dismiss" },
-		]);
+		this.setInstructions(SUGGESTER_INSTRUCTIONS);
 		this.modalEl.addClass("quadro");
 	}
 
@@ -132,7 +128,7 @@ export async function extractFromParagraph(app: App) {
 	if (extractionTypes.length === 0) {
 		// TODO bootstrap extraction folders for the user?
 		new Notice(
-			`The folder "${EXTRACTION_FOLDER_NAME}" is does not contain any subfolders (Extraction Types).\n` +
+			`The folder "${EXTRACTION_FOLDER_NAME}" does not contain any subfolders (Extraction Types).\n` +
 				"You need to create at least one subfolder before you can make an extraction.",
 			6000,
 		);

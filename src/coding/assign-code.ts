@@ -5,7 +5,12 @@ import {
    MINIGRAPH,
    TFILE_SORT_FUNC,
 } from "../settings";
-import { currentlyInFolder, getFullCode, safelyGetActiveEditor } from "../utils";
+import {
+   SUGGESTER_INSTRUCTIONS,
+   currentlyInFolder,
+   getFullCode,
+   safelyGetActiveEditor,
+} from "../utils";
 import { ensureBlockId } from "./block-id";
 import { createOneCodeFile } from "./create-new-code-file";
 
@@ -23,9 +28,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		this.dataFile = dataFile;
 		this.setPlaceholder("Select code to assign");
 		this.setInstructions([
-			{ command: "↑↓", purpose: "Navigate" },
-			{ command: "⏎", purpose: "Select" },
-			{ command: "esc", purpose: "Dismiss" },
+			...SUGGESTER_INSTRUCTIONS,
 			{ command: 'type "new"', purpose: "Create new code" },
 		]);
 		this.modalEl.addClass("quadro");
