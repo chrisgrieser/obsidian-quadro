@@ -120,10 +120,12 @@ extraction aspects are saved as ([YAML frontmatter](https://docs.zettlr.com/en/c
   customized to deal with different kinds of coder biases.
 
 **Disadvantages**
-- The unit of coding is restricted to paragraphs and, to a degree, segments of a
-  paragraph. Coding of initial words is not supported.
-- Due to the nature of Markdown markup, partially overlapping code segments are
-  not supported.
+- The **unit of coding** is restricted to paragraphs and, to a degree, segments
+  of a paragraph. Coding of individual words is not supported.
+- Due to the nature of Markdown markup, assigning multiple codes to **partially
+  overlapping paragraph segments** is not supported. This restriction only
+  applies to partial overlaps, assigning multiple codes to the same paragraph or
+  segment works, of course.
 
 ## Coding
 
