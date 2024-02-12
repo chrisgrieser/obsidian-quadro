@@ -65,7 +65,7 @@ body .internal-embed .markdown-embed-content {
 }
 
 /* icons for Code Files and Extraction Files */
-.nav-file-title:is([data-path^="Codes/"], [data-path^="Extractions/"])::before {
+:is(.nav-file-title, .nav-folder-title):is([data-path^="Codes/"], [data-path^="Extractions/"])::before {
 	padding-right: 3px;
 }
 
@@ -77,6 +77,7 @@ body .internal-embed .markdown-embed-content {
 	content: "🞏";
 }
 
+.nav-folder-title[data-path^="Extractions/"]::before,
 .nav-file-title[data-path^="Extractions/"][data-path$="/Template.md"]::before {
 	content: "⯀";
 }
