@@ -5,7 +5,7 @@ import {
    MINIGRAPH,
    TFILE_SORT_FUNC,
 } from "../settings";
-import { currentlyInFolder, getFullTokenName, safelyGetActiveEditor } from "../utils";
+import { currentlyInFolder, getFullCode, safelyGetActiveEditor } from "../utils";
 import { ensureBlockId } from "./block-id";
 import { createOneCodeFile } from "./create-new-code-file";
 
@@ -49,7 +49,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 		const { char, charsPerBlock, maxLength } = MINIGRAPH;
 		const miniGraph = "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock));
-		const fullCode = getFullTokenName(item, "Codes");
+		const fullCode = getFullCode(item);
 		return fullCode + miniGraph;
 	}
 
@@ -69,7 +69,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	 * CODEFILE: Append embedded blocklink to Data-File */
 	async assignCode(codeFile: TFile, dataFile: TFile) {
 		const cursor = this.editor.getCursor();
-		const fullCode = getFullTokenName(codeFile, "Codes");
+		const fullCode = getFullCode(codeFile);
 		let lineText = this.editor.getLine(cursor.line);
 
 		// GUARD

@@ -1,5 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import { getFullTokenName, safelyGetActiveEditor, currentlyInFolder } from "src/utils";
+import { getFullCode, safelyGetActiveEditor, currentlyInFolder } from "src/utils";
 
 interface Code {
 	tFile: TFile;
@@ -39,7 +39,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		return this.codesInParagraph;
 	}
 	getItemText(code: Code): string {
-		return getFullTokenName(code.tFile, "Codes");
+		return getFullCode(code.tFile);
 	}
 	onChooseItem(code: Code) {
 		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);
@@ -137,7 +137,9 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor) {
 
 	// CODEFILE: simply delete current line via Obsidian command :P
 	app.commands.executeCommandById("editor:delete-paragraph");
-	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); // prevents editor suggester opening
+
+	// moving to start of line prevents EditorSuggester from opening
+	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); 
 }
 
 //──────────────────────────────────────────────────────────────────────────────
