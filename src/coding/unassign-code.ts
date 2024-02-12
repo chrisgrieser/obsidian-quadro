@@ -17,7 +17,8 @@ interface DataFileReference {
 	blockId: string;
 }
 
-const embeddedBlockLinkRegex = /^!\[\[(.+?)#(\^\w+)\]\]$/;
+// group 1: linkpath, group 2: blockID
+const embeddedBlockLinkRegex = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
 
 //──────────────────────────────────────────────────────────────────────────────
 

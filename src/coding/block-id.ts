@@ -25,7 +25,7 @@ export async function ensureBlockId(
 
 	// line has no blockID
 	const fullText = await tFile.vault.cachedRead(tFile);
-	const blockIdsInText: string[] = fullText.match(/\^\w+(?=\n)/g) || [];
+	const blockIdsInText: string[] = fullText.match(/\^[\w-]+(?=\n)/g) || [];
 	let newId: string;
 	do {
 		newId = "^id-" + randomSixDigits();
