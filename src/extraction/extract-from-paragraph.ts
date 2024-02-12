@@ -3,8 +3,6 @@ import { ensureBlockId } from "src/coding/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import { SUGGESTER_INSTRUCTIONS, currentlyInFolder, safelyGetActiveEditor } from "src/utils";
 
-//──────────────────────────────────────────────────────────────────────────────
-
 class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 	extractionTypes: TFolder[];
 	editor: Editor;
@@ -58,8 +56,8 @@ async function extractOfType(
 		);
 		return;
 	}
-	const template = await app.vault.cachedRead(templateFile);
-	const templateLines = template.trim().split("\n");
+	const templateText = await app.vault.cachedRead(templateFile);
+	const templateLines = templateText.trim().split("\n");
 	const templateHasFrontmatter = templateLines.filter((line) => line === "---").length === 2;
 	if (!templateHasFrontmatter) {
 		new Notice(
@@ -73,7 +71,7 @@ async function extractOfType(
 	// Determine path of EXTRACTION-FILE
 	let fileExistsAlready: boolean;
 	let extractionPath: string;
-	let extractionCount = extractionTypeFolder.children.length - 1; // -1 to account for `Template.md`
+	let extractionCount = extractionTypeFolder.children.length - 1; // -1 due to `Template.md`
 	do {
 		extractionCount++;
 		extractionPath = `${dir}/${extractionCount}.md`;
@@ -89,10 +87,12 @@ async function extractOfType(
 	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 	// insert data into TEMPLATE
-	const dateYamlLine = `extraction date: ${new Date().toISOString().slice(0, -5)}`;
+	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
+	const dateYamlLine = `extraction date: ${isoDate}`;
 	const sourceYamlLine = `extraction source: "[[${dataFile.path}#${blockId}]]"`;
 	const yamlFrontmatterEnd = templateLines.findLastIndex((l) => l === "---");
 	templateLines.splice(yamlFrontmatterEnd, 0, dateYamlLine, sourceYamlLine);
+	// two spaces for markdown line break ---------------v
 	templateLines.push("", "**Paragraph extracted from**  ", lineText);
 
 	// Create and open EXTRACTION-FILE in split to the right
@@ -101,19 +101,19 @@ async function extractOfType(
 	const leafToTheRight = app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
 	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
 	leafToTheRight.openFile(extractionFile, livePreview);
-
 	// TODO figure out how to move cursor to 1st property (`editor.setCursor` does not work)
 }
 
 export async function extractFromParagraph(app: App): Promise<void> {
-	// GUARD
+	const editor = safelyGetActiveEditor(app);
+	if (!editor) return;
+
 	if (currentlyInFolder(app, "Codes") || currentlyInFolder(app, "Extractions")) {
 		new Notice("You must be in a Data File to make an extraction.", 3000);
 		return;
 	}
-	const editor = safelyGetActiveEditor(app);
-	if (!editor) return;
 
+	// Determine Extraction Types (= subfolders of EXTRACTION_FOLDER)
 	let extractionTFolder = app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME);
 	if (!(extractionTFolder instanceof TFolder)) app.vault.createFolder(EXTRACTION_FOLDER_NAME);
 	extractionTFolder = app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME);
@@ -121,9 +121,10 @@ export async function extractFromParagraph(app: App): Promise<void> {
 		new Notice("ERROR: Could not create extraction folder.");
 		return;
 	}
-
 	const dataFile = editor.editorComponent.view.file;
 	const extractionTypes = extractionTFolder.children.filter((f) => f instanceof TFolder);
+
+	// Suggest Extraction Types, or trigger directly if only one type exists
 	if (extractionTypes.length === 0) {
 		new Notice(
 			`The folder "${EXTRACTION_FOLDER_NAME}" does not contain any subfolders (Extraction Types).\n` +

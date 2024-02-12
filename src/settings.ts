@@ -1,7 +1,7 @@
 import type { TFile } from "obsidian";
 
 //──────────────────────────────────────────────────────────────────────────────
-
+// CODING SETTINGS
 export const CODE_FOLDER_NAME = "Codes";
 
 export const MINIGRAPH = {
@@ -24,8 +24,8 @@ export const TFILE_SORT_FUNC = {
 	randomOrder: () => Math.random() - 0.5,
 };
 
-export const ASSIGN_CODE_INITIAL_ORDER = "lastUsedFirst";
+export const SORT_FUNC_TO_USE = "lastUsedFirst";
 
 //──────────────────────────────────────────────────────────────────────────────
-
+// EXTRACTION SETTINGS
 export const EXTRACTION_FOLDER_NAME = "Extractions";

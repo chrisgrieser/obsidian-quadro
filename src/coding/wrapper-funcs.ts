@@ -7,6 +7,8 @@
 import { App, Notice } from "obsidian";
 import { currentlyInFolder } from "src/utils";
 
+//──────────────────────────────────────────────────────────────────────────────
+
 export function renameCode(app: App) {
 	if (!currentlyInFolder(app, "Codes")) {
 		new Notice("You must be in a code file.");

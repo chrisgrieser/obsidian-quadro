@@ -1,7 +1,7 @@
 # Main To-dos
 - [ ] Dataview Example.
 - [ ] Code / Extraction Counter Status bar item
-- [ ] Example Vault.
+- [ ] Example Vault (+ Dynamic Highlights plugin)
 - [ ] Settings page.
 - [ ] Bootstrap Extraction Types for user?
 

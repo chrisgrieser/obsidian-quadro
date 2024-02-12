@@ -12,7 +12,7 @@ export function getFullCode(tFile: TFile): string {
 }
 
 /** if not there is no active markdown view, also display a notice */
-export function safelyGetActiveEditor(app: App): null | Editor {
+export function safelyGetActiveEditor(app: App): Editor | null {
 	const view = app.workspace.getActiveViewOfType(MarkdownView);
 	if (!view) {
 		new Notice("No active editor.");

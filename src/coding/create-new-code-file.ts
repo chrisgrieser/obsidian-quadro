@@ -1,16 +1,17 @@
 import { App, Modal, Notice, Setting, TFile, TFolder, normalizePath } from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
-//──────────────────────────────────────────────────────────────────────────────
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
 class InputForOneFile extends Modal {
 	fullCode = "";
 	codeDesc = "";
 	onSubmit: (fullCode: string, codeDesc: string) => void;
+
 	constructor(app: App, onSubmit: (fullCode: string, codeDesc: string) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
 	}
+
 	override onOpen() {
 		const { contentEl } = this;
 		contentEl.addClass("quadro");
@@ -58,10 +59,12 @@ class InputForOneFile extends Modal {
 class InputForMultipleFiles extends Modal {
 	input = "";
 	onSubmit: (fullCode: string) => void;
+
 	constructor(app: App, onSubmit: (fullCode: string) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
 	}
+
 	override onOpen() {
 		const { contentEl } = this;
 		contentEl.addClass("quadro");
@@ -150,9 +153,6 @@ export function createOneCodeFile(app: App, callback: (codeFile: TFile) => void)
 }
 
 export async function bulkCreateCodeFiles(app: App): Promise<void> {
-	// TEST-variable only
-	// const userInput = "colors/red\ncolors/purple\nblubb/yellow";
-
 	new InputForMultipleFiles(app, async (userInput) => {
 		let newFiles = 0;
 		const failedFiles: string[] = [];

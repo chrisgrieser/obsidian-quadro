@@ -202,9 +202,9 @@ export async function deleteCodeEverywhere(app: App): Promise<void> {
 	// (`app.metadataCache.resolvedLinks` does not contain blockIDs, so we need
 	// to read and parse the file manually)
 	const codeFile = editor.editorComponent.view.file;
-	const allReferences =
+	const allWikilinks =
 		((await app.vault.cachedRead(codeFile)) || "").match(/!\[\[.+?\]\]/g) || [];
-	const referencedParasInDataFiles = allReferences.reduce((acc: DataFileReference[], link) => {
+	const referencedParasInDataFiles = allWikilinks.reduce((acc: DataFileReference[], link) => {
 		const [_, linkPath, blockId] = link.match(embeddedBlockLinkRegex) || [];
 		if (!linkPath || !blockId) return acc;
 		const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath, codeFile.path);

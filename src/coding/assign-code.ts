@@ -1,10 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import {
-   ASSIGN_CODE_INITIAL_ORDER,
-   CODE_FOLDER_NAME,
-   MINIGRAPH,
-   TFILE_SORT_FUNC,
-} from "../settings";
+import { CODE_FOLDER_NAME, MINIGRAPH, SORT_FUNC_TO_USE, TFILE_SORT_FUNC } from "../settings";
 import {
    SUGGESTER_INSTRUCTIONS,
    currentlyInFolder,
@@ -13,8 +8,6 @@ import {
 } from "../utils";
 import { ensureBlockId } from "./block-id";
 import { createOneCodeFile } from "./create-new-code-file";
-
-//──────────────────────────────────────────────────────────────────────────────
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
 	editor: Editor;
@@ -34,12 +27,9 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		this.modalEl.addClass("quadro");
 	}
 
-	//───────────────────────────────────────────────────────────────────────────
-	// SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
-
 	// code-files, sorted by last use (which is relevant when query is empty)
 	getItems(): (TFile | "new-code-file")[] {
-		const initialOrderOnEmptyQuery = TFILE_SORT_FUNC[ASSIGN_CODE_INITIAL_ORDER];
+		const initialOrderOnEmptyQuery = TFILE_SORT_FUNC[SORT_FUNC_TO_USE];
 
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
 			.getMarkdownFiles()
@@ -106,7 +96,6 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 //──────────────────────────────────────────────────────────────────────────────
 
 export function assignCode(app: App): void {
-	// GUARD
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
@@ -121,6 +110,8 @@ export function assignCode(app: App): void {
 		return;
 	}
 
+	// Determine codes already assigned to paragraph, so they can be excluded
+	// from the list of codes in the Suggester
 	const dataFile = editor.editorComponent.view.file;
 	const lineText = editor.getLine(editor.getCursor().line);
 	const wikilinksInParagr = lineText.match(/\[\[.+?\]\]/g) || [];
