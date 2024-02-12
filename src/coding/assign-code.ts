@@ -1,46 +1,15 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import { createOneCodeFile } from "./create-new-code-file";
 import {
    ASSIGN_CODE_INITIAL_ORDER,
    CODE_FOLDER_NAME,
    MINIGRAPH,
    TFILE_SORT_FUNC,
 } from "../settings";
-import { currentlyInCodeFolder, getFullCodeName, safelyGetActiveEditor } from "../utils";
+import { currentlyInFolder, getFullTokenName, safelyGetActiveEditor } from "../utils";
+import { ensureBlockId } from "./block-id";
+import { createOneCodeFile } from "./create-new-code-file";
 
 //──────────────────────────────────────────────────────────────────────────────
-
-/** Given a line, returns the blockID and the line without the blockID. If the
- * blockID does not exist, a random 6-digit ID is created. A random ID is
- * preferable over counting the number of IDs, it is less likely that content
- * will be deleted due to the same blockID being used multiple times in
- * different files. */
-async function ensureBlockId(
-	tFile: TFile,
-	lineText: string,
-): Promise<{ blockId: string; lineWithoutId: string }> {
-	const randomSixDigits = () =>
-		Math.ceil(Math.random() * 1000000)
-			.toString()
-			.padStart(6, "0");
-
-	// line already has blockID
-	const [blockIdOfLine] = lineText.match(/\^\w+$/) || [];
-	if (blockIdOfLine) {
-		const lineWithoutId = lineText.slice(0, -blockIdOfLine.length).trim();
-		return { blockId: blockIdOfLine, lineWithoutId: lineWithoutId };
-	}
-
-	// line has no blockID
-	const fullText = await tFile.vault.cachedRead(tFile);
-	const blockIdsInText: string[] = fullText.match(/\^\w+(?=\n)/g) || [];
-	let newId: string;
-	do {
-		newId = "^id-" + randomSixDigits();
-	} while (blockIdsInText.includes(newId));
-
-	return { blockId: newId, lineWithoutId: lineText.trim() };
-}
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
 	editor: Editor;
@@ -55,7 +24,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 			{ command: "esc", purpose: "Dismiss" },
 			{ command: 'type "new"', purpose: "Create new code" },
 		]);
-		this.modalEl.addClass("quadro")
+		this.modalEl.addClass("quadro");
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
@@ -80,8 +49,8 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 		const { char, charsPerBlock, maxLength } = MINIGRAPH;
 		const miniGraph = "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock));
-
-		return getFullCodeName(item) + miniGraph;
+		const fullCode = getFullTokenName(item, "Codes");
+		return fullCode + miniGraph;
 	}
 
 	onChooseItem(codeFile: TFile | "new-code-file") {
@@ -100,7 +69,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	 * Code-File: Append embedded blocklink to Data-File */
 	async assignCode(codeFile: TFile, dataFile: TFile) {
 		const cursor = this.editor.getCursor();
-		const fullCode = getFullCodeName(codeFile);
+		const fullCode = getFullTokenName(codeFile, "Codes");
 		let lineText = this.editor.getLine(cursor.line);
 
 		// GUARD
@@ -139,7 +108,7 @@ export function assignCode(app: App) {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
-	if (currentlyInCodeFolder(app)) {
+	if (currentlyInFolder(app, "Codes")) {
 		new Notice("You cannot assign codes to a code file.");
 		return;
 	}

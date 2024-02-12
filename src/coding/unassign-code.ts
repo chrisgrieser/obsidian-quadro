@@ -1,5 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import { getFullCodeName, safelyGetActiveEditor, currentlyInCodeFolder } from "src/utils";
+import { getFullTokenName, safelyGetActiveEditor, currentlyInFolder } from "src/utils";
 
 interface Code {
 	tFile: TFile;
@@ -39,7 +39,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		return this.codesInParagraph;
 	}
 	getItemText(code: Code): string {
-		return getFullCodeName(code.tFile);
+		return getFullTokenName(code.tFile, "Codes");
 	}
 	onChooseItem(code: Code) {
 		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);
@@ -97,7 +97,7 @@ async function removeCodeFileRefInDataFile(
 	dataFile: TFile,
 	blockId: string,
 ): Promise<string | undefined> {
-	// retrieve referenced Line in DATAFILE
+	// retrieve referenced line in DATAFILE
 	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
 	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
 	if (lnumInDataFile < 0)
@@ -137,7 +137,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor) {
 
 	// CODEFILE: simply delete current line via Obsidian command :P
 	app.commands.executeCommandById("editor:delete-paragraph");
-	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); // prevents suggester opening
+	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); // prevents editor suggester opening
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -151,7 +151,7 @@ export async function unassignCode(app: App) {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
-	if (currentlyInCodeFolder(app)) {
+	if (currentlyInFolder(app, "Codes")) {
 		// A: in code file
 		unassignCodeWhileInCodeFile(app, editor);
 	} else {
@@ -182,7 +182,7 @@ export async function deleteCodeEverywhere(app: App) {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
-	if (!currentlyInCodeFolder(app)) {
+	if (!currentlyInFolder(app, "Codes")) {
 		new Notice("Must be in Code File to delete the code everywhere.");
 		return;
 	}
