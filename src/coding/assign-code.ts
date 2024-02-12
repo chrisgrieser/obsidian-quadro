@@ -13,10 +13,14 @@ import { createOneCodeFile } from "./create-new-code-file";
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
 	editor: Editor;
+	codesInPara: TFile[];
+	dataFile: TFile;
 
-	constructor(app: App, editor: Editor) {
+	constructor(app: App, editor: Editor, codesInPara: TFile[], dataFile: TFile) {
 		super(app);
 		this.editor = editor;
+		this.codesInPara = codesInPara;
+		this.dataFile = dataFile;
 		this.setPlaceholder("Select code to assign");
 		this.setInstructions([
 			{ command: "↑↓", purpose: "Navigate" },
@@ -36,10 +40,15 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
 			.getMarkdownFiles()
-			.filter((tFile) => tFile.path.startsWith(CODE_FOLDER_NAME + "/"))
+			.filter((tFile) => {
+				const isInCodeFolder = tFile.path.startsWith(CODE_FOLDER_NAME + "/");
+				const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
+				return isInCodeFolder && !isAlreadyAssigned;
+			})
 			.sort(initialOrderOnEmptyQuery);
 
 		allCodeFiles.push("new-code-file");
+
 		return allCodeFiles;
 	}
 
@@ -54,12 +63,10 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	}
 
 	onChooseItem(codeFile: TFile | "new-code-file") {
-		const dataFile: TFile = this.editor.editorComponent.view.file;
-
 		if (codeFile instanceof TFile) {
-			this.assignCode(codeFile, dataFile);
+			this.assignCode(codeFile, this.dataFile);
 		} else {
-			createOneCodeFile(this.app, (codeFile) => this.assignCode(codeFile, dataFile));
+			createOneCodeFile(this.app, (codeFile) => this.assignCode(codeFile, this.dataFile));
 		}
 	}
 
@@ -71,18 +78,6 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const cursor = this.editor.getCursor();
 		const fullCode = getFullCode(codeFile);
 		let lineText = this.editor.getLine(cursor.line);
-
-		// GUARD
-		const wikilinksInParagr = lineText.match(/\[\[.+?\]\]/g) || [];
-		const lineAlreadyHasCode = wikilinksInParagr.find((wikilink) => {
-			wikilink = wikilink.slice(2, -2);
-			const target = this.app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-			return target instanceof TFile && target.path === codeFile.path;
-		});
-		if (lineAlreadyHasCode) {
-			new Notice(`Paragraph already has code "${fullCode}"`);
-			return;
-		}
 
 		const selection = this.editor.getSelection();
 		if (selection) {
@@ -123,5 +118,16 @@ export function assignCode(app: App) {
 		return;
 	}
 
-	new SuggesterForCodeAssignment(editor.editorComponent.app, editor).open();
+	const dataFile = editor.editorComponent.view.file;
+	const lineText = editor.getLine(editor.getCursor().line);
+	const wikilinksInParagr = lineText.match(/\[\[.+?\]\]/g) || [];
+	const codesInPara = wikilinksInParagr.reduce((acc: TFile[], wikilink) => {
+		wikilink = wikilink.slice(2, -2);
+		const target = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
+		if (target instanceof TFile && target.path.startsWith(CODE_FOLDER_NAME + "/"))
+			acc.push(target);
+		return acc;
+	}, []);
+
+	new SuggesterForCodeAssignment(app, editor, codesInPara, dataFile).open();
 }
