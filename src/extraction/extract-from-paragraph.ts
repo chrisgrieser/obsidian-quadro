@@ -1,20 +1,63 @@
-import { App, Editor, Notice, TFile, TFolder } from "obsidian";
+import { App, Editor, FuzzySuggestModal, Notice, TFile, TFolder } from "obsidian";
 import { ensureBlockId } from "src/coding/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import { currentlyInFolder, safelyGetActiveEditor } from "src/utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
+class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
+	extractionTypes: TFolder[];
+	editor: Editor;
+	dataFile: TFile;
+
+	constructor(app: App, editor: Editor, extractionTypes: TFolder[], dataFile: TFile) {
+		super(app);
+		this.extractionTypes = extractionTypes;
+		this.editor = editor;
+		this.dataFile = dataFile;
+
+		this.setPlaceholder("Select extraction type");
+		this.setInstructions([
+			{ command: "↑↓", purpose: "Navigate" },
+			{ command: "⏎", purpose: "Select" },
+			{ command: "esc", purpose: "Dismiss" },
+		]);
+		this.modalEl.addClass("quadro");
+	}
+
+	//───────────────────────────────────────────────────────────────────────────
+	// SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Select+from+list+of+suggestions
+
+	// code-files, sorted by last use (which is relevant when query is empty)
+	getItems(): TFolder[] {
+		return this.extractionTypes;
+	}
+
+	// display codename + minigraph, and an extra item for creating a new code file
+	getItemText(extractionType: TFolder): string {
+		const templateFile = extractionType.children.find(
+			(f) => f instanceof TFile && f.name === "Template.md",
+		);
+		const extractionsCount = extractionType.children.length - 1; // -1 due to `Template.md`
+		const appendix = templateFile ? `  (${extractionsCount})` : ' ⚠️ "Template.md" missing';
+		return extractionType.name + appendix;
+	}
+
+	onChooseItem(extractionType: TFolder) {
+		extractOfType(this.editor, this.dataFile, extractionType);
+	}
+}
+
 async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFolder: TFolder) {
 	const app = editor.editorComponent.app;
-	const extractionType = extractionTypeFolder.name;
-	const extractionDir = `${EXTRACTION_FOLDER_NAME}/${extractionType}`;
+	const type = extractionTypeFolder.name;
+	const dir = extractionTypeFolder.path;
 
 	// read & validate TEMPLATE for Extraction Type
-	const templateFile = app.vault.getAbstractFileByPath(`${extractionDir}/Template.md`);
+	const templateFile = app.vault.getAbstractFileByPath(`${dir}/Template.md`);
 	if (!(templateFile instanceof TFile)) {
 		new Notice(
-			`There is no file "Template.md" in the folder "${extractionDir}".` +
+			`There is no file "Template.md" in the folder "${dir}".` +
 				"\n\nYou need to create one before you can make extractions.",
 			6000,
 		);
@@ -25,7 +68,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const templateHasFrontmatter = templateLines.filter((line) => line === "---").length === 2;
 	if (!templateHasFrontmatter) {
 		new Notice(
-			`The file "Template.md" in the folder "${extractionDir}" does not contain valid YAML frontmatter.` +
+			`The file "Template.md" in the folder "${dir}" does not contain valid YAML frontmatter.` +
 				"\n\nYou need to add one before you can make extractions.",
 			6000,
 		);
@@ -38,7 +81,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	let extractionCount = extractionTypeFolder.children.length - 1; // -1 to account for `Template.md`
 	do {
 		extractionCount++;
-		extractionPath = `${extractionDir}/${extractionCount}.md`;
+		extractionPath = `${dir}/${extractionCount}.md`;
 		fileExistsAlready = app.vault.getAbstractFileByPath(extractionPath) instanceof TFile;
 	} while (fileExistsAlready);
 
@@ -46,13 +89,13 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const cursor = editor.getCursor();
 	const lineText = editor.getLine(cursor.line);
 	const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
-	const updatedLine = `${lineWithoutId} [[${extractionType}/${extractionCount}]] ${blockId}`;
+	const updatedLine = `${lineWithoutId} [[${type}/${extractionCount}]] ${blockId}`;
 	editor.setLine(cursor.line, updatedLine);
 	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 	// insert data into TEMPLATE
 	const dateYamlLine = `extraction date: ${new Date().toISOString().slice(0, -5)}`;
-	const sourceYamlLine = `extraction source: ![[${dataFile.path}#${blockId}]]`;
+	const sourceYamlLine = `extraction source: "[[${dataFile.path}#${blockId}]]"`;
 	const yamlFrontmatterEnd = templateLines.findLastIndex((l) => l === "---");
 	templateLines.splice(yamlFrontmatterEnd, 0, dateYamlLine, sourceYamlLine);
 	templateLines.push("", lineText); // add a copy of the line text itself for reference
@@ -64,8 +107,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const livePreview = { source: false, mode: "source" }; // SIC it's counterintuitive, yes
 	leafToTheRight.openFile(extractionFile, { state: livePreview });
 
-	// TODO figure out how to move cursor to first property line
-	// (`editor.setCursor` does not work)
+	// TODO figure out how to move cursor to 1st property (`editor.setCursor` does not work)
 }
 
 export async function extractFromParagraph(app: App) {
@@ -97,12 +139,6 @@ export async function extractFromParagraph(app: App) {
 	} else if (extractionTypes.length === 1) {
 		extractOfType(editor, dataFile, extractionTypes[0] as TFolder);
 	} else {
-		// TODO suggester
-		new Notice(
-			"Currently, only the first extraction type will be used.\n" +
-				"Selection of extraction types is currently WIP",
-			6000,
-		);
-		extractOfType(editor, dataFile, extractionTypes[0] as TFolder);
+		new SuggesterForExtractionTypes(app, editor, extractionTypes as TFolder[], dataFile).open();
 	}
 }

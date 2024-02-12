@@ -1,7 +1,4 @@
 # Main To-dos
-- [ ] Implement Extraction
-	* [ ] Anchor examples as notices?
-	* [ ] New YAML window
 - [ ] Example Vault.
 - [ ] Code / Extraction Counter Status bar item
 - [ ] Settings page.

@@ -317,7 +317,7 @@ All in all, the underlying folder structure for extractions looks like this:
 
 | Action                 | Description                                                                                   |              Sidebar Button              | Default Hotkey | Capability Provider                    |
 | ---------------------- | --------------------------------------------------------------------------------------------- | :--------------------------------------: | :------------: | -------------------------------------- |
-| Extract from paragraph | Creates an Extraction File from Extraction Template. (WIP)                                    |    ![Icon](./assets/plus-square.svg)     | `mod+shift+e`  | Quadro                                 |
+| Extract from paragraph | Creates an Extraction File from Extraction Template.                                          |    ![Icon](./assets/plus-square.svg)     | `mod+shift+e`  | Quadro                                 |
 | Aggregate extractions  | Create table that aggregates Extraction Files. (WIP)<br><br>[Further Documentation][dataview] | ![Icon](./assets/gantt-chart-square.svg) |       /        | [Community Plugin: Dataview][dataview] |
 
 [dataview]: https://blacksmithgu.github.io/obsidian-dataview/
