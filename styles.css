@@ -65,14 +65,20 @@ body .internal-embed .markdown-embed-content {
 }
 
 /* icons for Code Files and Extraction Files */
-.nav-file-title[data-path^="Codes/"]::before {
-	content: "○";
+.nav-file-title:is([data-path^="Codes/"], [data-path^="Extractions/"])::before {
 	padding-right: 3px;
 }
 
-.nav-file-title[data-path^="Extractions/"]::before {
+.nav-file-title[data-path^="Codes/"]::before {
+	content: "○";
+}
+
+.nav-file-title[data-path^="Extractions/"]:not([data-path$="/Template.md"])::before {
 	content: "🞏";
-	padding-right: 3px;
+}
+
+.nav-file-title[data-path^="Extractions/"][data-path$="/Template.md"]::before {
+	content: "⯀";
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
