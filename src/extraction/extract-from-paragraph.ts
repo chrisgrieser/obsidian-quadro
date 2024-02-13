@@ -1,12 +1,4 @@
-import {
-   App,
-   Editor,
-   FuzzySuggestModal,
-   Notice,
-   OpenViewState,
-   TFile,
-   TFolder
-} from "obsidian";
+import { App, Editor, FuzzySuggestModal, Notice, OpenViewState, TFile, TFolder } from "obsidian";
 import { ensureBlockId } from "src/coding/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import { SUGGESTER_INSTRUCTIONS, currentlyInFolder, safelyGetActiveEditor } from "src/utils";
@@ -136,7 +128,9 @@ export async function extractFromParagraph(app: App): Promise<void> {
 		return;
 	}
 	const dataFile = editor.editorComponent.view.file;
-	const extractionTypes = extractionTFolder.children.filter((f) => f instanceof TFolder);
+	const extractionTypes = extractionTFolder.children.filter(
+		(f) => f instanceof TFolder,
+	) as TFolder[];
 
 	// Suggest Extraction Types, or trigger directly if only one type exists
 	if (extractionTypes.length === 0) {
@@ -145,9 +139,9 @@ export async function extractFromParagraph(app: App): Promise<void> {
 				"You need to create at least one subfolder before you can make an extraction.",
 			6000,
 		);
-	} else if (extractionTypes.length === 1) {
-		extractOfType(editor, dataFile, extractionTypes[0] as TFolder);
+	} else if (extractionTypes.length === 1 && extractionTypes[0]) {
+		extractOfType(editor, dataFile, extractionTypes[0]);
 	} else {
-		new SuggesterForExtractionTypes(app, editor, extractionTypes as TFolder[], dataFile).open();
+		new SuggesterForExtractionTypes(app, editor, extractionTypes, dataFile).open();
 	}
 }
