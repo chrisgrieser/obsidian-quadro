@@ -1,4 +1,4 @@
-import { App, MarkdownView } from "obsidian";
+import { App, TFolder } from "obsidian";
 import { CODE_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "./settings";
 import { currentlyInFolder } from "./utils";
 
@@ -8,18 +8,16 @@ export function updateStatusbar(app: App): void {
 	const statusbar = elems.find((el) => el.hasClass("plugin-quadro"));
 	if (!statusbar) return;
 
-	// GUARD no file open, or in extraction folder (where counts are not meaningful)
-	const activeFilepath =
-		app.workspace.getActiveViewOfType(MarkdownView)?.editor.editorComponent.view?.file?.path;
-	if (!activeFilepath || currentlyInFolder(app, "Extractions")) {
+	const activeFile = app.workspace.getActiveFile();
+	if (!activeFile) {
 		statusbar.setText("");
 		return;
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	let text = "";
-	const links = app.metadataCache.resolvedLinks[activeFilepath] || {};
+	const segments: string[] = [];
+	const links = app.metadataCache.resolvedLinks[activeFile.path] || {};
 
 	// CODEFILE: links = times code was assigned
 	if (currentlyInFolder(app, "Codes")) {
@@ -27,7 +25,13 @@ export function updateStatusbar(app: App): void {
 		for (const [_, count] of Object.entries(links)) {
 			codesAssigned += count;
 		}
-		text = `Code ${codesAssigned}x assigned`;
+		segments.push(`Code ${codesAssigned}x assigned`);
+	}
+	// EXTRACTION FILE: number of extractions made for the type
+	else if (currentlyInFolder(app, "Extractions")) {
+		const extractionType = activeFile.parent as TFolder;
+		const extractionsMade = extractionType.children.length - 1; // -1 due to `Template.md`
+		segments.push(`${extractionsMade}x extracted`);
 	}
 	// DATAFILE: differentiate links by whether they are extractions or codes
 	else {
@@ -37,22 +41,21 @@ export function updateStatusbar(app: App): void {
 			if (filepath.startsWith(CODE_FOLDER_NAME + "/")) codesAssigned += count;
 			if (filepath.startsWith(EXTRACTION_FOLDER_NAME + "/")) extractionsMade++;
 		}
-		const codeInfo = codesAssigned > 0 ? `${codesAssigned} Codes` : "";
-		const extractionInfo = extractionsMade > 0 ? `${extractionsMade} Extractions` : "";
-
-		text = [codeInfo, extractionInfo].filter(Boolean).join(", ");
+		if (codesAssigned > 0) segments.push(`${codesAssigned} Codes`);
+		if (extractionsMade > 0) segments.push(`${extractionsMade} Extractions`);
 	}
 
 	// any type of file: count invalid links
-	const unresolvedLinks = app.metadataCache.unresolvedLinks[activeFilepath] || {};
+	const unresolvedLinks = app.metadataCache.unresolvedLinks[activeFile.path] || {};
 	let unresolvedTotal = 0;
 	for (const [_, value] of Object.entries(unresolvedLinks)) {
 		unresolvedTotal += value;
 	}
-	let invalidInfo = "";
-	if (unresolvedTotal === 1) invalidInfo = ", 1 invalid link";
-	else if (unresolvedTotal > 1) invalidInfo = `, ${unresolvedTotal} invalid links`;
+	if (unresolvedTotal > 0) segments.push(`${unresolvedTotal} invalid links`);
 
 	//───────────────────────────────────────────────────────────────────────────
-	statusbar.setText(text + invalidInfo);
+	const text = segments
+		.map((segment) => segment.replace(/^(1 .*)s$/, "$1")) // singular/plural
+		.join(", ");
+	statusbar.setText(text);
 }
