@@ -1,6 +1,7 @@
 import { App, Editor, FuzzySuggestModal, Notice, OpenViewState, TFile, TFolder } from "obsidian";
 import { ensureBlockId } from "src/coding/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
+import { updateStatusbar } from "src/statusbar";
 import { SUGGESTER_INSTRUCTIONS, currentlyInFolder, safelyGetActiveEditor } from "src/utils";
 
 class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
@@ -109,6 +110,8 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	);
 	// @ts-ignore
 	if (firstProperty) firstProperty.focus();
+
+	updateStatusbar(app);
 }
 
 export async function extractFromParagraph(app: App): Promise<void> {
