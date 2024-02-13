@@ -100,14 +100,15 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 		app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
 
 	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
-	leafToTheRight.openFile(extractionFile, livePreview);
-	// INFO timeout needed, without it, there is apparently some race condition
-	// and the embedded blocklink is not rendered correctly – unsure how to avoid
-	// the race condition without a timeout, saving the view does not seem to work.
-	setTimeout(() => leafToTheRight.openFile(extractionFile, livePreview), 1);
+	await leafToTheRight.openFile(extractionFile, livePreview);
 
-	// TODO figure out how to move cursor to 1st property (`editor.setCursor` does not work)
-	// Apparently, other plugin devs also do not know: https://discord.com/channels/686053708261228577/840286264964022302/1206984890256597022
+	// HACK move cursor to first property
+	// SOURCE this and following messages: https://discord.com/channels/686053708261228577/840286264964022302/1207048530846548049
+	const firstProperty = document.querySelector(
+		".workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-value :is([contenteditable='true'], input)",
+	);
+	// @ts-ignore
+	if (firstProperty) firstProperty.focus();
 }
 
 export async function extractFromParagraph(app: App): Promise<void> {
