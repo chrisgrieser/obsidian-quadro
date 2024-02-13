@@ -175,16 +175,16 @@ representing codes):
 
 ```txt
 .
-├── Data
-│   ├── Interview 1.md
-│   ├── Field Notes 1.md
+├── 📂 Data
+│   ├── 📄 Interview 1.md
+│   ├── 📄 Field Notes 1.md
 │   └── …
-└── Coding
-    ├── blue.md
-    ├── red.md
-    └── Group 1
-         ├── white.md
-         ├── black.md
+└── 📂 Coding
+    ├── 📄 blue.md
+    ├── 📄 red.md
+    └── 📂 Group 1
+         ├── 📄 white.md
+         ├── 📄 black.md
          └── …
 ```
 
@@ -297,19 +297,19 @@ All in all, the underlying folder structure for extractions looks like this:
 
 ```txt
 .
-├── Data
-│   ├── Interview 1.md
-│   ├── Field Notes 1.md
+├── 📂 Data
+│   ├── 📄 Interview 1.md
+│   ├── 📄 Field Notes 1.md
 │   └── …
-└── Extractions
-    ├── Career Obstacles
-    │    ├── Template.md
-    │    ├── 1.md
-    │    ├── 2.md
+└── 📂 Extractions
+    ├── 📂 Career Obstacles
+    │    ├── 📄 Template.md
+    │    ├── 📄 1.md
+    │    ├── 📄 2.md
     │    └── …
-    └── Career Visions
-         ├── Template.md
-         ├── 1.md
+    └── 📂 Career Visions
+         ├── 📄 Template.md
+         ├── 📄 1.md
          └── …
 ```
 
@@ -326,7 +326,7 @@ Every hotkey can be customized by search in the Obsidian hotkey settings for the
 command name.
 
 ## Installation
-**Manual**
+**Manual**  
 1. Download the `.zip` file from the [latest
    release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).
 2. Extract the `.zip` file into the
@@ -338,11 +338,11 @@ command name.
 4. Look for a new entry `Quadro` in the plugin list. Enable the plugin by
    checking the box.
 
-**BRAT (Beta Reviewers Auto-update Tester)**
+**BRAT (Beta Reviewers Auto-update Tester)**  
 Alternatively, if you are already familiar with the Obsidian Ecosystem, you can
 also install the plugin via [BRAT](https://github.com/TfTHacker/obsidian42-brat).
 
-**Obsidian Community Plugin Store**
+**Obsidian Community Plugin Store**  
 Once published in the Obsidian Community Plugin Store, *Quadro* is going to be
 available in Obsidian's Plugin Browser via: `Settings` → `Community plugins` →
 `Browse` → Search for *"Quadro"*
@@ -357,12 +357,12 @@ available in Obsidian's Plugin Browser via: `Settings` → `Community plugins` �
    that folder.
 4. Launch Obsidian again.
 
-**BRAT (Beta Reviewers Auto-update Tester)**
+**BRAT**  
 If you have added the plugin via *BRAT*, it automatically checks for new
 updates every time you start Obsidian and automatically updates *Quadro* if there
 is a new version available.
 
-**Obsidian Community Plugin Store**
+**Obsidian Community Plugin Store**  
 Once published in the Obsidian Community Plugin Store, you can update *Quadro*
 (and all other plugins you have installed) via: `Settings` → `Community plugins`
 → `Check for updates` → `Update All`.
