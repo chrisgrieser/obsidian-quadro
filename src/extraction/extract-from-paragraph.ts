@@ -94,20 +94,24 @@ async function extractOfType(
 	templateLines.splice(yamlFrontmatterEnd, 0, dateYamlLine, sourceYamlLine);
 	templateLines.push("", `**Paragraph extracted from:** ![[${dataFile.path}#${blockId}]]`);
 
-	// Create and open EXTRACTION-FILE in split to the right
+	// Create EXTRACTION-FILE, and open in split to the right
 	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));
+
+	// use existing leaf if exists, otherwise create new one
 	const currentLeaf = app.workspace.getLeaf();
-	const leafToTheRight = app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
+	const leafToTheRight =
+		app.workspace.getAdjacentLeafInDirection(currentLeaf, "right") ||
+		app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
+
 	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
-
 	leafToTheRight.openFile(extractionFile, livePreview);
-
 	// INFO timeout needed, without it, there is apparently some race condition
 	// and the embedded blocklink is not rendered correctly – unsure how to avoid
 	// the race condition without a timeout, saving the view does not seem to work.
 	setTimeout(() => leafToTheRight.openFile(extractionFile, livePreview), 1);
 
 	// TODO figure out how to move cursor to 1st property (`editor.setCursor` does not work)
+	// Apparently, other plugin devs also do not know: https://discord.com/channels/686053708261228577/840286264964022302/1206984890256597022
 }
 
 export async function extractFromParagraph(app: App): Promise<void> {

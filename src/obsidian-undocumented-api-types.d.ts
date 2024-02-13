@@ -1,6 +1,14 @@
 import "obsidian";
 
 declare module "obsidian" {
+	interface Workspace {
+		getAdjacentLeafInDirection: (
+			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
+			leaf: WorkspaceLeaf,
+			direction: "top" | "bottom" | "left" | "right",
+			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
+		) => WorkspaceLeaf | null;
+	}
 	interface Editor {
 		editorComponent: {
 			view: {
