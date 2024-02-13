@@ -24,12 +24,14 @@ the style of *Qualitative Content Analysis*.
 - [Extraction](#extraction)
 	* [How extraction works in Quadro](#how-extraction-works-in-quadro)
 	* [Extraction capabilities](#extraction-capabilities)
-- [Installation](#installation)
-- [Update](#update)
-- [Development](#development)
+- [Technical](#technical)
+	* [Installation](#installation)
+	* [Update](#update)
+	* [Bug Reports & Feature Requests](#bug-reports--feature-requests)
+	* [Development](#development)
 - [Credits](#credits)
 	* [Acknowledgments](#acknowledgments)
-	* [Recommended citation](#recommended-citation)
+	* [Recommended citation of this project](#recommended-citation-of-this-project)
 	* [About the developer](#about-the-developer)
 
 <!-- tocstop -->
@@ -325,7 +327,9 @@ All in all, the underlying folder structure for extractions looks like this:
 Every hotkey can be customized by search in the Obsidian hotkey settings for the
 command name.
 
-## Installation
+## Technical
+
+### Installation
 **Manual**  
 1. Download the `.zip` file from the [latest
    release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).
@@ -347,7 +351,7 @@ Once published in the Obsidian Community Plugin Store, *Quadro* is going to be
 available in Obsidian's Plugin Browser via: `Settings` → `Community plugins` →
 `Browse` → Search for *"Quadro"*
 
-## Update
+### Update
 **Manual**
 1. Close Obsidian.
 2. Download the `.zip` file from the [latest
@@ -367,7 +371,13 @@ Once published in the Obsidian Community Plugin Store, you can update *Quadro*
 (and all other plugins you have installed) via: `Settings` → `Community plugins`
 → `Check for updates` → `Update All`.
 
-## Development
+### Bug Reports & Feature Requests
+- For bug reports or feature requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).
+- For questions and general discussion about *Quadro*, please use the [GitHub
+  Discussion
+  Forum](https://github.com/chrisgrieser/obsidian-quadro/discussions).
+
+### Development
 
 ```bash
 git clone "git@github.com:chrisgrieser/obsidian-quadro.git"
@@ -383,7 +393,7 @@ make init
   his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
 - [Grit Laudel](http://www.laudel.info/) who provided sample interview data.
 
-### Recommended citation
+### Recommended citation of this project
 Please cite this software project as (APA):
 
 ```txt
@@ -408,6 +418,8 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 - [Twitter](https://twitter.com/pseudo_meta)
 - [Mastodon](https://pkm.social/@pseudometa)
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
+
+*For bug reports and features requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).*
 
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'>
 <img height='36' style='border:0px;height:36px;'
