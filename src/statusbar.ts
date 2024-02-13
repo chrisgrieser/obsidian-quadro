@@ -33,6 +33,12 @@ export function updateStatusbar(app: App): void {
 		const extractionsMade = extractionType.children.length - 1; // -1 due to `Template.md`
 		segments.push(`${extractionsMade}x extracted`);
 	}
+	// EXTRACTION FILE: number of extractions made for the type
+	else if (currentlyInFolder(app, "Extractions")) {
+		const extractionType = activeFile.parent as TFolder;
+		const extractionsMade = extractionType.children.length - 1; // -1 due to `Template.md`
+		segments.push(`${extractionsMade}x extracted`);
+	}
 	// DATAFILE: differentiate links by whether they are extractions or codes
 	else {
 		let codesAssigned = 0;
