@@ -8,6 +8,7 @@ import {
 } from "../utils";
 import { ensureBlockId } from "./block-id";
 import { createOneCodeFile } from "./create-new-code-file";
+import { updateStatusbar } from "src/statusbar";
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
 	editor: Editor;
@@ -90,6 +91,8 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const dataFilePath = dataFile.path.slice(0, -3);
 		const textToAppend = `![[${dataFilePath}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
+
+		updateStatusbar(this.app)
 	}
 }
 

@@ -19,6 +19,9 @@ declare module "obsidian" {
 		};
 	}
 	interface App {
+		statusBar: {
+			containerEl: HTMLElement;
+		};
 		commands: {
 			executeCommandById: (commandId: string) => void;
 		};
