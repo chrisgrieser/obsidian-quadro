@@ -3,6 +3,9 @@
 	"files": {
 		"include": ["*.json", "src/**/*.ts"]
 	},
+	"json": {
+		"parser": { "allowComments": true }
+	},
 	"formatter": {
 		"lineWidth": 100,
 		"indentStyle": "tab",
