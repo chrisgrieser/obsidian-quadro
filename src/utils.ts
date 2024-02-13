@@ -3,7 +3,9 @@ import { CODE_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "./settings";
 
 export function currentlyInFolder(app: App, type: "Codes" | "Extractions"): boolean {
 	const folderName = type === "Codes" ? CODE_FOLDER_NAME : EXTRACTION_FOLDER_NAME;
-	const isInFolder = app.workspace.getActiveFile()?.path.startsWith(folderName + "/");
+	const activeFile = app.workspace.getActiveFile();
+	if (!activeFile) return false;
+	const isInFolder = activeFile.path.startsWith(folderName + "/");
 	return Boolean(isInFolder);
 }
 
