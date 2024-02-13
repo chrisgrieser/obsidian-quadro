@@ -37,11 +37,7 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 	}
 }
 
-async function extractOfType(
-	editor: Editor,
-	dataFile: TFile,
-	extractionTypeFolder: TFolder,
-): Promise<void> {
+async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFolder: TFolder) {
 	const app = editor.editorComponent.app;
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;

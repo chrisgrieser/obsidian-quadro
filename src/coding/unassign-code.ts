@@ -49,11 +49,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 	}
 }
 
-async function unassignCodeWhileInDataFile(
-	editor: Editor,
-	dataFile: TFile,
-	code: Code,
-): Promise<void> {
+async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code) {
 	const app = editor.editorComponent.app;
 	const ln = editor.getCursor().line;
 	const lineText = editor.getLine(ln);
@@ -203,8 +199,7 @@ export async function deleteCodeEverywhere(app: App): Promise<void> {
 	// (`app.metadataCache.resolvedLinks` does not contain blockIDs, so we need
 	// to read and parse the file manually)
 	const codeFile = editor.editorComponent.view.file;
-	const allWikilinks =
-		((await app.vault.cachedRead(codeFile)) || "").match(/!\[\[.+?\]\]/g) || [];
+	const allWikilinks = ((await app.vault.cachedRead(codeFile)) || "").match(/!\[\[.+?\]\]/g) || [];
 	const referencedParasInDataFiles = allWikilinks.reduce((acc: DataFileReference[], link) => {
 		const [_, linkPath, blockId] = link.match(embeddedBlockLinkRegex) || [];
 		if (!linkPath || !blockId) return acc;
