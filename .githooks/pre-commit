@@ -3,7 +3,6 @@
 #───────────────────────────────────────────────────────────────────────────────
 
 # INFO block if there are any issues reported by biome or if building fails
-echo
 print "\033[1;34mPre-Commit Hook\e[0m"
 
 print "\033[1;35mBiome Check\033[0m"
