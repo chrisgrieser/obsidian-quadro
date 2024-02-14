@@ -4,8 +4,18 @@
 - [ ] Settings page.
 - [ ] Bootstrap Extraction Types for user?
 
+## Update Obsidian API Usage
+> New `Vault.getFileByPath` and `Vault.getFolderByPath` convenience functions.
+> No more needing to do `instanceof TFile` checks after using
+> `getAbstractFileByPath`.
+
+- [ ] Implement when Obsidian API is updated to 1.5.5 at npm:
+  <https://www.npmjs.com/package/obsidian>
+- [ ] bump `versions.json`
+- [ ] change at all locations in the plugin code
+
 ## Submission to Obsidian Community Store
-<https://github.com/obsidianmd/obsidian-releases/pull/3076>
+Status: <https://github.com/obsidianmd/obsidian-releases/pull/3076>
 
 ## Potential Ideas
 - AI-assisted coding?
