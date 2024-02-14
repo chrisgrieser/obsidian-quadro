@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# vim: filetype=sh
+#───────────────────────────────────────────────────────────────────────────────
+
+print "\033[1;34m\nPre-Commit Hook: Biome\033[0m"
+biome format --write .
+biome check --error-on-warnings . || exit 1
+echo
