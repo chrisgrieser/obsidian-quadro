@@ -16,7 +16,7 @@ the style of *Qualitative Content Analysis*.
 
 - [Introduction](#introduction)
 	* [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
-	* [For Obsidian users](#for-obsidian-users)
+	* [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Coding](#coding)
 	* [How coding works in Quadro](#how-coding-works-in-quadro)
@@ -93,9 +93,16 @@ Obsidian is [free to use for academic purposes](https://obsidian.md/license),
 and *Quadro* is also free to use. Especially for students writing their
 theses, this saves a lot of unnecessary hassle with licenses.
 
-### For Obsidian users
-*Coding* is implemented via "bidirectional" links between data files and
-markdown files by inserting wikilinks at both files. It makes use of Obsidian's
+### For Obsidian users not familiar with QDA
+In Qualitative Data Analysis, "coding" is a form of fine-grained tagging of text
+segments, and "extraction" is a transforming prose text into structured data.
+
+*Coding* is implemented in *Quadro* via "bidirectional" links between Data Files
+and Code Files by inserting wikilinks in *both* files. (Obsidian itself does
+have backlinks, but those are unidirectional links, since the implicit backlink
+is only inferred and not stored anywhere in the markdown file.).
+
+It makes use of Obsidian's
 [note-embedding](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note)
 functionality to keep track of coded text segments.
 - Codes are implemented as `[[wikilinks]]` instead of `#tags`, as the former
@@ -104,14 +111,17 @@ functionality to keep track of coded text segments.
   to two files (the data and the code file) *at the same time*, which is
   necessary to adequately handle the workflow common to coding in QDA.
 
-*Extraction* is implemented by creating separate extract files containing, where
-extraction aspects are saved as ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)).
+*Extraction* is implemented by creating separate Extract Files for each
+extraction, using [YAML
+frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/) to store the
+data in a structured form. Quadro uses a simplistic templating mechanism to
+support the creation of those Extraction Files.
 
-> [!TIP]
-> It is recommended to create a separate vault for data analysis and install the
-> plugin there, since QDA does not follow the "common logic of note-taking,"
-> thus often requiring a different set of plugins and settings from your regular
-> vault.
+> [!NOTE]
+> It is strongly recommended to create a separate vault for data analysis and
+> install the plugin there, since QDA does not follow the "common logic of
+> note-taking," thus often requiring a different set of plugins and settings
+> from your regular vault.
 
 ### Brief methodological comparison with other QDA software
 
