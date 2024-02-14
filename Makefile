@@ -1,4 +1,4 @@
-.PHONY: build init release
+.PHONY: build init format release
 
 # build & open dev-vault (if on macOS)
 build:
@@ -11,6 +11,9 @@ init:
 	npm install && \
 	node esbuild.config.mjs ; \
 	git config core.hooksPath .githooks
+
+format: 
+	biome format --write "$$(git rev-parse --show-toplevel)"
 
 release:
 	zsh ./.release.sh

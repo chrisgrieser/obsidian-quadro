@@ -22,7 +22,7 @@ export default class Quadro extends Plugin {
 			// used by many people not familiar with Obsidian. Requiring them to
 			// add an hotkey would unnecessarily complicate the onboarding for
 			// them. We are, however, using combinations that are unlikely to
-			// conflict with other plugins with other hotkeys. 
+			// conflict with other plugins with other hotkeys.
 			if (cmd.hotkeyLetter) {
 				cmdObj.hotkeys = [{ modifiers: ["Mod", "Shift"], key: cmd.hotkeyLetter }];
 			}
