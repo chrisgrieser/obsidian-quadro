@@ -394,6 +394,15 @@ git clone "git@github.com:chrisgrieser/obsidian-quadro.git"
 make init
 ```
 
+```bash
+make format
+make build
+```
+
+> [!NOTE]
+> This repo uses a pre-commit hook, which requires prevents commits that do not
+> build or have issues reported by `biome`.
+
 <!-- vale Google.FirstPerson = NO -->
 ## Credits
 
