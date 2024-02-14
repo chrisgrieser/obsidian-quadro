@@ -6,9 +6,12 @@
 print "\033[1;34mPre-Commit Hook\e[0m"
 
 print "\033[1;35mBiome Check\033[0m"
-biome check --log-kind="compact" "$(git rev-parse --show-toplevel)" || exit 1
+npx biome check --log-kind="compact" "$(git rev-parse --show-toplevel)" || exit 1
 
 printf "\033[1;35mBuild\033[0m"
 node esbuild.config.mjs || exit 1
+
+print "\033[1;35mMarkdownlint\033[0m"
+npx markdownlint --ignore="node_modules" "$(git rev-parse --show-toplevel)" && echo "Done." || exit 1
 
 echo

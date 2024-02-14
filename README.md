@@ -400,8 +400,8 @@ make build
 ```
 
 > [!NOTE]
-> This repo uses a pre-commit hook, which requires prevents commits that do not
-> build or have issues reported by `biome`.
+> This repo uses a pre-commit hook, which prevents commits that do not build or
+> do not pass linting.
 
 <!-- vale Google.FirstPerson = NO -->
 ## Credits

@@ -9,11 +9,12 @@ build:
 # install dependencies, build, enable git hooks
 init:
 	npm install && \
-	node esbuild.config.mjs ; \
+	node esbuild.config.mjs
 	git config core.hooksPath .githooks
 
 format: 
-	biome format --write "$$(git rev-parse --show-toplevel)"
+	npx biome format --write "$$(git rev-parse --show-toplevel)"
+	npx markdownlint-cli --fix --ignore="node_modules" "$$(git rev-parse --show-toplevel)"
 
 release:
 	zsh ./.release.sh
