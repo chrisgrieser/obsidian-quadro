@@ -2,10 +2,10 @@ import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
 import { updateStatusbar } from "src/statusbar";
 import {
-   SUGGESTER_INSTRUCTIONS,
-   currentlyInFolder,
-   getFullCode,
-   safelyGetActiveEditor,
+	SUGGESTER_INSTRUCTIONS,
+	currentlyInFolder,
+	getFullCode,
+	safelyGetActiveEditor,
 } from "src/utils";
 
 interface Code {

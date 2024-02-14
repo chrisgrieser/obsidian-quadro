@@ -1,14 +1,14 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
+import { updateStatusbar } from "src/statusbar";
 import { CODE_FOLDER_NAME, MINIGRAPH, SORT_FUNC_TO_USE, TFILE_SORT_FUNC } from "../settings";
 import {
-   SUGGESTER_INSTRUCTIONS,
-   currentlyInFolder,
-   getFullCode,
-   safelyGetActiveEditor,
+	SUGGESTER_INSTRUCTIONS,
+	currentlyInFolder,
+	getFullCode,
+	safelyGetActiveEditor,
 } from "../utils";
 import { ensureBlockId } from "./block-id";
 import { createOneCodeFile } from "./create-new-code-file";
-import { updateStatusbar } from "src/statusbar";
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
 	editor: Editor;
@@ -92,7 +92,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const textToAppend = `![[${dataFilePath}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
 
-		updateStatusbar(this.app)
+		updateStatusbar(this.app);
 	}
 }
 

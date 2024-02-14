@@ -1,4 +1,4 @@
-// INFO 
+// INFO
 // Wrap existing Obsidian commands in new commands to make it more accessible
 // for users new to Obsidian, since the target audience of the plugin is
 // non-Obsidian users. Also, this allows us to assign the commands to specific

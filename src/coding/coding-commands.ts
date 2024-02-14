@@ -1,7 +1,7 @@
 import { assignCode } from "./assign-code";
 import { bulkCreateCodeFiles } from "./create-new-code-file";
-import { unassignCode, deleteCodeEverywhere } from "./unassign-code";
-import { renameCode, mergeCodes } from "./wrapper-funcs";
+import { deleteCodeEverywhere, unassignCode } from "./unassign-code";
+import { mergeCodes, renameCode } from "./wrapper-funcs";
 
 //──────────────────────────────────────────────────────────────────────────────
 // INFO Adding a hotkey by default, since this plugin is going to be

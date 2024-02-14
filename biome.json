@@ -12,6 +12,9 @@
 		"indentWidth": 3,
 		"formatWithErrors": true
 	},
+	"organizeImports": {
+		"enabled": false
+	},
 	"linter": {
 		"rules": {
 			"all": true,
