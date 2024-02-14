@@ -15,7 +15,7 @@ export async function ensureBlockId(
 	tFile: TFile,
 	lineText: string,
 ): Promise<{ blockId: string; lineWithoutId: string }> {
-	const [blockIdOfLine] = lineText.match(/\^\w+$/) || [];
+	const [blockIdOfLine] = lineText.match(/\^[\w-]+$/) || [];
 
 	// line already has blockID
 	if (blockIdOfLine) {
