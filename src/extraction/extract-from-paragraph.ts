@@ -2,7 +2,12 @@ import { App, Editor, FuzzySuggestModal, Notice, OpenViewState, TFile, TFolder }
 import { ensureBlockId } from "src/coding/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import { updateStatusbar } from "src/statusbar";
-import { SUGGESTER_INSTRUCTIONS, currentlyInFolder, safelyGetActiveEditor } from "src/utils";
+import {
+	SUGGESTER_INSTRUCTIONS,
+	currentlyInFolder,
+	moveCursorToHthmlElement,
+	safelyGetActiveEditor,
+} from "src/utils";
 
 class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 	extractionTypes: TFolder[];
@@ -94,7 +99,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	// Create EXTRACTION-FILE, and open in split to the right
 	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));
 
-	// use existing leaf if exists, otherwise create new one
+	// use existing leaf if it exists, otherwise create new one
 	const currentLeaf = app.workspace.getLeaf();
 	const leafToTheRight =
 		app.workspace.getAdjacentLeafInDirection(currentLeaf, "right") ||
@@ -103,14 +108,11 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
 	await leafToTheRight.openFile(extractionFile, livePreview);
 
-	// HACK move cursor to first property
-	// SOURCE https://discord.com/channels/686053708261228577/840286264964022302/1207048530846548049
-	// https://discord.com/channels/686053708261228577/840286264964022302/1207053341989929070
+	// move cursor to first property
 	const firstProperty = document.querySelector(
 		".workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-value :is([contenteditable='true'], input)",
 	);
-	// @ts-ignore
-	if (firstProperty) firstProperty.focus();
+	if (firstProperty instanceof HTMLElement) moveCursorToHthmlElement(firstProperty, 0);
 
 	updateStatusbar(app);
 }

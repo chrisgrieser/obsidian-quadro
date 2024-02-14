@@ -29,3 +29,22 @@ export const SUGGESTER_INSTRUCTIONS = [
 	{ command: "⏎", purpose: "Select" },
 	{ command: "esc", purpose: "Dismiss" },
 ];
+
+// SOURCE https://discord.com/channels/686053708261228577/840286264964022302/1207053341989929070
+export function moveCursorToHthmlElement(elem: HTMLElement, pos: number) {
+	if (elem instanceof HTMLInputElement) {
+		elem.focus();
+		// number types cannot be selected, so convert to text
+		const isNumber = elem.getAttribute("type") === "number";
+		if (isNumber) elem.setAttribute("type", "text");
+		elem.setSelectionRange(pos, pos);
+		if (isNumber) elem.setAttribute("type", "number");
+	} else {
+		const range = document.createRange();
+		const sel = window.getSelection();
+		range.setStart(elem, pos);
+		range.collapse(true);
+		sel?.removeAllRanges();
+		sel?.addRange(range);
+	}
+}
