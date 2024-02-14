@@ -2,6 +2,17 @@
 	--text-faint: "";
 	--background-secondary-alt: "";
 }
+/* ────────────────────────────────────────────────────────────────────────── */
+
+/* NOTE
+Overwriting of (some) core styling is done on purpose. As noted in the README,
+Quadro is intended to be used in specialized vaults, solely dedicated to QDA.
+
+I assume that running multiple document.querySelector on every file-open and
+adding classes to quite a few elements would have somewhat of a performance
+impact, which I wanted to avoid if Quadro is to be run in dedicated vaults only
+anyway.
+*/
 
 /* ────────────────────────────────────────────────────────────────────────── */
 /* BLOCK IDS */

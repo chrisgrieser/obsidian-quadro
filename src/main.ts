@@ -17,6 +17,12 @@ export default class Quadro extends Plugin {
 				name: cmd.name,
 				editorCallback: () => cmd.func(this.app),
 			};
+
+			// INFO Adding a few hotkey by default, since this plugin is going to be
+			// used by many people not familiar with Obsidian. Requiring them to
+			// add an hotkey would unnecessarily complicate the onboarding for
+			// them. We are, however, using combinations that are unlikely to
+			// conflict with other plugins with other hotkeys. 
 			if (cmd.hotkeyLetter) {
 				cmdObj.hotkeys = [{ modifiers: ["Mod", "Shift"], key: cmd.hotkeyLetter }];
 			}
