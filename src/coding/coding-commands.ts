@@ -41,6 +41,6 @@ export const CODING_COMMANDS = [
 		id: "bulk-create-new-code-files",
 		name: "Bulk create new code files",
 		func: bulkCreateCodeFilesCommand,
-		icon: "circle-dot",
+		icon: "circle-dashed",
 	},
 ];

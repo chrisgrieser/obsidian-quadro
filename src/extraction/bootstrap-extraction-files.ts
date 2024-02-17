@@ -68,3 +68,7 @@ export async function bootstrapExtractionTemplate(app: App, newExtractionTypeNam
 	await openFileInSplitToRight(app, templateFile);
 	moveCursorToFirstProperty("key");
 }
+
+export function createNewExtractionTypeCommand(app: App) {
+	bootstrapExtractionTypeFolder(app);
+}

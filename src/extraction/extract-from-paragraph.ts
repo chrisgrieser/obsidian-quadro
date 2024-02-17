@@ -105,6 +105,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));
 	await openFileInSplitToRight(app, extractionFile);
 	moveCursorToFirstProperty("value");
+
 	updateStatusbar(app);
 }
 

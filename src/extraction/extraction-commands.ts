@@ -1,4 +1,5 @@
-import { aggregateExtractions } from "./aggregate-extractions";
+import { aggregateExtractions as aggregateExtractionsCommand } from "./aggregate-extractions";
+import { createNewExtractionTypeCommand } from "./bootstrap-extraction-files";
 import { extractFromParagraphCommand } from "./extract-from-paragraph";
 
 export const EXTRACTION_COMMANDS = [
@@ -10,9 +11,15 @@ export const EXTRACTION_COMMANDS = [
 		icon: "plus-square",
 	},
 	{
+		id: "create-new-extraction-type",
+		name: "Create new extraction type",
+		func: createNewExtractionTypeCommand,
+		icon: "box-select",
+	},
+	{
 		id: "aggregate-extractions",
 		name: "Aggregate extractions",
-		func: aggregateExtractions,
-		icon: "gantt-chart-square",
+		func: aggregateExtractionsCommand,
+		icon: "sigma-square",
 	},
 ];

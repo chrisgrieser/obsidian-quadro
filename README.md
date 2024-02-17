@@ -216,8 +216,8 @@ representing codes):
 | Delete code from paragraph                | Removes a code from the current paragraph of a Data File or Code File. The reference is also removed from the corresponding other file.                                                                             | ![Icon](./assets/minus-circle.svg) | `mod+shift+d`  | Quadro                                          |
 | Delete Code File and all references to it | Moves the Code File to the trash, *and* deletes all references to it.                                                                                                                                               |   ![Icon](./assets/x-circle.svg)   |       —        | Quadro                                          |
 | Merge codes                               | All references to the original Code Files are updated to point to the Code File.                                                                                                                                    |    ![Icon](./assets/radius.svg)    |       —        | [Obsidian Core Plugin: Note Composer][composer] |
-| Bulk-create new codes                     | Create multiple new codes at once (without assigning them to a paragraph).                                                                                                                                          |  ![Icon](./assets/circle-dot.svg)  |       —        | Quadro                                          |
-| Code grouping                             | Codes can simply be arranged in subfolders via drag-and-drop in the File Explorer.                                                                                                                                  |                 —                  |       —        | Obsidian Built-in                               |
+| Bulk-create new codes                     | Create multiple new codes at once (without assigning them to a paragraph).                                                                                                                                          | ![Icon](./assets/circle-dashed.svg)|       —        | Quadro                                          |
+| Code grouping                             | Codes can be arranged in subfolders via drag-and-drop in the File Explorer.                                                                                                                                         |                 —                  |       —        | [Obsidian Built-in][move-file]                  |
 | Visualization of code relationships       | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph]                                                                |   ![Icon](./assets/git-fork.svg)   |    `mod+g`     | [Obsidian Core Plugin: Graph View][graph]       |
 | Investigation of code co-occurrences      | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                                                                                           |                 —                  | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]          |
 
@@ -225,6 +225,7 @@ representing codes):
 [rename]: https://help.obsidian.md/Files+and+folders/Manage+notes#Rename+a+note
 [graph]: https://help.obsidian.md/Plugins/Graph+view
 [search]: https://help.obsidian.md/Plugins/Search#Search+operators
+[move-file]: https://help.obsidian.md/Plugins/File+explorer#Move+a+file+or+folder
 
 `mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
 customized by search in the Obsidian hotkey settings.
@@ -327,10 +328,11 @@ All in all, the underlying folder structure for extractions looks like this:
 
 ### Extraction capabilities
 
-| Action                 | Description                                                                                   |              Sidebar Button              | Default Hotkey | Capability Provider                    |
-| ---------------------- | --------------------------------------------------------------------------------------------- | :--------------------------------------: | :------------: | -------------------------------------- |
-| Extract from paragraph | Creates an Extraction File from Extraction Template.                                          |    ![Icon](./assets/plus-square.svg)     | `mod+shift+e`  | Quadro                                 |
-| Aggregate extractions  | Create table that aggregates Extraction Files. (WIP)<br><br>[Further Documentation][dataview] | ![Icon](./assets/gantt-chart-square.svg) |       /        | [Community Plugin: Dataview][dataview] |
+| Action                     | Description                                                                                              |              Sidebar Button             | Default Hotkey | Capability Provider                    |
+| -------------------------- | -------------------------------------------------------------------------------------------------------- | :-------------------------------------: | :------------: | -------------------------------------- |
+| Extract from paragraph     | Creates an Extraction File from Extraction Template.                                                     |    ![Icon](./assets/plus-square.svg)    | `mod+shift+e`  | Quadro                                 |
+| Create new extraction type | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template). | ![Icon](./assets/box-select.svg)        |       /        | Quadro                                 |
+| Aggregate extractions      | Create table that aggregates Extraction Files. (WIP)<br><br>[Further Documentation][dataview]            | ![Icon](./assets/sigma-square.svg)      |       /        | [Community Plugin: Dataview][dataview] |
 
 [dataview]: https://blacksmithgu.github.io/obsidian-dataview/
 
