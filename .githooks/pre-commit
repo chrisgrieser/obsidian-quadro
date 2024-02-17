@@ -2,16 +2,25 @@
 # vim: filetype=sh
 #───────────────────────────────────────────────────────────────────────────────
 
-# INFO block if there are any issues reported by biome or if building fails
-print "\033[1;34mPre-Commit Hook\e[0m"
-
-print "\033[1;35mBiome Check\033[0m"
-npx biome check --log-kind="compact" "$(git rev-parse --show-toplevel)" || exit 1
-
-printf "\033[1;35mBuild\033[0m"
-node esbuild.config.mjs || exit 1
-
-print "\033[1;35mMarkdownlint\033[0m"
-npx markdownlint --ignore="node_modules" "$(git rev-parse --show-toplevel)" && echo "Done." || exit 1
+# INFO block commit if there are any issues reported
+set -o errexit
 
 echo
+echo "────────────────────────"
+print "\033[1;34mPre-Commit Hook\033[0m"
+
+print "\033[1;35m1/4 Biome\033[0m"
+npx biome check --log-kind="compact" "$(git rev-parse --show-toplevel)"
+
+print "\033[1;35m2/4 TypeScript\033[0m"
+npx tsc --noEmit --skipLibCheck --strict
+echo "Done."
+
+printf "\033[1;35m3/4 esbuild\033[0m"
+node esbuild.config.mjs
+
+print "\033[1;35m4/4 Markdownlint\033[0m"
+npx markdownlint --ignore="node_modules" "$(git rev-parse --show-toplevel)" 
+echo "Done."
+
+echo "────────────────────────"
