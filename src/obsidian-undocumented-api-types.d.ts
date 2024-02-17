@@ -33,5 +33,12 @@ declare module "obsidian" {
 				};
 			};
 		};
+		plugins: {
+			enabledPlugins: Set<string>;
+			enablePluginAndSave: (pluginId: string) => Promise<boolean>;
+			plugins: {
+				[key: string]: object;
+			};
+		};
 	}
 }

@@ -128,12 +128,12 @@ export async function extractFromParagraphCommand(app: App): Promise<void> {
 	}
 
 	// Determine Extraction Types (= subfolders of EXTRACTION_FOLDER)
-	const dataFile = editor.editorComponent.view.file;
 	const extractionTypes = extractionTFolder.children.filter(
 		(f) => f instanceof TFolder,
 	) as TFolder[];
 
 	// Suggest Extraction Types, or trigger directly if only one type exists
+	const dataFile = editor.editorComponent.view.file;
 	if (extractionTypes.length === 0) {
 		bootstrapExtractionTypeFolder(app);
 	} else if (extractionTypes.length === 1 && extractionTypes[0]) {

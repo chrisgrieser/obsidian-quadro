@@ -332,7 +332,7 @@ All in all, the underlying folder structure for extractions looks like this:
 | -------------------------- | -------------------------------------------------------------------------------------------------------- | :-------------------------------------: | :------------: | -------------------------------------- |
 | Extract from paragraph     | Creates an Extraction File from Extraction Template.                                                     |    ![Icon](./assets/plus-square.svg)    | `mod+shift+e`  | Quadro                                 |
 | Create new extraction type | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template). | ![Icon](./assets/box-select.svg)        |       /        | Quadro                                 |
-| Aggregate extractions      | Create table that aggregates Extraction Files. (WIP)<br><br>[Further Documentation][dataview]            | ![Icon](./assets/sigma-square.svg)      |       /        | [Community Plugin: Dataview][dataview] |
+| Aggregate extractions      | Create table that aggregates Extraction Files.      <br><br>[Further Documentation][dataview]            | ![Icon](./assets/sigma-square.svg)      |       /        | [Community Plugin: Dataview][dataview] |
 
 [dataview]: https://blacksmithgu.github.io/obsidian-dataview/
 

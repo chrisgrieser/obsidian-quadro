@@ -68,6 +68,14 @@ body .internal-embed .markdown-embed-content {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
+/* DATAVIEW */
+
+/* full line width for dataview */
+body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dataview.table-view-table) {
+	--file-line-width: 100%;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
 /* FILE EXPLORER */
 
 /* bold to all the folders with special function for Quadro */
