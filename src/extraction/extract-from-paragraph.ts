@@ -1,5 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, OpenViewState, TFile, TFolder } from "obsidian";
-import { ensureBlockId } from "src/coding/block-id";
+import { ensureBlockId } from "src/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import { updateStatusbar } from "src/statusbar";
 import {

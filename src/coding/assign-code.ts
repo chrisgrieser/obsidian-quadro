@@ -1,4 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
+import { ensureBlockId } from "src/block-id";
 import { updateStatusbar } from "src/statusbar";
 import { CODE_FOLDER_NAME, MINIGRAPH, SORT_FUNC_TO_USE, TFILE_SORT_FUNC } from "../settings";
 import {
@@ -7,7 +8,6 @@ import {
 	getFullCode,
 	safelyGetActiveEditor,
 } from "../utils";
-import { ensureBlockId } from "./block-id";
 import { createOneCodeFile } from "./create-new-code-file";
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
