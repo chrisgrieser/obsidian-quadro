@@ -9,7 +9,7 @@ import { currentlyInFolder } from "src/utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function renameCode(app: App) {
+export function renameCodeCommand(app: App) {
 	if (!currentlyInFolder(app, "Codes")) {
 		new Notice("You must be in a code file.");
 	} else {
@@ -17,7 +17,7 @@ export function renameCode(app: App) {
 	}
 }
 
-export function mergeCodes(app: App) {
+export function mergeCodesCommand(app: App) {
 	if (!currentlyInFolder(app, "Codes")) {
 		new Notice("You must be in a code file.");
 	} else {

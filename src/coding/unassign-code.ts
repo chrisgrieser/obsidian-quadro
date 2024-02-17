@@ -157,7 +157,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
  * B. data file, line has 1 code -> remove code, and its reference from code file
  * C. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
  */
-export async function unassignCode(app: App): Promise<void> {
+export async function unassignCodeCommand(app: App): Promise<void> {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
@@ -191,7 +191,7 @@ export async function unassignCode(app: App): Promise<void> {
 	}
 }
 
-export async function deleteCodeEverywhere(app: App): Promise<void> {
+export async function deleteCodeEverywhereCommand(app: App): Promise<void> {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 

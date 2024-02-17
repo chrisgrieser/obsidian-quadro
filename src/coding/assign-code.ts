@@ -98,7 +98,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function assignCode(app: App): void {
+export function assignCodeCommand(app: App): void {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 

@@ -152,7 +152,7 @@ export function createOneCodeFile(app: App, callback: (codeFile: TFile) => void)
 	}).open();
 }
 
-export async function bulkCreateCodeFiles(app: App): Promise<void> {
+export async function bulkCreateCodeFilesCommand(app: App): Promise<void> {
 	new InputForMultipleFiles(app, async (userInput) => {
 		let newFiles = 0;
 		const failedFiles: string[] = [];
