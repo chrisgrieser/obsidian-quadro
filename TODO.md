@@ -2,7 +2,6 @@
 - [ ] Dataview Example.
 - [ ] Example Vault (+ Dynamic Highlights plugin)
 - [ ] Settings page.
-- [ ] Bootstrap Extraction Types for user?
 
 ## Update Obsidian API Usage
 > New `Vault.getFileByPath` and `Vault.getFolderByPath` convenience functions.

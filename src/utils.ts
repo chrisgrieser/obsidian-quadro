@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Notice, TFile } from "obsidian";
+import { App, Editor, MarkdownView, Notice, OpenViewState, TFile } from "obsidian";
 import { CODE_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "./settings";
 
 export function currentlyInFolder(app: App, type: "Codes" | "Extractions"): boolean {
@@ -30,8 +30,17 @@ export const SUGGESTER_INSTRUCTIONS = [
 	{ command: "esc", purpose: "Dismiss" },
 ];
 
+//──────────────────────────────────────────────────────────────────────────────
+
+export function moveCursorToFirstProperty(type: "key" | "value") {
+	const selector = `.workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-${type} :is([contenteditable='true'], input)`;
+	const firstProperty = document.querySelector(selector);
+	if (firstProperty instanceof HTMLElement) moveCursorToHthmlElement(firstProperty, 0);
+	if (firstProperty instanceof HTMLInputElement) firstProperty.select();
+}
+
 // SOURCE https://discord.com/channels/686053708261228577/840286264964022302/1207053341989929070
-export function moveCursorToHthmlElement(elem: HTMLElement, pos: number) {
+function moveCursorToHthmlElement(elem: HTMLElement, pos: number) {
 	if (elem instanceof HTMLInputElement) {
 		elem.focus();
 		// number types cannot be selected, so convert to text
@@ -47,4 +56,16 @@ export function moveCursorToHthmlElement(elem: HTMLElement, pos: number) {
 		sel?.removeAllRanges();
 		sel?.addRange(range);
 	}
+}
+
+export async function openFileInSplitToRight(app: App, tfile: TFile) {
+	const currentLeaf = app.workspace.getLeaf();
+
+	// use existing leaf if it exists, otherwise create new one
+	const leafToTheRight =
+		app.workspace.getAdjacentLeafInDirection(currentLeaf, "right") ||
+		app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
+
+	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
+	await leafToTheRight.openFile(tfile, livePreview);
 }

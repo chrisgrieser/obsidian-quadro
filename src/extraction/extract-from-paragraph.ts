@@ -1,13 +1,18 @@
-import { App, Editor, FuzzySuggestModal, Notice, OpenViewState, TFile, TFolder } from "obsidian";
+import { App, Editor, FuzzySuggestModal, Notice, TFile, TFolder } from "obsidian";
 import { ensureBlockId } from "src/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import { updateStatusbar } from "src/statusbar";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	currentlyInFolder,
-	moveCursorToHthmlElement,
+	moveCursorToFirstProperty,
+	openFileInSplitToRight,
 	safelyGetActiveEditor,
 } from "src/utils";
+import {
+	bootstrapExtractionTemplate,
+	bootstrapExtractionTypeFolder,
+} from "./bootstrap-extraction-files";
 
 class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 	extractionTypes: TFolder[];
@@ -34,7 +39,9 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 			(f) => f instanceof TFile && f.name === "Template.md",
 		);
 		const extractionsCount = extractionType.children.length - 1; // -1 due to `Template.md`
-		const appendix = templateFile ? `  (${extractionsCount})` : ' ⚠️ "Template.md" missing';
+		const appendix = templateFile
+			? `  (${extractionsCount})`
+			: '  [Select to create "Template.md"]';
 		return extractionType.name + appendix;
 	}
 
@@ -48,25 +55,23 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;
 
-	// read & validate TEMPLATE for Extraction Type
+	// GUARD missing TEMPLATE
 	const templateFile = app.vault.getAbstractFileByPath(`${dir}/Template.md`);
 	if (!(templateFile instanceof TFile)) {
-		new Notice(
-			`There is no file "Template.md" in the folder "${dir}".` +
-				"\n\nYou need to create one before you can make extractions.",
-			6000,
-		);
+		bootstrapExtractionTemplate(app, type);
 		return;
 	}
+	// VALIDATE the TEMPLATE content
 	const templateText = await app.vault.cachedRead(templateFile);
 	const templateLines = templateText.trim().split("\n");
 	const templateHasFrontmatter = templateLines.filter((line) => line === "---").length === 2;
 	if (!templateHasFrontmatter) {
 		new Notice(
-			`The file "Template.md" in the folder "${dir}" does not contain valid YAML frontmatter.` +
-				"\n\nYou need to add one before you can make extractions.",
+			`The file "Template.md" in the folder "${dir}" does not contain valid metadata fields.` +
+				"\n\nYou need to add valid fields before you can make extractions.",
 			6000,
 		);
+		openFileInSplitToRight(app, templateFile);
 		return;
 	}
 
@@ -98,26 +103,12 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 
 	// Create EXTRACTION-FILE, and open in split to the right
 	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));
-
-	// use existing leaf if it exists, otherwise create new one
-	const currentLeaf = app.workspace.getLeaf();
-	const leafToTheRight =
-		app.workspace.getAdjacentLeafInDirection(currentLeaf, "right") ||
-		app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
-
-	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
-	await leafToTheRight.openFile(extractionFile, livePreview);
-
-	// move cursor to first property
-	const firstProperty = document.querySelector(
-		".workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-value :is([contenteditable='true'], input)",
-	);
-	if (firstProperty instanceof HTMLElement) moveCursorToHthmlElement(firstProperty, 0);
-
+	await openFileInSplitToRight(app, extractionFile);
+	moveCursorToFirstProperty("value");
 	updateStatusbar(app);
 }
 
-export async function extractFromParagraph(app: App): Promise<void> {
+export async function extractFromParagraphCommand(app: App): Promise<void> {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
 
@@ -126,14 +117,16 @@ export async function extractFromParagraph(app: App): Promise<void> {
 		return;
 	}
 
-	// Determine Extraction Types (= subfolders of EXTRACTION_FOLDER)
+	// bootstrap extraction folder, if needed
 	let extractionTFolder = app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME);
-	if (!(extractionTFolder instanceof TFolder)) app.vault.createFolder(EXTRACTION_FOLDER_NAME);
-	extractionTFolder = app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME);
+	if (!(extractionTFolder instanceof TFolder))
+		extractionTFolder = await app.vault.createFolder(EXTRACTION_FOLDER_NAME);
 	if (!(extractionTFolder instanceof TFolder)) {
-		new Notice("ERROR: Could not create extraction folder.");
+		new Notice("ERROR: Could not create Extraction Folder.", 3000);
 		return;
 	}
+
+	// Determine Extraction Types (= subfolders of EXTRACTION_FOLDER)
 	const dataFile = editor.editorComponent.view.file;
 	const extractionTypes = extractionTFolder.children.filter(
 		(f) => f instanceof TFolder,
@@ -141,11 +134,7 @@ export async function extractFromParagraph(app: App): Promise<void> {
 
 	// Suggest Extraction Types, or trigger directly if only one type exists
 	if (extractionTypes.length === 0) {
-		new Notice(
-			`The folder "${EXTRACTION_FOLDER_NAME}" does not contain any subfolders (Extraction Types).\n` +
-				"You need to create at least one subfolder before you can make an extraction.",
-			6000,
-		);
+		bootstrapExtractionTypeFolder(app);
 	} else if (extractionTypes.length === 1 && extractionTypes[0]) {
 		extractOfType(editor, dataFile, extractionTypes[0]);
 	} else {
