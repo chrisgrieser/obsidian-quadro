@@ -1,5 +1,4 @@
 # Main To-dos
-- [ ] Dataview Example.
 - [ ] Example Vault (+ Dynamic Highlights plugin)
 - [ ] Settings page.
 

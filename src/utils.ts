@@ -58,6 +58,10 @@ function moveCursorToHthmlElement(elem: HTMLElement, pos: number) {
 	}
 }
 
+//──────────────────────────────────────────────────────────────────────────────
+
+export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
+
 export async function openFileInSplitToRight(app: App, tfile: TFile) {
 	const currentLeaf = app.workspace.getLeaf();
 
@@ -66,6 +70,5 @@ export async function openFileInSplitToRight(app: App, tfile: TFile) {
 		app.workspace.getAdjacentLeafInDirection(currentLeaf, "right") ||
 		app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
 
-	const livePreview: OpenViewState = { state: { source: false, mode: "source" } };
-	await leafToTheRight.openFile(tfile, livePreview);
+	await leafToTheRight.openFile(tfile, LIVE_PREVIEW);
 }
