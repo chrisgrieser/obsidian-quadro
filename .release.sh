@@ -9,7 +9,6 @@ currentVersion=$(grep "version" "./manifest.json" | cut -d\" -f4)
 echo "current version: $currentVersion"
 echo -n "   next version: "
 read -r nextVersion
-echo "────────────────────────"
 
 # GUARD
 if [[ -z "$nextVersion" || "$nextVersion" == "$currentVersion" ]]; then

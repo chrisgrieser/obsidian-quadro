@@ -5,22 +5,42 @@
 # INFO block commit if there are any issues reported
 set -o errexit
 
-echo
-echo "────────────────────────"
-print "\033[1;34mPre-Commit Hook\033[0m"
+# print color if stdout is a terminal
+function colored_print {
+	local color=${2:-\\033[1;35m}
+	local msg="$1"
+	if [[ -t true ]]; then
+		print "$color$msg\033[0m"
+	else
+		print "$msg"
+	fi
+}
 
-print "\033[1;35m1/4 Biome\033[0m"
+function print_line {
+	if [[ -t true ]]; then
+		echo "────────────────────────"
+	else
+		echo "------------------------"
+	fi
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+
+print_line
+colored_print "Pre-Commit Hook" "\\033[1;34m"
+
+colored_print "(1/4) Biome"
 npx biome check --log-kind="compact" "$(git rev-parse --show-toplevel)"
 
-print "\033[1;35m2/4 TypeScript\033[0m"
+colored_print "(2/4) TypeScript"
 npx tsc --noEmit --skipLibCheck --strict
 echo "Done."
 
-printf "\033[1;35m3/4 esbuild\033[0m"
+colored_print "(3/4) esbuild"
 node esbuild.config.mjs
 
-print "\033[1;35m4/4 Markdownlint\033[0m"
-npx markdownlint --ignore="node_modules" "$(git rev-parse --show-toplevel)" 
+colored_print "(4/4) Markdownlint"
+npx markdownlint --ignore="node_modules" "$(git rev-parse --show-toplevel)"
 echo "Done."
 
-echo "────────────────────────"
+print_line
