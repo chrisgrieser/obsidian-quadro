@@ -2,6 +2,7 @@
 	--text-faint: "";
 	--background-secondary-alt: "";
 }
+
 /* ────────────────────────────────────────────────────────────────────────── */
 
 /* NOTE
@@ -116,6 +117,11 @@ body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dat
 .quadro textarea {
 	width: 100%;
 	min-height: 10rem;
+}
+
+.quadro button[disabled] {
+	opacity: 0.5;
+	cursor: not-allowed;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */

@@ -1,4 +1,13 @@
-import { App, Modal, Notice, Setting, TFile, TFolder, normalizePath } from "obsidian";
+import {
+	App,
+	ButtonComponent,
+	Modal,
+	Notice,
+	Setting,
+	TFile,
+	TFolder,
+	normalizePath,
+} from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
@@ -6,24 +15,26 @@ class InputForOneFile extends Modal {
 	fullCode = "";
 	codeDesc = "";
 	onSubmit: (fullCode: string, codeDesc: string) => void;
+	confirmationButton: ButtonComponent | null = null;
 
 	constructor(app: App, onSubmit: (fullCode: string, codeDesc: string) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
+		this.modalEl.addClass("quadro");
 	}
 
 	override onOpen() {
 		const { contentEl } = this;
-		contentEl.addClass("quadro");
 		contentEl.createEl("h4", { text: "New code creation" });
 
 		// name input field
 		new Setting(contentEl)
 			.setName("Name of the Code")
-			.setDesc('Use a slash ("/") in to create the Code File in a subfolder (group).')
+			.setDesc('Use a slash ("/") in the name to create the Code File in a subfolder (group).')
 			.addText((text) =>
 				text.onChange((value) => {
-					this.fullCode = value;
+					this.fullCode = value.trim();
+					this.confirmationButton?.setDisabled(this.fullCode === "");
 				}),
 			);
 
@@ -33,21 +44,22 @@ class InputForOneFile extends Modal {
 			.setDesc('Will be added as metadata with the key "description".')
 			.addText((text) =>
 				text.onChange((value) => {
-					this.codeDesc = value;
+					this.codeDesc = value.trim();
 				}),
 			);
 
 		// create & cancel button
 		new Setting(contentEl)
-			.addButton((btn) =>
-				btn
+			.addButton((btn) => {
+				this.confirmationButton = btn
 					.setButtonText("Create")
 					.setCta()
+					.setDisabled(true)
 					.onClick(() => {
 						this.close();
 						this.onSubmit(this.fullCode, this.codeDesc);
-					}),
-			)
+					});
+			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}
 	override onClose() {
@@ -59,41 +71,44 @@ class InputForOneFile extends Modal {
 class InputForMultipleFiles extends Modal {
 	input = "";
 	onSubmit: (fullCode: string) => void;
+	confirmationButton: ButtonComponent | null = null;
 
 	constructor(app: App, onSubmit: (fullCode: string) => void) {
 		super(app);
 		this.onSubmit = onSubmit;
+		this.modalEl.addClass("quadro");
 	}
 
 	override onOpen() {
 		const { contentEl } = this;
-		contentEl.addClass("quadro");
 
 		// info text
 		contentEl.createEl("h4", { text: "Bulk-create new codes" });
 		contentEl.createEl("p", { text: "Every line will result in a new code file." });
 		contentEl.createEl("p", {
-			text: 'Use a slash ("/") to create the Code File in a subfolder (group).',
+			text: 'Use a slash ("/") in the name to create the Code File in a subfolder (group).',
 		});
 
 		// textarea field
 		new Setting(contentEl).setClass("quadro-bulk-code-creation").addTextArea((text) =>
 			text.onChange((value) => {
-				this.input = value;
+				this.input = value.trim();
+				this.confirmationButton?.setDisabled(this.input === "");
 			}),
 		);
 
 		// create & cancel button
 		new Setting(contentEl)
-			.addButton((btn) =>
-				btn
+			.addButton((btn) => {
+				this.confirmationButton = btn
 					.setButtonText("Create")
 					.setCta()
+					.setDisabled(true)
 					.onClick(() => {
 						this.close();
 						this.onSubmit(this.input);
-					}),
-			)
+					});
+			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}
 	override onClose() {
@@ -114,7 +129,6 @@ async function createCodeFile(
 		.replace(/\.md$/, "") // no extension
 		.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
 		.replace(/^\.|\/\./g, ""); // no hidden files/folders
-	if (!fullCode) fullCode = "Unnamed Code";
 
 	// GUARD
 	const absolutePath = normalizePath(`${CODE_FOLDER_NAME}/${fullCode}.md`);
