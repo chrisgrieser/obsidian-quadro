@@ -58,14 +58,13 @@ export async function aggregateExtractions(app: App): Promise<void> {
 				"",
 			].join("\n");
 
-			const aggregateFilepath = `${EXTRACTION_FOLDER_NAME}/${tfolder.name}.md`;
+			const typeName = tfolder.name;
+			const aggregateFilepath = `${EXTRACTION_FOLDER_NAME}/${typeName} (Aggregation).md`;
 			try {
+				new Notice(`Created Aggregation File for "${aggregateFilepath}"`, 5000);
 				return await app.vault.create(aggregateFilepath, dataviewSnippet);
 			} catch (_e) {
-				new Notice(
-					`"Skipping "${tfolder.name}", as Aggregation File for it already exists.`,
-					5000,
-				);
+				new Notice(`"Skipping "${typeName}", as Aggregation File for it already exists.`, 5000);
 				return null;
 			}
 		}),
