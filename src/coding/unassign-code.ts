@@ -79,7 +79,7 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	if (refInCodeFile < 0) {
 		new Notice(
 			`"Code File "${code.tFile.basename}" contains not reference to ` +
-				`to Data File "${dataFile.basename}" with the ID "${blockId}".` +
+				`Data File "${dataFile.basename}" with the ID "${blockId}". ` +
 				"Reference in Code File is thus not deleted.",
 			7000,
 		);
@@ -102,7 +102,7 @@ async function removeCodeFileRefInDataFile(
 	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
 	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
 	if (lnumInDataFile < 0)
-		return `Data File ${dataFile.basename}, has no line with the ID "${blockId}".`;
+		return `Data File "${dataFile.basename}", has no line with the ID "${blockId}".`;
 	const dataFileLine = dataFileLines[lnumInDataFile] || "";
 
 	// remove link to CODFILE from DATAFILE line
@@ -113,7 +113,7 @@ async function removeCodeFileRefInDataFile(
 		return linkedTFile instanceof TFile && linkedTFile.path === codeFile.path;
 	});
 	if (!linkToCodeFile)
-		return `Data File ${dataFile.basename}, line "${blockId}" has no valid link to the Code-File.`;
+		return `Data File "${dataFile.basename}", line "${blockId}" has no valid link to the Code File.`;
 	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "").replace(/ {2,}/g, " ");
 	await app.vault.modify(dataFile, dataFileLines.join("\n"));
 	return "";
@@ -220,6 +220,8 @@ export async function deleteCodeEverywhereCommand(app: App): Promise<void> {
 	const successes = referencedParasInDataFiles.length - errorMsgs.length;
 	let msg = `Code File "${codeFile.basename}" and ${successes} references to it deleted.\n`;
 	if (errorMsgs.length > 0)
-		msg += `⚠️ ${errorMsgs.length} references could not be deleted:\n` + errorMsgs.join("\n");
-	new Notice(msg, (5 + errorMsgs.length) * 1000);
+		msg +=
+			`\n⚠️ ${errorMsgs.length} references could not be deleted:\n- ` + errorMsgs.join("\n- ");
+	new Notice(msg, (5 + errorMsgs.length) * 1700);
+	console.log(msg);
 }
