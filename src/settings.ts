@@ -24,7 +24,7 @@ export const TFILE_SORT_FUNC = {
 	randomOrder: () => Math.random() - 0.5,
 };
 
-export const SORT_FUNC_TO_USE = "lastUsedFirst";
+export const SORT_FUNC_TO_USE = TFILE_SORT_FUNC.lastUsedFirst;
 
 //──────────────────────────────────────────────────────────────────────────────
 // EXTRACTION SETTINGS

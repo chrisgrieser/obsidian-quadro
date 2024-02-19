@@ -1,7 +1,7 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { ensureBlockId } from "src/block-id";
 import { updateStatusbar } from "src/statusbar";
-import { CODE_FOLDER_NAME, MINIGRAPH, SORT_FUNC_TO_USE, TFILE_SORT_FUNC } from "../settings";
+import { CODE_FOLDER_NAME, MINIGRAPH, SORT_FUNC_TO_USE } from "../settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	currentlyInFolder,
@@ -30,8 +30,6 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 	// code-files, sorted by last use (which is relevant when query is empty)
 	getItems(): (TFile | "new-code-file")[] {
-		const initialOrderOnEmptyQuery = TFILE_SORT_FUNC[SORT_FUNC_TO_USE];
-
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
 			.getMarkdownFiles()
 			.filter((tFile) => {
@@ -39,7 +37,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 				const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
 				return isInCodeFolder && !isAlreadyAssigned;
 			})
-			.sort(initialOrderOnEmptyQuery);
+			.sort(SORT_FUNC_TO_USE);
 
 		allCodeFiles.push("new-code-file");
 
