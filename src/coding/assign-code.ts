@@ -1,6 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { ensureBlockId } from "src/block-id";
-import { updateStatusbar } from "src/statusbar";
 import { CODE_FOLDER_NAME, MINIGRAPH, SORT_FUNC_TO_USE } from "../settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
@@ -89,8 +88,6 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const dataFilePath = dataFile.path.slice(0, -3);
 		const textToAppend = `![[${dataFilePath}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
-
-		updateStatusbar(this.app);
 	}
 }
 

@@ -4,12 +4,12 @@ import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
 import { updateStatusbar } from "./statusbar";
 
 export default class Quadro extends Plugin {
-	statusbar?: HTMLElement;
+	statusbar = this.addStatusBarItem();
 
 	override onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
 
-		// create commands & ribbon buttons for all commands of this plugin
+		// COMMANDS
 		for (const cmd of [...CODING_COMMANDS, ...EXTRACTION_COMMANDS]) {
 			this.addRibbonIcon(cmd.icon, `Quadro: ${cmd.name}`, () => cmd.func(this.app));
 			const cmdObj: Command = {
@@ -29,10 +29,17 @@ export default class Quadro extends Plugin {
 			this.addCommand(cmdObj);
 		}
 
-		// create statusbar, initialize it, and set hook for it
-		this.statusbar = this.addStatusBarItem();
-		updateStatusbar(this.app);
-		this.registerEvent(this.app.workspace.on("file-open", () => updateStatusbar(this.app)));
+		// STATUSBAR
+		updateStatusbar(this.app, this.statusbar);
+		this.registerEvent(
+			this.app.workspace.on("file-open", () => updateStatusbar(this.app, this.statusbar)),
+		);
+		// instead of triggering the update after every action, we trigger it
+		// after every metadata change is done. This is also more reliable, since
+		// the update is only done when the cache is up to date.
+		this.registerEvent(
+			this.app.metadataCache.on("resolved", () => updateStatusbar(this.app, this.statusbar)),
+		);
 	}
 
 	override onunload() {

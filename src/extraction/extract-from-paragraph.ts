@@ -1,7 +1,6 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile, TFolder } from "obsidian";
 import { ensureBlockId } from "src/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
-import { updateStatusbar } from "src/statusbar";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	currentlyInFolder,
@@ -105,8 +104,6 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));
 	await openFileInSplitToRight(app, extractionFile);
 	moveCursorToFirstProperty("value");
-
-	updateStatusbar(app);
 }
 
 export async function extractFromParagraphCommand(app: App): Promise<void> {

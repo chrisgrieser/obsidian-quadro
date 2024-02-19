@@ -2,22 +2,18 @@ import { App, TFolder } from "obsidian";
 import { CODE_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "./settings";
 import { currentlyInFolder } from "./utils";
 
-export function updateStatusbar(app: App): void {
-	// get statusbar via app instead of passing it around and then into this function
-	const elems: Element[] = Array.from(app.statusBar?.containerEl?.children);
-	const statusbar = elems.find((el) => el.hasClass("plugin-quadro"));
-	if (!statusbar) return;
-
+export function updateStatusbar(app: App, statusbar: HTMLElement): void {
+	// GUARD
 	const activeFile = app.workspace.getActiveFile();
 	if (!activeFile) {
 		statusbar.setText("");
 		return;
 	}
 
-	//───────────────────────────────────────────────────────────────────────────
-
 	const segments: string[] = [];
 	const links = app.metadataCache.resolvedLinks[activeFile.path] || {};
+
+	//───────────────────────────────────────────────────────────────────────────
 
 	// CODEFILE: links = times code was assigned
 	if (currentlyInFolder(app, "Codes")) {
@@ -26,12 +22,6 @@ export function updateStatusbar(app: App): void {
 			codesAssigned += count;
 		}
 		segments.push(`Code ${codesAssigned}x assigned`);
-	}
-	// EXTRACTION FILE: number of extractions made for the type
-	else if (currentlyInFolder(app, "Extractions")) {
-		const extractionType = activeFile.parent as TFolder;
-		const extractionsMade = extractionType.children.length - 1; // -1 due to `Template.md`
-		segments.push(`${extractionsMade}x extracted`);
 	}
 	// EXTRACTION FILE: number of extractions made for the type
 	else if (currentlyInFolder(app, "Extractions")) {
@@ -60,6 +50,7 @@ export function updateStatusbar(app: App): void {
 	if (unresolvedTotal > 0) segments.push(`${unresolvedTotal} invalid links`);
 
 	//───────────────────────────────────────────────────────────────────────────
+
 	const text = segments
 		.map((segment) => segment.replace(/^(1 .*)s$/, "$1")) // singular/plural
 		.join(", ");

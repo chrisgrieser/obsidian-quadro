@@ -1,6 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
-import { updateStatusbar } from "src/statusbar";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	currentlyInFolder,
@@ -92,8 +91,6 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 
 	// remove corresponding line in CODEFILE
 	await app.vault.modify(code.tFile, codeFileLines.join("\n"));
-
-	updateStatusbar(app);
 }
 
 /** returns an error msg; returns empty string if no error */
@@ -146,8 +143,6 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 
 	// moving to start of line prevents EditorSuggester from opening
 	editor.setCursor({ line: editor.getCursor().line, ch: 0 });
-
-	updateStatusbar(app);
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -229,6 +224,4 @@ export async function deleteCodeEverywhereCommand(app: App): Promise<void> {
 	if (errorMsgs.length > 0)
 		msg += `⚠️ ${errorMsgs.length} references could not be deleted:\n` + errorMsgs.join("\n");
 	new Notice(msg, (5 + errorMsgs.length) * 1000);
-
-	updateStatusbar(app);
 }
