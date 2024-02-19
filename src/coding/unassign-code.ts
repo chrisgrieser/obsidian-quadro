@@ -1,4 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
+import { blockIdRegex, embeddedBlockLinkRegex } from "src/block-id";
 import { CODE_FOLDER_NAME } from "src/settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
@@ -16,9 +17,6 @@ interface DataFileReference {
 	file: TFile;
 	blockId: string;
 }
-
-// group 1: linkpath, group 2: blockID
-const embeddedBlockLinkRegex = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -61,7 +59,7 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	editor.setLine(ln, lineText.replace(regex, ""));
 
 	// find corresponding line in CODEFILE
-	const [blockId] = lineText.match(/\^\w+$/) || [];
+	const [blockId] = lineText.match(blockIdRegex) || [];
 	if (!blockId) {
 		new Notice("No ID found in current line.\nReference in Code File thus not deleted.");
 		return;
