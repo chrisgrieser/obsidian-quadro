@@ -13,7 +13,7 @@ interface Code {
 	wikilink: string;
 }
 
-interface DataFileReference {
+export interface DataFileReference {
 	file: TFile;
 	blockId: string;
 }
@@ -92,7 +92,7 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 }
 
 /** returns an error msg; returns empty string if no error */
-async function removeCodeFileRefInDataFile(
+export async function removeCodeFileRefInDataFile(
 	app: App,
 	codeFile: TFile,
 	dataFile: TFile,
@@ -182,46 +182,4 @@ export async function unassignCodeCommand(app: App): Promise<void> {
 			new SuggesterForCodeToUnassign(app, editor, dataFile, codesInParagr).open();
 		}
 	}
-}
-
-export async function deleteCodeEverywhereCommand(app: App): Promise<void> {
-	const editor = safelyGetActiveEditor(app);
-	if (!editor) return;
-
-	if (!currentlyInFolder(app, "Codes")) {
-		new Notice("Must be in Code File to delete the code everywhere.");
-		return;
-	}
-
-	// determine all DATAFILES that are referenced in CODEFILE, and their blockID
-	// (`app.metadataCache.resolvedLinks` does not contain blockIDs, so we need
-	// to read and parse the file manually)
-	const codeFile = editor.editorComponent.view.file;
-	const allWikilinks = ((await app.vault.cachedRead(codeFile)) || "").match(/!\[\[.+?\]\]/g) || [];
-	const referencedParasInDataFiles = allWikilinks.reduce((acc: DataFileReference[], link) => {
-		const [_, linkPath, blockId] = link.match(embeddedBlockLinkRegex) || [];
-		if (!linkPath || !blockId) return acc;
-		const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath, codeFile.path);
-		if (dataFile instanceof TFile) acc.push({ file: dataFile, blockId: blockId });
-		return acc;
-	}, []);
-
-	// delete the reference in each DATAFILE
-	const errorMsgs: string[] = [];
-	for (const { file, blockId } of referencedParasInDataFiles) {
-		const errorMsg = await removeCodeFileRefInDataFile(app, codeFile, file, blockId);
-		if (errorMsg) errorMsgs.push(errorMsg);
-	}
-
-	// CODEFILE: can simply be deleted
-	await app.vault.trash(codeFile, true);
-
-	// REPORT
-	const successes = referencedParasInDataFiles.length - errorMsgs.length;
-	let msg = `Code File "${codeFile.basename}" and ${successes} references to it deleted.\n`;
-	if (errorMsgs.length > 0)
-		msg +=
-			`\n⚠️ ${errorMsgs.length} references could not be deleted:\n- ` + errorMsgs.join("\n- ");
-	new Notice(msg, (5 + errorMsgs.length) * 1700);
-	console.log(msg);
 }

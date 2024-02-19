@@ -1,6 +1,7 @@
 import { assignCodeCommand } from "./assign-code";
 import { bulkCreateCodeFilesCommand } from "./create-new-code-file";
-import { deleteCodeEverywhereCommand, unassignCodeCommand } from "./unassign-code";
+import { deleteCodeEverywhereCommand } from "./delete-code-everywhere";
+import { unassignCodeCommand } from "./unassign-code";
 import { mergeCodesCommand, renameCodeCommand } from "./wrapper-funcs";
 
 export const CODING_COMMANDS = [
