@@ -18,12 +18,15 @@ the style of *Qualitative Content Analysis*.
 	* [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
 	* [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
-- [Coding](#coding)
-	* [How coding works in Quadro](#how-coding-works-in-quadro)
-	* [Coding capabilities](#coding-capabilities)
-- [Extraction](#extraction)
-	* [How extraction works in Quadro](#how-extraction-works-in-quadro)
-	* [Extraction capabilities](#extraction-capabilities)
+- [Usage](#usage)
+	* [General](#general)
+		+ [Example Vault](#example-vault)
+	* [Coding](#coding)
+		+ [How coding works in Quadro](#how-coding-works-in-quadro)
+		+ [Coding capabilities](#coding-capabilities)
+	* [Extraction](#extraction)
+		+ [How extraction works in Quadro](#how-extraction-works-in-quadro)
+		+ [Extraction capabilities](#extraction-capabilities)
 - [Technical](#technical)
 	* [Installation](#installation)
 	* [Update](#update)
@@ -117,12 +120,6 @@ frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/) to store the
 data in a structured form. Quadro uses a simplistic templating mechanism to
 support the creation of those Extraction Files.
 
-> [!NOTE]
-> It is strongly recommended to create a separate vault for data analysis and
-> install the plugin there, since QDA does not follow the "common logic of
-> note-taking," thus often requiring a different set of plugins and settings
-> from your regular vault.
-
 ### Brief methodological comparison with other QDA software
 
 **Advantages**
@@ -140,9 +137,24 @@ support the creation of those Extraction Files.
   applies to partial overlaps, assigning multiple codes to the same paragraph or
   segment works, of course.
 
-## Coding
+## Usage
 
-### How coding works in Quadro
+### General
+It is strongly recommended to create a separate vault for data analysis and
+install the plugin there, since QDA does not follow the "common logic of
+note-taking," thus often requiring a different set of plugins and settings
+from your regular vault.
+
+#### Example Vault
+There is an example vault pre-configured to be used with *Quadro*,
+including some mock data with exemplary Codes and Extractions for illustration
+purposes.
+
+➡️ [Quadro Example Vault](https://github.com/chrisgrieser/quadro-example-vault)
+
+### Coding
+
+#### How coding works in Quadro
 There are two basic types of files for the analysis, Data Files and Code Files,
 which are both stored as [Markdown files](https://www.markdownguide.org/).
 
@@ -207,7 +219,7 @@ representing codes):
 > Assignment of codes to individual words and coded segments with overlap are
 > not supported.
 
-### Coding capabilities
+#### Coding capabilities
 
 | Action                                    | Description                                                                                                                                                                                                         |           Sidebar Button           | Default Hotkey | Capability Provider                             |
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------: | :------------: | ----------------------------------------------- |
@@ -235,9 +247,9 @@ customized by search in the Obsidian hotkey settings.
 > Obsidian. Doing so in the Windows Explorer or macOS Finder does not trigger
 > the automatic updating of references, meaning a loss of information.
 
-## Extraction
+### Extraction
 
-### How extraction works in Quadro
+#### How extraction works in Quadro
 Extraction is implemented similarly to coding, using two basic file types, Data
 Files and Extraction Files.
 
@@ -326,7 +338,7 @@ All in all, the underlying folder structure for extractions looks like this:
          └── …
 ```
 
-### Extraction capabilities
+#### Extraction capabilities
 
 | Action                     | Description                                                                                              |              Sidebar Button             | Default Hotkey | Capability Provider                    |
 | -------------------------- | -------------------------------------------------------------------------------------------------------- | :-------------------------------------: | :------------: | -------------------------------------- |
