@@ -19,7 +19,7 @@ the style of *Qualitative Content Analysis*.
 	* [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
-	* [General](#general)
+	* [Get Started](#get-started)
 		+ [Example Vault](#example-vault)
 	* [Coding](#coding)
 		+ [How coding works in Quadro](#how-coding-works-in-quadro)
@@ -139,7 +139,7 @@ support the creation of those Extraction Files.
 
 ## Usage
 
-### General
+### Get Started
 It is strongly recommended to create a separate vault for data analysis and
 install the plugin there, since QDA does not follow the "common logic of
 note-taking," thus often requiring a different set of plugins and settings
@@ -147,8 +147,9 @@ from your regular vault.
 
 #### Example Vault
 There is an example vault pre-configured to be used with *Quadro*,
-including some mock data with exemplary Codes and Extractions for illustration
-purposes.
+including some mock data with exemplary codes and extractions, and simple
+example analyzes. If you want to check out the capabilities of *Quadro*, you can
+use that vault:
 
 ➡️ [Quadro Example Vault](https://github.com/chrisgrieser/quadro-example-vault)
 
@@ -240,7 +241,8 @@ representing codes):
 [move-file]: https://help.obsidian.md/Plugins/File+explorer#Move+a+file+or+folder
 
 `mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
-customized by search in the Obsidian hotkey settings.
+customized by searching in the Obsidian hotkey settings for the name of the
+respective action.
 
 > [!WARNING]
 > Renaming, or moving Code/Data Files **must** be done from within
@@ -348,8 +350,9 @@ All in all, the underlying folder structure for extractions looks like this:
 
 [dataview]: https://blacksmithgu.github.io/obsidian-dataview/
 
-Every hotkey can be customized by search in the Obsidian hotkey settings for the
-command name.
+`mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
+customized by searching in the Obsidian hotkey settings for the name of the
+respective action.
 
 ## Technical
 
