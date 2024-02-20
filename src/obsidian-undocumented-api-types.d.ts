@@ -38,4 +38,9 @@ declare module "obsidian" {
 			};
 		};
 	}
+	interface Vault {
+		config: {
+			trashOption: "local" | "system" | "none";
+		};
+	}
 }

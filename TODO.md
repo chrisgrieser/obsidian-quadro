@@ -1,7 +1,3 @@
-# Main To-dos
-- [ ] Example Vault (+ Dynamic Highlights plugin)
-- [ ] Settings page.
-
 ## Update Obsidian API Usage
 > New `Vault.getFileByPath` and `Vault.getFolderByPath` convenience functions.
 > No more needing to do `instanceof TFile` checks after using

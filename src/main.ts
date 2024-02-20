@@ -1,5 +1,6 @@
 import { Command, Plugin } from "obsidian";
 import { CODING_COMMANDS } from "./coding/coding-commands";
+import { fileDeletionWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
 import { updateStatusbar } from "./statusbar";
 
@@ -34,11 +35,17 @@ export default class Quadro extends Plugin {
 		this.registerEvent(
 			this.app.workspace.on("file-open", () => updateStatusbar(this.app, this.statusbar)),
 		);
-		// instead of triggering the update after every action, we trigger it
-		// after every metadata change is done. This is also more reliable, since
-		// the update is only done when the cache is up to date.
+		// Instead of updating the statusbar after every action, update it after
+		// metadata changes. This is more reliable, since the cache is up-to-date,
+		// and also more practical, since all status bar elements depend on link
+		// counts in the metadata anyway.
 		this.registerEvent(
 			this.app.metadataCache.on("resolved", () => updateStatusbar(this.app, this.statusbar)),
+		);
+
+		// Deletion watcher
+		this.registerEvent(
+			this.app.vault.on("delete", (file) => fileDeletionWatcher(this.app, file)),
 		);
 	}
 
