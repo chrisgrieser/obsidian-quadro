@@ -1,8 +1,95 @@
-import { App, Notice, TFile, TFolder } from "obsidian";
-import { EXTRACTION_FOLDER_NAME } from "src/settings";
-import { LIVE_PREVIEW, safelyGetActiveEditor } from "src/utils";
+import { App, FuzzySuggestModal, Notice, TFile, TFolder } from "obsidian";
+import { ANALYSIS_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "src/settings";
+import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS, safelyGetActiveEditor } from "src/utils";
 
-export async function aggregateExtractions(app: App): Promise<void> {
+class SuggesterForCreateAggregation extends FuzzySuggestModal<TFolder> {
+	extractionTypes: TFolder[];
+
+	constructor(app: App, extractionTypes: TFolder[]) {
+		super(app);
+		this.extractionTypes = extractionTypes;
+
+		this.setPlaceholder("Select extraction type");
+		this.setInstructions(SUGGESTER_INSTRUCTIONS);
+		this.modalEl.addClass("quadro");
+	}
+
+	getItems(): TFolder[] {
+		return this.extractionTypes;
+	}
+
+	getItemText(extractionType: TFolder): string {
+		const extractionsCount = extractionType.children.length - 1; // -1 due to `Template.md`
+		return `${extractionType.name} (${extractionsCount})`;
+	}
+
+	async onChooseItem(extractionType: TFolder): Promise<void> {
+		// GUARD missing Template Files
+		const templateFile = this.app.vault.getAbstractFileByPath(
+			`${extractionType.path}/Template.md`,
+		);
+		if (!(templateFile instanceof TFile)) {
+			new Notice(
+				`Error: Could not find "Template.md" for Extraction Type "${extractionType.name}".`,
+				4000,
+			);
+			return;
+		}
+		const frontmatter = this.app.metadataCache.getFileCache(templateFile)?.frontmatter;
+		if (!frontmatter) {
+			new Notice(
+				`Error: Could not read frontmatter from "Template.md" for Extraction Type "${extractionType.name}".`,
+				4000,
+			);
+			return;
+		}
+
+		// read properties from Template file of the Extraction Type
+		const properties = Object.keys(frontmatter).map(
+			(key) => "\t" + key.replaceAll(" ", "-") + ",",
+		);
+		properties.push("\textraction-source"); // no trailing comma for last property
+
+		const dataviewSnippet: string = [
+			"```dataview",
+			"TABLE",
+			...properties,
+			`FROM "${extractionType.path}"`,
+			'WHERE file.name != "Template"',
+			"SORT extraction-date ASC",
+			"```",
+			"",
+			"---",
+			"",
+			"*Info: You can customize the table by modifying the Dataview Query:* [Documentation of Dataview Queries](https://blacksmithgu.github.io/obsidian-dataview/queries/structure/)",
+		].join("\n");
+
+		// create Aggregation File
+		const analysisFolderExists =
+			this.app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME) instanceof TFolder;
+		if (!analysisFolderExists) await this.app.vault.createFolder(ANALYSIS_FOLDER_NAME);
+
+		let aggregationName = extractionType.name;
+		let aggregationFilepath: string;
+		while (true) {
+			aggregationFilepath = `${ANALYSIS_FOLDER_NAME}/${aggregationName}.md`;
+			const aggregationFileExists =
+				this.app.vault.getAbstractFileByPath(aggregationFilepath) instanceof TFile;
+			if (!aggregationFileExists) break;
+			aggregationName += "_1";
+		}
+		const aggregationFile = await this.app.vault.create(aggregationFilepath, dataviewSnippet);
+
+		// open Aggregation File (move cursor down, so codeblock is rendered)
+		await this.app.workspace.getLeaf().openFile(aggregationFile, LIVE_PREVIEW);
+
+		const editor = safelyGetActiveEditor(this.app);
+		if (!editor) return;
+		editor.setCursor(editor.lastLine(), 0);
+	}
+}
+
+export async function aggregateExtractionsCommand(app: App): Promise<void> {
 	// GUARD dataview not installed/enabled
 	const dataviewEnabled = [...app.plugins.enabledPlugins].includes("dataview");
 	if (!dataviewEnabled) {
@@ -21,7 +108,7 @@ export async function aggregateExtractions(app: App): Promise<void> {
 		}
 	}
 
-	// get Extraction Types
+	// GUARD Extraction Folders missing
 	const extractionTFolder = app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME);
 	if (!(extractionTFolder instanceof TFolder)) {
 		new Notice("ERROR: Could not find Extraction Folder.", 3000);
@@ -35,47 +122,5 @@ export async function aggregateExtractions(app: App): Promise<void> {
 		return;
 	}
 
-	// create Aggregation Files
-	const aggregationFiles = await Promise.all(
-		extractionTypes.map(async (tfolder) => {
-			const templateFile = app.vault.getAbstractFileByPath(`${tfolder.path}/Template.md`);
-			if (!(templateFile instanceof TFile)) return;
-			const frontmatter = app.metadataCache.getFileCache(templateFile)?.frontmatter;
-			if (!frontmatter) return;
-			const properties = Object.keys(frontmatter).map(
-				(key) => "\t" + key.replaceAll(" ", "-") + ",",
-			);
-			properties.push("\textraction-source"); // no trailing comma for last property
-
-			const dataviewSnippet: string = [
-				"```dataview",
-				"TABLE",
-				...properties,
-				`FROM "${tfolder.path}"`,
-				'WHERE file.name != "Template"',
-				"SORT extraction-date ASC",
-				"```",
-				"",
-			].join("\n");
-
-			const typeName = tfolder.name;
-			const aggregateFilepath = `${EXTRACTION_FOLDER_NAME}/${typeName} (Aggregation).md`;
-			try {
-				new Notice(`Created Aggregation File for "${aggregateFilepath}"`, 5000);
-				return await app.vault.create(aggregateFilepath, dataviewSnippet);
-			} catch (_e) {
-				new Notice(`"Skipping "${typeName}", as Aggregation File for it already exists.`, 5000);
-				return null;
-			}
-		}),
-	);
-
-	// open first aggregation file
-	const firstAggregationFile = aggregationFiles.find((f) => f instanceof TFile);
-	if (!firstAggregationFile) return;
-	await app.workspace.getLeaf().openFile(firstAggregationFile, LIVE_PREVIEW);
-
-	const editor = safelyGetActiveEditor(app);
-	if (!editor) return;
-	editor.setCursor(editor.lastLine(), 0); // move cursor down, so codeblock is rendered
+	new SuggesterForCreateAggregation(app, extractionTypes).open();
 }

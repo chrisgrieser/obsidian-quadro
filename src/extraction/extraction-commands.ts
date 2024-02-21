@@ -1,4 +1,4 @@
-import { aggregateExtractions as aggregateExtractionsCommand } from "./aggregate-extractions";
+import { aggregateExtractionsCommand } from "./aggregate-extractions";
 import { createNewExtractionTypeCommand } from "./bootstrap-extraction-files";
 import { extractFromParagraphCommand } from "./extract-from-paragraph";
 

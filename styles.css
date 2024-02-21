@@ -80,7 +80,7 @@ body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dat
 /* FILE EXPLORER */
 
 /* bold to all the folders with special function for Quadro */
-.nav-folder-title:is([data-path="Codes"], [data-path="Extractions"], [data-path="Data"]) .nav-folder-title-content {
+.nav-folder-title:is([data-path="Codes"],[data-path="Analysis"], [data-path="Extractions"], [data-path="Data"]) .nav-folder-title-content {
 	font-weight: 800;
 }
 
