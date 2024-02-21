@@ -74,6 +74,7 @@ export async function bootstrapExtractionTemplate(app: App, newExtractionTypeNam
 	const templateFile = await app.vault.create(templatePath, templateForTemplate);
 
 	await openFileInSplitToRight(app, templateFile);
+	app.commands.executeCommandById("file-explorer:reveal-active-file");
 	moveCursorToFirstProperty("key");
 }
 

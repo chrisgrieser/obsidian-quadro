@@ -82,6 +82,7 @@ class SuggesterForCreateAggregation extends FuzzySuggestModal<TFolder> {
 
 		// open Aggregation File (move cursor down, so codeblock is rendered)
 		await this.app.workspace.getLeaf().openFile(aggregationFile, LIVE_PREVIEW);
+		this.app.commands.executeCommandById("file-explorer:reveal-active-file");
 
 		const editor = safelyGetActiveEditor(this.app);
 		if (!editor) return;
