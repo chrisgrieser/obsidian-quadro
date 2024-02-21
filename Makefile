@@ -1,4 +1,4 @@
-.PHONY: build init format release
+.PHONY: build init format check release
 
 # build & open dev-vault (if on macOS)
 build:
