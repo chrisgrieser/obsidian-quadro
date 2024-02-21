@@ -95,7 +95,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
 	const dateYamlLine = `extraction date: ${isoDate}`;
-	const sourceYamlLine = `extraction source: "[[${dataFile.path}]]"`;
+	const sourceYamlLine = `extraction source: "[[${dataFile.path}#${blockId}]]"`;
 	const yamlFrontmatterEnd = templateLines.findLastIndex((l) => l === "---");
 	templateLines.splice(yamlFrontmatterEnd, 0, dateYamlLine, sourceYamlLine);
 	templateLines.push("", `**Paragraph extracted from:** ![[${dataFile.path}#${blockId}]]`);
