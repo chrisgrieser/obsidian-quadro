@@ -47,6 +47,36 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 	}
 }
 
+/** returns an error msg; returns empty string if no error */
+export async function removeIndividualCodeRefFromDatafile(
+	app: App,
+	codeFile: TFile,
+	dataFile: TFile,
+	blockId: string,
+): Promise<string | ""> {
+	// retrieve referenced line in DATAFILE
+	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
+	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
+	if (lnumInDataFile < 0)
+		return `Data File "${dataFile.basename}", has no line with the ID "${blockId}".`;
+	const dataFileLine = dataFileLines[lnumInDataFile] || "";
+
+	// remove link to CODFILE from DATAFILE line
+	const linksInDataFileLine = dataFileLine.match(/\[\[.+?\]\]/g) || [];
+	const linkToCodeFile = linksInDataFileLine.find((link) => {
+		link = link.slice(2, -2);
+		const linkedTFile = app.metadataCache.getFirstLinkpathDest(link, dataFile.path);
+		return linkedTFile instanceof TFile && linkedTFile.path === codeFile.path;
+	});
+	if (!linkToCodeFile)
+		return `Data File "${dataFile.basename}", line "${blockId}" has no valid link to the Code File.`;
+	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "").replace(/ {2,}/g, " ");
+	await app.vault.modify(dataFile, dataFileLines.join("\n"));
+	return "";
+}
+
+//──────────────────────────────────────────────────────────────────────────────
+
 async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code) {
 	const app = editor.editorComponent.app;
 	const ln = editor.getCursor().line;
@@ -85,43 +115,17 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 		);
 		return;
 	}
-	codeFileLines.splice(refInCodeFile, 1);
 
 	// remove corresponding line in CODEFILE
+	codeFileLines.splice(refInCodeFile, 1);
 	await app.vault.modify(code.tFile, codeFileLines.join("\n"));
-}
-
-/** returns an error msg; returns empty string if no error */
-export async function removeCodeFileRefInDataFile(
-	app: App,
-	codeFile: TFile,
-	dataFile: TFile,
-	blockId: string,
-): Promise<string | ""> {
-	// retrieve referenced line in DATAFILE
-	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
-	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
-	if (lnumInDataFile < 0)
-		return `Data File "${dataFile.basename}", has no line with the ID "${blockId}".`;
-	const dataFileLine = dataFileLines[lnumInDataFile] || "";
-
-	// remove link to CODFILE from DATAFILE line
-	const linksInDataFileLine = dataFileLine.match(/\[\[.+?\]\]/g) || [];
-	const linkToCodeFile = linksInDataFileLine.find((link) => {
-		link = link.slice(2, -2);
-		const linkedTFile = app.metadataCache.getFirstLinkpathDest(link, dataFile.path);
-		return linkedTFile instanceof TFile && linkedTFile.path === codeFile.path;
-	});
-	if (!linkToCodeFile)
-		return `Data File "${dataFile.basename}", line "${blockId}" has no valid link to the Code File.`;
-	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "").replace(/ {2,}/g, " ");
-	await app.vault.modify(dataFile, dataFileLines.join("\n"));
-	return "";
+	new Notice(`Assignment of code "${code.tFile.basename}" removed.`);
 }
 
 async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<void> {
-	// Identify DATAFILE
 	const lineText = editor.getLine(editor.getCursor().line);
+
+	// Remove from DATAFILE
 	const [_, linkPath, blockId] = lineText.match(embeddedBlockLinkRegex) || [];
 	const codeFile = editor.editorComponent.view.file;
 	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath || "", codeFile.path);
@@ -130,17 +134,17 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 		return;
 	}
 
-	const errorMsg = await removeCodeFileRefInDataFile(app, codeFile, dataFile, blockId);
+	const errorMsg = await removeIndividualCodeRefFromDatafile(app, codeFile, dataFile, blockId);
 	if (errorMsg) {
 		new Notice(errorMsg + "\n\nAborting removal of Code.", 4000);
 		return;
 	}
 
-	// CODEFILE: simply delete current line via Obsidian command :P
+	// Remove from CODEFILE
 	app.commands.executeCommandById("editor:delete-paragraph");
+	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); // moving to BoL prevents EditorSuggester from opening
 
-	// moving to start of line prevents EditorSuggester from opening
-	editor.setCursor({ line: editor.getCursor().line, ch: 0 });
+	new Notice(`Assignment of code "${codeFile.basename}" removed.`);
 }
 
 //──────────────────────────────────────────────────────────────────────────────

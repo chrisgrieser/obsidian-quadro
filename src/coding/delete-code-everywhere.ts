@@ -1,7 +1,7 @@
 import { App, Notice, TAbstractFile, TFile } from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
 import { currentlyInFolder, safelyGetActiveEditor } from "src/utils";
-import { DataFileReference, removeCodeFileRefInDataFile } from "./unassign-code";
+import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassign-code";
 
 let deletionViaWatcher = false;
 
@@ -76,7 +76,7 @@ async function deleteCodeEverywhere(app: App, codeFile: TFile): Promise<void> {
 	// delete the reference in each DATAFILE
 	const errorMsgs: string[] = [];
 	for (const { file, blockId } of referencedParasInDataFiles) {
-		const errorMsg = await removeCodeFileRefInDataFile(app, codeFile, file, blockId);
+		const errorMsg = await removeIndividualCodeRefFromDatafile(app, codeFile, file, blockId);
 		if (errorMsg) errorMsgs.push(errorMsg);
 	}
 
