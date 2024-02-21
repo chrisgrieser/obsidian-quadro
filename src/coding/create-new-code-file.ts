@@ -170,8 +170,6 @@ export async function bulkCreateCodeFilesCommand(app: App): Promise<void> {
 	new InputForMultipleFiles(app, async (userInput) => {
 		let newFiles = 0;
 		const failedFiles: string[] = [];
-		// BUG when creating multiple files at once, there seems to be an
-		// rendering issue with the frontmatter. Probably bug on Obsidian's side?
 		for (const fullCode of userInput.split("\n")) {
 			const newFile = await createCodeFile(app, fullCode, "");
 			if (newFile) newFiles++;

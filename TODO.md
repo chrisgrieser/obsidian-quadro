@@ -1,11 +1,20 @@
+## TODO
+- [ ] export dataview result as csv
+- [ ] save dataview as obsidian table
+- [ ] debug unassign code with selection
+- [ ] settings menu for sort configuration
+- [ ] suppress suggestions selectively?
+- [ ] Add tab to suggester: <https://github.com/Zachatoo/obsidian-css-editor/blob/main/src%2Fmodals%2FCssSnippetFuzzySuggestModal.ts>
+
 ## Update Obsidian API Usage
+**Wait till next public release, as 1.5.5 is still in Insider.**
+<https://github.com/obsidianmd/obsidian-releases/releases>
+
 > New `Vault.getFileByPath` and `Vault.getFolderByPath` convenience functions.
 > No more needing to do `instanceof TFile` checks after using
 > `getAbstractFileByPath`.
 
-- [ ] Implement when Obsidian API is updated to 1.5.5 at npm:
-  <https://www.npmjs.com/package/obsidian>
-- [ ] bump `versions.json`
+- [ ] Bump `minAppVersion` in the manifest (`version.json` will auto-update)
 - [ ] change at all locations in the plugin code
 
 ## Submission to Obsidian Community Store
