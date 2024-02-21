@@ -131,7 +131,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 	}
 
 	const errorMsg = await removeCodeFileRefInDataFile(app, codeFile, dataFile, blockId);
-	if (!errorMsg) {
+	if (errorMsg) {
 		new Notice(errorMsg + "\n\nAborting removal of Code.", 4000);
 		return;
 	}
