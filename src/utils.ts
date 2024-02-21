@@ -15,7 +15,7 @@ export function getFullCode(tFile: TFile): string {
 
 /** if not there is no active markdown view, also display a notice */
 export function safelyGetActiveEditor(app: App): Editor | null {
-	// not using `app.workspace.activeEditor` to ignore canvas
+	// not using `app.workspace.activeEditor` to ignore canvases, tables, etc
 	const view = app.workspace.getActiveViewOfType(MarkdownView);
 	if (!view) {
 		new Notice("No active editor.");
@@ -32,15 +32,19 @@ export const SUGGESTER_INSTRUCTIONS = [
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function moveCursorToFirstProperty(type: "key" | "value") {
+export function moveCursorToFirstProperty(type: "key" | "value"): void {
 	const selector = `.workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-${type} :is([contenteditable='true'], input)`;
 	const firstProperty = document.querySelector(selector);
+
+	// focus the field
 	if (firstProperty instanceof HTMLElement) moveCursorToHthmlElement(firstProperty, 0);
+
+	// select all text already in that field
 	if (firstProperty instanceof HTMLInputElement) firstProperty.select();
 }
 
 // SOURCE https://discord.com/channels/686053708261228577/840286264964022302/1207053341989929070
-function moveCursorToHthmlElement(elem: HTMLElement, pos: number) {
+function moveCursorToHthmlElement(elem: HTMLElement, pos: number): void {
 	if (elem instanceof HTMLInputElement) {
 		elem.focus();
 		// number types cannot be selected, so convert to text
@@ -62,7 +66,7 @@ function moveCursorToHthmlElement(elem: HTMLElement, pos: number) {
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
 
-export async function openFileInSplitToRight(app: App, tfile: TFile) {
+export async function openFileInSplitToRight(app: App, tfile: TFile): Promise<void> {
 	const currentLeaf = app.workspace.getLeaf();
 
 	// use existing leaf if it exists, otherwise create new one

@@ -9,7 +9,7 @@ let deletionViaWatcher = false;
  * command, try to restore the file temporarily to delete it via this plugin's
  * method to ensure that references to it are correctly deleted. (This could be
  * solved in a much cleaner way if Obsidian had an pre-delete event.) */
-export async function fileDeletionWatcher(app: App, file: TAbstractFile) {
+export async function fileDeletionWatcher(app: App, file: TAbstractFile): Promise<void> {
 	// GUARD
 	if (!(file instanceof TFile)) return;
 	if (!file.path.startsWith(CODE_FOLDER_NAME + "/")) return;

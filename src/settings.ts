@@ -1,4 +1,4 @@
-import type { TFile } from "obsidian";
+import { TFile } from "obsidian";
 
 //──────────────────────────────────────────────────────────────────────────────
 
