@@ -1,1 +1,8 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Obsidian Discord
+    url: https://discord.gg/veuWUTm
+    about: 'Ask in the channel "#academic-tools" for help from the Obsidian community'
+  - name: Questions & Discussions
+    url: https://github.com/chrisgrieser/quadro/discussions/categories/q-a
+    about: "For questions & discussions regarding the quadro"

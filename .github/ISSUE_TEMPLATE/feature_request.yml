@@ -3,14 +3,24 @@ description: Suggest an idea
 title: "Feature Request: "
 labels: [enhancement]
 body:
+  - type: markdown
+    attributes:
+      value: >
+        Please be aware that there there are a lot of potential QDA features and it is not possible for me to implement
+        them all. The main idea behind  *Quadro* is to provide a core set of features, to be extended with the existing
+        Obsidian ecosystem.
   - type: checkboxes
     id: checklist
     attributes:
       label: Checklist
       options:
-        - label: "I have read the plugin's documentation."
+        - label: I have read the plugin's documentation.
           required: true
-        - label: The feature would be useful to more users than just me.
+        - label: >
+            I have search the [Obsidian plugins](https://obsidian.md/plugins) and could not find a plugin that does what
+            I need.
+          required: true
+        - label: The requested feature would be useful to more researchers than just me.
           required: true
   - type: textarea
     id: feature-requested

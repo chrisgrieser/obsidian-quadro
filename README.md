@@ -21,6 +21,7 @@ the style of *Qualitative Content Analysis*.
 - [Usage](#usage)
 	* [Get Started](#get-started)
 		+ [Example Vault](#example-vault)
+		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
 	* [Coding](#coding)
 		+ [How coding works in Quadro](#how-coding-works-in-quadro)
 		+ [Coding capabilities](#coding-capabilities)
@@ -146,12 +147,31 @@ note-taking," thus often requiring a different set of plugins and settings
 from your regular vault.
 
 #### Example Vault
-There is an example vault pre-configured to be used with *Quadro*,
+There is a [pre-configured example vault](https://github.com/chrisgrieser/obsidian-quadro)
+to be used with *Quadro*,
 including some mock data with exemplary codes and extractions, and simple
 example analyzes. If you want to check out the capabilities of *Quadro*, you can
 use that vault:
 
-➡️ [Quadro Example Vault](https://github.com/chrisgrieser/quadro-example-vault)
+1. [Download the vault](https://github.com/chrisgrieser/quadro-example-vault/releases/latest/download/quadro-example-vault.zip).
+2. Open the directory `quadro-example-vault` as an Obsidian vault. ([If you are
+   new to Obsidian, see the Obsidian Documentation on how to do
+   that.](https://help.obsidian.md/Getting+started/Create+a+vault#Open+existing+folder))
+
+#### Migrating from an existing research project with other QDA software
+Unfortunately, this is not supported. Main reason being that commercial QDA
+software use proprietary formats, the exact reason why we as researchers should
+use research software using open formats instead.
+
+If your research data is
+saved in [Markdown, Obsidian is able to import
+them](https://help.obsidian.md/import/markdown) though. Importing from [various
+other note-taking apps like Notion, Evernote, OneNote, Google Keep, Apple Notes,
+Bear, or Roam](https://help.obsidian.md/import) is supported as well.
+
+It is, however, possible to export the results done with *Quadro*, to
+collaborate with other researchers. You can either export individual files as
+PDF, or [export aggregated results as CSV](https://help.obsidian.md/import).
 
 ### Coding
 
@@ -400,7 +420,7 @@ Once published in the Obsidian Community Plugin Store, you can update *Quadro*
 
 ### Bug Reports & Feature Requests
 - For bug reports or feature requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).
-- For questions and general discussion about *Quadro*, please use the [GitHub
+- For questions and general discussion about *Quadro*, use the [GitHub
   Discussion
   Forum](https://github.com/chrisgrieser/obsidian-quadro/discussions).
 
