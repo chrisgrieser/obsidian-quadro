@@ -3,6 +3,7 @@ import { ensureBlockId } from "src/block-id";
 import { CODE_FOLDER_NAME, MINIGRAPH, SORT_FUNC_TO_USE } from "../settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
+	ambiguousSelection,
 	currentlyInFolder,
 	getFullCode,
 	safelyGetActiveEditor,
@@ -95,7 +96,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 export function assignCodeCommand(app: App): void {
 	const editor = safelyGetActiveEditor(app);
-	if (!editor) return;
+	if (!editor || ambiguousSelection(editor)) return;
 
 	if (currentlyInFolder(app, "Codes") || currentlyInFolder(app, "Extractions")) {
 		new Notice("You must be in a Data File to assign a code.", 3000);

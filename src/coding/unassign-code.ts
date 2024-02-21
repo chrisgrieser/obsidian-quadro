@@ -3,6 +3,7 @@ import { blockIdRegex, embeddedBlockLinkRegex } from "src/block-id";
 import { CODE_FOLDER_NAME } from "src/settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
+	ambiguousSelection,
 	currentlyInFolder,
 	getFullCode,
 	safelyGetActiveEditor,
@@ -156,7 +157,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
  */
 export async function unassignCodeCommand(app: App): Promise<void> {
 	const editor = safelyGetActiveEditor(app);
-	if (!editor) return;
+	if (!editor || ambiguousSelection(editor)) return;
 
 	if (currentlyInFolder(app, "Codes")) {
 		// A: in code file

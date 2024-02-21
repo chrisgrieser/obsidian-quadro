@@ -3,6 +3,7 @@ import { ensureBlockId } from "src/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
+	ambiguousSelection,
 	currentlyInFolder,
 	moveCursorToFirstProperty,
 	openFileInSplitToRight,
@@ -108,7 +109,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 
 export async function extractFromParagraphCommand(app: App): Promise<void> {
 	const editor = safelyGetActiveEditor(app);
-	if (!editor) return;
+	if (!editor || ambiguousSelection(editor)) return;
 
 	if (currentlyInFolder(app, "Codes") || currentlyInFolder(app, "Extractions")) {
 		new Notice("You must be in a Data File to make an extraction.", 3000);

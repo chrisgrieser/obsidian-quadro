@@ -72,3 +72,21 @@ export async function openFileInSplitToRight(app: App, tfile: TFile) {
 
 	await leafToTheRight.openFile(tfile, LIVE_PREVIEW);
 }
+
+//──────────────────────────────────────────────────────────────────────────────
+
+/** check if selection is unambiguous, ensuring that subsequent calls of
+ * `getLine` or `getCursor` behave predictably */
+export function ambiguousSelection(editor: Editor): boolean {
+	const multilineSelection = editor.getCursor("head").line !== editor.getCursor("anchor").line;
+	const multipleSelections = editor.listSelections().length > 1;
+	if (multilineSelection || multipleSelections) {
+		new Notice(
+			"Paragraph not unambiguous since multiple lines are selected.\n\n" +
+				"Unselect, move your cursor to the paragraph you want to affect, and use the command again.",
+			5000,
+		);
+		return true;
+	}
+	return false;
+}

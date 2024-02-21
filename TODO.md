@@ -1,8 +1,7 @@
 ## TODO
 - [ ] export dataview result as csv
 - [ ] save dataview as obsidian table
-- [ ] debug unassign code with selection
-- [ ] settings menu for sort configuration
+- [ ] settings menu for sort function
 - [ ] suppress suggestions selectively?
 - [ ] Add tab to suggester: <https://github.com/Zachatoo/obsidian-css-editor/blob/main/src%2Fmodals%2FCssSnippetFuzzySuggestModal.ts>
 
@@ -14,7 +13,7 @@
 > No more needing to do `instanceof TFile` checks after using
 > `getAbstractFileByPath`.
 
-- [ ] Bump `minAppVersion` in the manifest (`version.json` will auto-update)
+- [ ] Bump `minAppVersion` in the manifest (`version.json` is auto-updated though)
 - [ ] change at all locations in the plugin code
 
 ## Submission to Obsidian Community Store
