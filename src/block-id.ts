@@ -1,19 +1,19 @@
 import { TFile } from "obsidian";
 
-function randomSixDigits(): string {
-	return Math.ceil(Math.random() * 1000000)
+function randomDigits(digits: number): string {
+	return Math.ceil(Math.random() * 10 ** digits)
 		.toString()
-		.padStart(6, "0");
+		.padStart(digits, "0");
 }
-
-export const blockIdRegex = /\^[\w-]+$/;
-
-// group 1: linkpath, group 2: blockID
-export const embeddedBlockLinkRegex = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
 
 const allBlockIdsRegex = /\^[\w-]+(?=\n|$)/g;
 
 //──────────────────────────────────────────────────────────────────────────────
+
+export const BLOCKID_REGEX = /\^[\w-]+$/;
+
+// group 1: linkpath, group 2: blockID
+export const EMBEDDED_BLOCKLINK_REGEX = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
 
 /** Given a line, returns the blockID and the line without the blockID. If the
  * blockID does not exist, a random 6-digit ID is created. A random ID is
@@ -24,7 +24,7 @@ export async function ensureBlockId(
 	tFile: TFile,
 	lineText: string,
 ): Promise<{ blockId: string; lineWithoutId: string }> {
-	const [blockIdOfLine] = lineText.match(blockIdRegex) || [];
+	const [blockIdOfLine] = lineText.match(BLOCKID_REGEX) || [];
 
 	// line already has blockID
 	if (blockIdOfLine) {
@@ -37,7 +37,7 @@ export async function ensureBlockId(
 	const blockIdsInText: string[] = fullText.match(allBlockIdsRegex) || [];
 	let newId: string;
 	do {
-		newId = "^id-" + randomSixDigits();
+		newId = "^id-" + randomDigits(6);
 	} while (blockIdsInText.includes(newId));
 	return { blockId: newId, lineWithoutId: lineText.trim() };
 }

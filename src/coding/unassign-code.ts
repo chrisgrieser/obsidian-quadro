@@ -1,5 +1,5 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import { blockIdRegex, embeddedBlockLinkRegex } from "src/block-id";
+import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/block-id";
 import { CODE_FOLDER_NAME } from "src/settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
@@ -90,7 +90,7 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	editor.setLine(ln, lineText.replace(regex, ""));
 
 	// find corresponding line in CODEFILE
-	const [blockId] = lineText.match(blockIdRegex) || [];
+	const [blockId] = lineText.match(BLOCKID_REGEX) || [];
 	if (!blockId) {
 		new Notice("No ID found in current line.\nReference in Code File thus not deleted.");
 		return;
@@ -127,7 +127,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 	const lineText = editor.getLine(editor.getCursor().line);
 
 	// Remove from DATAFILE
-	const [_, linkPath, blockId] = lineText.match(embeddedBlockLinkRegex) || [];
+	const [_, linkPath, blockId] = lineText.match(EMBEDDED_BLOCKLINK_REGEX) || [];
 	const codeFile = editor.editorComponent.view.file;
 	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath || "", codeFile.path);
 	if (!blockId || !linkPath || !dataFile) {
