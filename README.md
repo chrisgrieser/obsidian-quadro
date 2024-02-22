@@ -22,6 +22,7 @@ the style of *Qualitative Content Analysis*.
 	* [Get Started](#get-started)
 		+ [Example Vault](#example-vault)
 		+ [Experienced Obsidian Users](#experienced-obsidian-users)
+		+ [Using a Separate Vault](#using-a-separate-vault)
 		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
 	* [Coding](#coding)
 		+ [How coding works in Quadro](#how-coding-works-in-quadro)
@@ -142,15 +143,6 @@ support the creation of those Extraction Files.
 ## Usage
 
 ### Get Started
-It is recommended to create a separate vault for data analysis and
-install the plugin there, for several reasons:
-- QDA does not follow the "common logic of note-taking," thus often requiring a
-  different set of plugins and settings from your regular vault.
-- Separate vaults mean that suggestions, such as for properties, are also
-  separated.
-- To make Obsidian easier to use for qualitative research, *Quadro* also does
-  some (minor) modifications to the core layout of Obsidian, for instance wider
-  dataview tables.
 
 #### Example Vault
 There is a [pre-configured example
@@ -168,6 +160,20 @@ capabilities, to demonstrate the capabilities of *Quadro*.
 If you are experienced with Obsidian, you can also [directly install the
 plugin](#installation), though checking out the example vault is nonetheless
 helpful to get a grasp on the capabilities of *Quadro*.
+
+#### Using a Separate Vault
+It is recommended to create a separate vault for data analysis and
+install the plugin there, for several reasons:
+- QDA does not follow the "common logic of note-taking," thus often requiring a
+  different set of plugins and settings from your regular vault.
+- Separate vaults mean that suggestions, such as for properties, are also
+  separated.
+- To make Obsidian easier to use for qualitative research, *Quadro* also does
+  some (minor) modifications to the core layout of Obsidian, for instance wider
+  dataview tables.
+- For archival purposes, the research data is already separated.
+- For collaborative work in a research team, the data is stored in separately
+  from personal notes.
 
 #### Migrating from an existing research project with other QDA software
 Unfortunately, this is not supported. Main reason being that commercial QDA

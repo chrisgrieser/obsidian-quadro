@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # RELEASE OBSIDIAN PLUGIN
 # https://forum.obsidian.md/t/using-github-actions-to-release-plugins/7877
-# https://marcus.se.net/obsidian-plugin-docs/publishing/release-your-plugin-with-github-actions
+# https://docs.obsidian.md/Plugins/Releasing/Release+your+plugin+with+GitHub+Actions
 #───────────────────────────────────────────────────────────────────────────────
 
 # Prompt for version number
