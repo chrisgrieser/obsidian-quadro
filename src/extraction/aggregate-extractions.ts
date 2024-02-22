@@ -61,7 +61,9 @@ class SuggesterForCreateAggregation extends FuzzySuggestModal<TFolder> {
 			"",
 			"---",
 			"",
-			"*Info: You can customize the table by modifying the Dataview Query:* [Documentation of Dataview Queries](https://blacksmithgu.github.io/obsidian-dataview/queries/structure/)",
+			"You can customize the table by modifying the Dataview Query: [Documentation of Dataview Queries](https://blacksmithgu.github.io/obsidian-dataview/queries/structure/)",
+			"",
+			"If you have the [Sortable](https://obsidian.md/plugins?id=obsidian-sortable) plugin installed, you can click on the header row of a column to sort the table by that column. (The plugin is pre-installed, if you use the Quadro Example Vault.)",
 		].join("\n");
 
 		// create Aggregation File

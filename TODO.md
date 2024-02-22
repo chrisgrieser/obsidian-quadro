@@ -1,6 +1,5 @@
 ## TODO
 - [ ] export dataview result as csv
-- [ ] save dataview as obsidian table
 - [ ] settings menu for sort function
 - [ ] suppress suggestions selectively?
 - [ ] Add tab to suggester: <https://github.com/Zachatoo/obsidian-css-editor/blob/main/src%2Fmodals%2FCssSnippetFuzzySuggestModal.ts>

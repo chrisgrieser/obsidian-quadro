@@ -141,10 +141,15 @@ support the creation of those Extraction Files.
 ## Usage
 
 ### Get Started
-It is strongly recommended to create a separate vault for data analysis and
-install the plugin there, since QDA does not follow the "common logic of
-note-taking," thus often requiring a different set of plugins and settings
-from your regular vault.
+It is recommended to create a separate vault for data analysis and
+install the plugin there, for several reasons:
+- QDA does not follow the "common logic of note-taking," thus often requiring a
+  different set of plugins and settings from your regular vault.
+- Separate vaults mean that suggestions, such as for properties, are also
+  separated.
+- To make Obsidian easier to use for qualitative research, *Quadro* also does
+  some (minor) modifications to the core layout of Obsidian, for instance wider
+  dataview tables.
 
 #### Example Vault
 There is a [pre-configured example vault](https://github.com/chrisgrieser/obsidian-quadro)
@@ -160,8 +165,8 @@ use that vault:
 
 #### Migrating from an existing research project with other QDA software
 Unfortunately, this is not supported. Main reason being that commercial QDA
-software use proprietary formats, the exact reason why we as researchers should
-use research software using open formats instead.
+software use proprietary formats, the exact reason why researchers should
+use research software using open formats to begin with.
 
 If your research data is
 saved in [Markdown, Obsidian is able to import
