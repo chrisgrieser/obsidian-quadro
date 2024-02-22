@@ -20,3 +20,4 @@ node esbuild.config.mjs
 echo "(4/4) Markdownlint"
 npx markdownlint --ignore="node_modules" "$(git rev-parse --show-toplevel)"
 echo "Done."
+echo

@@ -2,14 +2,14 @@ import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
 import { ANALYSIS_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "src/settings";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS, safelyGetActiveEditor } from "src/utils";
 
-class SuggesterForCreateAggregation extends FuzzySuggestModal<TFolder> {
+class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 	extractionTypes: TFolder[];
 
 	constructor(app: App, extractionTypes: TFolder[]) {
 		super(app);
 		this.extractionTypes = extractionTypes;
 
-		this.setPlaceholder("Select extraction type");
+		this.setPlaceholder("Select extraction type to create aggregation for");
 		this.setInstructions(SUGGESTER_INSTRUCTIONS);
 		this.modalEl.addClass("quadro");
 	}
@@ -126,5 +126,5 @@ export async function aggregateExtractionsCommand(app: App): Promise<void> {
 		return;
 	}
 
-	new SuggesterForCreateAggregation(app, extractionTypes).open();
+	new SuggesterForAggregationCreation(app, extractionTypes).open();
 }

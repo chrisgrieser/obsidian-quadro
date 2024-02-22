@@ -23,7 +23,8 @@ sed -E -i '' "s/\"version\".*/\"version\": \"$nextVersion\",/" "package.json"
 # add version number in `versions.json` with min-app-version
 minObsidianVersion=$(grep "minAppVersion" "manifest.json" | cut -d\" -f4)
 last_version_line=$(tail -n2 "versions.json" | head -n1)
-sed -i '' '$d' "versions.json" ; sed -i '' '$d' "versions.json"
+sed -i '' '$d' "versions.json"
+sed -i '' '$d' "versions.json"
 {
 	echo "$last_version_line,"
 	print "\t\"$nextVersion\": \"$minObsidianVersion\""

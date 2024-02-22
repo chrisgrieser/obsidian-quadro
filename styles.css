@@ -81,6 +81,10 @@ body:not(.is-mobile) .metadata-property-key {
 	flex-grow: 1;
 }
 
+body .metadata-container {
+	font-size: 0.9em;
+}
+
 /* ────────────────────────────────────────────────────────────────────────── */
 /* FILE EXPLORER */
 
