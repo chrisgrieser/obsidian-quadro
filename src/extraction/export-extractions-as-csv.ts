@@ -28,7 +28,12 @@ export async function exportExtractionsAsCsv(app: App) {
 			new Notice(`Export of Extraction Type "${extractionType.name}" is skipped.`, 5000);
 			continue;
 		}
-		const keys = Object.keys(templateFrontmatter);
+		const keys = [
+			"File",
+			...Object.keys(templateFrontmatter),
+			"extraction date",
+			"extraction source",
+		];
 		const headerRow = createCsvRow(keys);
 		csvFileLines.push(headerRow);
 
@@ -40,16 +45,22 @@ export async function exportExtractionsAsCsv(app: App) {
 			const fileFrontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
 			if (!fileFrontmatter) continue;
 			const cellsInRow: string[] = [];
+			cellsInRow.push(extractionFile.basename);
+
 			for (const key of keys) {
-				// nullish coalescing to keep 0 or ""
-				const value = fileFrontmatter[key] ?? NA_STRING;
-				const valueString =
+				if (key === "File") continue;
+				const value = fileFrontmatter[key] ?? NA_STRING; // nullish coalescing to keep 0 or ""
+				let valueStr =
 					typeof value !== "object"
 						? value.toString() // primitive
 						: Array.isArray(value)
 						  ? value.join(", ") // array
 						  : JSON.stringify(value); // object
-				cellsInRow.push(valueString);
+
+				// remove enclosing wikilinks
+				if (key === "extraction source") valueStr = valueStr.slice(2, -2);
+
+				cellsInRow.push(valueStr);
 			}
 			const row = createCsvRow(cellsInRow);
 			csvFileLines.push(row);
