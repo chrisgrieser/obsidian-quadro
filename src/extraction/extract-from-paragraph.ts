@@ -55,9 +55,9 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;
 
-	// GUARD missing TEMPLATE
-	const templateFile = app.vault.getAbstractFileByPath(`${dir}/Template.md`);
-	if (!(templateFile instanceof TFile)) {
+	// if TEMPLATE is missing, create one instead of performing an extraction
+	const templateFile = app.vault.getFileByPath(`${dir}/Template.md`);
+	if (!templateFile) {
 		bootstrapExtractionTemplate(app, type);
 		return;
 	}
@@ -75,15 +75,15 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 		return;
 	}
 
-	// Determine path of EXTRACTION-FILE
-	let fileExistsAlready: boolean;
+	// Determine path of EXTRACTION-FILE to be created
 	let extractionPath: string;
 	let extractionCount = extractionTypeFolder.children.length - 1; // -1 due to `Template.md`
-	do {
+	while (true) {
 		extractionCount++;
 		extractionPath = `${dir}/${extractionCount}.md`;
-		fileExistsAlready = app.vault.getAbstractFileByPath(extractionPath) instanceof TFile;
-	} while (fileExistsAlready);
+		const fileExistsAlready = app.vault.getFileByPath(extractionPath);
+		if (!fileExistsAlready) break;
+	}
 
 	// Update DATAFILE
 	const cursor = editor.getCursor();
@@ -117,11 +117,10 @@ export async function extractFromParagraphCommand(app: App): Promise<void> {
 	}
 
 	// bootstrap extraction folder, if needed
-	let extractionTFolder = app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME);
-	if (!(extractionTFolder instanceof TFolder))
-		extractionTFolder = await app.vault.createFolder(EXTRACTION_FOLDER_NAME);
-	if (!(extractionTFolder instanceof TFolder)) {
-		new Notice("ERROR: Could not create Extraction Folder.", 3000);
+	let extractionTFolder = app.vault.getFolderByPath(EXTRACTION_FOLDER_NAME);
+	if (!extractionTFolder) extractionTFolder = await app.vault.createFolder(EXTRACTION_FOLDER_NAME);
+	if (!extractionTFolder) {
+		new Notice("ERROR: Could not create Extraction Folder.", 4000);
 		return;
 	}
 

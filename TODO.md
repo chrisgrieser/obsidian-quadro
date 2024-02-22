@@ -4,17 +4,6 @@
 - [ ] suppress suggestions selectively?
 - [ ] Add tab to suggester: <https://github.com/Zachatoo/obsidian-css-editor/blob/main/src%2Fmodals%2FCssSnippetFuzzySuggestModal.ts>
 
-## Update Obsidian API Usage
-**Wait till next public release, as 1.5.5 is still in Insider.**
-<https://github.com/obsidianmd/obsidian-releases/releases>
-
-> New `Vault.getFileByPath` and `Vault.getFolderByPath` convenience functions.
-> No more needing to do `instanceof TFile` checks after using
-> `getAbstractFileByPath`.
-
-- [ ] Bump `minAppVersion` in the manifest (`version.json` is auto-updated though)
-- [ ] change at all locations in the plugin code
-
 ## Submission to Obsidian Community Store
 Status: <https://github.com/obsidianmd/obsidian-releases/pull/3076>
 

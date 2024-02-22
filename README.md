@@ -388,6 +388,8 @@ respective action.
 ## Technical
 
 ### Installation
+*Quadro* requires at least **Obsidian version 1.5.8**.
+
 **Manual**  
 1. Download the `.zip` file from the [latest
    release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).

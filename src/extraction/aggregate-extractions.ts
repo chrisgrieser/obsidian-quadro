@@ -1,4 +1,4 @@
-import { App, FuzzySuggestModal, Notice, TFile, TFolder } from "obsidian";
+import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
 import { ANALYSIS_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "src/settings";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS, safelyGetActiveEditor } from "src/utils";
 
@@ -25,21 +25,19 @@ class SuggesterForCreateAggregation extends FuzzySuggestModal<TFolder> {
 
 	async onChooseItem(extractionType: TFolder): Promise<void> {
 		// GUARD missing Template Files
-		const templateFile = this.app.vault.getAbstractFileByPath(
-			`${extractionType.path}/Template.md`,
-		);
-		if (!(templateFile instanceof TFile)) {
+		const templateFile = this.app.vault.getFileByPath(`${extractionType.path}/Template.md`);
+		if (!templateFile) {
 			new Notice(
-				`Error: Could not find "Template.md" for Extraction Type "${extractionType.name}".`,
-				4000,
+				`ERROR: Could not find "Template.md" for Extraction Type "${extractionType.name}".`,
+				5000,
 			);
 			return;
 		}
 		const frontmatter = this.app.metadataCache.getFileCache(templateFile)?.frontmatter;
 		if (!frontmatter) {
 			new Notice(
-				`Error: Could not read frontmatter from "Template.md" for Extraction Type "${extractionType.name}".`,
-				4000,
+				`ERROR: Properties of "Template.md" for Extraction Type "${extractionType.name}" are invalid.`,
+				5000,
 			);
 			return;
 		}
@@ -67,16 +65,19 @@ class SuggesterForCreateAggregation extends FuzzySuggestModal<TFolder> {
 		].join("\n");
 
 		// create Aggregation File
-		const analysisFolderExists =
-			this.app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME) instanceof TFolder;
-		if (!analysisFolderExists) await this.app.vault.createFolder(ANALYSIS_FOLDER_NAME);
+		let analysisFolder = this.app.vault.getFolderByPath(EXTRACTION_FOLDER_NAME);
+		if (!analysisFolder) analysisFolder = await this.app.vault.createFolder(ANALYSIS_FOLDER_NAME);
+		if (!analysisFolder) {
+			new Notice("ERROR: Could not create Analysis Folder.", 4000);
+			return;
+		}
 
+		// append `_1` until such a file does not exist, to ensure creating a new file
 		let aggregationName = extractionType.name;
 		let aggregationFilepath: string;
 		while (true) {
 			aggregationFilepath = `${ANALYSIS_FOLDER_NAME}/${aggregationName}.md`;
-			const aggregationFileExists =
-				this.app.vault.getAbstractFileByPath(aggregationFilepath) instanceof TFile;
+			const aggregationFileExists = this.app.vault.getFileByPath(aggregationFilepath);
 			if (!aggregationFileExists) break;
 			aggregationName += "_1";
 		}
@@ -112,16 +113,16 @@ export async function aggregateExtractionsCommand(app: App): Promise<void> {
 	}
 
 	// GUARD Extraction Folders missing
-	const extractionTFolder = app.vault.getAbstractFileByPath(EXTRACTION_FOLDER_NAME);
-	if (!(extractionTFolder instanceof TFolder)) {
-		new Notice("ERROR: Could not find Extraction Folder.", 3000);
+	const extractionTFolder = app.vault.getFolderByPath(EXTRACTION_FOLDER_NAME);
+	if (!extractionTFolder) {
+		new Notice("ERROR: Could not find Extraction Folder.", 4000);
 		return;
 	}
 	const extractionTypes = extractionTFolder.children.filter(
 		(f) => f instanceof TFolder,
 	) as TFolder[];
 	if (extractionTypes.length === 0) {
-		new Notice("ERROR: Could not find any Extraction Types.", 3000);
+		new Notice("ERROR: Could not find any Extraction Types.", 4000);
 		return;
 	}
 

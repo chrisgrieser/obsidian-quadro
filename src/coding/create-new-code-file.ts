@@ -1,13 +1,4 @@
-import {
-	App,
-	ButtonComponent,
-	Modal,
-	Notice,
-	Setting,
-	TFile,
-	TFolder,
-	normalizePath,
-} from "obsidian";
+import { App, ButtonComponent, Modal, Notice, Setting, TFile, normalizePath } from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
@@ -143,7 +134,7 @@ async function createCodeFile(
 	const codeSubfolder = parts.length ? "/" + parts.join("/") : "";
 
 	const parent = CODE_FOLDER_NAME + codeSubfolder;
-	const folderExists = app.vault.getAbstractFileByPath(parent) instanceof TFolder;
+	const folderExists = app.vault.getFolderByPath(parent);
 	if (!folderExists) await app.vault.createFolder(parent);
 
 	codeDesc = codeDesc.replaceAll('"', "'"); // escape for YAML
