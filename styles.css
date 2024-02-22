@@ -79,14 +79,13 @@ body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dat
 /* properties broader, so dimension are visible */
 body:not(.is-mobile) .metadata-property-key {
 	flex-grow: 1;
-	min-width: 12rem;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
 /* FILE EXPLORER */
 
 /* bold to all the folders with special function for Quadro */
-.nav-folder-title:is([data-path="Codes"],[data-path="Analysis"], [data-path="Extractions"], [data-path="Data"]) .nav-folder-title-content {
+.nav-folder-title:is([data-path="Codes"], [data-path="Analysis"], [data-path="Extractions"], [data-path="Data"]) .nav-folder-title-content {
 	font-weight: 800;
 }
 
