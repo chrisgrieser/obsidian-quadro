@@ -1,5 +1,6 @@
 import { aggregateExtractionsCommand } from "./aggregate-extractions";
 import { createNewExtractionTypeCommand } from "./bootstrap-extraction-files";
+import { exportExtractionsAsCsv } from "./export-extractions-as-csv";
 import { extractFromParagraphCommand } from "./extract-from-paragraph";
 
 export const EXTRACTION_COMMANDS = [
@@ -21,5 +22,11 @@ export const EXTRACTION_COMMANDS = [
 		name: "Aggregate extractions",
 		func: aggregateExtractionsCommand,
 		icon: "sigma-square",
+	},
+	{
+		id: "export-all-extractions-as-csv",
+		name: "Export all extractions as .csv",
+		func: exportExtractionsAsCsv,
+		icon: "arrow-up-square",
 	},
 ];
