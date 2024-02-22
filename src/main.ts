@@ -12,7 +12,7 @@ export default class Quadro extends Plugin {
 
 		// COMMANDS
 		for (const cmd of [...CODING_COMMANDS, ...EXTRACTION_COMMANDS]) {
-			this.addRibbonIcon(cmd.icon, `Quadro: ${cmd.name}`, () => cmd.func(this.app));
+			this.addRibbonIcon(cmd.ribbonIcon, `Quadro: ${cmd.name}`, () => cmd.func(this.app));
 			const cmdObj: Command = {
 				id: cmd.id,
 				name: cmd.name,
@@ -36,9 +36,8 @@ export default class Quadro extends Plugin {
 			this.app.workspace.on("file-open", () => updateStatusbar(this.app, this.statusbar)),
 		);
 		// Instead of updating the statusbar after every action, update it after
-		// metadata changes. This is more reliable, since the cache is up-to-date,
-		// and also more practical, since all status bar elements depend on link
-		// counts in the metadata anyway.
+		// metadata changes. This is more reliable then calling `updateStatusbar`
+		// after every quadro command, since the cache is up-to-date.
 		this.registerEvent(
 			this.app.metadataCache.on("resolved", () => updateStatusbar(this.app, this.statusbar)),
 		);

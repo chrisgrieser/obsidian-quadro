@@ -9,24 +9,24 @@ export const EXTRACTION_COMMANDS = [
 		name: "Extract from paragraph",
 		func: extractFromParagraphCommand,
 		hotkeyLetter: "e",
-		icon: "plus-square",
+		ribbonIcon: "plus-square",
 	},
 	{
 		id: "create-new-extraction-type",
 		name: "Create new extraction type",
 		func: createNewExtractionTypeCommand,
-		icon: "box-select",
+		ribbonIcon: "box-select",
 	},
 	{
 		id: "aggregate-extractions",
 		name: "Aggregate extractions",
 		func: aggregateExtractionsCommand,
-		icon: "sigma-square",
+		ribbonIcon: "sigma-square",
 	},
 	{
 		id: "export-all-extractions-as-csv",
 		name: "Export all extractions as .csv",
 		func: exportExtractionsAsCsv,
-		icon: "arrow-up-square",
+		ribbonIcon: "arrow-up-square",
 	},
 ];
