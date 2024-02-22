@@ -21,6 +21,7 @@ the style of *Qualitative Content Analysis*.
 - [Usage](#usage)
 	* [Get Started](#get-started)
 		+ [Example Vault](#example-vault)
+		+ [Experienced Obsidian Users](#experienced-obsidian-users)
 		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
 	* [Coding](#coding)
 		+ [How coding works in Quadro](#how-coding-works-in-quadro)
@@ -152,16 +153,21 @@ install the plugin there, for several reasons:
   dataview tables.
 
 #### Example Vault
-There is a [pre-configured example vault](https://github.com/chrisgrieser/obsidian-quadro)
-to be used with *Quadro*,
-including some mock data with exemplary codes and extractions, and simple
-example analyzes. If you want to check out the capabilities of *Quadro*, you can
-use that vault:
+There is a [pre-configured example
+vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
+*Quadro*. Apart from some pre-installed plugins for QDA, it includes some mock
+data with exemplary codes and extractions, and showcases of extraction
+capabilities, to demonstrate the capabilities of *Quadro*.
 
 1. [Download the vault](https://github.com/chrisgrieser/quadro-example-vault/releases/latest/download/quadro-example-vault.zip).
 2. Open the directory `quadro-example-vault` as an Obsidian vault. ([If you are
    new to Obsidian, see the Obsidian Documentation on how to do
    that.](https://help.obsidian.md/Getting+started/Create+a+vault#Open+existing+folder))
+
+#### Experienced Obsidian Users
+If you are experienced with Obsidian, you can also [directly install the
+plugin](#installation), though checking out the example vault is nonetheless
+helpful to get a grasp on the capabilities of *Quadro*.
 
 #### Migrating from an existing research project with other QDA software
 Unfortunately, this is not supported. Main reason being that commercial QDA
