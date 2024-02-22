@@ -69,11 +69,17 @@ body .internal-embed .markdown-embed-content {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* DATAVIEW */
+/* USEFUL CHANGES FOR RESEARCH ITEMS */
 
 /* full line width for dataview */
 body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dataview.table-view-table) {
 	--file-line-width: 100%;
+}
+
+/* properties broader, so dimension are visible */
+body:not(.is-mobile) .metadata-property-key {
+	flex-grow: 1;
+	min-width: 12rem;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
