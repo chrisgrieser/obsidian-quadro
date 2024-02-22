@@ -392,6 +392,9 @@ All in all, the underlying folder structure for extractions looks like this:
 customized by searching in the Obsidian hotkey settings for the name of the
 respective action.
 
+For both, aggregation and `.csv` export, the included properties are
+determined by the properties of the template files (`Template.md`).
+
 ## Technical
 
 ### Installation

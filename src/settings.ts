@@ -32,3 +32,5 @@ export const SORT_FUNC_TO_USE = TFILE_SORT_FUNC.lastUsedFirst;
 // EXTRACTION SETTINGS
 export const EXTRACTION_FOLDER_NAME = "Extractions";
 export const ANALYSIS_FOLDER_NAME = "Analysis";
+export const CSV_SEPARATOR: ";" | "," | "\t" = ";";
+export const NA_STRING = "-";

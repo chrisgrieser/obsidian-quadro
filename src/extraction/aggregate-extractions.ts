@@ -1,6 +1,7 @@
 import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
 import { ANALYSIS_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "src/settings";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS, safelyGetActiveEditor } from "src/utils";
+import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
 class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 	extractionTypes: TFolder[];
@@ -24,23 +25,8 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 	}
 
 	async onChooseItem(extractionType: TFolder): Promise<void> {
-		// GUARD missing Template Files
-		const templateFile = this.app.vault.getFileByPath(`${extractionType.path}/Template.md`);
-		if (!templateFile) {
-			new Notice(
-				`ERROR: Could not find "Template.md" for Extraction Type "${extractionType.name}".`,
-				5000,
-			);
-			return;
-		}
-		const frontmatter = this.app.metadataCache.getFileCache(templateFile)?.frontmatter;
-		if (!frontmatter) {
-			new Notice(
-				`ERROR: Properties of "Template.md" for Extraction Type "${extractionType.name}" are invalid.`,
-				5000,
-			);
-			return;
-		}
+		const frontmatter = getPropertiesForExtractionType(this.app, extractionType);
+		if (!frontmatter) return;
 
 		// read properties from Template file of the Extraction Type
 		const properties = Object.keys(frontmatter).map(
@@ -113,18 +99,8 @@ export async function aggregateExtractionsCommand(app: App): Promise<void> {
 	}
 
 	// GUARD Extraction Folders missing
-	const extractionTFolder = app.vault.getFolderByPath(EXTRACTION_FOLDER_NAME);
-	if (!extractionTFolder) {
-		new Notice("ERROR: Could not find Extraction Folder.", 4000);
-		return;
-	}
-	const extractionTypes = extractionTFolder.children.filter(
-		(f) => f instanceof TFolder,
-	) as TFolder[];
-	if (extractionTypes.length === 0) {
-		new Notice("ERROR: Could not find any Extraction Types.", 4000);
-		return;
-	}
+	const extractionTypes = getAllExtractionTypes(app);
+	if (!extractionTypes) return;
 
 	new SuggesterForAggregationCreation(app, extractionTypes).open();
 }
