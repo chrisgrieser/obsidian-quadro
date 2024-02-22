@@ -78,7 +78,7 @@ body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dat
 
 /* properties broader, so dimension are visible */
 body .metadata-property-key {
-	flex-grow: 1;
+	min-width: 25%;
 }
 
 body .metadata-container {
