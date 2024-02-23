@@ -5,9 +5,9 @@ import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
 	currentlyInFolder,
-	getFullCode,
 	safelyGetActiveEditor,
 } from "../utils";
+import { getFullCode } from "./coding-utils";
 import { createOneCodeFile } from "./create-new-code-file";
 
 class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {

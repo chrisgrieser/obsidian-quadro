@@ -5,8 +5,8 @@ export const CODE_FOLDER_NAME = "Codes";
 export const EXTRACTION_FOLDER_NAME = "Extractions";
 export const ANALYSIS_FOLDER_NAME = "Analysis";
 
-// EXTRACTION SETTINGS
-export const DISPLAY_AGGREGATE_TIPS = true;
+// MISC
+export const DISPLAY_TIPS = true;
 
 // CODING SETTINGS
 export const MINIGRAPH = {

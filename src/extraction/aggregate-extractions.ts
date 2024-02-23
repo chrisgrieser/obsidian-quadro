@@ -1,5 +1,5 @@
 import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
-import { ANALYSIS_FOLDER_NAME, DISPLAY_AGGREGATE_TIPS, EXTRACTION_FOLDER_NAME } from "src/settings";
+import { ANALYSIS_FOLDER_NAME, DISPLAY_TIPS, EXTRACTION_FOLDER_NAME } from "src/settings";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS, safelyGetActiveEditor } from "src/utils";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
@@ -54,7 +54,7 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 			"SORT extraction-date ASC",
 			"```",
 			"",
-			...(DISPLAY_AGGREGATE_TIPS ? aggregateTips : []),
+			...(DISPLAY_TIPS ? aggregateTips : []),
 		].join("\n");
 
 		// create Aggregation File

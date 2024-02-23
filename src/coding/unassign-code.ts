@@ -5,9 +5,9 @@ import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
 	currentlyInFolder,
-	getFullCode,
 	safelyGetActiveEditor,
 } from "src/utils";
+import { getFullCode } from "./coding-utils";
 
 interface Code {
 	tFile: TFile;
