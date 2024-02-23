@@ -1,5 +1,5 @@
 import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
-import { ANALYSIS_FOLDER_NAME, DISPLAY_TIPS, EXTRACTION_FOLDER_NAME } from "src/settings";
+import { ANALYSIS_FOLDER_NAME, DISPLAY_TIPS } from "src/settings";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS, safelyGetActiveEditor } from "src/utils";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
@@ -58,7 +58,7 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 		].join("\n");
 
 		// create Aggregation File
-		let analysisFolder = this.app.vault.getFolderByPath(EXTRACTION_FOLDER_NAME);
+		let analysisFolder = this.app.vault.getFolderByPath(ANALYSIS_FOLDER_NAME);
 		if (!analysisFolder) analysisFolder = await this.app.vault.createFolder(ANALYSIS_FOLDER_NAME);
 		if (!analysisFolder) {
 			new Notice("ERROR: Could not create Analysis Folder.", 4000);
@@ -81,8 +81,7 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 		this.app.commands.executeCommandById("file-explorer:reveal-active-file");
 
 		const editor = safelyGetActiveEditor(this.app);
-		if (!editor) return;
-		editor.setCursor(editor.lastLine(), 0);
+		editor?.setCursor(editor.lastLine(), 0);
 	}
 }
 
