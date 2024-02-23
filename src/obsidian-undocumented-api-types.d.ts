@@ -23,14 +23,6 @@ declare module "obsidian" {
 		commands: {
 			executeCommandById: (commandId: string) => void;
 		};
-		// e.g. this.app.internalPlugins.plugins["note-composer"].enabled
-		internalPlugins: {
-			plugins: {
-				[key: string]: {
-					enable: () => void;
-				};
-			};
-		};
 		plugins: {
 			enabledPlugins: Set<string>;
 			enablePluginAndSave: (pluginId: string) => Promise<boolean>;

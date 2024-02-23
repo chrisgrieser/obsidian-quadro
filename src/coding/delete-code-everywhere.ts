@@ -5,7 +5,7 @@ import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassi
 
 let deletionViaWatcher = false;
 
-/** When the user deletes a CODE FILE without the "Delete Code Everywhere"
+/** HACK When the user deletes a CODE FILE without the "Delete Code Everywhere"
  * command, try to restore the file temporarily to delete it via this plugin's
  * method to ensure that references to it are correctly deleted. (This could be
  * solved in a much cleaner way if Obsidian had an pre-delete event.) */
@@ -17,12 +17,14 @@ export async function fileDeletionWatcher(app: App, file: TAbstractFile): Promis
 
 	if (app.vault.config.trashOption !== "local") {
 		const msg =
-			'Code Files should be deleted via the "Delete Code Everywhere" command ' +
-			"to ensure that references to it are correctly deleted as well.\n\n" +
-			"Please restore the file and delete it again with that command, or " +
-			'set the trash location to "local" in your Obsidian config to have Quadro' +
-			"automantically handle deletions.";
-		new Notice(msg, 15000);
+			'⚠️ Code Files must be deleted via the "Delete Code Everywhere" command ' +
+			"to ensure that references to it are correctly deleted as well. Alternatively, " +
+			'you can set the trash location to "local" in your Obsidian config to have ' +
+			"Quadro automatically handle deletions." +
+			"\n\n" +
+			"Please restore the file and do one of the above to correctly remove the code." +
+			"\n(Click to dismiss.)";
+		new Notice(msg, 0);
 		return;
 	}
 
@@ -31,8 +33,8 @@ export async function fileDeletionWatcher(app: App, file: TAbstractFile): Promis
 	if (!(await app.vault.adapter.exists(pathInTrash))) {
 		const msg =
 			"Could not remove references to the Code File.\n\n" +
-			'Please restore the file use the "Delete Code Everywhere" command.';
-		new Notice(msg, 7000);
+			'Please restore the file and use the "Delete Code Everywhere" command.';
+		new Notice(msg, 8000);
 		return;
 	}
 	await app.vault.adapter.rename(pathInTrash, file.path); // adapter, since file isn't in vault anymore

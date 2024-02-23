@@ -1,8 +1,8 @@
 import { assignCodeCommand } from "./assign-code";
 import { bulkCreateCodeFilesCommand } from "./create-new-code-file";
 import { deleteCodeEverywhereCommand } from "./delete-code-everywhere";
+import { renameCodeCommand } from "./rename-code";
 import { unassignCodeCommand } from "./unassign-code";
-import { mergeCodesCommand, renameCodeCommand } from "./wrapper-funcs";
 
 export const CODING_COMMANDS = [
 	{
@@ -31,12 +31,6 @@ export const CODING_COMMANDS = [
 		name: "Delete code file and all references to it",
 		func: deleteCodeEverywhereCommand,
 		ribbonIcon: "x-circle",
-	},
-	{
-		id: "merge-codes",
-		name: "Merge codes",
-		func: mergeCodesCommand,
-		ribbonIcon: "radius",
 	},
 	{
 		id: "bulk-create-new-code-files",
