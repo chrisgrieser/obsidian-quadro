@@ -4,6 +4,7 @@ import { TFile } from "obsidian";
 
 // CODING SETTINGS
 export const CODE_FOLDER_NAME = "Codes";
+export const DISPLAY_AGGREGATE_TIPS = true;
 
 export const MINIGRAPH = {
 	char: "🬋",

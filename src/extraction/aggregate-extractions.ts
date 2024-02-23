@@ -34,7 +34,18 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 		);
 		properties.push("\textraction-source"); // no trailing comma for last property
 
-		const dataviewSnippet: string = [
+		const aggregateTips = [
+			"---",
+			"",
+			"You can customize the table by modifying the Dataview Query: [Documentation of Dataview Queries](https://blacksmithgu.github.io/obsidian-dataview/queries/structure/)",
+			"There is also an Online Query Builder, facilitating the writing of the queries: [Dataview Query Builder](https://s-blu.github.io/basic-dataview-query-builder/)",
+			"",
+			"If you have the [Sortable](https://obsidian.md/plugins?id=obsidian-sortable) plugin installed, you can click on the header row of a column to sort the table by that column. (The plugin is pre-installed, if you use the Quadro Example Vault.)",
+			"",
+			"You can achieve manual sorting of rows by adding a dummy property like `manual sort` to your query and to all specific extractions you want to group together. This is also useful as you can switch between your manual order and ordering by a specific column.",
+		];
+
+		const dataviewSnippet = [
 			"```dataview",
 			"TABLE",
 			...properties,
@@ -43,11 +54,7 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 			"SORT extraction-date ASC",
 			"```",
 			"",
-			"---",
-			"",
-			"You can customize the table by modifying the Dataview Query: [Documentation of Dataview Queries](https://blacksmithgu.github.io/obsidian-dataview/queries/structure/)",
-			"",
-			"If you have the [Sortable](https://obsidian.md/plugins?id=obsidian-sortable) plugin installed, you can click on the header row of a column to sort the table by that column. (The plugin is pre-installed, if you use the Quadro Example Vault.)",
+			...(DISPLAY_AGGREGATE_TIPS ? aggregateTips : []),
 		].join("\n");
 
 		// create Aggregation File
