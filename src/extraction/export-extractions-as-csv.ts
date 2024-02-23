@@ -1,7 +1,7 @@
 import { App, Notice, TFile } from "obsidian";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
-const csvSeparator = ";";
+const csvSeparator = ","; // , works out of the box with Excel and therefore preferable over ;
 const naString = "-";
 const exportFolderName = "CSV Export";
 
@@ -60,7 +60,7 @@ export async function exportExtractionsAsCsv(app: App) {
 					typeof value !== "object"
 						? value.toString() // primitive
 						: Array.isArray(value)
-						  ? value.join(", ") // array
+						  ? value.join("; ") // array
 						  : JSON.stringify(value); // object
 
 				// remove enclosing wikilinks
