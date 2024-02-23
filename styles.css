@@ -1,6 +1,8 @@
 .variable-safety-for-obsidian-css {
 	--text-faint: "";
 	--background-secondary-alt: "";
+	--background-secondary: "";
+	--background-primary: "";
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -69,20 +71,34 @@ body .internal-embed .markdown-embed-content {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* USEFUL CHANGES FOR RESEARCH ITEMS */
+/* PROPERTIES */
 
-/* full line width for dataview */
-body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dataview.table-view-table) {
-	--file-line-width: 100%;
-}
-
-/* properties broader, so dimension are visible */
+/* broader, so dimension are visible */
 body .metadata-property-key {
 	min-width: 25%;
 }
 
 body .metadata-container {
 	font-size: 0.9em;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* DATAVIEW */
+
+/* full line width for dataview */
+body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dataview.table-view-table) {
+	--file-line-width: 100%;
+}
+
+/* make the single-character links easier to click */
+.dataview.table-view-table tr>td:first-child a[data-href^="Extractions/"] {
+	font-size: 1.2em;
+	text-decoration: none;
+	background-color: var(--background-secondary);
+	padding: 1px 8px;
+	border: 2px solid var(--background-primary);
+	position: relative;
+	top: 8px;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
