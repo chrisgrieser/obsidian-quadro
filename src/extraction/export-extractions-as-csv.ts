@@ -12,7 +12,7 @@ const exportFolderName = "CSV Export";
 function createCsvRow(cells: string[]): string {
 	const row = cells
 		.map((cell) => {
-			return `"${cell.replace(/"/g, '""')}"`;
+			return `"${cell.replaceAll('"', '""')}"`;
 		})
 		.join(csvSeparator);
 	return row;

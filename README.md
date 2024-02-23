@@ -31,6 +31,7 @@ the style of *Qualitative Content Analysis*.
 		+ [How extraction works in Quadro](#how-extraction-works-in-quadro)
 		+ [Extraction capabilities](#extraction-capabilities)
 - [Technical](#technical)
+	* [Requirements](#requirements)
 	* [Installation](#installation)
 	* [Update](#update)
 	* [Bug Reports & Feature Requests](#bug-reports--feature-requests)
@@ -397,9 +398,20 @@ determined by the properties of the template files (`Template.md`).
 
 ## Technical
 
-### Installation
-*Quadro* requires at least **Obsidian version 1.5.8**.
+### Requirements
+- *Quadro* requires at least **Obsidian version 1.5.8**.
+- The *Aggregate Extractions* command requires the [dataview plugin](https://obsidian.md/plugins?id=dataview).
 
+*Optional, but useful plugins for QDA:*
+- [Sortable](https://obsidian.md/plugins?id=obsidian-sortable) to easily sort
+  the results from *Aggregate Extractions*.
+- [MarkDownload](https://chrome.google.com/webstore/detail/pcmpcfapbekmbjjkdalcgopdkipoggdi)
+  with [Advanced URI](https://obsidian.md/plugins?id=obsidian-advanced-uri) to
+  download webpages as Markdown into the vault.
+- [Hover Editor](https://obsidian.md/plugins?id=hover-editor) to open a small
+  popup window on hover to peek into different files.
+
+### Installation
 **Manual**  
 1. Download the `.zip` file from the [latest
    release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).
