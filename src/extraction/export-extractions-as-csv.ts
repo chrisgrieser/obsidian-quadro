@@ -1,11 +1,11 @@
 import { App, Notice, TFile } from "obsidian";
-import { ANALYSIS_FOLDER_NAME } from "src/settings";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
 const csvSeparator = ";";
 const naString = "-";
+const exportFolderName = "CSV Export";
 
 /** `"` escaped as `""`, otherwise everything is quoted so the separator can be
  * used. See: https://stackoverflow.com/a/4617967/22114136 */
@@ -72,14 +72,14 @@ export async function exportExtractionsAsCsv(app: App) {
 		}
 
 		// write CSV
-		const analysisFolder = app.vault.getFolderByPath(ANALYSIS_FOLDER_NAME);
-		if (!analysisFolder) await app.vault.createFolder(ANALYSIS_FOLDER_NAME);
+		const exportFolder = app.vault.getFolderByPath(exportFolderName);
+		if (!exportFolder) await app.vault.createFolder(exportFolderName);
 
 		const csvContent = csvFileLines.join("\n");
 		let csvPath: string;
 		let filename = extractionType.name;
 		while (true) {
-			csvPath = `${ANALYSIS_FOLDER_NAME}/${filename}.csv`;
+			csvPath = `${exportFolderName}/${filename}.csv`;
 			const existingCsv = app.vault.getFileByPath(csvPath);
 			if (!existingCsv) break;
 			filename += "_1";
@@ -93,7 +93,7 @@ export async function exportExtractionsAsCsv(app: App) {
 		new Notice(msg, 5000);
 	}
 	new Notice(
-		'All CSV exports finished. The file(s) have been placed in the "Analysis" folder.',
+		`All CSV exports finished. The file(s) have been placed in the folder "${exportFolderName}".`,
 		5000,
 	);
 }
