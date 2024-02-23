@@ -50,10 +50,12 @@ export async function exportExtractionsAsCsv(app: App) {
 			const fileFrontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
 			if (!fileFrontmatter) continue;
 			const cellsInRow: string[] = [];
-			cellsInRow.push(extractionFile.basename);
 
 			for (const key of keys) {
-				if (key === "File") continue;
+				if (key === "File") {
+					cellsInRow.push(extractionFile.basename);
+					continue;
+				}
 				const value = fileFrontmatter[key] ?? naString; // nullish coalescing to keep 0 or ""
 				let valueStr =
 					typeof value !== "object"

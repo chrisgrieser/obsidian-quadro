@@ -114,11 +114,10 @@ export function assignCodeCommand(app: App): void {
 	const dataFile = editor.editorComponent.view.file;
 	const lineText = editor.getLine(editor.getCursor().line);
 	const wikilinksInParagr = lineText.match(/\[\[.+?\]\]/g) || [];
-	const codesInPara = wikilinksInParagr.reduce((acc: TFile[], wikilink) => {
+	const codesInPara = wikilinksInParagr.reduce((acc: TFile[], wikilink: string) => {
 		wikilink = wikilink.slice(2, -2);
 		const target = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-		if (target instanceof TFile && target.path.startsWith(CODE_FOLDER_NAME + "/"))
-			acc.push(target);
+		if (target?.path.startsWith(CODE_FOLDER_NAME + "/")) acc.push(target);
 		return acc;
 	}, []);
 
