@@ -19,6 +19,7 @@ declare module "obsidian" {
 		};
 	}
 	interface App {
+		showInFolder: (path: string) => void;
 		commands: {
 			executeCommandById: (commandId: string) => void;
 		};

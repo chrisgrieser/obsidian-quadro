@@ -1,8 +1,6 @@
 import { App, Notice, TFile } from "obsidian";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
-//──────────────────────────────────────────────────────────────────────────────
-
 const csvSeparator = ";";
 const naString = "-";
 const exportFolderName = "CSV Export";
@@ -24,6 +22,7 @@ export async function exportExtractionsAsCsv(app: App) {
 	const extractionTypes = getAllExtractionTypes(app);
 	if (!extractionTypes) return;
 
+	let fileToReveal: TFile | undefined;
 	for (const extractionType of extractionTypes) {
 		const csvFileLines: string[] = [];
 
@@ -93,9 +92,10 @@ export async function exportExtractionsAsCsv(app: App) {
 			? `Successfully exported "${extractionType.name}".`
 			: `ERROR: Export for "${extractionType.name}" failed.`;
 		new Notice(msg, 5000);
+
+		if (!fileToReveal && newCsv) fileToReveal = newCsv;
 	}
-	new Notice(
-		`All CSV exports finished. The file(s) have been placed in the folder "${exportFolderName}".`,
-		5000,
-	);
+
+	new Notice("All CSV exports finished.", 5000);
+	if (fileToReveal) app.showInFolder(fileToReveal.path);
 }
