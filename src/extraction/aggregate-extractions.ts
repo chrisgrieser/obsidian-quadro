@@ -1,5 +1,5 @@
 import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
-import { ANALYSIS_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "src/settings";
+import { ANALYSIS_FOLDER_NAME, DISPLAY_AGGREGATE_TIPS, EXTRACTION_FOLDER_NAME } from "src/settings";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS, safelyGetActiveEditor } from "src/utils";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 

@@ -1,11 +1,14 @@
 import { TFile } from "obsidian";
 
-//──────────────────────────────────────────────────────────────────────────────
-
-// CODING SETTINGS
+// FOLDERS
 export const CODE_FOLDER_NAME = "Codes";
+export const EXTRACTION_FOLDER_NAME = "Extractions";
+export const ANALYSIS_FOLDER_NAME = "Analysis";
+
+// EXTRACTION SETTINGS
 export const DISPLAY_AGGREGATE_TIPS = true;
 
+// CODING SETTINGS
 export const MINIGRAPH = {
 	char: "🬋",
 	charsPerBlock: 100, // how many characters one block represents
@@ -27,11 +30,3 @@ export const TFILE_SORT_FUNC = {
 };
 
 export const SORT_FUNC_TO_USE = TFILE_SORT_FUNC.lastUsedFirst;
-
-//──────────────────────────────────────────────────────────────────────────────
-
-// EXTRACTION SETTINGS
-export const EXTRACTION_FOLDER_NAME = "Extractions";
-export const ANALYSIS_FOLDER_NAME = "Analysis";
-export const CSV_SEPARATOR: ";" | "," | "\t" = ";";
-export const NA_STRING = "-";

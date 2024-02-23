@@ -1,6 +1,11 @@
 import { App, Notice, TFile } from "obsidian";
-import { ANALYSIS_FOLDER_NAME, CSV_SEPARATOR, NA_STRING } from "src/settings";
+import { ANALYSIS_FOLDER_NAME } from "src/settings";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
+
+//──────────────────────────────────────────────────────────────────────────────
+
+const csvSeparator = ";";
+const naString = "-";
 
 /** `"` escaped as `""`, otherwise everything is quoted so the separator can be
  * used. See: https://stackoverflow.com/a/4617967/22114136 */
@@ -9,7 +14,7 @@ function createCsvRow(cells: string[]): string {
 		.map((cell) => {
 			return `"${cell.replace(/"/g, '""')}"`;
 		})
-		.join(CSV_SEPARATOR);
+		.join(csvSeparator);
 	return row;
 }
 
@@ -49,7 +54,7 @@ export async function exportExtractionsAsCsv(app: App) {
 
 			for (const key of keys) {
 				if (key === "File") continue;
-				const value = fileFrontmatter[key] ?? NA_STRING; // nullish coalescing to keep 0 or ""
+				const value = fileFrontmatter[key] ?? naString; // nullish coalescing to keep 0 or ""
 				let valueStr =
 					typeof value !== "object"
 						? value.toString() // primitive
