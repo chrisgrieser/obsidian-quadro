@@ -411,10 +411,9 @@ determined by the properties of the template files (`Template.md`).
   popup window on hover to peek into different files.
 
 ### Installation
-**Manual**  
-1. Download the `.zip` file from the [latest
-   release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).
-2. Extract the `.zip` file into the
+**Manual**
+1. [Download the latest release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest/download/obsidian-quadro.zip).
+2. Extract the `.zip` file into the folder
    `{your-vault-path}/.obsidian/plugins/quadro`. (Note that on macOS,
    `.obsidian` is a hidden folder. You can make hidden folders visible by
    pressing `cmd+shift+.` in the Finder.)
