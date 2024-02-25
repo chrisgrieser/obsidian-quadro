@@ -6,6 +6,8 @@
 
 // CONFIG
 const columnWidth = "200px";
+const dateFormat = "yyyymmdd"; // use ISO 8601
+const pluginVer = "8.15.12";
 
 // FIX Diagnostics about `frontmatterKey` complaining about a string being assigned to `null`
 export interface LoomColumn extends Omit<typeof LOOM_COLUMN_TEMPLATE, "frontmatterKey"> {
@@ -18,8 +20,6 @@ export type Loom = typeof TEMPLATE_LOOM & {
 };
 
 //──────────────────────────────────────────────────────────────────────────────
-
-const pluginVer = "8.15.12";
 
 export const TEMPLATE_LOOM = {
 	pluginVersion: pluginVer,
@@ -37,7 +37,7 @@ export const TEMPLATE_LOOM = {
 				numberSeparator: "",
 				numberFormat: "number",
 				currencyType: "USD",
-				dateFormat: "mmddyyyy",
+				dateFormat: dateFormat,
 				dateFormatSeparator: "-",
 				hour12: false,
 				includeTime: false,
@@ -61,7 +61,7 @@ export const TEMPLATE_LOOM = {
 				numberSeparator: "",
 				numberFormat: "number",
 				currencyType: "USD",
-				dateFormat: "mmddyyyy",
+				dateFormat: dateFormat,
 				dateFormatSeparator: "-",
 				hour12: false,
 				includeTime: false,
@@ -112,7 +112,7 @@ export const LOOM_COLUMN_TEMPLATE = {
 	content: "",
 	numberFormat: "number",
 	currencyType: "USD",
-	dateFormat: "mmddyyyy",
+	dateFormat: dateFormat,
 	dateFormatSeparator: "-",
 	hour12: false,
 	includeTime: false,
