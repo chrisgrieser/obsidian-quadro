@@ -1,9 +1,10 @@
+import { CommandData } from "src/coding/coding-commands";
 import { aggregateExtractionsCommand } from "./aggregate-extractions";
 import { createNewExtractionTypeCommand } from "./bootstrap-extraction-files";
 import { exportExtractionsAsCsv } from "./export-extractions-as-csv";
 import { extractFromParagraphCommand } from "./extract-from-paragraph";
 
-export const EXTRACTION_COMMANDS = [
+export const EXTRACTION_COMMANDS: CommandData[] = [
 	{
 		id: "extract-from-paragraph",
 		name: "Extract from paragraph",

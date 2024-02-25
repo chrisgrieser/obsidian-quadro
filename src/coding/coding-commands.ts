@@ -1,10 +1,19 @@
+import { App, IconName } from "obsidian";
 import { assignCodeCommand } from "./assign-code";
 import { bulkCreateCodeFilesCommand } from "./create-new-code-file";
 import { deleteCodeEverywhereCommand } from "./delete-code-everywhere";
 import { renameCodeCommand } from "./rename-code";
 import { unassignCodeCommand } from "./unassign-code";
 
-export const CODING_COMMANDS = [
+export interface CommandData {
+	id: string;
+	name: string;
+	func: (app: App) => void;
+	hotkeyLetter?: string;
+	ribbonIcon: IconName;
+}
+
+export const CODING_COMMANDS: CommandData[] = [
 	{
 		id: "assign-code",
 		name: "Assign code to paragraph",
