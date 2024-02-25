@@ -20,10 +20,12 @@ export function trashWatcher(app: App): ReturnType<typeof around> {
 					file instanceof TFile &&
 					file.path.startsWith(CODE_FOLDER_NAME + "/") &&
 					file.path.endsWith(".md");
+
 				if (isCodeFile) {
 					console.log(`"${file.name}" is a Code File: Deleting all references to it.`);
 					await deleteReferencesToCodeFile(app, file);
 				}
+
 				console.log(`Proceeding with regular deletion of "${file.name}".`);
 				await originalMethod.apply(app.vault, [file, useSystemTrash]);
 			};
@@ -42,7 +44,9 @@ export async function deleteCodeEverywhereCommand(app: App): Promise<void> {
 		new Notice("Must be in Code File to delete the code everywhere.");
 		return;
 	}
+
 	const codeFile = editor.editorComponent.view.file;
+
 	// due to our monkeying-around, `app.vault.trash` already triggers
 	// `deleteReferencesToCodeFile`, so we don't need to call it again here
 	await app.vault.trash(codeFile, true);

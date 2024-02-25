@@ -43,7 +43,7 @@ export default class Quadro extends Plugin {
 			this.app.metadataCache.on("resolved", () => updateStatusbar(this.app, this.statusbar)),
 		);
 
-		// HACK use monkey-around to create a "pre-delete" event we can watch
+		// DELETION-WATCHER: use monkey-around to intercept `app.vault.trash`
 		this.monkeyAroundTrash = trashWatcher(this.app);
 	}
 
