@@ -1,7 +1,7 @@
 import { TFile } from "obsidian";
 
 function randomDigits(digits: number): string {
-	return Math.ceil(Math.random() * 10 ** digits)
+	return Math.floor(Math.random() * 10 ** digits)
 		.toString()
 		.padStart(digits, "0");
 }
