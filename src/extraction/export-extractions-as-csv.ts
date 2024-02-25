@@ -1,3 +1,4 @@
+import moment from "moment";
 import { App, Notice, TFile } from "obsidian";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
@@ -77,14 +78,9 @@ export async function exportExtractionsAsCsv(app: App) {
 		if (!exportFolder) await app.vault.createFolder(exportFolderName);
 
 		const csvContent = csvFileLines.join("\n");
-		let csvPath: string;
-		let filename = extractionType.name;
-		while (true) {
-			csvPath = `${exportFolderName}/${filename}.csv`;
-			const existingCsv = app.vault.getFileByPath(csvPath);
-			if (!existingCsv) break;
-			filename += "_1";
-		}
+
+		const timestamp = moment().format("YYYY-MM-DD_HH-mm-ss");
+		const csvPath = `${exportFolderName}/${extractionType.name}_${timestamp}.csv`;
 
 		const newCsv = await app.vault.create(csvPath, csvContent);
 
