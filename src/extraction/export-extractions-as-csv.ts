@@ -9,12 +9,8 @@ const exportFolderName = "CSV Export";
 /** `"` escaped as `""`, otherwise everything is quoted so the separator can be
  * used. See: https://stackoverflow.com/a/4617967/22114136 */
 function createCsvRow(cells: string[]): string {
-	const row = cells
-		.map((cell) => {
-			return `"${cell.replaceAll('"', '""')}"`;
-		})
-		.join(csvSeparator);
-	return row;
+	const escapedCells = cells.map((cell) => `"${cell.replaceAll('"', '""')}"`);
+	return escapedCells.join(csvSeparator);
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -46,6 +42,7 @@ export async function exportExtractionsAsCsv(app: App) {
 		const extractionFiles = extractionType.children.filter((f) => {
 			return f instanceof TFile && f.name !== "Template.md";
 		}) as TFile[];
+		console.log("Extraction files:", extractionFiles);
 		for (const extractionFile of extractionFiles) {
 			const fileFrontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
 			if (!fileFrontmatter) continue;
