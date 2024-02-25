@@ -1,5 +1,5 @@
 import { App, Editor, MarkdownView, Notice, OpenViewState, TFile } from "obsidian";
-import { CODE_FOLDER_NAME, DISPLAY_TIPS, EXTRACTION_FOLDER_NAME } from "./settings";
+import { CODE_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "./settings";
 
 export function currentlyInFolder(app: App, type: "Codes" | "Extractions"): boolean {
 	const folderName = type === "Codes" ? CODE_FOLDER_NAME : EXTRACTION_FOLDER_NAME;
@@ -20,13 +20,11 @@ export function safelyGetActiveEditor(app: App): Editor | null {
 	return view.editor;
 }
 
-export const SUGGESTER_INSTRUCTIONS = DISPLAY_TIPS
-	? [
-			{ command: "↑↓", purpose: "Navigate" },
-			{ command: "⏎", purpose: "Select" },
-			{ command: "esc", purpose: "Dismiss" },
-	  ]
-	: [];
+export const SUGGESTER_INSTRUCTIONS = [
+	{ command: "↑↓", purpose: "Navigate" },
+	{ command: "⏎", purpose: "Select" },
+	{ command: "esc", purpose: "Dismiss" },
+];
 
 //──────────────────────────────────────────────────────────────────────────────
 

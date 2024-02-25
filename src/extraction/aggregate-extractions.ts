@@ -1,7 +1,30 @@
 import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
-import { ANALYSIS_FOLDER_NAME, DISPLAY_TIPS } from "src/settings";
-import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS, safelyGetActiveEditor } from "src/utils";
+import { ANALYSIS_FOLDER_NAME } from "src/settings";
+import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS } from "src/utils";
+import { LOOM_COLUMN_TEMPLATE, Loom, LoomColumn, TEMPLATE_LOOM } from "./dataloom-template";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
+
+//──────────────────────────────────────────────────────────────────────────────
+
+type LoomColumnType = "text" | "number" | "checkbox" | "multi-tag" | "date";
+
+function propertyType(app: App, property: string): LoomColumnType {
+	const obsiToDataloomTypeMap: Record<string, LoomColumnType> = {
+		text: "text",
+		date: "date",
+		number: "number",
+		datetime: "date",
+		checkbox: "checkbox",
+
+		// NOTE DataLoom has a BUG where multitext-properties with spaces do not work
+		// https://github.com/trey-wallis/obsidian-dataloom/issues/932
+		multitext: "multi-tag",
+	};
+	const obsiType = app.metadataTypeManager.getPropertyInfo(property.toLowerCase())?.type;
+	return obsiToDataloomTypeMap[obsiType] || "text";
+}
+
+//──────────────────────────────────────────────────────────────────────────────
 
 class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 	extractionTypes: TFolder[];
@@ -9,7 +32,6 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 	constructor(app: App, extractionTypes: TFolder[]) {
 		super(app);
 		this.extractionTypes = extractionTypes;
-
 		this.setPlaceholder("Select extraction type to create aggregation for");
 		this.setInstructions(SUGGESTER_INSTRUCTIONS);
 		this.modalEl.addClass("quadro");
@@ -25,82 +47,82 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 	}
 
 	async onChooseItem(extractionType: TFolder): Promise<void> {
+		// TEMPLATE FILE: read properties for the extraction type
 		const frontmatter = getPropertiesForExtractionType(this.app, extractionType);
 		if (!frontmatter) return;
+		const properties = [...Object.keys(frontmatter), "extraction source", "extraction date"];
 
-		// read properties from Template file of the Extraction Type
-		const properties = Object.keys(frontmatter).map(
-			(key) => "\t" + key.replaceAll(" ", "-") + ",",
-		);
-		properties.push("\textraction-source"); // no trailing comma for last property
+		// create LOOM file content (= AGGREGATION FILE)
+		const loomJson: Loom = structuredClone(TEMPLATE_LOOM);
+		if (
+			!loomJson.model?.filters[0] ||
+			!loomJson.model?.sources[0] ||
+			!loomJson.model?.columns[0] || // Source
+			!loomJson.model?.columns[1] // Extraction File
+		) {
+			new Notice("ERROR: Loom Template invalid.", 4000);
+			return;
+		}
+		loomJson.model.sources[0].path = extractionType.path;
+		loomJson.model.sources[0].id = crypto.randomUUID();
+		loomJson.model.filters[0].id = crypto.randomUUID();
+		loomJson.model.columns[0].id = crypto.randomUUID();
+		const filenameUuid = crypto.randomUUID();
+		loomJson.model.filters[0].columnId = filenameUuid;
+		loomJson.model.columns[1].id = filenameUuid;
 
-		const aggregateTips = [
-			"---",
-			"",
-			"You can customize the table by modifying the Dataview Query: [Documentation of Dataview Queries](https://blacksmithgu.github.io/obsidian-dataview/queries/structure/)",
-			"There is also an Online Query Builder, facilitating the writing of the queries: [Dataview Query Builder](https://s-blu.github.io/basic-dataview-query-builder/)",
-			"",
-			"If you have the [Sortable](https://obsidian.md/plugins?id=obsidian-sortable) plugin installed, you can click on the header row of a column to sort the table by that column. (The plugin is pre-installed, if you use the Quadro Example Vault.)",
-			"",
-			"You can achieve manual sorting of rows by adding a dummy property like `manual sort` to your query and to all specific extractions you want to group together. This is also useful as you can switch between your manual order and ordering by a specific column.",
-		];
+		for (const property of properties) {
+			const column: LoomColumn = structuredClone(LOOM_COLUMN_TEMPLATE);
+			column.id = crypto.randomUUID();
+			column.frontmatterKey = property; // key used
+			column.content = property; // column title
+			column.type = propertyType(this.app, property);
+			loomJson.model.columns.push(column);
+		}
 
-		const dataviewSnippet = [
-			"", // empty line, so entering the file in Live Preview renders the code block
-			"```dataview",
-			"TABLE",
-			...properties,
-			`FROM "${extractionType.path}"`,
-			'WHERE file.name != "Template"',
-			"SORT extraction-date ASC",
-			"```",
-			"",
-			...(DISPLAY_TIPS ? aggregateTips : []),
-		].join("\n");
-
-		// create Aggregation File
+		// Create AGGREGATION FILE
 		let analysisFolder = this.app.vault.getFolderByPath(ANALYSIS_FOLDER_NAME);
 		if (!analysisFolder) analysisFolder = await this.app.vault.createFolder(ANALYSIS_FOLDER_NAME);
 		if (!analysisFolder) {
 			new Notice("ERROR: Could not create Analysis Folder.", 4000);
 			return;
 		}
-
-		// append `_1` until such a file does not exist, to ensure creating a new file
 		let aggregationName = extractionType.name;
 		let aggregationFilepath: string;
 		while (true) {
-			aggregationFilepath = `${ANALYSIS_FOLDER_NAME}/${aggregationName}.md`;
+			// append `_1` until such a file does not exist, to ensure creating a new file
+			aggregationFilepath = `${ANALYSIS_FOLDER_NAME}/${aggregationName} (Aggregation).loom`;
 			const aggregationFileExists = this.app.vault.getFileByPath(aggregationFilepath);
 			if (!aggregationFileExists) break;
 			aggregationName += "_1";
 		}
-		const aggregationFile = await this.app.vault.create(aggregationFilepath, dataviewSnippet);
+		const aggregationFile = await this.app.vault.create(
+			aggregationFilepath,
+			JSON.stringify(loomJson),
+		);
 
-		// open Aggregation File (move cursor down, so codeblock is rendered)
+		// Open AGGREGATION FILE
 		await this.app.workspace.getLeaf().openFile(aggregationFile, LIVE_PREVIEW);
 		this.app.commands.executeCommandById("file-explorer:reveal-active-file");
-
-		const editor = safelyGetActiveEditor(this.app);
-		editor?.setCursor(editor.lastLine(), 0);
 	}
 }
 
 export async function aggregateExtractionsCommand(app: App): Promise<void> {
-	// GUARD dataview not installed/enabled
-	const dataviewEnabled = [...app.plugins.enabledPlugins].includes("dataview");
-	if (!dataviewEnabled) {
+	// GUARD DataLoom not installed/enabled
+	// INFO the plugin-id of DataLoom is indeed 'notion-like-tables'
+	const dataloomEnabled = [...app.plugins.enabledPlugins].includes("notion-like-tables");
+	if (!dataloomEnabled) {
 		const installedPlugins = Object.keys(app.plugins.plugins);
-		if (!installedPlugins.includes("dataview")) {
+		if (!installedPlugins.includes("notion-like-tables")) {
 			new Notice(
-				'Plugin "Dataview" not installed.\n\nPlease install it from the Obsidian Community Store.',
+				'Plugin "DataLoom" not installed.\n\nPlease install it from the Obsidian Community Store.',
 				7000,
 			);
 			return;
 		}
 		const success = await app.plugins.enablePluginAndSave("dataview");
 		if (!success) {
-			new Notice("ERROR: Dataview plugin could not be enabled.", 4000);
+			new Notice("ERROR: DataLoom plugin could not be enabled.", 4000);
 			return;
 		}
 	}

@@ -30,6 +30,10 @@ declare module "obsidian" {
 				[key: string]: object;
 			};
 		};
+		metadataTypeManager: {
+			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
+			getPropertyInfo(property: string): PropertyInfo;
+		};
 	}
 	interface Vault {
 		config: {

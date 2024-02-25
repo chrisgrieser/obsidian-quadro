@@ -30,6 +30,7 @@ the style of *Qualitative Content Analysis*.
 		+ [Coding capabilities](#coding-capabilities)
 	* [Extraction](#extraction)
 		+ [How extraction works in Quadro](#how-extraction-works-in-quadro)
+		+ [Aggregate Extractions](#aggregate-extractions)
 		+ [Extraction capabilities](#extraction-capabilities)
 - [Technical](#technical)
 	* [Requirements](#requirements)
@@ -80,7 +81,7 @@ extensive functionality and plugin ecosystem of Obsidian:
   of all data files a code is assigned to.
 - The qualitative analysis is easily extended with a [comprehensive ecosystem of
   more than 1000 plugins](https://obsidian.md/plugins), for example
-  [dataview](https://obsidian.md/plugins?id=dataview) for advanced data
+  [DataLoom](https://obsidian.md/plugins?id=notion-like-tables) for advanced data
   aggregation or [YTranscript](https://obsidian.md/plugins?id=ytranscript) for
   automatic fetching of YouTube video transcripts.
 - All this allows the researcher to customize the analysis to the particular
@@ -172,7 +173,7 @@ install the plugin there, for several reasons:
   separated.
 - To make Obsidian easier to use for qualitative research, *Quadro* also does
   some (minor) modifications to the core layout of Obsidian, for instance wider
-  dataview tables.
+  property keys.
 - For archival purposes, the research data is already separated.
 - For collaborative work in a research team, the data is stored in separately
   from personal notes.
@@ -351,8 +352,8 @@ folder, but has the filename `Template.md`.
 Filepath: ./Extractions/Career Visions/Template.md
 
 ---
-occupation: ""
-career stage: ""
+occupation: 
+career stage: 
 year of experience: 
 ---
 ```
@@ -377,16 +378,25 @@ All in all, the underlying folder structure for extractions looks like this:
          └── …
 ```
 
+#### Aggregate Extractions
+Using the `Aggregate extractions` command creates a table that can be sorted,
+filtered, searched, and modified:
+
+<https://github.com/chrisgrieser/obsidian-quadro/assets/73286100/6242a113-b17e-42e3-9398-806cdbec3b2d>
+
 #### Extraction capabilities
 
-| Action                           | Description                                                                                              |            Sidebar Button             | Default Hotkey | Capability Provider                    |
-| -------------------------------- | -------------------------------------------------------------------------------------------------------- | :-----------------------------------: | :------------: | -------------------------------------- |
-| Extract from paragraph           | Creates an Extraction File from Extraction Template.                                                     |   ![Icon](./assets/plus-square.svg)   | `mod+shift+e`  | Quadro                                 |
-| Create new extraction type       | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template). |   ![Icon](./assets/box-select.svg)    |       /        | Quadro                                 |
-| Aggregate extractions            | Creates a table that aggregates Extraction Files.      <br><br>[Further Documentation][dataview]         |  ![Icon](./assets/sigma-square.svg)   |       /        | [Community Plugin: Dataview][dataview] |
-| Export all extractions as `.csv` | All extractions for all extraction types are exported as `,`-separated `.csv`.                           | ![Icon](./assets/arrow-up-square.svg) |       /        | Quadro                                 |
+| Action                             | Description                                                                                                                                                                                                                                                                                                     |            Sidebar Button             | Default Hotkey | Capability Provider                                      |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------: | :------------: | -------------------------------------------------------- |
+| Extract from paragraph             | Creates an Extraction File from Extraction Template.                                                                                                                                                                                                                                                            |   ![Icon](./assets/plus-square.svg)   | `mod+shift+e`  | Quadro                                                   |
+| Create new extraction type         | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                                        |   ![Icon](./assets/box-select.svg)    |       —        | Quadro                                                   |
+| Aggregate extractions              | Creates a table that aggregates Extraction Files. The table can be sorted, filtered, searched, and modified. <br><br>[Further Documentation][data loom]                                                                                                                                                         |  ![Icon](./assets/sigma-square.svg)   |       —        | [Community Plugin: Data Loom][data loom]                 |
+| Co-occurrent extraction dimensions | Find extractions where two dimensions have a specific value, by using a query such as `["cause of the issue": fragmentation] ["type of compatibility":backward]` in the Obsidian Search. <br><br>[Further Documentation][search]                                                                                |                   —                   | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                   |
+| Rename dimension globally          | Renaming a property field within a file will only rename the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties will pop up in the sidebar, where you can rename properties via right-click. |                   —                   |       —        | [Obsidian Core Plugin: Properties View][properties view] |
+| Export all extractions as `.csv`   | All extractions for all extraction types are exported as `,`-separated `.csv`.                                                                                                                                                                                                                                  | ![Icon](./assets/arrow-up-square.svg) |       —        | Quadro                                                   |
 
-[dataview]: https://blacksmithgu.github.io/obsidian-dataview/
+[data loom]: https://dataloom.xyz/
+[properties view]: https://help.obsidian.md/Plugins/Properties+view
 
 `mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
 customized by searching in the Obsidian hotkey settings for the name of the
@@ -398,17 +408,9 @@ determined by the properties of the template files (`Template.md`).
 ## Technical
 
 ### Requirements
-- *Quadro* requires at least **Obsidian version 1.5.8**.
-- The *Aggregate Extractions* command requires the [dataview plugin](https://obsidian.md/plugins?id=dataview).
+*Quadro* requires at least **Obsidian version 1.5.8**.
 
-*Optional, but useful plugins for QDA:*
-- [Sortable](https://obsidian.md/plugins?id=obsidian-sortable) to easily sort
-  the results from *Aggregate Extractions*.
-- [MarkDownload](https://chrome.google.com/webstore/detail/pcmpcfapbekmbjjkdalcgopdkipoggdi)
-  with [Advanced URI](https://obsidian.md/plugins?id=obsidian-advanced-uri) to
-  download webpages as Markdown into the vault.
-- [Hover Editor](https://obsidian.md/plugins?id=hover-editor) to open a small
-  popup window on hover to peek into different files.
+The *Aggregate Extractions* command requires the [DataLoom plugin](https://obsidian.md/plugins?id=notion-like-tables).
 
 ### Installation
 **Manual**

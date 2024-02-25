@@ -83,25 +83,6 @@ body .metadata-container {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* DATAVIEW */
-
-/* full line width for dataview */
-body:not(.is-mobile) :is(.markdown-source-view, .markdown-preview-view):has(.dataview.table-view-table) {
-	--file-line-width: 100%;
-}
-
-/* make the single-character links easier to click */
-.dataview.table-view-table tr>td:first-child a[data-href^="Extractions/"] {
-	font-size: 1.2em;
-	text-decoration: none;
-	background-color: var(--background-secondary);
-	padding: 1px 8px;
-	border: 2px solid var(--background-primary);
-	position: relative;
-	top: 8px;
-}
-
-/* ────────────────────────────────────────────────────────────────────────── */
 /* FILE EXPLORER */
 
 /* bold to all the folders with special function for Quadro */
