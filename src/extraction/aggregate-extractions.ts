@@ -11,14 +11,16 @@ type LoomColumnType = "text" | "number" | "checkbox" | "multi-tag" | "date";
 function propertyType(app: App, property: string): LoomColumnType {
 	const obsiToDataloomTypeMap: Record<string, LoomColumnType> = {
 		text: "text",
-		date: "date",
 		number: "number",
-		datetime: "date",
 		checkbox: "checkbox",
+		date: "date",
+		datetime: "date",
 
 		// NOTE DataLoom has a BUG where multitext-properties with spaces do not work
 		// https://github.com/trey-wallis/obsidian-dataloom/issues/932
 		multitext: "multi-tag",
+		aliases: "multi-tag",
+		tags: "multi-tag",
 	};
 	const obsiType = app.metadataTypeManager.getPropertyInfo(property.toLowerCase())?.type;
 	return obsiToDataloomTypeMap[obsiType] || "text";

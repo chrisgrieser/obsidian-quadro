@@ -4,13 +4,13 @@
 //   with the file ending `.loom`.
 //──────────────────────────────────────────────────────────────────────────────
 
-const pluginVer = "8.15.12";
+// CONFIG
 const columnWidth = "200px";
 
+// FIX Diagnostics about `frontmatterKey` complaining about a string being assigned to `null`
 export interface LoomColumn extends Omit<typeof LOOM_COLUMN_TEMPLATE, "frontmatterKey"> {
 	frontmatterKey: string | null;
 }
-
 export type Loom = typeof TEMPLATE_LOOM & {
 	model: {
 		columns: LoomColumn[];
@@ -19,13 +19,15 @@ export type Loom = typeof TEMPLATE_LOOM & {
 
 //──────────────────────────────────────────────────────────────────────────────
 
+const pluginVer = "8.15.12";
+
 export const TEMPLATE_LOOM = {
 	pluginVersion: pluginVer,
 	model: {
 		columns: [
 			{
 				id: "UUID",
-				width: "50px",
+				width: "100px",
 				content: "Source",
 				sortDir: "default",
 				isVisible: false,
