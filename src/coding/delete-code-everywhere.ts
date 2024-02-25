@@ -1,54 +1,40 @@
-import { App, Notice, TAbstractFile, TFile } from "obsidian";
+import { around } from "monkey-around";
+import { App, Notice, TFile } from "obsidian";
 import { CODE_FOLDER_NAME } from "src/settings";
 import { currentlyInFolder, safelyGetActiveEditor } from "src/utils";
 import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassign-code";
 
-let deletionViaWatcher = false;
-
-/** HACK When the user deletes a CODE FILE without the "Delete Code Everywhere"
- * command, try to restore the file temporarily to delete it via this plugin's
- * method to ensure that references to it are correctly deleted. (This could be
- * solved in a much cleaner way if Obsidian had an pre-delete event.) */
-export async function fileDeletionWatcher(app: App, file: TAbstractFile): Promise<void> {
-	// GUARD
-	if (!(file instanceof TFile)) return;
-	if (!file.path.startsWith(CODE_FOLDER_NAME + "/")) return;
-	if (deletionViaWatcher) return;
-
-	if (app.vault.config.trashOption !== "local") {
-		const msg =
-			'⚠️ Code Files must be deleted via the "Delete Code Everywhere" command ' +
-			"to ensure that references to it are correctly deleted as well. Alternatively, " +
-			'you can set the trash location to "local" in your Obsidian config to have ' +
-			"Quadro automatically handle deletions." +
-			"\n\n" +
-			"Please restore the file and do one of the above to correctly remove the code." +
-			"\n(Click to dismiss.)";
-		new Notice(msg, 0);
-		return;
-	}
-
-	// undelete
-	const pathInTrash = ".trash/" + file.name;
-	if (!(await app.vault.adapter.exists(pathInTrash))) {
-		const msg =
-			"Could not remove references to the Code File.\n\n" +
-			'Please restore the file and use the "Delete Code Everywhere" command.';
-		new Notice(msg, 8000);
-		return;
-	}
-	await app.vault.adapter.rename(pathInTrash, file.path); // adapter, since file isn't in vault anymore
-
-	// INFO Timeout necessary to ensure metadata cache is restored – cleaner
-	// solution would be to use the metadata-resolved event, but haven't found a
-	// way to trigger it only once.
-	setTimeout(async () => {
-		deletionViaWatcher = true; // prevent recursive trigger of this function
-		await deleteCodeEverywhere(app, file);
-		deletionViaWatcher = false;
-	}, 1000);
+/** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to
+ * delete files via native Obsidian methods. Check if the file is a CODE FILE,
+ * and if so removed all referenced in DATA_FILES, before proceeding with the
+ * original `app.vault.trash`. (The references cannot be deleted afterwards using
+ * the `app.vault.on("delete", ...)` event, as various required information for
+ * finding all references is flushed already.)
+ * source for the how to monkey-around: https://discord.com/channels/686053708261228577/840286264964022302/1157501519831253002 */
+export function trashWatcher(app: App): ReturnType<typeof around> {
+	const uninstaller = around(app.vault, {
+		trash: (originalMethod) => {
+			return async (file, useSystemTrash) => {
+				console.log(`Monkey-around: Intercepting deletion of "${file.name}".`);
+				const isCodeFile =
+					file instanceof TFile &&
+					file.path.startsWith(CODE_FOLDER_NAME + "/") &&
+					file.path.endsWith(".md");
+				if (isCodeFile) {
+					console.log(`"${file.name}" is a Code File: Deleting all references to it.`);
+					await deleteReferencesToCodeFile(app, file);
+				}
+				console.log(`Proceeding with regular deletion of "${file.name}".`);
+				await originalMethod.apply(app.vault, [file, useSystemTrash]);
+			};
+		},
+	});
+	return uninstaller;
 }
 
+/** Trigger deletion of references to CODEFILE via command. Convenience Command
+ * for the user, so it is more transparent to them that they are not just
+ * deleting the file, but also all references to it. */
 export async function deleteCodeEverywhereCommand(app: App): Promise<void> {
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
@@ -56,12 +42,13 @@ export async function deleteCodeEverywhereCommand(app: App): Promise<void> {
 		new Notice("Must be in Code File to delete the code everywhere.");
 		return;
 	}
-
 	const codeFile = editor.editorComponent.view.file;
-	deleteCodeEverywhere(app, codeFile);
+	// due to our monkeying-around, `app.vault.trash` already triggers
+	// `deleteReferencesToCodeFile`, so we don't need to call it again here
+	await app.vault.trash(codeFile, true);
 }
 
-async function deleteCodeEverywhere(app: App, codeFile: TFile): Promise<void> {
+async function deleteReferencesToCodeFile(app: App, codeFile: TFile): Promise<void> {
 	// determine all DATAFILES that are referenced in CODEFILE, and their blockID
 	const allEmbeddedLinks = (app.metadataCache.getFileCache(codeFile)?.embeds || []).map(
 		(embed) => embed.link,
@@ -81,9 +68,6 @@ async function deleteCodeEverywhere(app: App, codeFile: TFile): Promise<void> {
 		const errorMsg = await removeIndividualCodeRefFromDatafile(app, codeFile, file, blockId);
 		if (errorMsg) errorMsgs.push(errorMsg);
 	}
-
-	// CODEFILE: can simply be deleted
-	await app.vault.trash(codeFile, true);
 
 	// REPORT
 	const successes = referencedParasInDataFiles.length - errorMsgs.length;

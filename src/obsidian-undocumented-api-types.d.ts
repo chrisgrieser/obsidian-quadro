@@ -35,9 +35,4 @@ declare module "obsidian" {
 			getPropertyInfo(property: string): PropertyInfo;
 		};
 	}
-	interface Vault {
-		config: {
-			trashOption: "local" | "system" | "none";
-		};
-	}
 }

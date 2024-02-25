@@ -1,11 +1,12 @@
 import { Command, Plugin } from "obsidian";
 import { CODING_COMMANDS } from "./coding/coding-commands";
-import { fileDeletionWatcher } from "./coding/delete-code-everywhere";
+import { trashWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
 import { updateStatusbar } from "./statusbar";
 
 export default class Quadro extends Plugin {
 	statusbar = this.addStatusBarItem();
+	monkeyAroundTrash: (() => void) | undefined;
 
 	override onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
@@ -42,13 +43,17 @@ export default class Quadro extends Plugin {
 			this.app.metadataCache.on("resolved", () => updateStatusbar(this.app, this.statusbar)),
 		);
 
-		// Deletion watcher
-		this.registerEvent(
-			this.app.vault.on("delete", (file) => fileDeletionWatcher(this.app, file)),
-		);
+		// HACK use monkey-around to create a "pre-delete" event we can watch
+		this.monkeyAroundTrash = trashWatcher(this.app);
 	}
 
 	override onunload() {
 		console.info(this.manifest.name + " Plugin unloaded.");
+
+		// uninstall monkey-around-patch
+		if (this.monkeyAroundTrash) {
+			this.monkeyAroundTrash(); // runs the uninstaller
+			this.monkeyAroundTrash = undefined;
+		}
 	}
 }

@@ -2,7 +2,6 @@
 - [ ] settings menu for sort function
 - [ ] Simple demo videos for coding & extractions
 - [ ] suppress suggestions selectively?
-- [ ] `monkey-around` to as a pre-delete? <https://discord.com/channels/686053708261228577/840286264964022302/1209269625410560020>
 - [ ] Add tab to suggester: <https://github.com/Zachatoo/obsidian-css-editor/blob/main/src%2Fmodals%2FCssSnippetFuzzySuggestModal.ts>
 - [ ] release notes automation
 
