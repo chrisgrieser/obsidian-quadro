@@ -46,6 +46,7 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 		];
 
 		const dataviewSnippet = [
+			"", // empty line, so entering the file in Live Preview renders the code block
 			"```dataview",
 			"TABLE",
 			...properties,
