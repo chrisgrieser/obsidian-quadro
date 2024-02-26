@@ -1,4 +1,12 @@
-import { App, Editor, FuzzySuggestModal, Notice, TFile, TFolder } from "obsidian";
+import {
+	App,
+	Editor,
+	FuzzySuggestModal,
+	Notice,
+	TFile,
+	TFolder,
+	getFrontMatterInfo,
+} from "obsidian";
 import { ensureBlockId } from "src/block-id";
 import { EXTRACTION_FOLDER_NAME } from "src/settings";
 import {
@@ -62,10 +70,9 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 		return;
 	}
 	// VALIDATE the TEMPLATE content
-	const templateText = await app.vault.cachedRead(templateFile);
-	const templateLines = templateText.trim().split("\n");
-	const templateHasFrontmatter = templateLines.filter((line) => line === "---").length === 2;
-	if (!templateHasFrontmatter) {
+	const templateContent = await app.vault.cachedRead(templateFile);
+	const { exists, frontmatter: templateFrontmatter } = getFrontMatterInfo(templateContent);
+	if (!exists) {
 		new Notice(
 			`The file "Template.md" in the folder "${dir}" does not contain valid metadata fields.` +
 				"\n\nYou need to add valid fields before you can make extractions.",
@@ -97,12 +104,18 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
 	const dateYamlLine = `extraction date: ${isoDate}`;
 	const sourceYamlLine = `extraction source: "[[${dataFile.path}#${blockId}]]"`;
-	const yamlFrontmatterEnd = templateLines.findLastIndex((l) => l === "---");
-	templateLines.splice(yamlFrontmatterEnd, 0, dateYamlLine, sourceYamlLine);
-	templateLines.push("", `**Paragraph extracted from:** ![[${dataFile.path}#${blockId}]]`);
+	const newFrontmatter = [
+		"---",
+		...templateFrontmatter.split("\n"),
+		dateYamlLine,
+		sourceYamlLine,
+		"---",
+		"",
+		`**Paragraph extracted from:** ![[${dataFile.path}#${blockId}]]`,
+	].join("\n");
 
 	// Create EXTRACTION-FILE, and open in split to the right
-	const extractionFile = await app.vault.create(extractionPath, templateLines.join("\n"));
+	const extractionFile = await app.vault.create(extractionPath, newFrontmatter);
 	await openFileInSplitToRight(app, extractionFile);
 	moveCursorToFirstProperty("value");
 }
