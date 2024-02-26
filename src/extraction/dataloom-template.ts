@@ -1,13 +1,11 @@
-// INFO
-// - uppercase key are placeholders.
-// - To function as a file for DataLoom, the object needs to be saved as JSON
-//   with the file ending `.loom`.
+// INFO uppercase key are placeholders, inserted via the aggregateExtractions cmd
+// DOCS `.loom` format: https://dataloom.xyz/other/loom-file
+// TODO check out later if they have API available https://dataloom.xyz/integrations/api
 //──────────────────────────────────────────────────────────────────────────────
 
-// CONFIG
+// CONFIG default values
 const columnWidth = "200px";
 const dateFormat = "yyyymmdd"; // use ISO 8601
-const pluginVer = "8.15.12";
 
 // FIX Diagnostics about `frontmatterKey` complaining about a string being assigned to `null`
 export interface LoomColumn extends Omit<typeof LOOM_COLUMN_TEMPLATE, "frontmatterKey"> {
@@ -20,6 +18,8 @@ export type Loom = typeof TEMPLATE_LOOM & {
 };
 
 //──────────────────────────────────────────────────────────────────────────────
+
+const pluginVer = "8.15.12";
 
 export const TEMPLATE_LOOM = {
 	pluginVersion: pluginVer,
