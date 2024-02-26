@@ -1,13 +1,17 @@
 ## TODO
-- [ ] settings menu for sort function
+- [ ] settings menu
+	+ [ ] sort function
+	+ [ ] folder locations
 - [ ] Simple demo videos for coding & extractions
 - [ ] suppress suggestions selectively?
+- [ ] Use Code File Template
+
+## Future
 - [ ] Add tab to suggester: <https://github.com/Zachatoo/obsidian-css-editor/blob/main/src%2Fmodals%2FCssSnippetFuzzySuggestModal.ts>
 - [ ] release notes automation
 
 ## Submission to Obsidian Community Store
 Status: <https://github.com/obsidianmd/obsidian-releases/pull/3076>
-- [ ] once admitted: advertise? (FQS, etc.)
 
 ## "Advertisement"
 - <https://lists.fu-berlin.de/listinfo/qsf_l>
