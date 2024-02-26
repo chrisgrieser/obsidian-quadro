@@ -20,7 +20,7 @@ the style of *Qualitative Content Analysis*.
 	* [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
-	* [Get Started](#get-started)
+	* [Getting Started](#getting-started)
 		+ [Example Vault](#example-vault)
 		+ [Experienced Obsidian Users](#experienced-obsidian-users)
 		+ [Using a Separate Vault](#using-a-separate-vault)
@@ -89,6 +89,8 @@ extensive functionality and plugin ecosystem of Obsidian:
   is a key demand of qualitative research (which strictly speaking is not
   truly fulfilled when using standardized, proprietary research software).
 - Obsidian, as well as *Quadro*, both [have mobile support (Android and iOS)](https://obsidian.md/mobile).
+- Using Obsidian allows you to employ a keyboard-driven workflow with minimal
+  usage of the mouse.
 
 If there is a more tech-savvy researcher in the research team, the advantages of
 *Quadro* go even further:
@@ -134,6 +136,9 @@ support the creation of those Extraction Files.
 - **Customizability**: Implicit assumptions of QDA software, such as the initial
   order in which codes are presented in the code selection modal, can be
   customized to deal with different kinds of coder biases.
+- **Extensibility**: *Quadro* can be easily extended via the Obsidian plugin
+  ecosystem. As opposed to other research software, extending the functionality
+  in most cases does not require technical expertise coding experience.
 
 **Disadvantages**
 - The **unit of coding** is restricted to paragraphs and, to a degree, segments
@@ -145,7 +150,7 @@ support the creation of those Extraction Files.
 
 ## Usage
 
-### Get Started
+### Getting Started
 
 #### Example Vault
 There is a [pre-configured example

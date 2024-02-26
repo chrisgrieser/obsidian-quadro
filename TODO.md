@@ -9,6 +9,11 @@
 Status: <https://github.com/obsidianmd/obsidian-releases/pull/3076>
 - [ ] once admitted: advertise? (FQS, etc.)
 
+## "Advertisement"
+- <https://lists.fu-berlin.de/listinfo/qsf_l>
+- Soziopolis
+- ResearchGate
+
 ## Potential Ideas
 - AI-assisted coding?
 	+ <https://journals.sagepub.com/doi/10.1177/0049124118769114>
