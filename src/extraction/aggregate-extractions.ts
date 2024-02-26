@@ -2,7 +2,11 @@ import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
 import { ANALYSIS_FOLDER_NAME } from "src/settings";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS } from "src/utils";
 import { LOOM_COLUMN_TEMPLATE, Loom, LoomColumn, TEMPLATE_LOOM } from "./dataloom-template";
-import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
+import {
+	ensureCorrectPropertyTypes,
+	getAllExtractionTypes,
+	getPropertiesForExtractionType,
+} from "./extraction-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -49,6 +53,8 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 	}
 
 	async onChooseItem(extractionType: TFolder): Promise<void> {
+		ensureCorrectPropertyTypes(this.app);
+
 		// TEMPLATE FILE: read properties for the extraction type
 		const frontmatter = getPropertiesForExtractionType(this.app, extractionType);
 		if (!frontmatter) return;

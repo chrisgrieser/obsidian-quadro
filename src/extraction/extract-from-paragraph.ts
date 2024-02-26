@@ -21,6 +21,7 @@ import {
 	bootstrapExtractionTemplate,
 	bootstrapExtractionTypeFolder,
 } from "./bootstrap-extraction-files";
+import { ensureCorrectPropertyTypes } from "./extraction-utils";
 
 class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 	extractionTypes: TFolder[];
@@ -60,6 +61,7 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 
 async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFolder: TFolder) {
 	const app = editor.editorComponent.app;
+	ensureCorrectPropertyTypes(app);
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;
 
