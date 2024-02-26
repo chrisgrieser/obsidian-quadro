@@ -277,7 +277,6 @@ representing codes):
 | Code grouping                             | Codes can be arranged in subfolders via drag-and-drop in the File Explorer.                                                                                                                                         |                   —                    |       —        | [Obsidian Built-in][move-file]                |
 | Visualization of code relationships       | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph]                                                                |     ![Icon](./assets/git-fork.svg)     |    `mod+g`     | [Obsidian Core Plugin: Graph View][graph]     |
 | Axial Coding                              | Using the Canvas Plugin, you can freely arrange entities on a board, and connect them via lines and arrows, suitable for Axial Coding. <br><br>[Further Documentation][canvas]                                      | ![Icon](./assets/layout-dashboard.svg) |       —        | [Obsidian Core Plugin: Canvas][canvas]        |
-| Merge/Split codes                         | Merge/Split Code files via the Note Composer Plugin. Links are auto-updated. (NOTE: Merging Code Files currently breaks references.) <br><br>[Further Documentation][note-composer]                                 |                   —                    |       —        | [Obsidian Core Plugin: Canvas][note-composer] |
 | Investigation of code co-occurrences      | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                                                                                           |                   —                    | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]        |
 
 [rename]: https://help.obsidian.md/Files+and+folders/Manage+notes#Rename+a+note
@@ -285,16 +284,15 @@ representing codes):
 [search]: https://help.obsidian.md/Plugins/Search#Search+operators
 [move-file]: https://help.obsidian.md/Plugins/File+explorer#Move+a+file+or+folder
 [canvas]: https://help.obsidian.md/Plugins/Canvas
-[note-composer]: https://help.obsidian.md/Plugins/Note+composer
 
-`mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
-customized by searching in the Obsidian hotkey settings for the name of the
-respective action.
-
-> [!WARNING]
-> Renaming, or moving Code/Data Files **must** be done from within
-> Obsidian. Doing so in the Windows Explorer or macOS Finder does not trigger
-> the automatic updating of references, meaning a loss of information.
+- `mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
+  customized by searching in the Obsidian hotkey settings for the name of the
+  respective action.
+- Splitting and merging Code Files is not yet supported. Doing so with any other
+  method (such as a plugin) will likely result in broken references.
+- ⚠️ Renaming or moving Code/Data Files should be done from within Obsidian.
+  Using the Windows Explorer or macOS' Finder does not trigger the automatic
+  updating of references, meaning a loss of information.
 
 ### Extraction
 
@@ -407,12 +405,14 @@ filtered, searched, and modified:
 [data loom]: https://dataloom.xyz/
 [properties view]: https://help.obsidian.md/Plugins/Properties+view
 
-`mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
-customized by searching in the Obsidian hotkey settings for the name of the
-respective action.
-
-For both, aggregation, and `.csv` export, the included properties are
-determined by the properties of the template files (`Template.md`).
+- `mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
+  customized by searching in the Obsidian hotkey settings for the name of the
+  respective action.
+- For both, aggregation, and `.csv` export, the included properties are
+  determined by the properties of the template files (`Template.md`).
+- ⚠️ Renaming or moving Extraction/Data Files should be done from within
+  Obsidian. Using the Windows Explorer or macOS' Finder does not trigger the
+  automatic updating of references, meaning a loss of information.
 
 ## Technical
 
