@@ -5,6 +5,7 @@
 
 // CONFIG default values
 const columnWidth = "200px";
+const fileColumnWidth = "150px";
 const dateFormat = "yyyymmdd"; // use ISO 8601
 
 // FIX Diagnostics about `frontmatterKey` complaining about a string being assigned to `null`
@@ -27,7 +28,7 @@ export const TEMPLATE_LOOM = {
 		columns: [
 			{
 				id: "UUID",
-				width: "100px",
+				width: columnWidth,
 				content: "Source",
 				sortDir: "default",
 				isVisible: false,
@@ -51,7 +52,7 @@ export const TEMPLATE_LOOM = {
 			},
 			{
 				id: "UUID",
-				width: "40px",
+				width: fileColumnWidth,
 				content: "Extraction File",
 				sortDir: "default",
 				isVisible: true,
