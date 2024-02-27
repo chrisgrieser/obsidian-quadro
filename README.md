@@ -477,13 +477,13 @@ make init
 
 ```bash
 make format # run all formatters
-make build # builds the plugin
-make check # runs the pre-commit hook (without committing)
+make build  # builds the plugin
+make check  # runs the pre-commit hook (without committing)
 ```
 
 > [!NOTE]
-> This repo uses a pre-commit hook, which prevents commits that do not build or
-> do not pass all the checks.
+> This repo uses a pre-commit hook, which prevents commits that do not pass all
+> the checks.
 
 <!-- vale Google.FirstPerson = NO -->
 ## Credits
