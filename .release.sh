@@ -34,6 +34,7 @@ sed -i '' '$d' "versions.json"
 #───────────────────────────────────────────────────────────────────────────────
 
 # push the manifest.json and versions.json
+echo "────────────────────────"
 git add --all &&
 	git commit -m "release: $nextVersion" &&
 	git pull && git push &&

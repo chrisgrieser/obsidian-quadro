@@ -8,8 +8,7 @@ build:
 
 # install dependencies, build, enable git hooks
 init:
-	npm install && \
-	node esbuild.config.mjs
+	npm install && node esbuild.config.mjs ; \
 	git config core.hooksPath .githooks
 
 format: 

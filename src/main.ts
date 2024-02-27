@@ -2,14 +2,14 @@ import { Command, Plugin } from "obsidian";
 import { CODING_COMMANDS } from "./coding/coding-commands";
 import { trashWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
-import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
+import { DEFAULT_SETTINGS } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
 import { updateStatusbar } from "./statusbar";
 
 export default class Quadro extends Plugin {
 	statusbar = this.addStatusBarItem();
-	monkeyAroundTrashUninstaller: (() => void) | undefined;
-	settings: QuadroSettings = DEFAULT_SETTINGS; // only fallback value, overwritten `onload`
+	monkeyAroundUninstaller: (() => void) | undefined;
+	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
 
 	override async onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
@@ -43,7 +43,7 @@ export default class Quadro extends Plugin {
 		this.registerEvent(this.app.metadataCache.on("resolved", () => updateStatusbar(this)));
 
 		// DELETION-WATCHER: use monkey-around to intercept `app.vault.trash`
-		this.monkeyAroundTrashUninstaller = trashWatcher(this);
+		this.monkeyAroundUninstaller = trashWatcher(this);
 
 		// SETTINGS
 		await this.loadSettings();
@@ -53,9 +53,9 @@ export default class Quadro extends Plugin {
 	override onunload() {
 		console.info(this.manifest.name + " Plugin unloaded.");
 
-		if (this.monkeyAroundTrashUninstaller) {
-			this.monkeyAroundTrashUninstaller();
-			this.monkeyAroundTrashUninstaller = undefined;
+		if (this.monkeyAroundUninstaller) {
+			this.monkeyAroundUninstaller();
+			this.monkeyAroundUninstaller = undefined;
 		}
 	}
 
