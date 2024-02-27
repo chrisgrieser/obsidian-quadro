@@ -1,4 +1,13 @@
-import { App, ButtonComponent, Modal, Notice, Setting, TFile, normalizePath } from "obsidian";
+import {
+	App,
+	ButtonComponent,
+	Modal,
+	Notice,
+	Setting,
+	TFile,
+	getFrontMatterInfo,
+	normalizePath,
+} from "obsidian";
 import Quadro from "src/main";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
@@ -17,6 +26,11 @@ class InputForOneFile extends Modal {
 	override onOpen() {
 		const { contentEl } = this;
 		contentEl.createEl("h4", { text: "New code creation" });
+		contentEl.createEl("small", {
+			text: 'If there is a file "Template.md" at the root of the Codes Folder, the new Code File will be populated with its frontmatter.',
+		});
+		contentEl.createEl("br", {});
+		contentEl.createEl("br", {});
 
 		// name input field
 		new Setting(contentEl)
@@ -79,6 +93,9 @@ class InputForMultipleFiles extends Modal {
 		contentEl.createEl("p", {
 			text: 'Use a slash ("/") in the name to create the Code File in a subfolder (group).',
 		});
+		contentEl.createEl("p", {
+			text: 'If there is a file "Template.md" at the root of the Codes Folder, the new Code Files will be populated with its frontmatter.',
+		});
 
 		// textarea field
 		new Setting(contentEl).setClass("quadro-bulk-code-creation").addTextArea((text) =>
@@ -121,26 +138,41 @@ async function createCodeFile(
 		.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
 		.replace(/^\.|\/\./g, ""); // no hidden files/folders
 
-	// GUARD
+	// GUARD Code File already exists
 	const absolutePath = normalizePath(`${settings.coding.folder}/${fullCode}.md`);
-	const fileExists = app.vault.getAbstractFileByPath(absolutePath) instanceof TFile;
+	const fileExists = app.vault.getFileByPath(absolutePath);
 	if (fileExists) {
 		new Notice(`Code "${fullCode}" already exists, Code File not created.`);
 		return false;
 	}
 
+	// create folder
 	const parts = fullCode.split("/");
 	const codeName = parts.pop();
 	const codeSubfolder = parts.length ? "/" + parts.join("/") : "";
-
 	const parent = settings.coding.folder + codeSubfolder;
 	const folderExists = app.vault.getFolderByPath(parent);
 	if (!folderExists) await app.vault.createFolder(parent);
 
-	codeDesc = codeDesc.replaceAll('"', "'"); // escape for YAML
-	const descAsYamlFrontmatter = `---\ndescription: "${codeDesc}"\n---\n\n\n---\n\n`;
+	// CODE FILE content
+	const content = [
+		"---",
+		`description: "${codeDesc.replaceAll('"', "'")}"`,
+		"---",
+		"",
+		"",
+		"---",
+		"",
+	];
+	const templateFile = app.vault.getFileByPath(settings.coding.folder + "/Template.md");
+	if (templateFile) {
+		const templateContent = await app.vault.read(templateFile);
+		const { exists, frontmatter } = getFrontMatterInfo(templateContent);
+		if (exists) content.splice(2, 0, frontmatter);
+	}
 
-	const newCodeFile = await app.vault.create(`${parent}/${codeName}.md`, descAsYamlFrontmatter);
+	// create CODE FILE
+	const newCodeFile = await app.vault.create(`${parent}/${codeName}.md`, content.join("\n"));
 	return newCodeFile;
 }
 

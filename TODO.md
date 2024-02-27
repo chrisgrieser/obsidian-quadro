@@ -1,7 +1,6 @@
 ## TODO
 - [ ] Simple demo videos for coding & extractions
 - [ ] suppress suggestions selectively?
-- [ ] Use Code File Template
 
 ## Future
 - [ ] Add tab to suggester: <https://github.com/Zachatoo/obsidian-css-editor/blob/main/src%2Fmodals%2FCssSnippetFuzzySuggestModal.ts>
