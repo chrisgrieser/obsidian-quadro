@@ -32,11 +32,10 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		const settings = this.plugin.settings;
 
 		// CODING
-		containerEl.createEl("h4", { text: "Coding" });
-
+		containerEl.createEl("h3", { text: "Coding" });
 		new Setting(containerEl)
-			.setName("Location")
-			.setDesc("Folder where the Code Files are stored.")
+			.setName("Code Folder")
+			.setDesc("Location where the Code Files are stored.")
 			.addText((text) =>
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.coding.folder)
@@ -46,12 +45,14 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					}),
 			);
+
+		new Setting(containerEl).setName("Methodological decisions").setHeading();
+
 		new Setting(containerEl)
 			.setName("Bar chart")
 			.setDesc(
-				"When selecting a code to assign, show a small bar chart displaying the " +
-					"frequency with which the code has been assigned. " +
-					"(This is a methodological decision which can influence your code selection.)",
+				"When selecting a code to assign, display a small bar chart showing the " +
+					"frequency with which the code has been assigned. ",
 			)
 			.addToggle((toggle) =>
 				toggle.setValue(settings.coding.minigraph.enabled).onChange(async (value) => {
@@ -61,10 +62,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			);
 		new Setting(containerEl)
 			.setName("Sort order")
-			.setDesc(
-				"When selecting a code to assign, method by which the codes are ordered. " +
-					"(This is a methodological decision which can influence your code selection.)",
-			)
+			.setDesc("When selecting a code to assign, method by which the codes are ordered.")
 			.addDropdown((dropdown) => {
 				for (const key in sortFuncs) {
 					dropdown.addOption(key, key);
@@ -85,11 +83,11 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			);
 
 		// EXTRACTION
-		containerEl.createEl("h4", { text: "Extraction" });
+		containerEl.createEl("h3", { text: "Extraction" });
 
 		new Setting(containerEl)
-			.setName("Location")
-			.setDesc("Folder where the Extraction Files are stored.")
+			.setName("Extraction Folder")
+			.setDesc("Location where the Extraction Files are stored.")
 			.addText((text) =>
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.extraction.folder)

@@ -82,7 +82,7 @@ body .metadata-container {
 /* ────────────────────────────────────────────────────────────────────────── */
 /* QUADRO MODALS */
 
-.quadro input {
+.modal.quadro input {
 	min-width: 20rem;
 	width: 100%;
 }
@@ -91,14 +91,13 @@ body .metadata-container {
 	display: none;
 }
 
-.quadro textarea {
+.modal.quadro textarea {
 	width: 100%;
 	min-height: 10rem;
 }
 
-.quadro button[disabled] {
+.modal.quadro button[disabled] {
 	opacity: 0.5;
-	cursor: not-allowed;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
