@@ -476,9 +476,9 @@ make init
 ```
 
 ```bash
-make format # run all formatters
-make build  # builds the plugin
-make check  # runs the pre-commit hook (without committing)
+make format    # run all formatters
+make build     # builds the plugin
+make check-all # runs the pre-commit hook (without committing)
 ```
 
 > [!NOTE]
