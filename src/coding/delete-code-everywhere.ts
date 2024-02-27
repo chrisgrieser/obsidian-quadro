@@ -17,18 +17,18 @@ export function trashWatcher(plugin: Quadro): ReturnType<typeof around> {
 	const uninstaller = around(app.vault, {
 		trash: (originalMethod) => {
 			return async (file, useSystemTrash) => {
-				console.log(`Monkey-around: Intercepting deletion of "${file.name}".`);
 				const isCodeFile =
 					file instanceof TFile &&
 					file.path.startsWith(settings.coding.folder + "/") &&
 					file.path.endsWith(".md");
 
 				if (isCodeFile) {
-					console.log(`"${file.name}" is a Code File: Deleting all references to it.`);
+					console.log(
+						`"Intercepted deletion of "${file.name}", deleting all references to the Code File before proceeding with deletion.`,
+					);
 					await deleteReferencesToCodeFile(app, file);
 				}
 
-				console.log(`Proceeding with regular deletion of "${file.name}".`);
 				await originalMethod.apply(app.vault, [file, useSystemTrash]);
 			};
 		},

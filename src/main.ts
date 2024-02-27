@@ -2,14 +2,14 @@ import { Command, Plugin } from "obsidian";
 import { CODING_COMMANDS } from "./coding/coding-commands";
 import { trashWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
-import { DEFAULT_SETTINGS, QuadroSettings } from "./settings";
+import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
+import { QuadroSettingsMenu } from "./settings/settings-menu";
 import { updateStatusbar } from "./statusbar";
 
 export default class Quadro extends Plugin {
 	statusbar = this.addStatusBarItem();
-	monkeyAroundTrash: (() => void) | undefined;
-	// default settings only fallback value, will be overwritten `onload`
-	settings: QuadroSettings = DEFAULT_SETTINGS;
+	monkeyAroundTrashUninstaller: (() => void) | undefined;
+	settings: QuadroSettings = DEFAULT_SETTINGS; // only fallback value, overwritten `onload`
 
 	override async onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
@@ -43,20 +43,19 @@ export default class Quadro extends Plugin {
 		this.registerEvent(this.app.metadataCache.on("resolved", () => updateStatusbar(this)));
 
 		// DELETION-WATCHER: use monkey-around to intercept `app.vault.trash`
-		this.monkeyAroundTrash = trashWatcher(this);
+		this.monkeyAroundTrashUninstaller = trashWatcher(this);
 
 		// SETTINGS
 		await this.loadSettings();
-		console.log("🔹 this.settings:", this.settings);
+		this.addSettingTab(new QuadroSettingsMenu(this));
 	}
 
 	override onunload() {
 		console.info(this.manifest.name + " Plugin unloaded.");
 
-		// uninstall monkey-around-patch
-		if (this.monkeyAroundTrash) {
-			this.monkeyAroundTrash(); // runs the uninstaller
-			this.monkeyAroundTrash = undefined;
+		if (this.monkeyAroundTrashUninstaller) {
+			this.monkeyAroundTrashUninstaller();
+			this.monkeyAroundTrashUninstaller = undefined;
 		}
 	}
 

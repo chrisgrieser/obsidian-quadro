@@ -38,13 +38,16 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 	}
 
 	getItemText(extractionType: TFolder): string {
+		const settings = this.plugin.settings;
 		const templateFile = extractionType.children.find(
 			(f) => f instanceof TFile && f.name === "Template.md",
 		);
 		const extractionsCount = extractionType.children.length - 1; // -1 due to `Template.md`
-		const appendix = templateFile
-			? `  (${extractionsCount})`
-			: '  [Select to create "Template.md"]';
+		const appendix = !templateFile
+			? '  [Select to create "Template.md"]'
+			: settings.extraction.countForExtractionType.enabled
+			  ? ` (${extractionsCount})`
+			  : "";
 		return extractionType.name + appendix;
 	}
 

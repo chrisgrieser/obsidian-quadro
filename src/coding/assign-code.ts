@@ -1,7 +1,7 @@
 import { Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { ensureBlockId } from "src/block-id";
 import Quadro from "src/main";
-import { QuadroSettings } from "src/settings";
+import { QuadroSettings, sortFuncs } from "src/settings/defaults";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
@@ -44,7 +44,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 				const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
 				return isInCodeFolder && !isAlreadyAssigned;
 			})
-			.sort(this.settings.coding.sortFunc);
+			.sort(sortFuncs[this.settings.coding.sortFunc]);
 
 		allCodeFiles.push("new-code-file");
 
@@ -56,8 +56,8 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		if (item === "new-code-file") return "🞜 Create new code";
 		const fullCode = getFullCode(this.plugin, item);
 
-		const { char, charsPerBlock, maxLength, enable } = this.settings.coding.minigraph;
-		const miniGraph = enable
+		const { char, charsPerBlock, maxLength, enabled } = this.settings.coding.minigraph;
+		const miniGraph = enabled
 			? "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock))
 			: "";
 

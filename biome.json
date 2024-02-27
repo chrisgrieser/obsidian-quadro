@@ -1,7 +1,8 @@
 {
 	"$schema": "https://raw.githubusercontent.com/biomejs/biome/main/packages/%40biomejs/biome/configuration_schema.json",
 	"files": {
-		"include": ["*.json", "src/**/*.ts"]
+		"include": ["*.json", "src/**/*.ts"],
+		"ignore": ["data.json"]
 	},
 	"json": {
 		"parser": { "allowComments": true }

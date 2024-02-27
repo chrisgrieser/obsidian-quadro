@@ -1,6 +1,6 @@
 import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
 import Quadro from "src/main";
-import { QuadroSettings } from "src/settings";
+import { QuadroSettings } from "src/settings/defaults";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS } from "src/utils";
 import { LOOM_COLUMN_TEMPLATE, Loom, LoomColumn, TEMPLATE_LOOM } from "./dataloom-template";
 import {
