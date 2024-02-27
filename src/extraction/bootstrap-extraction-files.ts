@@ -1,5 +1,5 @@
 import { App, ButtonComponent, Modal, Notice, Setting, TFolder, normalizePath } from "obsidian";
-import { EXTRACTION_FOLDER_NAME } from "src/settings";
+import { SETTINGS } from "src/settings";
 import { moveCursorToFirstProperty, openFileInSplitToRight } from "src/utils";
 
 class InputForNewExtractionType extends Modal {
@@ -54,7 +54,7 @@ export function bootstrapExtractionTypeFolder(app: App) {
 			.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
 			.replace(/^\./, ""); // no hidden files/folders
 
-		const folderPath = normalizePath(EXTRACTION_FOLDER_NAME + "/" + nameOfNewType);
+		const folderPath = normalizePath(SETTINGS.extraction.folder + "/" + nameOfNewType);
 		const newExtractionType: TFolder = await app.vault.createFolder(folderPath);
 		if (!(newExtractionType instanceof TFolder)) {
 			new Notice("ERROR: Could not create Extraction Type Folder.", 3000);
@@ -68,7 +68,7 @@ export async function bootstrapExtractionTemplate(app: App, newExtractionTypeNam
 	new Notice(`Creating New Template for Extraction Type "${newExtractionTypeName}"`, 6000);
 
 	const templatePath = normalizePath(
-		`${EXTRACTION_FOLDER_NAME}/${newExtractionTypeName}/Template.md`,
+		`${SETTINGS.extraction.folder}/${newExtractionTypeName}/Template.md`,
 	);
 	const templateForTemplate = "---\ndimension: \n---\n\n";
 

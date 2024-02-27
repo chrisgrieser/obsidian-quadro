@@ -1,5 +1,5 @@
 import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
-import { ANALYSIS_FOLDER_NAME } from "src/settings";
+import { SETTINGS } from "src/settings";
 import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS } from "src/utils";
 import { LOOM_COLUMN_TEMPLATE, Loom, LoomColumn, TEMPLATE_LOOM } from "./dataloom-template";
 import {
@@ -93,8 +93,9 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 		}
 
 		// Create AGGREGATION FILE
-		let analysisFolder = this.app.vault.getFolderByPath(ANALYSIS_FOLDER_NAME);
-		if (!analysisFolder) analysisFolder = await this.app.vault.createFolder(ANALYSIS_FOLDER_NAME);
+		let analysisFolder = this.app.vault.getFolderByPath(SETTINGS.analysis.folder);
+		if (!analysisFolder)
+			analysisFolder = await this.app.vault.createFolder(SETTINGS.analysis.folder);
 		if (!analysisFolder) {
 			new Notice("ERROR: Could not create Analysis Folder.", 4000);
 			return;
@@ -103,7 +104,7 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 		let aggregationFilepath: string;
 		while (true) {
 			// append `_1` until such a file does not exist, to ensure creating a new file
-			aggregationFilepath = `${ANALYSIS_FOLDER_NAME}/${aggregationName} (Aggregation).loom`;
+			aggregationFilepath = `${SETTINGS.analysis.folder}/${aggregationName} (Aggregation).loom`;
 			const aggregationFileExists = this.app.vault.getFileByPath(aggregationFilepath);
 			if (!aggregationFileExists) break;
 			aggregationName += "_1";

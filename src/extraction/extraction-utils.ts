@@ -1,5 +1,5 @@
 import { App, FrontMatterCache, Notice, TFolder } from "obsidian";
-import { EXTRACTION_FOLDER_NAME } from "src/settings";
+import { SETTINGS } from "src/settings";
 
 /** gets properties from Template.md of extraction type */
 export function getPropertiesForExtractionType(
@@ -27,7 +27,7 @@ export function getPropertiesForExtractionType(
 
 /** also ensures that extraction type array is not empty */
 export function getAllExtractionTypes(app: App): TFolder[] | undefined {
-	const extFolder = app.vault.getFolderByPath(EXTRACTION_FOLDER_NAME);
+	const extFolder = app.vault.getFolderByPath(SETTINGS.extraction.folder);
 	if (!extFolder) {
 		new Notice("ERROR: Could not find Extraction Folder.", 4000);
 		return;

@@ -1,6 +1,6 @@
 import { around } from "monkey-around";
 import { App, Notice, TFile } from "obsidian";
-import { CODE_FOLDER_NAME } from "src/settings";
+import { SETTINGS } from "src/settings";
 import { currentlyInFolder, safelyGetActiveEditor } from "src/utils";
 import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassign-code";
 
@@ -18,7 +18,7 @@ export function trashWatcher(app: App): ReturnType<typeof around> {
 				console.log(`Monkey-around: Intercepting deletion of "${file.name}".`);
 				const isCodeFile =
 					file instanceof TFile &&
-					file.path.startsWith(CODE_FOLDER_NAME + "/") &&
+					file.path.startsWith(SETTINGS.coding.folder + "/") &&
 					file.path.endsWith(".md");
 
 				if (isCodeFile) {

@@ -1,22 +1,10 @@
 import { TFile } from "obsidian";
 
-// FOLDERS
-export const CODE_FOLDER_NAME = "Codes";
-export const EXTRACTION_FOLDER_NAME = "Extractions";
-export const ANALYSIS_FOLDER_NAME = "Analysis";
-
-// CODING SETTINGS
-export const MINIGRAPH = {
-	char: "🬋",
-	charsPerBlock: 100, // how many characters one block represents
-	maxLength: 100,
-};
-
-export const TFILE_SORT_FUNC = {
+const tfileSortFuncs = {
 	alphabeticalByCodeName: (a: TFile, b: TFile) => a.basename.localeCompare(b.basename),
 	alphabeticalByFullCode: (a: TFile, b: TFile) => {
-		const aFullCode = a.path.slice(CODE_FOLDER_NAME.length + 1);
-		const bFullCode = b.path.slice(CODE_FOLDER_NAME.length + 1);
+		const aFullCode = a.path.slice(SETTINGS.coding.folder.length + 1);
+		const bFullCode = b.path.slice(SETTINGS.coding.folder.length + 1);
 		return aFullCode.localeCompare(bFullCode);
 	},
 	lastUsedFirst: (a: TFile, b: TFile) => b.stat.mtime - a.stat.mtime,
@@ -26,4 +14,28 @@ export const TFILE_SORT_FUNC = {
 	randomOrder: () => Math.random() - 0.5,
 };
 
-export const SORT_FUNC_TO_USE = TFILE_SORT_FUNC.lastUsedFirst;
+export const SORT_FUNC_TO_USE = tfileSortFuncs.lastUsedFirst;
+
+const defaultSettings = {
+	coding: {
+		folder: "Codes",
+		sortFunc: tfileSortFuncs.lastUsedFirst,
+		minigraph: {
+			enable: true,
+			char: "🬋",
+			charsPerBlock: 100, // how many characters one block represents
+			maxLength: 100,
+		},
+	},
+	extraction: {
+		folder: "Extractions",
+		csvSeparator: ",",
+	},
+	analysis: {
+		folder: "Analysis",
+	},
+};
+
+export type QuadroSettings = typeof defaultSettings;
+
+export const SETTINGS: QuadroSettings = Object.assign({}, defaultSettings);

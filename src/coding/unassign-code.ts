@@ -1,6 +1,6 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/block-id";
-import { CODE_FOLDER_NAME } from "src/settings";
+import { SETTINGS } from "src/settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
@@ -171,7 +171,7 @@ export async function unassignCodeCommand(app: App): Promise<void> {
 			wikilink = wikilink.slice(2, -2);
 			const linkTarget = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
 			if (linkTarget instanceof TFile) {
-				const isInCodeFolder = linkTarget.path.startsWith(CODE_FOLDER_NAME + "/");
+				const isInCodeFolder = linkTarget.path.startsWith(SETTINGS.coding.folder + "/");
 				if (isInCodeFolder) acc.push({ tFile: linkTarget, wikilink: wikilink });
 			}
 			return acc;

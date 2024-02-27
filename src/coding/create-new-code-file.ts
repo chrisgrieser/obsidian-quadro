@@ -1,5 +1,5 @@
 import { App, ButtonComponent, Modal, Notice, Setting, TFile, normalizePath } from "obsidian";
-import { CODE_FOLDER_NAME } from "src/settings";
+import { SETTINGS } from "src/settings";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
 class InputForOneFile extends Modal {
@@ -122,7 +122,7 @@ async function createCodeFile(
 		.replace(/^\.|\/\./g, ""); // no hidden files/folders
 
 	// GUARD
-	const absolutePath = normalizePath(`${CODE_FOLDER_NAME}/${fullCode}.md`);
+	const absolutePath = normalizePath(`${SETTINGS.coding.folder}/${fullCode}.md`);
 	const fileExists = app.vault.getAbstractFileByPath(absolutePath) instanceof TFile;
 	if (fileExists) {
 		new Notice(`Code "${fullCode}" already exists, Code File not created.`);
@@ -133,7 +133,7 @@ async function createCodeFile(
 	const codeName = parts.pop();
 	const codeSubfolder = parts.length ? "/" + parts.join("/") : "";
 
-	const parent = CODE_FOLDER_NAME + codeSubfolder;
+	const parent = SETTINGS.coding.folder + codeSubfolder;
 	const folderExists = app.vault.getFolderByPath(parent);
 	if (!folderExists) await app.vault.createFolder(parent);
 

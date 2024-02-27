@@ -1,8 +1,8 @@
 import { App, Editor, MarkdownView, Notice, OpenViewState, TFile } from "obsidian";
-import { CODE_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "./settings";
+import { SETTINGS } from "./settings";
 
 export function currentlyInFolder(app: App, type: "Codes" | "Extractions"): boolean {
-	const folderName = type === "Codes" ? CODE_FOLDER_NAME : EXTRACTION_FOLDER_NAME;
+	const folderName = type === "Codes" ? SETTINGS.coding.folder : SETTINGS.extraction.folder;
 	const activeFile = app.workspace.getActiveFile();
 	if (!activeFile) return false;
 	const isInFolder = activeFile.path.startsWith(folderName + "/");

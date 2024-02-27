@@ -1,6 +1,6 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { ensureBlockId } from "src/block-id";
-import { CODE_FOLDER_NAME, MINIGRAPH, SORT_FUNC_TO_USE } from "../settings";
+import { SETTINGS } from "../settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
@@ -33,11 +33,11 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
 			.getMarkdownFiles()
 			.filter((tFile) => {
-				const isInCodeFolder = tFile.path.startsWith(CODE_FOLDER_NAME + "/");
+				const isInCodeFolder = tFile.path.startsWith(SETTINGS.coding.folder + "/");
 				const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
 				return isInCodeFolder && !isAlreadyAssigned;
 			})
-			.sort(SORT_FUNC_TO_USE);
+			.sort(SETTINGS.coding.sortFunc);
 
 		allCodeFiles.push("new-code-file");
 
@@ -47,10 +47,13 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	// display codename + minigraph, and an extra item for creating a new code file
 	getItemText(item: TFile | "new-code-file"): string {
 		if (item === "new-code-file") return "🞜 Create new code";
-
-		const { char, charsPerBlock, maxLength } = MINIGRAPH;
-		const miniGraph = "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock));
 		const fullCode = getFullCode(item);
+
+		const { char, charsPerBlock, maxLength, enable } = SETTINGS.coding.minigraph;
+		const miniGraph = enable
+			? "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock))
+			: "";
+
 		return fullCode + miniGraph;
 	}
 
@@ -117,7 +120,7 @@ export function assignCodeCommand(app: App): void {
 	const codesInPara = wikilinksInParagr.reduce((acc: TFile[], wikilink: string) => {
 		wikilink = wikilink.slice(2, -2);
 		const target = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-		if (target?.path.startsWith(CODE_FOLDER_NAME + "/")) acc.push(target);
+		if (target?.path.startsWith(SETTINGS.coding.folder + "/")) acc.push(target);
 		return acc;
 	}, []);
 

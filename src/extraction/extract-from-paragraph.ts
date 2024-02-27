@@ -8,7 +8,7 @@ import {
 	getFrontMatterInfo,
 } from "obsidian";
 import { ensureBlockId } from "src/block-id";
-import { EXTRACTION_FOLDER_NAME } from "src/settings";
+import { SETTINGS } from "src/settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
@@ -133,8 +133,9 @@ export async function extractFromParagraphCommand(app: App): Promise<void> {
 	}
 
 	// bootstrap extraction folder, if needed
-	let extractionTFolder = app.vault.getFolderByPath(EXTRACTION_FOLDER_NAME);
-	if (!extractionTFolder) extractionTFolder = await app.vault.createFolder(EXTRACTION_FOLDER_NAME);
+	let extractionTFolder = app.vault.getFolderByPath(SETTINGS.extraction.folder);
+	if (!extractionTFolder)
+		extractionTFolder = await app.vault.createFolder(SETTINGS.extraction.folder);
 	if (!extractionTFolder) {
 		new Notice("ERROR: Could not create Extraction Folder.", 4000);
 		return;

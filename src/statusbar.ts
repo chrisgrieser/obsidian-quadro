@@ -1,5 +1,5 @@
 import { App, TFolder } from "obsidian";
-import { CODE_FOLDER_NAME, EXTRACTION_FOLDER_NAME } from "./settings";
+import { SETTINGS } from "./settings";
 import { currentlyInFolder } from "./utils";
 
 export function updateStatusbar(app: App, statusbar: HTMLElement): void {
@@ -34,8 +34,8 @@ export function updateStatusbar(app: App, statusbar: HTMLElement): void {
 		let codesAssigned = 0;
 		let extractionsMade = 0;
 		for (const [filepath, count] of Object.entries(links)) {
-			if (filepath.startsWith(CODE_FOLDER_NAME + "/")) codesAssigned += count;
-			if (filepath.startsWith(EXTRACTION_FOLDER_NAME + "/")) extractionsMade++;
+			if (filepath.startsWith(SETTINGS.coding.folder + "/")) codesAssigned += count;
+			if (filepath.startsWith(SETTINGS.extraction.folder + "/")) extractionsMade++;
 		}
 		if (codesAssigned > 0) segments.push(`${codesAssigned} Codes`);
 		if (extractionsMade > 0) segments.push(`${extractionsMade} Extractions`);
