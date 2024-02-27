@@ -1,6 +1,7 @@
-import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
+import { Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { ensureBlockId } from "src/block-id";
-import { SETTINGS } from "../settings";
+import Quadro from "src/main";
+import { QuadroSettings } from "src/settings";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
@@ -14,12 +15,18 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	editor: Editor;
 	codesInPara: TFile[];
 	dataFile: TFile;
+	settings: QuadroSettings;
+	plugin: Quadro;
 
-	constructor(app: App, editor: Editor, codesInPara: TFile[], dataFile: TFile) {
-		super(app);
+	constructor(plugin: Quadro, editor: Editor, codesInPara: TFile[], dataFile: TFile) {
+		super(plugin.app);
+		this.plugin = plugin;
 		this.editor = editor;
+		this.app = plugin.app;
+		this.settings = plugin.settings;
 		this.codesInPara = codesInPara;
 		this.dataFile = dataFile;
+
 		this.setPlaceholder("Select code to assign");
 		this.setInstructions([
 			...SUGGESTER_INSTRUCTIONS,
@@ -33,11 +40,11 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
 			.getMarkdownFiles()
 			.filter((tFile) => {
-				const isInCodeFolder = tFile.path.startsWith(SETTINGS.coding.folder + "/");
+				const isInCodeFolder = tFile.path.startsWith(this.settings.coding.folder + "/");
 				const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
 				return isInCodeFolder && !isAlreadyAssigned;
 			})
-			.sort(SETTINGS.coding.sortFunc);
+			.sort(this.settings.coding.sortFunc);
 
 		allCodeFiles.push("new-code-file");
 
@@ -47,9 +54,9 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	// display codename + minigraph, and an extra item for creating a new code file
 	getItemText(item: TFile | "new-code-file"): string {
 		if (item === "new-code-file") return "🞜 Create new code";
-		const fullCode = getFullCode(item);
+		const fullCode = getFullCode(this.plugin, item);
 
-		const { char, charsPerBlock, maxLength, enable } = SETTINGS.coding.minigraph;
+		const { char, charsPerBlock, maxLength, enable } = this.settings.coding.minigraph;
 		const miniGraph = enable
 			? "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock))
 			: "";
@@ -61,7 +68,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		if (codeFile instanceof TFile) {
 			this.assignCode(codeFile, this.dataFile);
 		} else {
-			createOneCodeFile(this.app, (codeFile) => this.assignCode(codeFile, this.dataFile));
+			createOneCodeFile(this.plugin, (codeFile) => this.assignCode(codeFile, this.dataFile));
 		}
 	}
 
@@ -71,7 +78,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	 * CODEFILE: Append embedded blocklink to Data-File */
 	async assignCode(codeFile: TFile, dataFile: TFile): Promise<void> {
 		const cursor = this.editor.getCursor();
-		const fullCode = getFullCode(codeFile);
+		const fullCode = getFullCode(this.plugin, codeFile);
 		let lineText = this.editor.getLine(cursor.line);
 
 		const selection = this.editor.getSelection();
@@ -97,11 +104,12 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function assignCodeCommand(app: App): void {
+export function assignCodeCommand(plugin: Quadro): void {
+	const { app, settings } = plugin;
 	const editor = safelyGetActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
-	if (currentlyInFolder(app, "Codes") || currentlyInFolder(app, "Extractions")) {
+	if (currentlyInFolder(plugin, "Codes") || currentlyInFolder(plugin, "Extractions")) {
 		new Notice("You must be in a Data File to assign a code.", 3000);
 		return;
 	}
@@ -120,9 +128,9 @@ export function assignCodeCommand(app: App): void {
 	const codesInPara = wikilinksInParagr.reduce((acc: TFile[], wikilink: string) => {
 		wikilink = wikilink.slice(2, -2);
 		const target = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-		if (target?.path.startsWith(SETTINGS.coding.folder + "/")) acc.push(target);
+		if (target?.path.startsWith(settings.coding.folder + "/")) acc.push(target);
 		return acc;
 	}, []);
 
-	new SuggesterForCodeAssignment(app, editor, codesInPara, dataFile).open();
+	new SuggesterForCodeAssignment(plugin, editor, codesInPara, dataFile).open();
 }

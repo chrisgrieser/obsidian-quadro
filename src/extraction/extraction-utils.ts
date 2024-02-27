@@ -1,5 +1,5 @@
 import { App, FrontMatterCache, Notice, TFolder } from "obsidian";
-import { SETTINGS } from "src/settings";
+import Quadro from "src/main";
 
 /** gets properties from Template.md of extraction type */
 export function getPropertiesForExtractionType(
@@ -26,8 +26,9 @@ export function getPropertiesForExtractionType(
 }
 
 /** also ensures that extraction type array is not empty */
-export function getAllExtractionTypes(app: App): TFolder[] | undefined {
-	const extFolder = app.vault.getFolderByPath(SETTINGS.extraction.folder);
+export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
+	const { app, settings } = plugin;
+	const extFolder = app.vault.getFolderByPath(settings.extraction.folder);
 	if (!extFolder) {
 		new Notice("ERROR: Could not find Extraction Folder.", 4000);
 		return;

@@ -1,14 +1,6 @@
-import {
-	App,
-	Editor,
-	FuzzySuggestModal,
-	Notice,
-	TFile,
-	TFolder,
-	getFrontMatterInfo,
-} from "obsidian";
+import { Editor, FuzzySuggestModal, Notice, TFile, TFolder, getFrontMatterInfo } from "obsidian";
 import { ensureBlockId } from "src/block-id";
-import { SETTINGS } from "src/settings";
+import Quadro from "src/main";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
@@ -27,12 +19,14 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 	extractionTypes: TFolder[];
 	editor: Editor;
 	dataFile: TFile;
+	plugin: Quadro;
 
-	constructor(app: App, editor: Editor, extractionTypes: TFolder[], dataFile: TFile) {
-		super(app);
+	constructor(plugin: Quadro, editor: Editor, extractionTypes: TFolder[], dataFile: TFile) {
+		super(plugin.app);
 		this.extractionTypes = extractionTypes;
 		this.editor = editor;
 		this.dataFile = dataFile;
+		this.plugin = plugin;
 
 		this.setPlaceholder("Select extraction type");
 		this.setInstructions(SUGGESTER_INSTRUCTIONS);
@@ -55,12 +49,17 @@ class SuggesterForExtractionTypes extends FuzzySuggestModal<TFolder> {
 	}
 
 	onChooseItem(extractionType: TFolder): void {
-		extractOfType(this.editor, this.dataFile, extractionType);
+		extractOfType(this.plugin, this.editor, this.dataFile, extractionType);
 	}
 }
 
-async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFolder: TFolder) {
-	const app = editor.editorComponent.app;
+async function extractOfType(
+	plugin: Quadro,
+	editor: Editor,
+	dataFile: TFile,
+	extractionTypeFolder: TFolder,
+) {
+	const app = plugin.app;
 	ensureCorrectPropertyTypes(app);
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;
@@ -68,7 +67,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	// if TEMPLATE is missing, create one instead of performing an extraction
 	const templateFile = app.vault.getFileByPath(`${dir}/Template.md`);
 	if (!templateFile) {
-		bootstrapExtractionTemplate(app, type);
+		bootstrapExtractionTemplate(plugin, type);
 		return;
 	}
 	// VALIDATE the TEMPLATE content
@@ -123,19 +122,20 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	moveCursorToFirstProperty("value");
 }
 
-export async function extractFromParagraphCommand(app: App): Promise<void> {
+export async function extractFromParagraphCommand(plugin: Quadro): Promise<void> {
+	const { app, settings } = plugin;
 	const editor = safelyGetActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
-	if (currentlyInFolder(app, "Codes") || currentlyInFolder(app, "Extractions")) {
+	if (currentlyInFolder(plugin, "Codes") || currentlyInFolder(plugin, "Extractions")) {
 		new Notice("You must be in a Data File to make an extraction.", 3000);
 		return;
 	}
 
 	// bootstrap extraction folder, if needed
-	let extractionTFolder = app.vault.getFolderByPath(SETTINGS.extraction.folder);
+	let extractionTFolder = app.vault.getFolderByPath(settings.extraction.folder);
 	if (!extractionTFolder)
-		extractionTFolder = await app.vault.createFolder(SETTINGS.extraction.folder);
+		extractionTFolder = await app.vault.createFolder(settings.extraction.folder);
 	if (!extractionTFolder) {
 		new Notice("ERROR: Could not create Extraction Folder.", 4000);
 		return;
@@ -149,10 +149,10 @@ export async function extractFromParagraphCommand(app: App): Promise<void> {
 	// Suggest Extraction Types, or trigger directly if only one type exists
 	const dataFile = editor.editorComponent.view.file;
 	if (extractionTypes.length === 0) {
-		bootstrapExtractionTypeFolder(app);
+		bootstrapExtractionTypeFolder(plugin);
 	} else if (extractionTypes.length === 1 && extractionTypes[0]) {
-		extractOfType(editor, dataFile, extractionTypes[0]);
+		extractOfType(plugin, editor, dataFile, extractionTypes[0]);
 	} else {
-		new SuggesterForExtractionTypes(app, editor, extractionTypes, dataFile).open();
+		new SuggesterForExtractionTypes(plugin, editor, extractionTypes, dataFile).open();
 	}
 }

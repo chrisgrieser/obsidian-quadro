@@ -1,5 +1,5 @@
 import { App, ButtonComponent, Modal, Notice, Setting, TFile, normalizePath } from "obsidian";
-import { SETTINGS } from "src/settings";
+import Quadro from "src/main";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
 class InputForOneFile extends Modal {
@@ -111,18 +111,18 @@ class InputForMultipleFiles extends Modal {
 //──────────────────────────────────────────────────────────────────────────────
 
 async function createCodeFile(
-	app: App,
+	plugin: Quadro,
 	fullCode: string,
 	codeDesc: string,
 ): Promise<TFile | false> {
-	// VALIDATE
+	const { app, settings } = plugin;
 	fullCode = fullCode
 		.replace(/\.md$/, "") // no extension
 		.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
 		.replace(/^\.|\/\./g, ""); // no hidden files/folders
 
 	// GUARD
-	const absolutePath = normalizePath(`${SETTINGS.coding.folder}/${fullCode}.md`);
+	const absolutePath = normalizePath(`${settings.coding.folder}/${fullCode}.md`);
 	const fileExists = app.vault.getAbstractFileByPath(absolutePath) instanceof TFile;
 	if (fileExists) {
 		new Notice(`Code "${fullCode}" already exists, Code File not created.`);
@@ -133,7 +133,7 @@ async function createCodeFile(
 	const codeName = parts.pop();
 	const codeSubfolder = parts.length ? "/" + parts.join("/") : "";
 
-	const parent = SETTINGS.coding.folder + codeSubfolder;
+	const parent = settings.coding.folder + codeSubfolder;
 	const folderExists = app.vault.getFolderByPath(parent);
 	if (!folderExists) await app.vault.createFolder(parent);
 
@@ -145,9 +145,9 @@ async function createCodeFile(
 }
 
 /** Prompts for name of new file, then runs callback on it. */
-export function createOneCodeFile(app: App, callback: (codeFile: TFile) => void): void {
-	new InputForOneFile(app, async (fullCode, codeDesc) => {
-		const codeFile = await createCodeFile(app, fullCode, codeDesc);
+export function createOneCodeFile(plugin: Quadro, callback: (codeFile: TFile) => void): void {
+	new InputForOneFile(plugin.app, async (fullCode, codeDesc) => {
+		const codeFile = await createCodeFile(plugin, fullCode, codeDesc);
 		if (codeFile) {
 			new Notice(`Created new code file: "${fullCode}"`);
 			callback(codeFile);
@@ -157,12 +157,12 @@ export function createOneCodeFile(app: App, callback: (codeFile: TFile) => void)
 	}).open();
 }
 
-export async function bulkCreateCodeFilesCommand(app: App): Promise<void> {
-	new InputForMultipleFiles(app, async (userInput) => {
+export async function bulkCreateCodeFilesCommand(plugin: Quadro): Promise<void> {
+	new InputForMultipleFiles(plugin.app, async (userInput) => {
 		let newFiles = 0;
 		const failedFiles: string[] = [];
 		for (const fullCode of userInput.split("\n")) {
-			const newFile = await createCodeFile(app, fullCode, "");
+			const newFile = await createCodeFile(plugin, fullCode, "");
 			if (newFile) newFiles++;
 			else failedFiles.push(fullCode);
 		}

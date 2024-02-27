@@ -1,6 +1,6 @@
 import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
 import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/block-id";
-import { SETTINGS } from "src/settings";
+import Quadro from "src/main";
 import {
 	SUGGESTER_INSTRUCTIONS,
 	ambiguousSelection,
@@ -26,12 +26,15 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 	codesInParagraph: Code[];
 	dataFile: TFile;
 	editor: Editor;
+	plugin: Quadro;
 
-	constructor(app: App, editor: Editor, dataFile: TFile, codes: Code[]) {
-		super(app);
+	constructor(plugin: Quadro, editor: Editor, dataFile: TFile, codes: Code[]) {
+		super(plugin.app);
 		this.codesInParagraph = codes;
 		this.dataFile = dataFile;
 		this.editor = editor;
+		this.plugin = plugin;
+
 		this.setPlaceholder("Select code to remove from paragraph");
 		this.setInstructions(SUGGESTER_INSTRUCTIONS);
 		this.modalEl.addClass("quadro");
@@ -41,7 +44,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		return this.codesInParagraph;
 	}
 	getItemText(code: Code): string {
-		return getFullCode(code.tFile);
+		return getFullCode(this.plugin, code.tFile);
 	}
 	onChooseItem(code: Code): void {
 		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);
@@ -155,11 +158,12 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
  * B. data file, line has 1 code -> remove code, and its reference from code file
  * C. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
  */
-export async function unassignCodeCommand(app: App): Promise<void> {
+export async function unassignCodeCommand(plugin: Quadro): Promise<void> {
+	const { app, settings } = plugin;
 	const editor = safelyGetActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
-	if (currentlyInFolder(app, "Codes")) {
+	if (currentlyInFolder(plugin, "Codes")) {
 		// A: in code file
 		unassignCodeWhileInCodeFile(app, editor);
 	} else {
@@ -171,20 +175,20 @@ export async function unassignCodeCommand(app: App): Promise<void> {
 			wikilink = wikilink.slice(2, -2);
 			const linkTarget = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
 			if (linkTarget instanceof TFile) {
-				const isInCodeFolder = linkTarget.path.startsWith(SETTINGS.coding.folder + "/");
+				const isInCodeFolder = linkTarget.path.startsWith(settings.coding.folder + "/");
 				if (isInCodeFolder) acc.push({ tFile: linkTarget, wikilink: wikilink });
 			}
 			return acc;
 		}, []);
 
 		if (codesInParagr.length === 0) {
-			new Notice("Line does not contain any valid codes.");
+			new Notice("Line does not contain any codes to remove.");
 		} else if (codesInParagr.length === 1) {
 			// B: in data file, line has 1 code
 			unassignCodeWhileInDataFile(editor, dataFile, codesInParagr[0] as Code);
 		} else {
 			// C: in data file, line has 2+ codes
-			new SuggesterForCodeToUnassign(app, editor, dataFile, codesInParagr).open();
+			new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInParagr).open();
 		}
 	}
 }

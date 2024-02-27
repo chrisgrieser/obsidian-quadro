@@ -1,6 +1,6 @@
 import { around } from "monkey-around";
 import { App, Notice, TFile } from "obsidian";
-import { SETTINGS } from "src/settings";
+import Quadro from "src/main";
 import { currentlyInFolder, safelyGetActiveEditor } from "src/utils";
 import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassign-code";
 
@@ -11,14 +11,16 @@ import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassi
  * the `app.vault.on("delete", ...)` event, as various required information for
  * finding all references is flushed already.)
  * source for the how to monkey-around: https://discord.com/channels/686053708261228577/840286264964022302/1157501519831253002 */
-export function trashWatcher(app: App): ReturnType<typeof around> {
+export function trashWatcher(plugin: Quadro): ReturnType<typeof around> {
+	const { app, settings } = plugin;
+
 	const uninstaller = around(app.vault, {
 		trash: (originalMethod) => {
 			return async (file, useSystemTrash) => {
 				console.log(`Monkey-around: Intercepting deletion of "${file.name}".`);
 				const isCodeFile =
 					file instanceof TFile &&
-					file.path.startsWith(SETTINGS.coding.folder + "/") &&
+					file.path.startsWith(settings.coding.folder + "/") &&
 					file.path.endsWith(".md");
 
 				if (isCodeFile) {
@@ -37,10 +39,11 @@ export function trashWatcher(app: App): ReturnType<typeof around> {
 /** Trigger deletion of references to CODEFILE via command. Convenience Command
  * for the user, so it is more transparent to them that they are not just
  * deleting the file, but also all references to it. */
-export async function deleteCodeEverywhereCommand(app: App): Promise<void> {
+export async function deleteCodeEverywhereCommand(plugin: Quadro): Promise<void> {
+	const app = plugin.app;
 	const editor = safelyGetActiveEditor(app);
 	if (!editor) return;
-	if (!currentlyInFolder(app, "Codes")) {
+	if (!currentlyInFolder(plugin, "Codes")) {
 		new Notice("Must be in Code File to delete the code everywhere.");
 		return;
 	}

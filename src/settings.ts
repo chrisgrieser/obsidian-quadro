@@ -2,11 +2,6 @@ import { TFile } from "obsidian";
 
 const tfileSortFuncs = {
 	alphabeticalByCodeName: (a: TFile, b: TFile) => a.basename.localeCompare(b.basename),
-	alphabeticalByFullCode: (a: TFile, b: TFile) => {
-		const aFullCode = a.path.slice(SETTINGS.coding.folder.length + 1);
-		const bFullCode = b.path.slice(SETTINGS.coding.folder.length + 1);
-		return aFullCode.localeCompare(bFullCode);
-	},
 	lastUsedFirst: (a: TFile, b: TFile) => b.stat.mtime - a.stat.mtime,
 	oldestUsedFirst: (a: TFile, b: TFile) => a.stat.mtime - b.stat.mtime,
 	frequentlyUsedFirst: (a: TFile, b: TFile) => b.stat.size - a.stat.size,
@@ -14,9 +9,7 @@ const tfileSortFuncs = {
 	randomOrder: () => Math.random() - 0.5,
 };
 
-export const SORT_FUNC_TO_USE = tfileSortFuncs.lastUsedFirst;
-
-const defaultSettings = {
+export const DEFAULT_SETTINGS = {
 	coding: {
 		folder: "Codes",
 		sortFunc: tfileSortFuncs.lastUsedFirst,
@@ -36,6 +29,4 @@ const defaultSettings = {
 	},
 };
 
-export type QuadroSettings = typeof defaultSettings;
-
-export const SETTINGS: QuadroSettings = Object.assign({}, defaultSettings);
+export type QuadroSettings = typeof DEFAULT_SETTINGS;

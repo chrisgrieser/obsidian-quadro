@@ -1,6 +1,6 @@
 import { TFile } from "obsidian";
-import { SETTINGS } from "src/settings";
+import Quadro from "src/main";
 
-export function getFullCode(tFile: TFile): string {
-	return tFile.path.slice(SETTINGS.coding.folder.length + 1, -3);
+export function getFullCode(plugin: Quadro, tFile: TFile): string {
+	return tFile.path.slice(plugin.settings.coding.folder.length + 1, -3);
 }

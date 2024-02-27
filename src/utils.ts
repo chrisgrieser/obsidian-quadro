@@ -1,8 +1,9 @@
 import { App, Editor, MarkdownView, Notice, OpenViewState, TFile } from "obsidian";
-import { SETTINGS } from "./settings";
+import Quadro from "./main";
 
-export function currentlyInFolder(app: App, type: "Codes" | "Extractions"): boolean {
-	const folderName = type === "Codes" ? SETTINGS.coding.folder : SETTINGS.extraction.folder;
+export function currentlyInFolder(plugin: Quadro, type: "Codes" | "Extractions"): boolean {
+	const { app, settings } = plugin;
+	const folderName = type === "Codes" ? settings.coding.folder : settings.extraction.folder;
 	const activeFile = app.workspace.getActiveFile();
 	if (!activeFile) return false;
 	const isInFolder = activeFile.path.startsWith(folderName + "/");

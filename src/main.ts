@@ -2,22 +2,25 @@ import { Command, Plugin } from "obsidian";
 import { CODING_COMMANDS } from "./coding/coding-commands";
 import { trashWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
+import { DEFAULT_SETTINGS, QuadroSettings } from "./settings";
 import { updateStatusbar } from "./statusbar";
 
 export default class Quadro extends Plugin {
 	statusbar = this.addStatusBarItem();
 	monkeyAroundTrash: (() => void) | undefined;
+	// default settings only fallback value, will be overwritten `onload`
+	settings: QuadroSettings = DEFAULT_SETTINGS;
 
-	override onload() {
+	override async onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		// COMMANDS
 		for (const cmd of [...CODING_COMMANDS, ...EXTRACTION_COMMANDS]) {
-			this.addRibbonIcon(cmd.ribbonIcon, `Quadro: ${cmd.name}`, () => cmd.func(this.app));
+			this.addRibbonIcon(cmd.ribbonIcon, `Quadro: ${cmd.name}`, () => cmd.func(this));
 			const cmdObj: Command = {
 				id: cmd.id,
 				name: cmd.name,
-				editorCallback: () => cmd.func(this.app),
+				editorCallback: () => cmd.func(this),
 			};
 
 			// INFO Adding a few hotkey by default, since this plugin is going to be
@@ -32,19 +35,19 @@ export default class Quadro extends Plugin {
 		}
 
 		// STATUSBAR
-		updateStatusbar(this.app, this.statusbar);
-		this.registerEvent(
-			this.app.workspace.on("file-open", () => updateStatusbar(this.app, this.statusbar)),
-		);
+		updateStatusbar(this);
+		this.registerEvent(this.app.workspace.on("file-open", () => updateStatusbar(this)));
 		// Instead of updating the statusbar after every action, update it after
 		// metadata changes. This is more reliable then calling `updateStatusbar`
 		// after every quadro command, since the cache is up-to-date.
-		this.registerEvent(
-			this.app.metadataCache.on("resolved", () => updateStatusbar(this.app, this.statusbar)),
-		);
+		this.registerEvent(this.app.metadataCache.on("resolved", () => updateStatusbar(this)));
 
 		// DELETION-WATCHER: use monkey-around to intercept `app.vault.trash`
-		this.monkeyAroundTrash = trashWatcher(this.app);
+		this.monkeyAroundTrash = trashWatcher(this);
+
+		// SETTINGS
+		await this.loadSettings();
+		console.log("🔹 this.settings:", this.settings);
 	}
 
 	override onunload() {
@@ -55,5 +58,14 @@ export default class Quadro extends Plugin {
 			this.monkeyAroundTrash(); // runs the uninstaller
 			this.monkeyAroundTrash = undefined;
 		}
+	}
+
+	//───────────────────────────────────────────────────────────────────────────
+
+	async loadSettings(): Promise<void> {
+		this.settings = Object.assign(DEFAULT_SETTINGS, await this.loadData());
+	}
+	async saveSettings() {
+		this.saveData(this.settings);
 	}
 }

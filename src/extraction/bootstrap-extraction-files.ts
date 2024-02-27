@@ -1,5 +1,5 @@
 import { App, ButtonComponent, Modal, Notice, Setting, TFolder, normalizePath } from "obsidian";
-import { SETTINGS } from "src/settings";
+import Quadro from "src/main";
 import { moveCursorToFirstProperty, openFileInSplitToRight } from "src/utils";
 
 class InputForNewExtractionType extends Modal {
@@ -45,7 +45,9 @@ class InputForNewExtractionType extends Modal {
 	}
 }
 
-export function bootstrapExtractionTypeFolder(app: App) {
+export function bootstrapExtractionTypeFolder(plugin: Quadro) {
+	const { app, settings } = plugin;
+
 	new InputForNewExtractionType(app, async (nameOfNewType) => {
 		// VALIDATE
 		nameOfNewType = nameOfNewType
@@ -54,21 +56,22 @@ export function bootstrapExtractionTypeFolder(app: App) {
 			.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
 			.replace(/^\./, ""); // no hidden files/folders
 
-		const folderPath = normalizePath(SETTINGS.extraction.folder + "/" + nameOfNewType);
+		const folderPath = normalizePath(settings.extraction.folder + "/" + nameOfNewType);
 		const newExtractionType: TFolder = await app.vault.createFolder(folderPath);
 		if (!(newExtractionType instanceof TFolder)) {
 			new Notice("ERROR: Could not create Extraction Type Folder.", 3000);
 			return;
 		}
-		bootstrapExtractionTemplate(app, nameOfNewType);
+		bootstrapExtractionTemplate(plugin, nameOfNewType);
 	}).open();
 }
 
-export async function bootstrapExtractionTemplate(app: App, newExtractionTypeName: string) {
+export async function bootstrapExtractionTemplate(plugin: Quadro, newExtractionTypeName: string) {
+	const { app, settings } = plugin;
 	new Notice(`Creating New Template for Extraction Type "${newExtractionTypeName}"`, 6000);
 
 	const templatePath = normalizePath(
-		`${SETTINGS.extraction.folder}/${newExtractionTypeName}/Template.md`,
+		`${settings.extraction.folder}/${newExtractionTypeName}/Template.md`,
 	);
 	const templateForTemplate = "---\ndimension: \n---\n\n";
 
@@ -88,6 +91,6 @@ export async function bootstrapExtractionTemplate(app: App, newExtractionTypeNam
 	moveCursorToFirstProperty("key");
 }
 
-export function createNewExtractionTypeCommand(app: App) {
-	bootstrapExtractionTypeFolder(app);
+export function createNewExtractionTypeCommand(plugin: Quadro) {
+	bootstrapExtractionTypeFolder(plugin);
 }

@@ -1,22 +1,26 @@
 import moment from "moment";
-import { App, Notice, TFile } from "obsidian";
+import { Notice, TFile } from "obsidian";
+import Quadro from "src/main";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
-const csvSeparator = ","; // , works out of the box with Excel and therefore preferable over ;
+// CONFIG (not worth a separate setting)
 const naString = "-";
 const exportFolderName = "CSV Export";
 
 /** `"` escaped as `""`, otherwise everything is quoted so the separator can be
  * used. See: https://stackoverflow.com/a/4617967/22114136 */
-function createCsvRow(cells: string[]): string {
+function createCsvRow(cells: string[], csvSeparator: string): string {
 	const escapedCells = cells.map((cell) => `"${cell.replaceAll('"', '""')}"`);
 	return escapedCells.join(csvSeparator);
 }
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export async function exportExtractionsAsCsv(app: App) {
-	const extractionTypes = getAllExtractionTypes(app);
+export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
+	const { app, settings } = plugin;
+	const csvSeparator = settings.extraction.csvSeparator;
+
+	const extractionTypes = getAllExtractionTypes(plugin);
 	if (!extractionTypes) return;
 
 	let fileToReveal: TFile | undefined;
@@ -35,7 +39,7 @@ export async function exportExtractionsAsCsv(app: App) {
 			"extraction date",
 			"extraction source",
 		];
-		const headerRow = createCsvRow(keys);
+		const headerRow = createCsvRow(keys, csvSeparator);
 		csvFileLines.push(headerRow);
 
 		// csv body
@@ -66,7 +70,7 @@ export async function exportExtractionsAsCsv(app: App) {
 
 				cellsInRow.push(valueStr);
 			}
-			const row = createCsvRow(cellsInRow);
+			const row = createCsvRow(cellsInRow, csvSeparator);
 			csvFileLines.push(row);
 		}
 

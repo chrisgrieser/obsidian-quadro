@@ -1,8 +1,10 @@
-import { App, TFolder } from "obsidian";
-import { SETTINGS } from "./settings";
+import { TFolder } from "obsidian";
+import Quadro from "./main";
 import { currentlyInFolder } from "./utils";
 
-export function updateStatusbar(app: App, statusbar: HTMLElement): void {
+export function updateStatusbar(plugin: Quadro): void {
+	const { app, statusbar, settings } = plugin;
+
 	// GUARD
 	const activeFile = app.workspace.getActiveFile();
 	if (!activeFile) {
@@ -16,7 +18,7 @@ export function updateStatusbar(app: App, statusbar: HTMLElement): void {
 	//───────────────────────────────────────────────────────────────────────────
 
 	// CODEFILE: links = times code was assigned
-	if (currentlyInFolder(app, "Codes")) {
+	if (currentlyInFolder(plugin, "Codes")) {
 		let codesAssigned = 0;
 		for (const [_, count] of Object.entries(links)) {
 			codesAssigned += count;
@@ -24,7 +26,7 @@ export function updateStatusbar(app: App, statusbar: HTMLElement): void {
 		segments.push(`Code ${codesAssigned}x assigned`);
 	}
 	// EXTRACTION FILE: number of extractions made for the type
-	else if (currentlyInFolder(app, "Extractions")) {
+	else if (currentlyInFolder(plugin, "Extractions")) {
 		const extractionType = activeFile.parent as TFolder;
 		const extractionsMade = extractionType.children.length - 1; // -1 due to `Template.md`
 		segments.push(`${extractionsMade}x extracted`);
@@ -34,8 +36,8 @@ export function updateStatusbar(app: App, statusbar: HTMLElement): void {
 		let codesAssigned = 0;
 		let extractionsMade = 0;
 		for (const [filepath, count] of Object.entries(links)) {
-			if (filepath.startsWith(SETTINGS.coding.folder + "/")) codesAssigned += count;
-			if (filepath.startsWith(SETTINGS.extraction.folder + "/")) extractionsMade++;
+			if (filepath.startsWith(settings.coding.folder + "/")) codesAssigned += count;
+			if (filepath.startsWith(settings.extraction.folder + "/")) extractionsMade++;
 		}
 		if (codesAssigned > 0) segments.push(`${codesAssigned} Codes`);
 		if (extractionsMade > 0) segments.push(`${extractionsMade} Extractions`);

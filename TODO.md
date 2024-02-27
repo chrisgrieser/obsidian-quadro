@@ -1,7 +1,4 @@
 ## TODO
-- [ ] settings menu
-	+ [ ] sort function
-	+ [ ] folder locations
 - [ ] Simple demo videos for coding & extractions
 - [ ] suppress suggestions selectively?
 - [ ] Use Code File Template
