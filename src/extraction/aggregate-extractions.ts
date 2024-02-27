@@ -75,9 +75,12 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 		loomJson.model.sources[0].id = crypto.randomUUID();
 		loomJson.model.filters[0].id = crypto.randomUUID();
 		loomJson.model.columns[0].id = crypto.randomUUID();
-		const filenameUuid = crypto.randomUUID();
-		loomJson.model.filters[0].columnId = filenameUuid;
-		loomJson.model.columns[1].id = filenameUuid;
+
+		// file column
+		const filColumnUuid = crypto.randomUUID();
+		loomJson.model.filters[0].columnId = filColumnUuid;
+		loomJson.model.columns[1].id = filColumnUuid;
+		loomJson.model.columns[1].width = "150px";
 
 		for (const property of properties) {
 			const column: LoomColumn = structuredClone(LOOM_COLUMN_TEMPLATE);
@@ -85,6 +88,7 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 			column.frontmatterKey = property; // key used
 			column.content = property; // column title
 			column.type = propertyType(this.app, property);
+			column.width = property === "extraction date" ? "150px" : "200px";
 			loomJson.model.columns.push(column);
 		}
 

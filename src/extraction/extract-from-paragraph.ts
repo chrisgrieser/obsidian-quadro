@@ -105,7 +105,8 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
 	const dateYamlLine = `extraction date: ${isoDate}`;
-	const sourceYamlLine = `extraction source: "[[${dataFile.path}#${blockId}]]"`;
+	const fullSource = `${dataFile.path.slice(0, -3)}#${blockId}`; // slice to rm `.md`
+	const sourceYamlLine = `extraction source: "[[${fullSource}]]"`;
 	const newFrontmatter = [
 		"---",
 		...templateFrontmatter.split("\n"),
@@ -113,7 +114,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 		sourceYamlLine,
 		"---",
 		"",
-		`**Paragraph extracted from:** ![[${dataFile.path}#${blockId}]]`,
+		`**Paragraph extracted from:** ![[${fullSource}]]`,
 	].join("\n");
 
 	// Create EXTRACTION-FILE
