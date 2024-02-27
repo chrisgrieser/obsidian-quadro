@@ -74,6 +74,15 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				});
 			});
+		new Setting(containerEl)
+			.setName("Code creation first")
+			.setDesc('During code assignment, move the "Create new code" option to the top.')
+			.addToggle((toggle) =>
+				toggle.setValue(settings.coding.newCodeItemFirst).onChange(async (value) => {
+					settings.coding.newCodeItemFirst = value;
+					await this.plugin.saveSettings();
+				}),
+			);
 
 		// EXTRACTION
 		containerEl.createEl("h4", { text: "Extraction" });

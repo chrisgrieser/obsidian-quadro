@@ -37,16 +37,18 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 
 	// code-files, sorted by last use (which is relevant when query is empty)
 	getItems(): (TFile | "new-code-file")[] {
+		const settings = this.settings;
 		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
 			.getMarkdownFiles()
 			.filter((tFile) => {
-				const isInCodeFolder = tFile.path.startsWith(this.settings.coding.folder + "/");
+				const isInCodeFolder = tFile.path.startsWith(settings.coding.folder + "/");
 				const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
 				return isInCodeFolder && !isAlreadyAssigned;
 			})
-			.sort(sortFuncs[this.settings.coding.sortFunc]);
+			.sort(sortFuncs[settings.coding.sortFunc]);
 
-		allCodeFiles.push("new-code-file");
+		const insert = this.settings.coding.newCodeItemFirst ? "unshift" : "push";
+		allCodeFiles[insert]("new-code-file");
 
 		return allCodeFiles;
 	}
