@@ -289,7 +289,7 @@ representing codes):
   customized by searching in the Obsidian hotkey settings for the name of the
   respective action.
 - Splitting and merging Code Files is not yet supported. Doing so with any other
-  method (such as a plugin) will likely result in broken references.
+  method (such as a plugin) is likely going to result in broken references.
 - ⚠️ Renaming or moving Code/Data Files should be done from within Obsidian.
   Using the Windows Explorer or macOS' Finder does not trigger the automatic
   updating of references, meaning a loss of information.
@@ -334,7 +334,7 @@ where you initiated the extraction. In the rendered view, the file contains a
 The underlying plaintext view of the file looks like this:
 
 ```md
-Filepath: ./Extractions/Career Visions/1.md
+Filepath: ./Extractions/Career Visions/Career Visions 1.md
 
 ---
 occupation: "painter"
@@ -376,12 +376,12 @@ All in all, the underlying folder structure for extractions looks like this:
 └── 📂 Extractions
     ├── 📂 Career Obstacles
     │    ├── 📄 Template.md
-    │    ├── 📄 1.md
-    │    ├── 📄 2.md
+    │    ├── 📄 Career Obstacles 1.md
+    │    ├── 📄 Career Obstacles 2.md
     │    └── …
     └── 📂 Career Visions
          ├── 📄 Template.md
-         ├── 📄 1.md
+         ├── 📄 Career Visions 1.md
          └── …
 ```
 

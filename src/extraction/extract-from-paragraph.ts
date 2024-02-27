@@ -89,7 +89,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	let extractionCount = extractionTypeFolder.children.length - 1; // -1 due to `Template.md`
 	while (true) {
 		extractionCount++;
-		extractionPath = `${dir}/${extractionCount}.md`;
+		extractionPath = `${dir}/${type} ${extractionCount}.md`;
 		const fileExistsAlready = app.vault.getFileByPath(extractionPath);
 		if (!fileExistsAlready) break;
 	}
@@ -98,7 +98,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 	const cursor = editor.getCursor();
 	const lineText = editor.getLine(cursor.line);
 	const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
-	const updatedLine = `${lineWithoutId} [[${type}/${extractionCount}]] ${blockId}`;
+	const updatedLine = `${lineWithoutId} [[${type} ${extractionCount}]] ${blockId}`;
 	editor.setLine(cursor.line, updatedLine);
 	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
@@ -116,7 +116,7 @@ async function extractOfType(editor: Editor, dataFile: TFile, extractionTypeFold
 		`**Paragraph extracted from:** ![[${dataFile.path}#${blockId}]]`,
 	].join("\n");
 
-	// Create EXTRACTION-FILE, and open in split to the right
+	// Create EXTRACTION-FILE
 	const extractionFile = await app.vault.create(extractionPath, newFrontmatter);
 	await openFileInSplitToRight(app, extractionFile);
 	moveCursorToFirstProperty("value");
