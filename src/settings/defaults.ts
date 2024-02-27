@@ -8,8 +8,14 @@ export const sortFuncs = {
 	random: () => Math.random() - 0.5,
 	alphabetical: (a: TFile, b: TFile) => a.basename.localeCompare(b.basename),
 };
-
 export type SortFuncChoices = keyof typeof sortFuncs;
+
+export const csvSeparators = {
+	",": "Comma (,)",
+	";": "Semicolon (;)",
+	"\t": "Tab",
+};
+export type CsvSeparatorChoices = keyof typeof csvSeparators;
 
 export const DEFAULT_SETTINGS = {
 	coding: {
@@ -24,7 +30,7 @@ export const DEFAULT_SETTINGS = {
 	},
 	extraction: {
 		folder: "Extractions",
-		csvSeparator: ",",
+		csvSeparator: "," as CsvSeparatorChoices,
 		countForExtractionType: {
 			enabled: true,
 		},

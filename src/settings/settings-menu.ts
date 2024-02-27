@@ -1,6 +1,16 @@
-import { PluginSettingTab, Setting } from "obsidian";
+import { PluginSettingTab, Setting, normalizePath } from "obsidian";
 import Quadro from "src/main";
-import { DEFAULT_SETTINGS, SortFuncChoices, sortFuncs } from "./defaults";
+import {
+	CsvSeparatorChoices,
+	DEFAULT_SETTINGS,
+	SortFuncChoices,
+	csvSeparators,
+	sortFuncs,
+} from "./defaults";
+
+function sanitizePath(path: string) {
+	return normalizePath(path).replace(/:/g, "-");
+}
 
 export class QuadroSettingsMenu extends PluginSettingTab {
 	plugin: Quadro;
@@ -31,8 +41,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.coding.folder)
 					.setValue(settings.coding.folder)
-					.onChange(async (value) => {
-						settings.coding.folder = value;
+					.onChange(async (path) => {
+						settings.coding.folder = sanitizePath(path);
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -75,8 +85,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.extraction.folder)
 					.setValue(settings.extraction.folder)
-					.onChange(async (value) => {
-						settings.extraction.folder = value;
+					.onChange(async (path) => {
+						settings.extraction.folder = sanitizePath(path);
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -100,14 +110,10 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			.setDesc("Separator used when exporting extractions as csv files.")
 			.addDropdown((dropdown) => {
 				dropdown
-					.addOptions({
-						",": "Comma (,)",
-						";": "Semicolon (;)",
-						"\t": "Tab",
-					})
+					.addOptions(csvSeparators)
 					.setValue(settings.extraction.csvSeparator)
 					.onChange(async (value) => {
-						settings.extraction.csvSeparator = value;
+						settings.extraction.csvSeparator = value as CsvSeparatorChoices;
 						await this.plugin.saveSettings();
 					});
 			});
@@ -124,8 +130,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.analysis.folder)
 					.setValue(settings.analysis.folder)
-					.onChange(async (value) => {
-						settings.analysis.folder = value;
+					.onChange(async (path) => {
+						settings.analysis.folder = sanitizePath(path);
 						await this.plugin.saveSettings();
 					}),
 			);
