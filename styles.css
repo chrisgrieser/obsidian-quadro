@@ -80,32 +80,6 @@ body .metadata-container {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* FILE EXPLORER */
-
-/* bold to all the folders with special function for Quadro */
-.nav-folder-title:is([data-path="Codes"], [data-path="Analysis"], [data-path="Extractions"], [data-path="Data"]) .nav-folder-title-content {
-	font-weight: 800;
-}
-
-/* icons for Code Files and Extraction Files */
-:is(.nav-file-title, .nav-folder-title):is([data-path^="Codes/"], [data-path^="Extractions/"])::before {
-	padding-right: 3px;
-}
-
-.nav-file-title[data-path^="Codes/"]::before {
-	content: "○";
-}
-
-.nav-file-title[data-path^="Extractions/"]:not([data-path$="/Template.md"])::before {
-	content: "🞏";
-}
-
-.nav-folder-title[data-path^="Extractions/"]::before,
-.nav-file-title[data-path^="Extractions/"][data-path$="/Template.md"]::before {
-	content: "⯀";
-}
-
-/* ────────────────────────────────────────────────────────────────────────── */
 /* QUADRO MODALS */
 
 .quadro input {
