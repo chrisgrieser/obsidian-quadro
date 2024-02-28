@@ -2,7 +2,13 @@ import { App, Notice, TFolder } from "obsidian";
 import Quadro from "src/main";
 import { QuadroSettings } from "src/settings/defaults";
 import { ExtendedFuzzySuggester, LIVE_PREVIEW } from "src/utils";
-import { LOOM_COLUMN_TEMPLATE, Loom, LoomColumn, TEMPLATE_LOOM } from "./dataloom-template";
+import {
+	LOOM_COLUMN_TEMPLATE,
+	Loom,
+	LoomColumn,
+	LoomColumnType,
+	TEMPLATE_LOOM,
+} from "./dataloom-template";
 import {
 	ensureCorrectPropertyTypes,
 	getAllExtractionTypes,
@@ -10,8 +16,6 @@ import {
 } from "./extraction-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
-
-type LoomColumnType = "text" | "number" | "checkbox" | "multi-tag" | "date";
 
 function propertyType(app: App, property: string): LoomColumnType {
 	const obsiToDataloomTypeMap: Record<string, LoomColumnType> = {
@@ -127,7 +131,7 @@ export async function aggregateExtractionsCommand(plugin: Quadro): Promise<void>
 	const app = plugin.app;
 
 	// GUARD DataLoom not installed/enabled
-	// INFO the plugin-id of DataLoom is indeed 'notion-like-tables'
+	// INFO yes, the plugin-id of DataLoom is indeed "notion-like-tables"
 	const dataloomEnabled = [...app.plugins.enabledPlugins].includes("notion-like-tables");
 	if (!dataloomEnabled) {
 		const installedPlugins = Object.keys(app.plugins.plugins);

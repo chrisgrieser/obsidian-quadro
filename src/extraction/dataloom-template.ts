@@ -1,4 +1,3 @@
-// INFO uppercase key are placeholders, inserted via the aggregateExtractions cmd
 // DOCS `.loom` format: https://dataloom.xyz/other/loom-file
 // TODO check out later if they have API available https://dataloom.xyz/integrations/api
 //──────────────────────────────────────────────────────────────────────────────
@@ -16,10 +15,13 @@ export type Loom = typeof TEMPLATE_LOOM & {
 	};
 };
 
+export type LoomColumnType = "text" | "number" | "checkbox" | "multi-tag" | "date";
+
 //──────────────────────────────────────────────────────────────────────────────
 
 const pluginVer = "8.15.12";
 
+// INFO uppercase key are placeholders, inserted via the aggregateExtractions cmd
 export const TEMPLATE_LOOM = {
 	pluginVersion: pluginVer,
 	model: {
