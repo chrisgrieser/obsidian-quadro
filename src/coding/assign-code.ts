@@ -46,7 +46,8 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<CodeAssignItem> {
 		const allCodeFiles = codeFolderItems.filter((tFile) => {
 			const isMarkdownFile = tFile instanceof TFile && tFile.extension === "md";
 			const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
-			return isMarkdownFile && !isAlreadyAssigned;
+			const isTemplate = tFile.name === "Template.md";
+			return isMarkdownFile && !isAlreadyAssigned && !isTemplate;
 		}) as TFile[];
 		allCodeFiles.sort(sortFuncs[settings.coding.sortFunc]);
 
