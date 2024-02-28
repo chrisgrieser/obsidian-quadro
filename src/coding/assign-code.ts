@@ -1,9 +1,9 @@
-import { Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
+import { Editor, Notice, TFile } from "obsidian";
 import { ensureBlockId } from "src/block-id";
 import Quadro from "src/main";
 import { QuadroSettings, sortFuncs } from "src/settings/defaults";
 import {
-	SUGGESTER_INSTRUCTIONS,
+	ExtendedFuzzySuggester,
 	ambiguousSelection,
 	currentlyInFolder,
 	safelyGetActiveEditor,
@@ -13,7 +13,7 @@ import { createOneCodeFile } from "./create-new-code-file";
 
 type CodeAssignItem = TFile | "new-code-file";
 
-class SuggesterForCodeAssignment extends FuzzySuggestModal<CodeAssignItem> {
+class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> {
 	editor: Editor;
 	codesInPara: TFile[];
 	dataFile: TFile;
@@ -31,19 +31,17 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<CodeAssignItem> {
 
 		this.setPlaceholder("Select code to assign");
 		this.setInstructions([
-			...SUGGESTER_INSTRUCTIONS,
+			...this.instructions,
 			{ command: "shift ⏎", purpose: "Create new code" },
 		]);
 
-		this.scope.register(["Shift"], "Enter", (evt: KeyboardEvent) => {
+		this.scope.register(["Shift"], "Enter", (evt: KeyboardEvent): void => {
 			// INFO more specific actions like using the selection can be done via
 			// the undocumented `this.chooser`
 			if (evt.isComposing) return;
 			this.onChooseItem("new-code-file");
 			this.close();
 		});
-
-		this.modalEl.addClass("quadro");
 	}
 
 	// code-files, sorted by last use (which is relevant when query is empty)

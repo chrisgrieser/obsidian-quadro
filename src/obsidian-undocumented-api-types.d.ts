@@ -1,6 +1,13 @@
 import "obsidian";
 
 declare module "obsidian" {
+	interface FuzzySuggestModal<T> {
+		chooser?: {
+			useSelectedItem: (evt: KeyboardEvent) => boolean;
+			moveDown: (count: number) => void;
+			moveUp: (count: number) => void;
+		};
+	}
 	interface Workspace {
 		getAdjacentLeafInDirection: (
 			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused

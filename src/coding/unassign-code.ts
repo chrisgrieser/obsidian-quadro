@@ -1,8 +1,8 @@
-import { App, Editor, FuzzySuggestModal, Notice, TFile } from "obsidian";
+import { App, Editor, Notice, TFile } from "obsidian";
 import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/block-id";
 import Quadro from "src/main";
 import {
-	SUGGESTER_INSTRUCTIONS,
+	ExtendedFuzzySuggester,
 	ambiguousSelection,
 	currentlyInFolder,
 	safelyGetActiveEditor,
@@ -22,7 +22,7 @@ export interface DataFileReference {
 //──────────────────────────────────────────────────────────────────────────────
 
 /** suggester used when more than one code is assigned to the paragraph */
-class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
+class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 	codesInParagraph: Code[];
 	dataFile: TFile;
 	editor: Editor;
@@ -36,8 +36,7 @@ class SuggesterForCodeToUnassign extends FuzzySuggestModal<Code> {
 		this.plugin = plugin;
 
 		this.setPlaceholder("Select code to remove from paragraph");
-		this.setInstructions(SUGGESTER_INSTRUCTIONS);
-		this.modalEl.addClass("quadro");
+		this.setInstructions(this.instructions);
 	}
 
 	getItems(): Code[] {

@@ -1,7 +1,7 @@
-import { App, FuzzySuggestModal, Notice, TFolder } from "obsidian";
+import { App, Notice, TFolder } from "obsidian";
 import Quadro from "src/main";
 import { QuadroSettings } from "src/settings/defaults";
-import { LIVE_PREVIEW, SUGGESTER_INSTRUCTIONS } from "src/utils";
+import { ExtendedFuzzySuggester, LIVE_PREVIEW } from "src/utils";
 import { LOOM_COLUMN_TEMPLATE, Loom, LoomColumn, TEMPLATE_LOOM } from "./dataloom-template";
 import {
 	ensureCorrectPropertyTypes,
@@ -33,7 +33,7 @@ function propertyType(app: App, property: string): LoomColumnType {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
+class SuggesterForAggregationCreation extends ExtendedFuzzySuggester<TFolder> {
 	extractionTypes: TFolder[];
 	settings: QuadroSettings;
 
@@ -42,8 +42,7 @@ class SuggesterForAggregationCreation extends FuzzySuggestModal<TFolder> {
 		this.settings = plugin.settings;
 		this.extractionTypes = extractionTypes;
 		this.setPlaceholder("Select extraction type to create aggregation for");
-		this.setInstructions(SUGGESTER_INSTRUCTIONS);
-		this.modalEl.addClass("quadro");
+		this.setInstructions(this.instructions);
 	}
 
 	getItems(): TFolder[] {
