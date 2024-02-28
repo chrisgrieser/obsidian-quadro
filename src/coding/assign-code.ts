@@ -11,7 +11,9 @@ import {
 import { getFullCode } from "./coding-utils";
 import { createOneCodeFile } from "./create-new-code-file";
 
-class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-file"> {
+type CodeAssignItem = TFile | "new-code-file";
+
+class SuggesterForCodeAssignment extends FuzzySuggestModal<CodeAssignItem> {
 	editor: Editor;
 	codesInPara: TFile[];
 	dataFile: TFile;
@@ -36,25 +38,27 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 	}
 
 	// code-files, sorted by last use (which is relevant when query is empty)
-	getItems(): (TFile | "new-code-file")[] {
+	getItems(): CodeAssignItem[] {
 		const settings = this.settings;
-		const allCodeFiles: (TFile | "new-code-file")[] = this.app.vault
-			.getMarkdownFiles()
-			.filter((tFile) => {
-				const isInCodeFolder = tFile.path.startsWith(settings.coding.folder + "/");
-				const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
-				return isInCodeFolder && !isAlreadyAssigned;
-			})
-			.sort(sortFuncs[settings.coding.sortFunc]);
+		const codeFolderItems =
+			this.app.vault.getFolderByPath(settings.coding.folder)?.children || [];
 
-		const insert = this.settings.coding.newCodeItemFirst ? "unshift" : "push";
-		allCodeFiles[insert]("new-code-file");
+		const allCodeFiles = codeFolderItems.filter((tFile) => {
+			const isMarkdownFile = tFile instanceof TFile && tFile.extension === "md";
+			const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
+			return isMarkdownFile && !isAlreadyAssigned;
+		}) as TFile[];
+		allCodeFiles.sort(sortFuncs[settings.coding.sortFunc]);
 
-		return allCodeFiles;
+		const items: CodeAssignItem[] = allCodeFiles;
+		const insertWhere = settings.coding.newCodeItemFirst ? "unshift" : "push";
+		items[insertWhere]("new-code-file");
+
+		return items;
 	}
 
 	// display codename + minigraph, and an extra item for creating a new code file
-	getItemText(item: TFile | "new-code-file"): string {
+	getItemText(item: CodeAssignItem): string {
 		if (item === "new-code-file") return "🞜 Create new code";
 		const fullCode = getFullCode(this.plugin, item);
 
@@ -66,11 +70,11 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<TFile | "new-code-fil
 		return fullCode + miniGraph;
 	}
 
-	onChooseItem(codeFile: TFile | "new-code-file"): void {
-		if (codeFile instanceof TFile) {
-			this.assignCode(codeFile, this.dataFile);
-		} else {
+	onChooseItem(codeFile: CodeAssignItem): void {
+		if (codeFile === "new-code-file") {
 			createOneCodeFile(this.plugin, (codeFile) => this.assignCode(codeFile, this.dataFile));
+		} else {
+			this.assignCode(codeFile, this.dataFile);
 		}
 	}
 
