@@ -21,7 +21,6 @@ export const DEFAULT_SETTINGS = {
 	coding: {
 		folder: "Codes",
 		sortFunc: "last used first" as SortFuncChoices,
-		newCodeItemFirst: false,
 		minigraph: {
 			enabled: true,
 			char: "🬋",

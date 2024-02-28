@@ -46,13 +46,12 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					}),
 			);
 
-		new Setting(containerEl).setName("Methodological decisions").setHeading();
-
 		new Setting(containerEl)
 			.setName("Bar chart")
 			.setDesc(
 				"When selecting a code to assign, display a small bar chart showing the " +
-					"frequency with which the code has been assigned. ",
+					"frequency with which the code has been assigned. " +
+					"(Note that this is a methodological decision, as it may influence your choice of codes.)",
 			)
 			.addToggle((toggle) =>
 				toggle.setValue(settings.coding.minigraph.enabled).onChange(async (value) => {
@@ -62,7 +61,10 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			);
 		new Setting(containerEl)
 			.setName("Sort order")
-			.setDesc("When selecting a code to assign, method by which the codes are ordered.")
+			.setDesc(
+				"When selecting a code to assign, method by which the codes are ordered. " +
+					"(Note that this is a methodological decision, as it may influence your choice of codes.)",
+			)
 			.addDropdown((dropdown) => {
 				for (const key in sortFuncs) {
 					dropdown.addOption(key, key);
@@ -72,15 +74,6 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				});
 			});
-		new Setting(containerEl)
-			.setName("Code creation first")
-			.setDesc('During code assignment, move the "Create new code" option to the top.')
-			.addToggle((toggle) =>
-				toggle.setValue(settings.coding.newCodeItemFirst).onChange(async (value) => {
-					settings.coding.newCodeItemFirst = value;
-					await this.plugin.saveSettings();
-				}),
-			);
 
 		// EXTRACTION
 		containerEl.createEl("h3", { text: "Extraction" });

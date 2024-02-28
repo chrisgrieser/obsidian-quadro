@@ -32,8 +32,17 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<CodeAssignItem> {
 		this.setPlaceholder("Select code to assign");
 		this.setInstructions([
 			...SUGGESTER_INSTRUCTIONS,
-			{ command: 'type "new"', purpose: "Create new code" },
+			{ command: "shift ⏎", purpose: "Create new code" },
 		]);
+
+		this.scope.register(["Shift"], "Enter", (evt: KeyboardEvent) => {
+			// INFO more specific actions like using the selection can be done via
+			// the undocumented `this.chooser`
+			if (evt.isComposing) return;
+			this.onChooseItem("new-code-file");
+			this.close();
+		});
+
 		this.modalEl.addClass("quadro");
 	}
 
@@ -52,8 +61,7 @@ class SuggesterForCodeAssignment extends FuzzySuggestModal<CodeAssignItem> {
 		allCodeFiles.sort(sortFuncs[settings.coding.sortFunc]);
 
 		const items: CodeAssignItem[] = allCodeFiles;
-		const insertWhere = settings.coding.newCodeItemFirst ? "unshift" : "push";
-		items[insertWhere]("new-code-file");
+		items.push("new-code-file");
 
 		return items;
 	}
