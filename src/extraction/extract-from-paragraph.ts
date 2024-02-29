@@ -29,7 +29,6 @@ class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 		this.plugin = plugin;
 
 		this.setPlaceholder("Select extraction type");
-		this.setInstructions(this.instructions);
 	}
 
 	getItems(): TFolder[] {

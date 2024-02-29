@@ -32,6 +32,7 @@ export function safelyGetActiveEditor(app: App): Editor | null {
 
 /** adds navigation via tab & the common instructions */
 export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {
+	cssclass = "quadro";
 	instructions: Instruction[] = [
 		{ command: "↑ ↓", purpose: "Navigate" },
 		{ command: "↹ ", purpose: "Down" },
@@ -39,19 +40,19 @@ export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {
 		{ command: "⏎", purpose: "Select" },
 		{ command: "esc", purpose: "Dismiss" },
 	];
-	cssclass = "quadro";
 
 	constructor(app: App) {
 		super(app);
 		this.modalEl.addClass(this.cssclass);
+		this.setInstructions(this.instructions);
 
 		this.scope.register([], "Tab", (evt: KeyboardEvent): void => {
 			if (evt.isComposing || !this.chooser) return;
-			this.chooser?.moveDown(1);
+			this.chooser.moveDown(1);
 		});
 		this.scope.register(["Shift"], "Tab", (evt: KeyboardEvent): void => {
 			if (evt.isComposing || !this.chooser) return;
-			this.chooser?.moveUp(1);
+			this.chooser.moveUp(1);
 		});
 	}
 }

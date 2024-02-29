@@ -11,7 +11,7 @@ export default class Quadro extends Plugin {
 	monkeyAroundUninstaller: (() => void) | undefined;
 	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
 
-	override async onload() {
+	override async onload(): Promise<void> {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		// COMMANDS
@@ -50,13 +50,10 @@ export default class Quadro extends Plugin {
 		this.addSettingTab(new QuadroSettingsMenu(this));
 	}
 
-	override onunload() {
+	override onunload(): void {
 		console.info(this.manifest.name + " Plugin unloaded.");
 
-		if (this.monkeyAroundUninstaller) {
-			this.monkeyAroundUninstaller();
-			this.monkeyAroundUninstaller = undefined;
-		}
+		if (this.monkeyAroundUninstaller) this.monkeyAroundUninstaller();
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
@@ -64,7 +61,7 @@ export default class Quadro extends Plugin {
 	async loadSettings(): Promise<void> {
 		this.settings = Object.assign(DEFAULT_SETTINGS, await this.loadData());
 	}
-	async saveSettings() {
+	async saveSettings(): Promise<void> {
 		this.saveData(this.settings);
 	}
 }
