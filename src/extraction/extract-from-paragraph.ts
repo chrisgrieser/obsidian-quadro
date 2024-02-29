@@ -7,7 +7,7 @@ import {
 	currentlyInFolder,
 	moveCursorToFirstProperty,
 	openFileInSplitToRight,
-	safelyGetActiveEditor,
+	getActiveEditor,
 } from "src/utils";
 import {
 	bootstrapExtractionTemplate,
@@ -125,7 +125,7 @@ async function extractOfType(
 
 export async function extractFromParagraphCommand(plugin: Quadro): Promise<void> {
 	const { app, settings } = plugin;
-	const editor = safelyGetActiveEditor(app);
+	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
 	if (currentlyInFolder(plugin, "Codes") || currentlyInFolder(plugin, "Extractions")) {

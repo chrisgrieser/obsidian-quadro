@@ -6,7 +6,7 @@ import {
 	ExtendedFuzzySuggester,
 	ambiguousSelection,
 	currentlyInFolder,
-	safelyGetActiveEditor,
+	getActiveEditor,
 } from "../utils";
 import { getFullCode } from "./coding-utils";
 import { createOneCodeFile } from "./create-new-code-file";
@@ -117,7 +117,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 
 export function assignCodeCommand(plugin: Quadro): void {
 	const { app, settings } = plugin;
-	const editor = safelyGetActiveEditor(app);
+	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
 	if (currentlyInFolder(plugin, "Codes") || currentlyInFolder(plugin, "Extractions")) {

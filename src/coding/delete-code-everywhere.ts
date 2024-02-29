@@ -1,7 +1,7 @@
 import { around } from "monkey-around";
 import { App, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
-import { currentlyInFolder, safelyGetActiveEditor } from "src/utils";
+import { currentlyInFolder, getActiveEditor } from "src/utils";
 import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassign-code";
 
 /** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to
@@ -41,7 +41,7 @@ export function trashWatcher(plugin: Quadro): ReturnType<typeof around> {
  * deleting the file, but also all references to it. */
 export async function deleteCodeEverywhereCommand(plugin: Quadro): Promise<void> {
 	const app = plugin.app;
-	const editor = safelyGetActiveEditor(app);
+	const editor = getActiveEditor(app);
 	if (!editor) return;
 	if (!currentlyInFolder(plugin, "Codes")) {
 		new Notice("Must be in Code File to delete the code everywhere.");

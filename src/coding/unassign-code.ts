@@ -5,7 +5,7 @@ import {
 	ExtendedFuzzySuggester,
 	ambiguousSelection,
 	currentlyInFolder,
-	safelyGetActiveEditor,
+	getActiveEditor,
 } from "src/utils";
 import { getFullCode } from "./coding-utils";
 
@@ -158,7 +158,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
  */
 export async function unassignCodeCommand(plugin: Quadro): Promise<void> {
 	const { app, settings } = plugin;
-	const editor = safelyGetActiveEditor(app);
+	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
 	if (currentlyInFolder(plugin, "Codes")) {

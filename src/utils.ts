@@ -3,7 +3,6 @@ import {
 	Editor,
 	FuzzySuggestModal,
 	Instruction,
-	MarkdownView,
 	Notice,
 	OpenViewState,
 	TFile,
@@ -19,15 +18,11 @@ export function currentlyInFolder(plugin: Quadro, type: "Codes" | "Extractions")
 	return Boolean(isInFolder);
 }
 
-/** if not there is no active markdown view, also display a notice */
-export function safelyGetActiveEditor(app: App): Editor | null {
-	// not using `app.workspace.activeEditor` to ignore canvases, tables, etc
-	const view = app.workspace.getActiveViewOfType(MarkdownView);
-	if (!view) {
-		new Notice("No active editor.");
-		return null;
-	}
-	return view.editor;
+/** if not there is no active editor, also display a notice */
+export function getActiveEditor(app: App): Editor | undefined {
+	const editor = app.workspace.activeEditor?.editor;
+	if (!editor) new Notice("No active editor.");
+	return editor;
 }
 
 /** adds navigation via tab & the common instructions */
