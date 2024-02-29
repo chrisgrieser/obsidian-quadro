@@ -88,7 +88,7 @@ export async function bootstrapExtractionTemplate(plugin: Quadro, newExtractionT
 
 	await openFileInSplitToRight(app, templateFile);
 	app.commands.executeCommandById("file-explorer:reveal-active-file");
-	moveCursorToFirstProperty("key");
+	moveCursorToFirstProperty(app, "key");
 }
 
 export function createNewExtractionTypeCommand(plugin: Quadro) {

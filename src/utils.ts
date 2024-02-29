@@ -59,7 +59,10 @@ export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function moveCursorToFirstProperty(type: "key" | "value"): void {
+export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void {
+	// ensure properties in document are available in case user changed it
+	app.vault.setConfig("propertiesInDocument", "visible");
+
 	const selector = `.workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-${type} :is([contenteditable='true'], input)`;
 	const firstProperty = document.querySelector(selector);
 

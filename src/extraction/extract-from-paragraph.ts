@@ -120,7 +120,7 @@ async function extractOfType(
 	// Create EXTRACTION-FILE
 	const extractionFile = await app.vault.create(extractionPath, newFrontmatter);
 	await openFileInSplitToRight(app, extractionFile);
-	moveCursorToFirstProperty("value");
+	moveCursorToFirstProperty(app, "value");
 }
 
 export async function extractFromParagraphCommand(plugin: Quadro): Promise<void> {
