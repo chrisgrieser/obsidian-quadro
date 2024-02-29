@@ -64,7 +64,8 @@ export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void
 	app.vault.setConfig("propertiesInDocument", "visible");
 
 	const selector = `.workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-${type} :is([contenteditable='true'], input)`;
-	const firstProperty = document.querySelector(selector);
+	// biome-ignore lint/correctness/noUndeclaredVariables: `activeDocument` does exist
+	const firstProperty = activeDocument.querySelector(selector);
 
 	// focus the field
 	if (firstProperty instanceof HTMLElement) moveCursorToHthmlElement(firstProperty, 0);

@@ -30,14 +30,10 @@ the style of *Qualitative Content Analysis*.
 		+ [Coding capabilities](#coding-capabilities)
 	* [Extraction](#extraction)
 		+ [How extraction works in Quadro](#how-extraction-works-in-quadro)
-		+ [Aggregate Extractions](#aggregate-extractions)
+		+ [Aggregate extractions](#aggregate-extractions)
 		+ [Extraction capabilities](#extraction-capabilities)
-- [Technical](#technical)
-	* [Requirements](#requirements)
-	* [Installation](#installation)
-	* [Update](#update)
-	* [Bug Reports & Feature Requests](#bug-reports--feature-requests)
-	* [Development](#development)
+- [Installation & update](#installation--update)
+- [Development](#development)
 - [Credits](#credits)
 	* [Acknowledgments](#acknowledgments)
 	* [Recommended citation of this project](#recommended-citation-of-this-project)
@@ -165,9 +161,9 @@ capabilities, to demonstrate the capabilities of *Quadro*.
    that.](https://help.obsidian.md/Getting+started/Create+a+vault#Open+existing+folder))
 
 #### Experienced Obsidian Users
-If you are experienced with Obsidian, you can also [directly install the
-plugin](#installation), though checking out the example vault is nonetheless
-helpful to get a grasp on the capabilities of *Quadro*.
+If you are experienced with Obsidian, you can also directly install the plugin,
+though checking out the example vault is nonetheless helpful to get a grasp on
+the capabilities of *Quadro*.
 
 #### Using a Separate Vault
 It is recommended to create a separate vault for data analysis and
@@ -385,7 +381,7 @@ All in all, the underlying folder structure for extractions looks like this:
          └── …
 ```
 
-#### Aggregate Extractions
+#### Aggregate extractions
 Using the `Aggregate extractions` command creates a table that can be sorted,
 filtered, searched, and modified:
 
@@ -414,61 +410,23 @@ filtered, searched, and modified:
   Obsidian. Using the Windows Explorer or macOS' Finder does not trigger the
   automatic updating of references, meaning a loss of information.
 
-## Technical
+## Installation & update
+**Requirements:** *Quadro* requires at least Obsidian **version 1.5.8**. The *Aggregate
+extractions* command requires the [DataLoom
+plugin](https://obsidian.md/plugins?id=notion-like-tables).
 
-### Requirements
-*Quadro* requires at least **Obsidian version 1.5.8**.
+**Installation:** [Install in Obsidian](https://obsidian.md/plugins?id=quadro)
 
-The *Aggregate Extractions* command requires the [DataLoom plugin](https://obsidian.md/plugins?id=notion-like-tables).
-
-### Installation
-**Manual**
-1. [Download the latest release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest/download/obsidian-quadro.zip).
-2. Extract the `.zip` file into the folder
-   `{your-vault-path}/.obsidian/plugins/quadro`. (Note that on macOS,
-   `.obsidian` is a hidden folder. You can make hidden folders visible by
-   pressing `cmd+shift+.` in the Finder.)
-3. In Obsidian, go to `Settings` → `Community plugins`. Press the Refresh
-   button.
-4. Look for a new entry `Quadro` in the plugin list. Enable the plugin by
-   checking the box.
-
-**BRAT (Beta Reviewers Auto-update Tester)**  
-Alternatively, if you are already familiar with the Obsidian Ecosystem, you can
-also install the plugin via [BRAT](https://github.com/TfTHacker/obsidian42-brat).
-
-**Obsidian Community Plugin Store**  
-Once published in the Obsidian Community Plugin Store, *Quadro* is going to be
-available in Obsidian's Plugin Browser via: `Settings` → `Community plugins` →
-`Browse` → Search for *"Quadro"*
-
-### Update
-**Manual**
-1. Close Obsidian.
-2. Download the `.zip` file from the [latest
-   release](https://github.com/chrisgrieser/obsidian-quadro/releases/latest).
-3. Extract the `.zip` file into the
-   `{your-vault-path}/.obsidian/plugins/quadro`, replacing the existing files in
-   that folder.
-4. Launch Obsidian again.
-
-**BRAT**  
-If you have added the plugin via *BRAT*, it automatically checks for new
-updates every time you start Obsidian and automatically updates *Quadro* if there
-is a new version available.
-
-**Obsidian Community Plugin Store**  
-Once published in the Obsidian Community Plugin Store, you can update *Quadro*
-(and all other plugins you have installed) via: `Settings` → `Community plugins`
-→ `Check for updates` → `Update All`.
-
-### Bug Reports & Feature Requests
+**Update:** In Obsidian, go to `Settings` → `Community plugins`
+→ `Check for updates` → `Update all`.
+>
+**Bug Reports & Feature Requests**  
 - For bug reports or feature requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).
 - For questions and general discussion about *Quadro*, use the [GitHub
   Discussion
   Forum](https://github.com/chrisgrieser/obsidian-quadro/discussions).
 
-### Development
+## Development
 
 ```bash
 git clone "git@github.com:chrisgrieser/obsidian-quadro.git"
@@ -489,10 +447,9 @@ make check-all # runs the pre-commit hook (without committing)
 ## Credits
 
 ### Acknowledgments
-- [Ryan Murphy](https://fulcra.design/About/) who gave me the idea for this
-  project with a [blogpost of
-  his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
-- [Grit Laudel](http://www.laudel.info/) who provided sample interview data.
+[Ryan Murphy](https://fulcra.design/About/) who gave me the idea for this
+project with a [blogpost of
+his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
 
 ### Recommended citation of this project
 Please cite this software project as (APA):
