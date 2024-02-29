@@ -411,19 +411,14 @@ filtered, searched, and modified:
   automatic updating of references, meaning a loss of information.
 
 ## Installation & update
-**Requirements:** *Quadro* requires at least Obsidian **version 1.5.8**. The *Aggregate
-extractions* command requires the [DataLoom
-plugin](https://obsidian.md/plugins?id=notion-like-tables).
-
-**Installation:** [Install in Obsidian](https://obsidian.md/plugins?id=quadro)
-
-**Update:** In Obsidian, go to `Settings` → `Community plugins`
-→ `Check for updates` → `Update all`.
->
-**Bug Reports & Feature Requests**  
-- For bug reports or feature requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).
-- For questions and general discussion about *Quadro*, use the [GitHub
-  Discussion
+- **Requirements:** *Quadro* requires at least Obsidian **version 1.5.8**. The
+  *Aggregate extractions* command requires the [DataLoom
+  plugin](https://obsidian.md/plugins?id=notion-like-tables).
+- **Installation:** [Install in Obsidian](https://obsidian.md/plugins?id=quadro)
+- **Update:** In Obsidian, go to `Settings` → `Community plugins` → `Check for
+  updates` → `Update all`.
+- **Bug reports & feature requests:** [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).
+- **Questions & general discussion** [GitHub Discussion
   Forum](https://github.com/chrisgrieser/obsidian-quadro/discussions).
 
 ## Development
@@ -447,7 +442,7 @@ make check-all # runs the pre-commit hook (without committing)
 ## Credits
 
 ### Acknowledgments
-[Ryan Murphy](https://fulcra.design/About/) who gave me the idea for this
+Thanks to [Ryan Murphy](https://fulcra.design/About/) who gave me the idea for this
 project with a [blogpost of
 his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
 

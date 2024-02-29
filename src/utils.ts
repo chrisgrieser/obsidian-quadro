@@ -114,7 +114,7 @@ export function ambiguousSelection(editor: Editor): boolean {
 	const multipleSelections = editor.listSelections().length > 1;
 	if (multilineSelection || multipleSelections) {
 		new Notice(
-			"Paragraph not unambiguous since multiple lines are selected.\n\n" +
+			"Paragraph ambiguous since multiple lines are selected.\n\n" +
 				"Unselect, move your cursor to the paragraph you want to affect, and use the command again.",
 			5000,
 		);
