@@ -81,7 +81,8 @@ function moveCursorToHthmlElement(elem: HTMLElement, pos: number): void {
 		elem.setSelectionRange(pos, pos);
 		if (isNumber) elem.setAttribute("type", "number");
 	} else {
-		const range = document.createRange();
+		// biome-ignore lint/correctness/noUndeclaredVariables: `activeDocument` does exist
+		const range = activeDocument.createRange();
 		const sel = window.getSelection();
 		range.setStart(elem, pos);
 		range.collapse(true);
