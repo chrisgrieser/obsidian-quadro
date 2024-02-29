@@ -64,6 +64,8 @@ export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void
 	app.vault.setConfig("propertiesInDocument", "visible");
 
 	const selector = `.workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-${type} :is([contenteditable='true'], input)`;
+
+	// `activeDocument` instead of `document` ensures it works in popup windows as well
 	// biome-ignore lint/correctness/noUndeclaredVariables: `activeDocument` does exist
 	const firstProperty = activeDocument.querySelector(selector);
 
