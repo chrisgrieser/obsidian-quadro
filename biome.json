@@ -11,9 +11,6 @@
 	"javascript": {
 		"globals": ["activeDocument"]
 	},
-	"organizeImports": {
-		"enabled": false
-	},
 	"formatter": {
 		"lineWidth": 100,
 		"indentStyle": "tab",

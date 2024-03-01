@@ -1,6 +1,7 @@
 import { Editor, Notice, TFile, TFolder, getFrontMatterInfo } from "obsidian";
-import { ensureBlockId } from "src/shared/block-id";
 import Quadro from "src/main";
+import { ensureBlockId } from "src/shared/block-id";
+import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	ambiguousSelection,
 	currentlyInFolder,
@@ -8,7 +9,6 @@ import {
 	moveCursorToFirstProperty,
 	openFileInSplitToRight,
 } from "src/shared/utils";
-import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	bootstrapExtractionTemplate,
 	bootstrapExtractionTypeFolder,

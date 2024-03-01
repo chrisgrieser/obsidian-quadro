@@ -1,9 +1,9 @@
 import { Editor, Notice, TFile } from "obsidian";
-import { ensureBlockId } from "src/shared/block-id";
 import Quadro from "src/main";
 import { sortFuncs } from "src/settings/defaults";
-import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "../shared/utils";
+import { ensureBlockId } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "../shared/utils";
 import { getFullCode } from "./coding-utils";
 import { createOneCodeFile } from "./create-new-code-file";
 

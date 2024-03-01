@@ -1,8 +1,8 @@
 import { App, Editor, Notice, TFile } from "obsidian";
-import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/block-id";
 import Quadro from "src/main";
-import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
+import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
 import { getFullCode } from "./coding-utils";
 
 interface Code {
