@@ -36,7 +36,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			.setName("Properties without suggestions")
 			.setDesc(
 				"List of properties, one per line, for which suggestions should be surppressed. " +
-					"This is useful for fields where are intended for unique content that is not " +
+					"This is useful for dimensions which are intended for unique content that is not " +
 					"going to be repeated in other Code Files or Extraction Files.",
 			)
 			.addTextArea((textarea) =>
