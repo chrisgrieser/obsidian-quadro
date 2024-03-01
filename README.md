@@ -34,6 +34,8 @@ the style of *Qualitative Content Analysis*.
 		+ [Extraction capabilities](#extraction-capabilities)
 - [Installation & update](#installation--update)
 - [Development](#development)
+	* [Contribute](#contribute)
+	* [Cssclasses](#cssclasses)
 - [Credits](#credits)
 	* [Acknowledgments](#acknowledgments)
 	* [Recommended citation of this project](#recommended-citation-of-this-project)
@@ -441,8 +443,9 @@ make check-all # runs the pre-commit hook (without committing)
 > the checks.
 
 ### Cssclasses
-Every single modal, prompt, settings-tab or button added by this plugin has
-the class `.quadro`.
+Every single modal, prompt, settings-tab, or button added by this plugin has
+the class `.quadro`, so theme designers can easily change the appearance of this
+plugin.
 
 <!-- vale Google.FirstPerson = NO -->
 ## Credits
