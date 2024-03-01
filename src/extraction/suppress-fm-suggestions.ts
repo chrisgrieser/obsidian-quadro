@@ -6,14 +6,12 @@ import Quadro from "src/main";
 // }
 
 export function suppressCertainFrontmatterSuggestions(plugin: Quadro): void {
-	const fields = plugin.settings.suppressSuggestionFields || [];
-	const fieldSelector: string[] = [];
-	for (const field of fields) {
-		fieldSelector.push(`[data-property-key="${field}"]`);
-	}
+	const fieldSelector = (plugin.settings.suppressSuggestionFields || [])
+		.map((field) => `[data-property-key="${field}"]`)
+		.join(", ");
 
 	const cssToApply =
-		`.app-container:has(.metadata-property:is(${fieldSelector.join(", ")}) ` +
+		`.app-container:has(.metadata-property:is(${fieldSelector}) ` +
 		":is(.metadata-input-longtext, .multi-select-container):focus-within) ~ .suggestion-container" +
 		"{ display: none; }";
 
