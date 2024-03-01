@@ -35,6 +35,7 @@ export const DEFAULT_SETTINGS = {
 			enabled: true,
 		},
 	},
+	suppressSuggestionFields: [] as string[],
 	analysis: {
 		folder: "Analysis",
 	},

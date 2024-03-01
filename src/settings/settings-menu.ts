@@ -1,4 +1,5 @@
 import { PluginSettingTab, Setting, normalizePath } from "obsidian";
+import { suppressCertainFrontmatterSuggestions } from "src/extraction/suppress-fm-suggestions";
 import Quadro from "src/main";
 import {
 	CsvSeparatorChoices,
@@ -31,10 +32,35 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		containerEl.empty();
 		const settings = this.plugin.settings;
 
+		new Setting(containerEl)
+			.setName("Properties without suggestions")
+			.setDesc(
+				"List of properties, one per line, for which suggestions should be surppressed. " +
+					"This is useful for fields where are intended for unique content that is not " +
+					"going to be repeated in other Code Files or Extraction Files.",
+			)
+			.addTextArea((textarea) =>
+				textarea
+					.setPlaceholder("One property per line")
+					.setValue(settings.suppressSuggestionFields?.join("\n") || "")
+					.onChange(async (value) => {
+						const fields = value
+							.split("\n")
+							.map((line) => line.trim())
+							.filter((line) => line !== "");
+
+						settings.suppressSuggestionFields = fields;
+						await this.plugin.saveSettings();
+
+						suppressCertainFrontmatterSuggestions(this.plugin);
+					}),
+			)
+			.settingEl.addClass("quadro-property-list");
+
 		// CODING
 		containerEl.createEl("h3", { text: "Coding" });
 		new Setting(containerEl)
-			.setName("Code Folder")
+			.setName("Code folder")
 			.setDesc("Location where the Code Files are stored.")
 			.addText((text) =>
 				text
@@ -79,7 +105,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		containerEl.createEl("h3", { text: "Extraction" });
 
 		new Setting(containerEl)
-			.setName("Extraction Folder")
+			.setName("Extraction folder")
 			.setDesc("Location where the Extraction Files are stored.")
 			.addText((text) =>
 				text
@@ -92,7 +118,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName("Extraction Count")
+			.setName("Extraction count")
 			.setDesc(
 				"When selecting an extraction type, show a count of how often the type has been extracted.",
 			)
@@ -124,7 +150,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		// containerEl.createEl("h4", { text: "Analysis" });
 
 		new Setting(containerEl)
-			.setName("Analysis Folder")
+			.setName("Analysis folder")
 			.setDesc("Location where aggregations of extractions are stored.")
 			.addText((text) =>
 				text

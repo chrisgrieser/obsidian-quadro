@@ -87,17 +87,22 @@ body .metadata-container {
 	width: 100%;
 }
 
+.modal.quadro button[disabled] {
+	opacity: 0.5;
+}
+
 .quadro-bulk-code-creation .setting-item-info {
 	display: none;
 }
 
-.modal.quadro textarea {
+.quadro-bulk-code-creation textarea {
 	width: 100%;
 	min-height: 10rem;
 }
 
-.modal.quadro button[disabled] {
-	opacity: 0.5;
+.quadro-property-list textarea {
+	min-height: 5rem;
+	min-width: 15rem;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
