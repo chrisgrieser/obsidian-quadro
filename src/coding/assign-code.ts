@@ -28,8 +28,8 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 			// INFO more specific actions like using the selection can be done via
 			// the undocumented `this.chooser`
 			if (evt.isComposing) return;
+			this.close(); // before `onChooseItem`, otherwise results in some weird race conditions
 			this.onChooseItem("new-code-file");
-			this.close();
 		});
 	}
 
