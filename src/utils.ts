@@ -61,7 +61,6 @@ export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void
 	const selector = `.workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-${type} :is([contenteditable='true'], input)`;
 
 	// `activeDocument` instead of `document` ensures it works in popup windows as well
-	// biome-ignore lint/correctness/noUndeclaredVariables: `activeDocument` does exist
 	const firstProperty = activeDocument.querySelector(selector);
 
 	// focus the field
@@ -81,7 +80,6 @@ function moveCursorToHthmlElement(elem: HTMLElement, pos: number): void {
 		elem.setSelectionRange(pos, pos);
 		if (isNumber) elem.setAttribute("type", "number");
 	} else {
-		// biome-ignore lint/correctness/noUndeclaredVariables: `activeDocument` does exist
 		const range = activeDocument.createRange();
 		const sel = window.getSelection();
 		range.setStart(elem, pos);
