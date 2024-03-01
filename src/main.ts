@@ -10,13 +10,16 @@ export default class Quadro extends Plugin {
 	statusbar = this.addStatusBarItem();
 	monkeyAroundUninstaller: (() => void) | undefined;
 	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
+	cssclass = "quadro";
 
 	override async onload(): Promise<void> {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		// COMMANDS
 		for (const cmd of [...CODING_COMMANDS, ...EXTRACTION_COMMANDS]) {
-			this.addRibbonIcon(cmd.ribbonIcon, `Quadro: ${cmd.name}`, () => cmd.func(this));
+			const el = this.addRibbonIcon(cmd.ribbonIcon, `Quadro: ${cmd.name}`, () => cmd.func(this));
+			el.addClass(this.cssclass);
+
 			const cmdObj: Command = {
 				id: cmd.id,
 				name: cmd.name,
@@ -35,6 +38,7 @@ export default class Quadro extends Plugin {
 		}
 
 		// STATUSBAR
+		this.statusbar.addClass(this.cssclass);
 		updateStatusbar(this);
 		this.registerEvent(this.app.workspace.on("file-open", () => updateStatusbar(this)));
 		// Instead of updating the statusbar after every action, update it after

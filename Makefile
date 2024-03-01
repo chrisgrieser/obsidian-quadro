@@ -14,7 +14,7 @@ check-all:
 	zsh ./.githooks/pre-commit
 
 check-tsc:
-	npx tsc --noEmit --skipLibCheck --strict
+	npx tsc --noEmit --skipLibCheck --strict && echo "Typescript OK"
 
 release:
 	zsh ./.release.sh

@@ -1,6 +1,6 @@
 import { Notice } from "obsidian";
 import Quadro from "src/main";
-import { currentlyInFolder } from "src/utils";
+import { currentlyInFolder } from "src/shared/utils";
 
 // INFO
 // Wrap existing Obsidian command to make it more accessible for users new to

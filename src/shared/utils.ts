@@ -1,13 +1,5 @@
-import {
-	App,
-	Editor,
-	FuzzySuggestModal,
-	Instruction,
-	Notice,
-	OpenViewState,
-	TFile,
-} from "obsidian";
-import Quadro from "./main";
+import { App, Editor, Notice, OpenViewState, TFile } from "obsidian";
+import Quadro from "src/main";
 
 export function currentlyInFolder(plugin: Quadro, type: "Codes" | "Extractions"): boolean {
 	const { app, settings } = plugin;
@@ -23,33 +15,6 @@ export function getActiveEditor(app: App): Editor | undefined {
 	const editor = app.workspace.activeEditor?.editor;
 	if (!editor) new Notice("No active editor.");
 	return editor;
-}
-
-/** adds navigation via tab & the common instructions */
-export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {
-	cssclass = "quadro";
-	instructions: Instruction[] = [
-		{ command: "↑ ↓", purpose: "Navigate" },
-		{ command: "↹ ", purpose: "Down" },
-		{ command: "shift ↹ ", purpose: "Up" },
-		{ command: "⏎", purpose: "Select" },
-		{ command: "esc", purpose: "Dismiss" },
-	];
-
-	constructor(app: App) {
-		super(app);
-		this.modalEl.addClass(this.cssclass);
-		this.setInstructions(this.instructions);
-
-		this.scope.register([], "Tab", (evt: KeyboardEvent): void => {
-			if (evt.isComposing || !this.chooser) return;
-			this.chooser.moveDown(1);
-		});
-		this.scope.register(["Shift"], "Tab", (evt: KeyboardEvent): void => {
-			if (evt.isComposing || !this.chooser) return;
-			this.chooser.moveUp(1);
-		});
-	}
 }
 
 //──────────────────────────────────────────────────────────────────────────────

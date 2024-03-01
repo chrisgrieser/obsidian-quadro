@@ -103,6 +103,6 @@ body .metadata-container {
 /* ────────────────────────────────────────────────────────────────────────── */
 /* QUADRO RIBBON BUTTONS */
 
-.side-dock-ribbon-action[aria-label^="Quadro: "] {
+.quadro.side-dock-ribbon-action {
 	border: 1px solid var(--text-faint);
 }

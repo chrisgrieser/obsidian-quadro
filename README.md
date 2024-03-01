@@ -423,6 +423,8 @@ filtered, searched, and modified:
 
 ## Development
 
+### Contribute
+
 ```bash
 git clone "git@github.com:chrisgrieser/obsidian-quadro.git"
 make init
@@ -437,6 +439,10 @@ make check-all # runs the pre-commit hook (without committing)
 > [!NOTE]
 > This repo uses a pre-commit hook, which prevents commits that do not pass all
 > the checks.
+
+### Cssclasses
+Every single modal, prompt, settings-tab or button added by this plugin has
+the class `.quadro`.
 
 <!-- vale Google.FirstPerson = NO -->
 ## Credits

@@ -1,12 +1,8 @@
 import { App, Editor, Notice, TFile } from "obsidian";
-import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/block-id";
+import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/block-id";
 import Quadro from "src/main";
-import {
-	ExtendedFuzzySuggester,
-	ambiguousSelection,
-	currentlyInFolder,
-	getActiveEditor,
-} from "src/utils";
+import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
+import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getFullCode } from "./coding-utils";
 
 interface Code {
@@ -26,10 +22,9 @@ class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 	codesInParagraph: Code[];
 	dataFile: TFile;
 	editor: Editor;
-	plugin: Quadro;
 
 	constructor(plugin: Quadro, editor: Editor, dataFile: TFile, codes: Code[]) {
-		super(plugin.app);
+		super(plugin);
 		this.codesInParagraph = codes;
 		this.dataFile = dataFile;
 		this.editor = editor;

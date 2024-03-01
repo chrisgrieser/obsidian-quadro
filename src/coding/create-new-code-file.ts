@@ -1,26 +1,16 @@
-import {
-	App,
-	ButtonComponent,
-	Modal,
-	Notice,
-	Setting,
-	TFile,
-	getFrontMatterInfo,
-	normalizePath,
-} from "obsidian";
+import { Notice, Setting, TFile, getFrontMatterInfo, normalizePath } from "obsidian";
 import Quadro from "src/main";
+import { ExtendedInputModal } from "src/shared/modals";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
-class InputForOneFile extends Modal {
+class InputForOneFile extends ExtendedInputModal {
 	fullCode = "";
 	codeDesc = "";
 	onSubmit: (fullCode: string, codeDesc: string) => void;
-	confirmationButton: ButtonComponent | null = null;
 
-	constructor(app: App, onSubmit: (fullCode: string, codeDesc: string) => void) {
-		super(app);
+	constructor(plugin: Quadro, onSubmit: (fullCode: string, codeDesc: string) => void) {
+		super(plugin);
 		this.onSubmit = onSubmit;
-		this.modalEl.addClass("quadro");
 	}
 
 	override onOpen() {
@@ -67,21 +57,15 @@ class InputForOneFile extends Modal {
 			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}
-	override onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
-	}
 }
 
-class InputForMultipleFiles extends Modal {
+class InputForMultipleFiles extends ExtendedInputModal {
 	input = "";
 	onSubmit: (fullCode: string) => void;
-	confirmationButton: ButtonComponent | null = null;
 
-	constructor(app: App, onSubmit: (fullCode: string) => void) {
-		super(app);
+	constructor(plugin: Quadro, onSubmit: (fullCode: string) => void) {
+		super(plugin);
 		this.onSubmit = onSubmit;
-		this.modalEl.addClass("quadro");
 	}
 
 	override onOpen() {
@@ -118,10 +102,6 @@ class InputForMultipleFiles extends Modal {
 					});
 			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
-	}
-	override onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
 	}
 }
 
@@ -178,7 +158,7 @@ async function createCodeFile(
 
 /** Prompts for name of new file, then runs callback on it. */
 export function createOneCodeFile(plugin: Quadro, callback: (codeFile: TFile) => void): void {
-	new InputForOneFile(plugin.app, async (fullCode, codeDesc) => {
+	new InputForOneFile(plugin, async (fullCode, codeDesc) => {
 		const codeFile = await createCodeFile(plugin, fullCode, codeDesc);
 		if (codeFile) {
 			new Notice(`Created new code file: "${fullCode}"`);
@@ -190,7 +170,7 @@ export function createOneCodeFile(plugin: Quadro, callback: (codeFile: TFile) =>
 }
 
 export async function bulkCreateCodeFilesCommand(plugin: Quadro): Promise<void> {
-	new InputForMultipleFiles(plugin.app, async (userInput) => {
+	new InputForMultipleFiles(plugin, async (userInput) => {
 		let newFiles = 0;
 		const failedFiles: string[] = [];
 		for (const fullCode of userInput.split("\n")) {

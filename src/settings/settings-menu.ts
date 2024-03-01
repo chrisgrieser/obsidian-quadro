@@ -18,7 +18,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 	constructor(plugin: Quadro) {
 		super(plugin.app, plugin);
 		this.plugin = plugin;
-		this.containerEl.addClass("quadro");
+		this.containerEl.addClass(plugin.cssclass);
 	}
 
 	// INFO Obsidian Style Guide prescribes sentence case. However, we deviate

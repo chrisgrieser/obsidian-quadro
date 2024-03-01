@@ -1,7 +1,7 @@
 import { App, Notice, TFolder } from "obsidian";
 import Quadro from "src/main";
-import { QuadroSettings } from "src/settings/defaults";
-import { ExtendedFuzzySuggester, LIVE_PREVIEW } from "src/utils";
+import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { LIVE_PREVIEW } from "src/shared/utils";
 import {
 	LOOM_COLUMN_TEMPLATE,
 	Loom,
@@ -39,10 +39,9 @@ function propertyType(app: App, property: string): LoomColumnType {
 
 class SuggesterForAggregationCreation extends ExtendedFuzzySuggester<TFolder> {
 	extractionTypes: TFolder[];
-	settings: QuadroSettings;
 
 	constructor(plugin: Quadro, extractionTypes: TFolder[]) {
-		super(plugin.app);
+		super(plugin);
 		this.settings = plugin.settings;
 		this.extractionTypes = extractionTypes;
 

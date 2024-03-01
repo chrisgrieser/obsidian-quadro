@@ -1,16 +1,15 @@
-import { App, ButtonComponent, Modal, Notice, Setting, TFolder, normalizePath } from "obsidian";
+import { Notice, Setting, TFolder, normalizePath } from "obsidian";
 import Quadro from "src/main";
-import { moveCursorToFirstProperty, openFileInSplitToRight } from "src/utils";
+import { ExtendedInputModal } from "src/shared/modals";
+import { moveCursorToFirstProperty, openFileInSplitToRight } from "src/shared/utils";
 
-class InputForNewExtractionType extends Modal {
+class InputForNewExtractionType extends ExtendedInputModal {
 	onSubmit: (nameOfNewType: string) => void;
 	nameOfNewType = "";
-	confirmationButton: ButtonComponent | null = null;
 
-	constructor(app: App, onSubmit: (nameOfNewType: string) => void) {
-		super(app);
+	constructor(plugin: Quadro, onSubmit: (nameOfNewType: string) => void) {
+		super(plugin);
 		this.onSubmit = onSubmit;
-		this.modalEl.addClass("quadro");
 	}
 
 	override onOpen() {
@@ -39,17 +38,12 @@ class InputForNewExtractionType extends Modal {
 			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}
-	override onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
-	}
 }
 
 export function bootstrapExtractionTypeFolder(plugin: Quadro) {
 	const { app, settings } = plugin;
 
-	new InputForNewExtractionType(app, async (nameOfNewType) => {
-		// VALIDATE
+	new InputForNewExtractionType(plugin, async (nameOfNewType) => {
 		nameOfNewType = nameOfNewType
 			.replace(/\.md$/, "") // no extension, in case user misunderstood
 			.replaceAll("/", "_") // no groups allowed for extraction types

@@ -1,14 +1,14 @@
 import { Editor, Notice, TFile, TFolder, getFrontMatterInfo } from "obsidian";
-import { ensureBlockId } from "src/block-id";
+import { ensureBlockId } from "src/shared/block-id";
 import Quadro from "src/main";
 import {
-	ExtendedFuzzySuggester,
 	ambiguousSelection,
 	currentlyInFolder,
+	getActiveEditor,
 	moveCursorToFirstProperty,
 	openFileInSplitToRight,
-	getActiveEditor,
-} from "src/utils";
+} from "src/shared/utils";
+import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	bootstrapExtractionTemplate,
 	bootstrapExtractionTypeFolder,
@@ -19,14 +19,12 @@ class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 	extractionTypes: TFolder[];
 	editor: Editor;
 	dataFile: TFile;
-	plugin: Quadro;
 
 	constructor(plugin: Quadro, editor: Editor, extractionTypes: TFolder[], dataFile: TFile) {
-		super(plugin.app);
+		super(plugin);
 		this.extractionTypes = extractionTypes;
 		this.editor = editor;
 		this.dataFile = dataFile;
-		this.plugin = plugin;
 
 		this.setPlaceholder("Select extraction type");
 	}

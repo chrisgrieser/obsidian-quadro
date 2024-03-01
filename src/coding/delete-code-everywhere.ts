@@ -1,7 +1,7 @@
 import { around } from "monkey-around";
 import { App, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
-import { currentlyInFolder, getActiveEditor } from "src/utils";
+import { currentlyInFolder, getActiveEditor } from "src/shared/utils";
 import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassign-code";
 
 /** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to

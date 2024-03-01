@@ -1,13 +1,9 @@
 import { Editor, Notice, TFile } from "obsidian";
-import { ensureBlockId } from "src/block-id";
+import { ensureBlockId } from "src/shared/block-id";
 import Quadro from "src/main";
-import { QuadroSettings, sortFuncs } from "src/settings/defaults";
-import {
-	ExtendedFuzzySuggester,
-	ambiguousSelection,
-	currentlyInFolder,
-	getActiveEditor,
-} from "../utils";
+import { sortFuncs } from "src/settings/defaults";
+import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "../shared/utils";
+import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getFullCode } from "./coding-utils";
 import { createOneCodeFile } from "./create-new-code-file";
 
@@ -17,15 +13,10 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 	editor: Editor;
 	codesInPara: TFile[];
 	dataFile: TFile;
-	settings: QuadroSettings;
-	plugin: Quadro;
 
 	constructor(plugin: Quadro, editor: Editor, codesInPara: TFile[], dataFile: TFile) {
-		super(plugin.app);
-		this.plugin = plugin;
+		super(plugin);
 		this.editor = editor;
-		this.app = plugin.app;
-		this.settings = plugin.settings;
 		this.codesInPara = codesInPara;
 		this.dataFile = dataFile;
 

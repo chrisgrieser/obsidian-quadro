@@ -1,6 +1,6 @@
 import { TFolder } from "obsidian";
 import Quadro from "./main";
-import { currentlyInFolder } from "./utils";
+import { currentlyInFolder } from "./shared/utils";
 
 export function updateStatusbar(plugin: Quadro): void {
 	const { app, statusbar, settings } = plugin;
