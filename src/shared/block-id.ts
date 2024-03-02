@@ -1,19 +1,14 @@
-import { TFile } from "obsidian";
-
-function randomDigits(digits: number): string {
-	return Math.floor(Math.random() * 10 ** digits)
-		.toString()
-		.padStart(digits, "0");
-}
-
-const allBlockIdsRegex = /\^[\w-]+(?=\n|$)/g;
-
+import moment from "moment";
+// DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note
 //──────────────────────────────────────────────────────────────────────────────
 
+// INFO blockIds may only contain letters, numbers, and a hyphen
 export const BLOCKID_REGEX = /\^[\w-]+$/;
 
 // group 1: linkpath, group 2: blockID
 export const EMBEDDED_BLOCKLINK_REGEX = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
+
+//──────────────────────────────────────────────────────────────────────────────
 
 /** Given a line, returns the blockID and the line without the blockID. If the
  * blockID does not exist, a random 6-digit ID is created. A random ID is
@@ -21,7 +16,6 @@ export const EMBEDDED_BLOCKLINK_REGEX = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
  * will be deleted due to the same blockID being used multiple times in
  * different files. */
 export async function ensureBlockId(
-	tFile: TFile,
 	lineText: string,
 ): Promise<{ blockId: string; lineWithoutId: string }> {
 	const [blockIdOfLine] = lineText.match(BLOCKID_REGEX) || [];
@@ -33,11 +27,6 @@ export async function ensureBlockId(
 	}
 
 	// line has no blockID
-	const fullText = await tFile.vault.cachedRead(tFile);
-	const blockIdsInText: string[] = fullText.match(allBlockIdsRegex) || [];
-	let newId: string;
-	do {
-		newId = "^id-" + randomDigits(6);
-	} while (blockIdsInText.includes(newId));
+	const newId = "^id-" + moment().format("YYMMDD-HHmmss");
 	return { blockId: newId, lineWithoutId: lineText.trim() };
 }

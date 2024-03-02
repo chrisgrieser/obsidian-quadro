@@ -214,26 +214,28 @@ ID are appended to the paragraph:
 Filename: ./Data/Interview 1.md
 
 Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
-consectetur cupidatat. [[MyCode]] ^id42
+consectetur cupidatat. [[MyCode]] ^id-240302-124012
 ```
 
 **Code Files**
 All markdown files in the folder `{vault-root}/Codes` are considered code
-files.
+files. (The folder is configurable.)
 
-When a code is assigned, a link back to the original location in the data file
-is appended to the code file.
+When a code is assigned, a link back to the original location in the Data File
+is appended to the code file. That link has the format
+`[[{filename-datafile}#^{id-of-paragraph}]]`, with the `id` being a time
+stamp.[^1]
 
 ```md
 Filepath: ./Codes/MyCode.md
 
-![[Interview 1#^id42]]
+![[Interview 1#^id-240302-124012]]
 ```
 
 As the link is a so-called [embedded
 link](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note),
-Obsidian renders the respective paragraph of the data file inside the code
-file:
+Obsidian renders the respective paragraph of the Data File inside the Code
+File:
 
 ![Embedded block link in reading & source mode](./assets/embedded-blocklink_reading-and-source-mode.png)
 
@@ -285,13 +287,13 @@ representing codes):
 - `mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
   customized by searching in the Obsidian hotkey settings for the name of the
   respective action.
+- When there is a file `Codes/Template.md`, its frontmatter is used as template
+  for any newly created code.
 - Splitting and merging Code Files is not yet supported. Doing so with any other
   method (such as a plugin) is likely going to result in broken references.
 - ⚠️ Renaming or moving Code/Data Files should be done from within Obsidian.
   Using the Windows Explorer or macOS' Finder does not trigger the automatic
   updating of references, meaning a loss of information.
-- When there is a file `Codes/Template.md`, its frontmatter is used as template
-  for any newly created code.
 
 ### Extraction
 
@@ -310,7 +312,7 @@ unique ID are appended to the paragraph, just like with coding:
 Filename: ./Data/Interview 2.md
 
 Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
-consectetur cupidatat. [[Career Visions/1]] ^id-481516
+consectetur cupidatat. [[Career Visions/1]] ^id-240302-124012
 ```
 
 **Extraction Files**
@@ -343,7 +345,7 @@ extraction date: 2024-02-12
 extraction source: "[[Field Notes 3]]"
 ---
 
-**Paragraph extracted from:** ![[Field Notes 3#^id-42]]
+**Paragraph extracted from:** ![[Field Notes 3#^id-240302-124012]]
 ```
 
 **Extraction Templates (Extraction Types)**
@@ -488,3 +490,9 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 <img height='36' style='border:0px;height:36px;'
 src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at
 ko-fi.com'/></a>
+
+[^1]: Note that the timestamp is assigned the *first time* the paragraph is
+	assigned a code. The timestamp is not updated when the paragraph you remove
+	the code or assign another code, since the paragraph ID needs to be
+	immutable to ensure reliable references to it. Think of the timestamp as
+	"first time the paragraph a code has been assigned".

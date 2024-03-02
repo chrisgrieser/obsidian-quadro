@@ -90,7 +90,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 			this.editor.replaceSelection(highlightAdded);
 			lineText = this.editor.getLine(cursor.line);
 		}
-		const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
+		const { blockId, lineWithoutId } = await ensureBlockId(lineText);
 
 		// DATAFILE Changes
 		const updatedLine = `${lineWithoutId} [[${fullCode}]] ${blockId}`;

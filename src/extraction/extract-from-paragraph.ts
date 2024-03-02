@@ -95,7 +95,7 @@ async function extractOfType(
 	// Update DATAFILE
 	const cursor = editor.getCursor();
 	const lineText = editor.getLine(cursor.line);
-	const { blockId, lineWithoutId } = await ensureBlockId(dataFile, lineText);
+	const { blockId, lineWithoutId } = await ensureBlockId(lineText);
 	const updatedLine = `${lineWithoutId} [[${type} ${extractionCount}]] ${blockId}`;
 	editor.setLine(cursor.line, updatedLine);
 	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
