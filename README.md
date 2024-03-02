@@ -222,7 +222,7 @@ All markdown files in the folder `{vault-root}/Codes` are considered code
 files. (The folder is configurable.)
 
 When a code is assigned, a link back to the original location in the Data File
-is appended to the code file. That link has the format
+is appended to the code file. The link has the format
 `[[{filename-datafile}#^{id-of-paragraph}]]`, with the `id` being a time
 stamp.[^1]
 
@@ -326,9 +326,9 @@ such, each file corresponds to a single extraction, with its parent folder
 indicating what type of extraction it is.
 
 You can then fill out the fields of newly created file. The
-`extraction source` key contains a link back to the location in the Data File
+`extraction source` key contains a link back to the paragraph in the Data File
 where you initiated the extraction. In the rendered view, the file contains a
-`Properties` headily that can conveniently be filled out:
+`Properties` header that can conveniently be filled out:
 
 ![Showcase Extraction](./assets/showcase-extraction.png)
 
@@ -341,8 +341,8 @@ Filepath: ./Extractions/Career Visions/Career Visions 1.md
 occupation: "painter"
 career stage: "novice"
 year of experience: 4
-extraction date: 2024-02-12
-extraction source: "[[Field Notes 3]]"
+extraction date: 2024-03-02T12:40:12
+extraction source: "[[Field Notes 3#^id-240302-124012]]"
 ---
 
 **Paragraph extracted from:** ![[Field Notes 3#^id-240302-124012]]
@@ -495,4 +495,4 @@ ko-fi.com'/></a>
 	assigned a code. The timestamp is not updated when the paragraph you remove
 	the code or assign another code, since the paragraph ID needs to be
 	immutable to ensure reliable references to it. Think of the timestamp as
-	"first time the paragraph a code has been assigned".
+	"first time the paragraph a code has been assigned."
