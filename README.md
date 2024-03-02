@@ -127,7 +127,6 @@ data in a structured form. Quadro uses a simplistic templating mechanism to
 support the creation of those Extraction Files.
 
 ### Brief methodological comparison with other QDA software
-
 **Advantages**
 - **Interoperability**: Can be freely combined with other QDA software.
 - **Flexibility**: You can use codes, extractions, or freely combine both.
@@ -291,6 +290,8 @@ representing codes):
 - ⚠️ Renaming or moving Code/Data Files should be done from within Obsidian.
   Using the Windows Explorer or macOS' Finder does not trigger the automatic
   updating of references, meaning a loss of information.
+- When there is a file `Codes/Template.md`, its frontmatter is used as template
+  for any newly created code.
 
 ### Extraction
 
