@@ -135,21 +135,24 @@ async function createCodeFile(
 	if (!folderExists) await app.vault.createFolder(parent);
 
 	// CODE FILE content
-	const content = [
-		"---",
-		`description: "${codeDesc.replaceAll('"', "'")}"`,
-		"---",
-		"",
-		"",
-		"---",
-		"",
-	];
+	// read from template file, and if it has a description key, replace it there
+	const descriptionLine = `description: "${codeDesc.replaceAll('"', "'")}"`;
+
 	const templateFile = app.vault.getFileByPath(settings.coding.folder + "/Template.md");
+	const templateFrontmatterLines: string[] = [];
 	if (templateFile) {
 		const templateContent = await app.vault.read(templateFile);
-		const { exists, frontmatter } = getFrontMatterInfo(templateContent);
-		if (exists) content.splice(2, 0, frontmatter);
+		let { exists, frontmatter: templateFrontmatter } = getFrontMatterInfo(templateContent);
+		if (exists) {
+			const templateHasDescriptionKey = templateFrontmatter.match(/^description:/m);
+			templateFrontmatter = templateHasDescriptionKey
+				? templateFrontmatter.replace(/^description:.*$/m, descriptionLine)
+				: descriptionLine + "\n" + templateFrontmatter;
+			templateFrontmatterLines.push(...templateFrontmatter.split("\n"));
+		}
 	}
+
+	const content = ["---", ...templateFrontmatterLines, "---", "", ""];
 
 	// create CODE FILE
 	const newCodeFile = await app.vault.create(`${parent}/${codeName}.md`, content.join("\n"));
