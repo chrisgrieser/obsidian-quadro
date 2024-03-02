@@ -46,7 +46,6 @@ declare module "obsidian" {
 		};
 	}
 	interface Vault {
-		getConfig(key: string): string | number | boolean;
 		setConfig(key: string, value: string | number | boolean): void;
 	}
 }

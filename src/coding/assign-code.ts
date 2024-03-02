@@ -1,10 +1,15 @@
-import { Editor, Notice, TFile } from "obsidian";
+import { App, Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
 import { sortFuncs } from "src/settings/defaults";
 import { ensureBlockId } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "../shared/utils";
-import { getFullCode } from "./coding-utils";
+import {
+	ambiguousSelection,
+	currentlyInFolder,
+	ensureWikilinksSetting,
+	getActiveEditor,
+} from "../shared/utils";
+import { getCodesFilesInParagraphOfDatafile, getFullCode } from "./coding-utils";
 import { createOneCodeFile } from "./create-new-code-file";
 
 type CodeAssignItem = TFile | "new-code-file";
@@ -68,9 +73,11 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 
 	onChooseItem(codeFile: CodeAssignItem): void {
 		if (codeFile === "new-code-file") {
-			createOneCodeFile(this.plugin, (codeFile) => this.assignCode(codeFile, this.dataFile));
+			createOneCodeFile(this.plugin, (codeFile) =>
+				this.assignCode(this.app, codeFile, this.dataFile),
+			);
 		} else {
-			this.assignCode(codeFile, this.dataFile);
+			this.assignCode(this.app, codeFile, this.dataFile);
 		}
 	}
 
@@ -78,7 +85,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 
 	/** DATAFILE: Add blockID & link to Code-File in the current line
 	 * CODEFILE: Append embedded blocklink to Data-File */
-	async assignCode(codeFile: TFile, dataFile: TFile): Promise<void> {
+	async assignCode(app: App, codeFile: TFile, dataFile: TFile): Promise<void> {
 		const cursor = this.editor.getCursor();
 		const fullCode = getFullCode(this.plugin, codeFile);
 		let lineText = this.editor.getLine(cursor.line);
@@ -93,7 +100,14 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		const { blockId, lineWithoutId } = await ensureBlockId(lineText);
 
 		// DATAFILE Changes
-		const updatedLine = `${lineWithoutId} [[${fullCode}]] ${blockId}`;
+		ensureWikilinksSetting(app);
+		const linkToCodeFile = app.fileManager.generateMarkdownLink(
+			codeFile,
+			dataFile.path,
+			"",
+			fullCode,
+		);
+		const updatedLine = `${lineWithoutId} ${linkToCodeFile} ${blockId}`;
 		this.editor.setLine(cursor.line, updatedLine);
 		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
@@ -107,7 +121,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 //──────────────────────────────────────────────────────────────────────────────
 
 export function assignCodeCommand(plugin: Quadro): void {
-	const { app, settings } = plugin;
+	const app = plugin.app;
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
@@ -125,14 +139,10 @@ export function assignCodeCommand(plugin: Quadro): void {
 	// Determine codes already assigned to paragraph, so they can be excluded
 	// from the list of codes in the Suggester
 	const dataFile = editor.editorComponent.view.file;
-	const lineText = editor.getLine(editor.getCursor().line);
-	const wikilinksInParagr = lineText.match(/\[\[.+?\]\]/g) || [];
-	const codesInPara = wikilinksInParagr.reduce((acc: TFile[], wikilink: string) => {
-		wikilink = wikilink.slice(2, -2);
-		const target = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-		if (target?.path.startsWith(settings.coding.folder + "/")) acc.push(target);
-		return acc;
-	}, []);
+	const paragraphText = editor.getLine(editor.getCursor().line);
+	const codesFilesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText).map(
+		(code) => code.tFile,
+	);
 
-	new SuggesterForCodeAssignment(plugin, editor, codesInPara, dataFile).open();
+	new SuggesterForCodeAssignment(plugin, editor, codesFilesInPara, dataFile).open();
 }

@@ -5,6 +5,7 @@ import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	ambiguousSelection,
 	currentlyInFolder,
+	ensureWikilinksSetting,
 	getActiveEditor,
 	moveCursorToFirstProperty,
 	openFileInSplitToRight,
@@ -57,7 +58,7 @@ async function extractOfType(
 	editor: Editor,
 	dataFile: TFile,
 	extractionTypeFolder: TFolder,
-) {
+): Promise<void> {
 	const app = plugin.app;
 	ensureCorrectPropertyTypes(app);
 	const type = extractionTypeFolder.name;
@@ -92,13 +93,10 @@ async function extractOfType(
 		if (!fileExistsAlready) break;
 	}
 
-	// Update DATAFILE
+	// Determine DATAFILE info
 	const cursor = editor.getCursor();
 	const lineText = editor.getLine(cursor.line);
 	const { blockId, lineWithoutId } = await ensureBlockId(lineText);
-	const updatedLine = `${lineWithoutId} [[${type} ${extractionCount}]] ${blockId}`;
-	editor.setLine(cursor.line, updatedLine);
-	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
@@ -115,8 +113,22 @@ async function extractOfType(
 		`**Paragraph extracted from:** ![[${fullSource}]]`,
 	].join("\n");
 
-	// Create EXTRACTION-FILE
+	// Create EXTRACTION FILE
 	const extractionFile = await app.vault.create(extractionPath, newFrontmatter);
+
+	// update DATAFILE
+	ensureWikilinksSetting(app);
+	const linkToExtractionFile = app.fileManager.generateMarkdownLink(
+		extractionFile,
+		dataFile.path,
+		"",
+		dataFile.basename,
+	);
+	const updatedLine = `${lineWithoutId} ${linkToExtractionFile} ${blockId}`;
+	editor.setLine(cursor.line, updatedLine);
+	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
+
+	// Open EXTRACTION-FILE
 	await openFileInSplitToRight(app, extractionFile);
 	moveCursorToFirstProperty(app, "value");
 }

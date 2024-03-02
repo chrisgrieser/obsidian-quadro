@@ -3,12 +3,7 @@ import Quadro from "src/main";
 import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
-import { getFullCode } from "./coding-utils";
-
-interface Code {
-	tFile: TFile;
-	wikilink: string;
-}
+import { Code, getCodesFilesInParagraphOfDatafile, getFullCode } from "./coding-utils";
 
 export interface DataFileReference {
 	file: TFile;
@@ -80,10 +75,8 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	const lineText = editor.getLine(ln);
 
 	// remove link from DATAFILE
-	// needs to use wikilink instead of basename or the fullCode, since renaming
-	// operations could have changed what the link actually looks like
-	const regex = new RegExp(" ?\\[\\[" + code.wikilink + "\\]\\]");
-	editor.setLine(ln, lineText.replace(regex, ""));
+	const updatedLine = lineText.replace(code.wikilink, "").replace(/ {2,}/g, " ");
+	editor.setLine(ln, updatedLine);
 
 	// find corresponding line in CODEFILE
 	const [blockId] = lineText.match(BLOCKID_REGEX) || [];
@@ -152,7 +145,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
  * C. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
  */
 export async function unassignCodeCommand(plugin: Quadro): Promise<void> {
-	const { app, settings } = plugin;
+	const app = plugin.app;
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
@@ -161,27 +154,17 @@ export async function unassignCodeCommand(plugin: Quadro): Promise<void> {
 		unassignCodeWhileInCodeFile(app, editor);
 	} else {
 		const dataFile = editor.editorComponent.view.file;
-		const lineText = editor.getLine(editor.getCursor().line);
-		const wikilinksInParagr = lineText.match(/\[\[.+?\]\]/g) || [];
+		const paragraphText = editor.getLine(editor.getCursor().line);
+		const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText);
 
-		const codesInParagr = wikilinksInParagr.reduce((acc: Code[], wikilink) => {
-			wikilink = wikilink.slice(2, -2);
-			const linkTarget = app.metadataCache.getFirstLinkpathDest(wikilink, dataFile.path);
-			if (linkTarget instanceof TFile) {
-				const isInCodeFolder = linkTarget.path.startsWith(settings.coding.folder + "/");
-				if (isInCodeFolder) acc.push({ tFile: linkTarget, wikilink: wikilink });
-			}
-			return acc;
-		}, []);
-
-		if (codesInParagr.length === 0) {
+		if (codesInPara.length === 0) {
 			new Notice("Line does not contain any codes to remove.");
-		} else if (codesInParagr.length === 1) {
+		} else if (codesInPara.length === 1) {
 			// B: in data file, line has 1 code
-			unassignCodeWhileInDataFile(editor, dataFile, codesInParagr[0] as Code);
+			unassignCodeWhileInDataFile(editor, dataFile, codesInPara[0] as Code);
 		} else {
 			// C: in data file, line has 2+ codes
-			new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInParagr).open();
+			new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInPara).open();
 		}
 	}
 }

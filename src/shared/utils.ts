@@ -86,3 +86,9 @@ export function ambiguousSelection(editor: Editor): boolean {
 	}
 	return false;
 }
+
+/** plugin does not deal with Markdown Links yet, so we enforce usage of
+ * wikilinks for now :S */
+export function ensureWikilinksSetting(app: App): void {
+	app.vault.setConfig("useMarkdownLinks", false);
+}
