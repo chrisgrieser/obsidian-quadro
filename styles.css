@@ -44,12 +44,12 @@ anyway.
 	color: var(--text-faint);
 	padding-left: 1.75rem;
 	padding-top: 4px;
+	font-size: 90%;
 }
 
 /* move link down to destination text */
 .markdown-embed.internal-embed.inline-embed .markdown-embed-link {
 	top: unset;
-	bottom: var(--between-embeds-spacing);
 	left: 0;
 }
 
@@ -80,7 +80,7 @@ body .metadata-container {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* QUADRO MODALS */
+/* QUADRO MODALS & BUTTONS */
 
 .modal.quadro input {
 	min-width: 20rem;
@@ -104,9 +104,6 @@ body .metadata-container {
 	min-height: 5rem;
 	min-width: 15rem;
 }
-
-/* ────────────────────────────────────────────────────────────────────────── */
-/* QUADRO RIBBON BUTTONS */
 
 .quadro.side-dock-ribbon-action {
 	border: 1px solid var(--text-faint);
