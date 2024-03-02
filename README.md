@@ -277,10 +277,11 @@ representing codes):
 | Delete code from paragraph                | Removes a code from the current paragraph of a Data File or Code File. The reference is also removed from the corresponding other file.                                                                                                |   ![Icon](./assets/minus-circle.svg)   | `mod+shift+d`  | Quadro                                    |
 | Delete Code File and all references to it | Moves the Code File to the trash, *and* deletes all references to it.                                                                                                                                                                  |     ![Icon](./assets/x-circle.svg)     |       —        | Quadro                                    |
 | Bulk-create new codes                     | Create multiple new codes at once (without assigning them to a paragraph).                                                                                                                                                             |  ![Icon](./assets/circle-dashed.svg)   |       —        | Quadro                                    |
+| Merge Codes                               | Merge the *current* Code File into another Code File. (WIP)                                                                                                                                                                            |      ![Icon](./assets/radius.svg)      |       —        | Quadro                                    |
 | Code grouping                             | Codes can be arranged in subfolders via drag-and-drop in the File Explorer.                                                                                                                                                            |                   —                    |       —        | [Obsidian Built-in][move file]            |
-| Visualization of code relationships       | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph]                                                                                   |     ![Icon](./assets/git-fork.svg)     |    `mod+g`     | [Obsidian Core Plugin: Graph View][graph] |
 | Axial Coding                              | Using the Canvas Plugin, you can freely arrange entities on a board, and connect them via lines and arrows, suitable for Axial Coding. <br><br>[Further Documentation][canvas]                                                         | ![Icon](./assets/layout-dashboard.svg) |       —        | [Obsidian Core Plugin: Canvas][canvas]    |
 | Investigation of code co-occurrences      | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                                                                                                              |                   —                    | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]    |
+| Visualization of code relationships       | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph]                                                                                   |     ![Icon](./assets/git-fork.svg)     |    `mod+g`     | [Obsidian Core Plugin: Graph View][graph] |
 
 [rename]: https://help.obsidian.md/Files+and+folders/Manage+notes#Rename+a+note
 [graph]: https://help.obsidian.md/Plugins/Graph+view
@@ -291,8 +292,8 @@ representing codes):
 - `mod` refers the `ctrl` on Windows and to `cmd` on macOS.
 - When there is a file `Codes/Template.md`, its frontmatter is used as template
   for any newly created code.
-- Splitting and merging Code Files is not yet supported. Doing so with any other
-  method (such as a plugin) is likely going to result in broken references.
+- Splitting Code Files is not yet supported. Doing so with any other
+  method (such as another plugin) is likely going to result in broken references.
 - ⚠️ Renaming or moving Code/Data Files should be done from within Obsidian.
   Using the Windows Explorer or macOS' Finder does not trigger the automatic
   updating of references, meaning a loss of information.
