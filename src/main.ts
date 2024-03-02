@@ -2,10 +2,10 @@ import { Command, Plugin } from "obsidian";
 import { CODING_COMMANDS } from "./coding/coding-commands";
 import { trashWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
-import { suppressCertainFrontmatterSuggestions } from "./extraction/suppress-fm-suggestions";
 import { DEFAULT_SETTINGS } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
 import { updateStatusbar } from "./statusbar";
+import { suppressCertainFrontmatterSuggestions } from "./suppress-fm-suggestions";
 
 export default class Quadro extends Plugin {
 	styleEl?: HTMLStyleElement;

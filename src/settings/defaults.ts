@@ -10,12 +10,16 @@ export const sortFuncs = {
 };
 export type SortFuncChoices = keyof typeof sortFuncs;
 
+//──────────────────────────────────────────────────────────────────────────────
+
 export const csvSeparators = {
 	",": "Comma (,)",
 	";": "Semicolon (;)",
 	"\t": "Tab",
 };
 export type CsvSeparatorChoices = keyof typeof csvSeparators;
+
+//──────────────────────────────────────────────────────────────────────────────
 
 export const DEFAULT_SETTINGS = {
 	coding: {
@@ -40,5 +44,4 @@ export const DEFAULT_SETTINGS = {
 		folder: "Analysis",
 	},
 };
-
 export type QuadroSettings = typeof DEFAULT_SETTINGS;

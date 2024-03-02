@@ -1,6 +1,6 @@
 import { PluginSettingTab, Setting, normalizePath } from "obsidian";
-import { suppressCertainFrontmatterSuggestions } from "src/extraction/suppress-fm-suggestions";
 import Quadro from "src/main";
+import { suppressCertainFrontmatterSuggestions } from "src/suppress-fm-suggestions";
 import {
 	CsvSeparatorChoices,
 	DEFAULT_SETTINGS,
