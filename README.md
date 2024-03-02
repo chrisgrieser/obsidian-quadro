@@ -32,6 +32,10 @@ the style of *Qualitative Content Analysis*.
 		+ [How extraction works in Quadro](#how-extraction-works-in-quadro)
 		+ [Aggregate extractions](#aggregate-extractions)
 		+ [Extraction capabilities](#extraction-capabilities)
+- [Configuration](#configuration)
+	* [Buttons](#buttons)
+	* [Hotkeys](#hotkeys)
+	* [Plugin Behavior](#plugin-behavior)
 - [Installation & update](#installation--update)
 - [Development](#development)
 	* [Contribute](#contribute)
@@ -284,9 +288,7 @@ representing codes):
 [move file]: https://help.obsidian.md/Plugins/File+explorer#Move+a+file+or+folder
 [canvas]: https://help.obsidian.md/Plugins/Canvas
 
-- `mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
-  customized by searching in the Obsidian hotkey settings for the name of the
-  respective action.
+- `mod` refers the `ctrl` on Windows and to `cmd` on macOS.
 - When there is a file `Codes/Template.md`, its frontmatter is used as template
   for any newly created code.
 - Splitting and merging Code Files is not yet supported. Doing so with any other
@@ -406,14 +408,31 @@ filtered, searched, and modified:
 [data loom]: https://dataloom.xyz/
 [properties view]: https://help.obsidian.md/Plugins/Properties+view
 
-- `mod` refers the `ctrl` on Windows and to `cmd` on macOS. Every hotkey can be
-  customized by searching in the Obsidian hotkey settings for the name of the
-  respective action.
+- `mod` refers the `ctrl` on Windows and to `cmd` on macOS.
 - For both, aggregation, and `.csv` export, the included properties are
   determined by the properties of the template files (`Template.md`).
 - ⚠️ Renaming or moving Extraction/Data Files should be done from within
   Obsidian. Using the Windows Explorer or macOS' Finder does not trigger the
   automatic updating of references, meaning a loss of information.
+
+## Configuration
+
+### Buttons
+To remove or re-arrange buttons, go to the Obsidian settings: `Appearance` →
+`Ribbon Menu` → `Manage`.
+
+### Hotkeys
+Every hotkey can be customized by searching for the name of the respective
+action in the Obsidian settings under `Hotkeys`.
+
+### Plugin Behavior
+The plugin behavior can be customized in the `Quadro` tab of the Obsidian
+settings. Aside from folder locations, there are a few settings which change the
+way codes and extractions are presented. Note that these are not technical or
+personal decisions, but methodological decisions as they may change your choice
+of codes and extraction values.
+
+![Settings](./assets/settings.png)
 
 ## Installation & update
 - **Requirements:** *Quadro* requires at least Obsidian **version 1.5.8**. The
