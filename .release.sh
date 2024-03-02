@@ -35,7 +35,7 @@ sed -i '' '$d' "versions.json"
 
 # push the manifest.json and versions.json
 echo "────────────────────────"
-git add --all &&
+git add "manifest.json" "versions.json" "package.json" &&
 	git commit -m "release: $nextVersion" &&
 	git pull && git push &&
 	git tag "$nextVersion" && git push origin --tags # trigger the release action
