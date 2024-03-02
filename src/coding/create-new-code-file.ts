@@ -139,7 +139,7 @@ async function createCodeFile(
 	const descriptionLine = `description: "${codeDesc.replaceAll('"', "'")}"`;
 
 	const templateFile = app.vault.getFileByPath(settings.coding.folder + "/Template.md");
-	const templateFrontmatterLines: string[] = [];
+	const frontmatterLines: string[] = [];
 	if (templateFile) {
 		const templateContent = await app.vault.read(templateFile);
 		let { exists, frontmatter: templateFrontmatter } = getFrontMatterInfo(templateContent);
@@ -148,11 +148,13 @@ async function createCodeFile(
 			templateFrontmatter = templateHasDescriptionKey
 				? templateFrontmatter.replace(/^description:.*$/m, descriptionLine)
 				: descriptionLine + "\n" + templateFrontmatter;
-			templateFrontmatterLines.push(...templateFrontmatter.split("\n"));
+			frontmatterLines.push(...templateFrontmatter.trim().split("\n"));
 		}
+	} else {
+		frontmatterLines.push(descriptionLine);
 	}
 
-	const content = ["---", ...templateFrontmatterLines, "---", "", ""];
+	const content = ["---", ...frontmatterLines, "---", "", ""];
 
 	// create CODE FILE
 	const newCodeFile = await app.vault.create(`${parent}/${codeName}.md`, content.join("\n"));
