@@ -3,10 +3,10 @@ import Quadro from "src/main";
 import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
-import { Code, getCodesFilesInParagraphOfDatafile, getFullCode } from "./coding-utils";
+import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
 export interface DataFileReference {
-	file: TFile;
+	dataFile: TFile;
 	blockId: string;
 }
 
@@ -32,7 +32,7 @@ class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 		return this.codesInParagraph;
 	}
 	getItemText(code: Code): string {
-		return getFullCode(this.plugin, code.tFile);
+		return codeFileDisplay(this.plugin, code.tFile);
 	}
 	onChooseItem(code: Code): void {
 		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);

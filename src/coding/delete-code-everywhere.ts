@@ -11,7 +11,7 @@ import { DataFileReference, removeIndividualCodeRefFromDatafile } from "./unassi
  * the `app.vault.on("delete", ...)` event, as various required information for
  * finding all references is flushed already.)
  * source for the how to monkey-around: https://discord.com/channels/686053708261228577/840286264964022302/1157501519831253002 */
-export function trashWatcher(plugin: Quadro): ReturnType<typeof around> {
+export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 	const { app, settings } = plugin;
 
 	const uninstaller = around(app.vault, {
@@ -65,14 +65,14 @@ async function deleteReferencesToCodeFile(app: App, codeFile: TFile): Promise<vo
 		const [linkPath, blockId] = link.split("#");
 		if (!linkPath || !blockId) return acc;
 		const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath, codeFile.path);
-		if (dataFile instanceof TFile) acc.push({ file: dataFile, blockId: blockId });
+		if (dataFile instanceof TFile) acc.push({ dataFile: dataFile, blockId: blockId });
 		return acc;
 	}, []);
 
 	// delete the reference in each DATAFILE
 	const errorMsgs: string[] = [];
-	for (const { file, blockId } of referencedParasInDataFiles) {
-		const errorMsg = await removeIndividualCodeRefFromDatafile(app, codeFile, file, blockId);
+	for (const { dataFile, blockId } of referencedParasInDataFiles) {
+		const errorMsg = await removeIndividualCodeRefFromDatafile(app, codeFile, dataFile, blockId);
 		if (errorMsg) errorMsgs.push(errorMsg);
 	}
 

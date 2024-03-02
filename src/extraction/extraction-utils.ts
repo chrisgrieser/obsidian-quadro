@@ -40,11 +40,3 @@ export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 	}
 	return extractionTypes;
 }
-
-/** Changed types makes breaks some things, such as the display of dates in
- * DataLoom. Therefore, we are ensuring the correct type here.
- * NOTE `setType` is marked as internal, so keep an eye on it. */
-export function ensureCorrectPropertyTypes(app: App): void {
-	app.metadataTypeManager.setType("extraction date", "datetime");
-	app.metadataTypeManager.setType("extraction source", "text");
-}

@@ -1,7 +1,7 @@
 import { App, Notice, TFolder } from "obsidian";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { LIVE_PREVIEW } from "src/shared/utils";
+import { LIVE_PREVIEW, ensureCorrectPropertyTypes } from "src/shared/utils";
 import {
 	LOOM_COLUMN_TEMPLATE,
 	Loom,
@@ -9,11 +9,7 @@ import {
 	LoomColumnType,
 	TEMPLATE_LOOM,
 } from "./dataloom-template";
-import {
-	ensureCorrectPropertyTypes,
-	getAllExtractionTypes,
-	getPropertiesForExtractionType,
-} from "./extraction-utils";
+import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 

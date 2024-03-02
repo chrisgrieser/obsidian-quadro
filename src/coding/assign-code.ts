@@ -1,6 +1,5 @@
 import { App, Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
-import { sortFuncs } from "src/settings/defaults";
 import { ensureBlockId } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
@@ -9,7 +8,12 @@ import {
 	ensureWikilinksSetting,
 	getActiveEditor,
 } from "../shared/utils";
-import { getCodesFilesInParagraphOfDatafile, getFullCode } from "./coding-utils";
+import {
+	codeFileDisplay,
+	getAllCodeFiles,
+	getCodesFilesInParagraphOfDatafile,
+	getFullCode,
+} from "./coding-utils";
 import { createOneCodeFile } from "./create-new-code-file";
 
 type CodeAssignItem = TFile | "new-code-file";
@@ -40,35 +44,20 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 
 	// code-files, sorted by last use (which is relevant when query is empty)
 	getItems(): CodeAssignItem[] {
-		const settings = this.settings;
-		const codeFolderItems =
-			this.app.vault.getFolderByPath(settings.coding.folder)?.children || [];
+		const allNotAlreadyAssigned = getAllCodeFiles(this.plugin).filter((codeFile) => {
+			const isAlreadyAssigned = this.codesInPara.find((code) => code.path === codeFile.path);
+			return !isAlreadyAssigned;
+		});
 
-		const allCodeFiles = codeFolderItems.filter((tFile) => {
-			const isMarkdownFile = tFile instanceof TFile && tFile.extension === "md";
-			const isAlreadyAssigned = this.codesInPara.find((code) => code.path === tFile.path);
-			const isTemplate = tFile.name === "Template.md";
-			return isMarkdownFile && !isAlreadyAssigned && !isTemplate;
-		}) as TFile[];
-		allCodeFiles.sort(sortFuncs[settings.coding.sortFunc]);
-
-		const items: CodeAssignItem[] = allCodeFiles;
+		const items: CodeAssignItem[] = allNotAlreadyAssigned;
 		items.push("new-code-file");
 
 		return items;
 	}
 
-	// display codename + minigraph, and an extra item for creating a new code file
 	getItemText(item: CodeAssignItem): string {
 		if (item === "new-code-file") return "🞜 Create new code";
-		const fullCode = getFullCode(this.plugin, item);
-
-		const { char, charsPerBlock, maxLength, enabled } = this.settings.coding.minigraph;
-		const miniGraph = enabled
-			? "    " + char.repeat(Math.min(maxLength, item.stat.size / charsPerBlock))
-			: "";
-
-		return fullCode + miniGraph;
+		return codeFileDisplay(this.plugin, item);
 	}
 
 	onChooseItem(codeFile: CodeAssignItem): void {
@@ -112,8 +101,8 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 		// CODEFILE Changes
-		const dataFilePath = dataFile.path.slice(0, -3);
-		const textToAppend = `![[${dataFilePath}#${blockId}]]\n`;
+		const dataFileFullPath = dataFile.path.slice(0, -3);
+		const textToAppend = `![[${dataFileFullPath}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
 	}
 }

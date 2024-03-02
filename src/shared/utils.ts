@@ -87,8 +87,19 @@ export function ambiguousSelection(editor: Editor): boolean {
 	return false;
 }
 
+//──────────────────────────────────────────────────────────────────────────────
+
 /** plugin does not deal with Markdown Links yet, so we enforce usage of
  * wikilinks for now :S */
 export function ensureWikilinksSetting(app: App): void {
 	app.vault.setConfig("useMarkdownLinks", false);
+}
+
+/** Changed types makes breaks some things, such as the display of dates in
+ * DataLoom. Therefore, we are ensuring the correct type here.
+ * NOTE `setType` is marked as internal, so keep an eye on it. */
+export function ensureCorrectPropertyTypes(app: App): void {
+	app.metadataTypeManager.setType("extraction date", "datetime");
+	app.metadataTypeManager.setType("extraction source", "text");
+	app.metadataTypeManager.setType("code description", "text");
 }

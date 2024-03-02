@@ -1,6 +1,7 @@
 import { Notice } from "obsidian";
 import Quadro from "src/main";
 import { currentlyInFolder } from "src/shared/utils";
+import { isCodeTemplateFile } from "./coding-utils";
 
 // INFO
 // Wrap existing Obsidian command to make it more accessible for users new to
@@ -11,6 +12,8 @@ import { currentlyInFolder } from "src/shared/utils";
 export function renameCodeCommand(plugin: Quadro): void {
 	if (!currentlyInFolder(plugin, "Codes")) {
 		new Notice("You must be in a code file.");
+	} else if (isCodeTemplateFile(plugin, plugin.app.workspace.getActiveFile())) {
+		new Notice("You must not rename the template file.");
 	} else {
 		plugin.app.commands.executeCommandById("workspace:edit-file-title");
 	}

@@ -5,6 +5,7 @@ import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	ambiguousSelection,
 	currentlyInFolder,
+	ensureCorrectPropertyTypes,
 	ensureWikilinksSetting,
 	getActiveEditor,
 	moveCursorToFirstProperty,
@@ -14,7 +15,6 @@ import {
 	bootstrapExtractionTemplate,
 	bootstrapExtractionTypeFolder,
 } from "./bootstrap-extraction-files";
-import { ensureCorrectPropertyTypes } from "./extraction-utils";
 
 class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 	extractionTypes: TFolder[];
