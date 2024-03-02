@@ -36,7 +36,7 @@ class InputForOneFile extends ExtendedInputModal {
 		// description input field
 		new Setting(contentEl)
 			.setName("Code Description")
-			.setDesc('Will be added as metadata with the key "description".')
+			.setDesc('Will be added as metadata with the key "code description".')
 			.addText((text) =>
 				text.onChange((value) => {
 					this.codeDesc = value.trim();
@@ -136,7 +136,7 @@ async function createCodeFile(
 
 	// CODE FILE content
 	// read from template file, and if it has a description key, replace it there
-	const descriptionLine = `description: "${codeDesc.replaceAll('"', "'")}"`;
+	const descriptionLine = `code description: "${codeDesc.replaceAll('"', "'")}"`;
 
 	const templateFile = app.vault.getFileByPath(settings.coding.folder + "/Template.md");
 	const frontmatterLines: string[] = [];
@@ -144,9 +144,9 @@ async function createCodeFile(
 		const templateContent = await app.vault.read(templateFile);
 		let { exists, frontmatter: templateFrontmatter } = getFrontMatterInfo(templateContent);
 		if (exists) {
-			const templateHasDescriptionKey = templateFrontmatter.match(/^description:/m);
+			const templateHasDescriptionKey = templateFrontmatter.match(/^code description:/m);
 			templateFrontmatter = templateHasDescriptionKey
-				? templateFrontmatter.replace(/^description:.*$/m, descriptionLine)
+				? templateFrontmatter.replace(/^code description:.*$/m, descriptionLine)
 				: descriptionLine + "\n" + templateFrontmatter;
 			frontmatterLines.push(...templateFrontmatter.trim().split("\n"));
 		}
