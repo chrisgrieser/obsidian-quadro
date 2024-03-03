@@ -57,7 +57,7 @@ qualitative data analysis.
 All data is stored as [Markdown](https://www.markdownguide.org/) files.
 **Markdown** is a human-readable, non-proprietary, and commonly used open
 standard for plaintext files. This means:
-- There is no lock-in / dependency to a particular software, the data can be
+- There is no lock-in / dependency to a particular app, the data can be
   analyzed in any app supporting Markdown. (In fact, the data is stored in plain
   text and can thus even be opened with and read with `Notepad.exe` or
   `TextEdit.app`)
