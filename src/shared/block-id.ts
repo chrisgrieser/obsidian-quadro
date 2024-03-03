@@ -2,10 +2,10 @@ import moment from "moment";
 // DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note
 //──────────────────────────────────────────────────────────────────────────────
 
-// INFO blockIds may only contain letters, numbers, and a hyphen
+/** INFO blockIds may only contain letters, numbers, and a hyphen */
 export const BLOCKID_REGEX = /\^[\w-]+$/;
 
-// group 1: linkpath, group 2: blockID
+/** group 1: linkpath, group 2: blockID */
 export const EMBEDDED_BLOCKLINK_REGEX = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
 
 //──────────────────────────────────────────────────────────────────────────────

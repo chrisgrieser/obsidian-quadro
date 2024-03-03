@@ -3,7 +3,12 @@ import Quadro from "src/main";
 import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
-import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
+import {
+	Code,
+	WIKILINK_REGEX,
+	codeFileDisplay,
+	getCodesFilesInParagraphOfDatafile,
+} from "./coding-utils";
 
 export interface DataFileReference {
 	dataFile: TFile;
@@ -53,16 +58,18 @@ export async function removeIndividualCodeRefFromDatafile(
 		return `Data File "${dataFile.basename}", has no line with the ID "${blockId}".`;
 	const dataFileLine = dataFileLines[lnumInDataFile] || "";
 
-	// remove link to CODFILE from DATAFILE line
-	const linksInDataFileLine = dataFileLine.match(/\[\[.+?\]\]/g) || [];
+	// identify link to CODFILE in that DATAFILE line
+	const linksInDataFileLine = dataFileLine.match(new RegExp(WIKILINK_REGEX, "g")) || [];
 	const linkToCodeFile = linksInDataFileLine.find((link) => {
-		link = link.slice(2, -2);
+		link = link.trim().slice(2, -2);
 		const linkedTFile = app.metadataCache.getFirstLinkpathDest(link, dataFile.path);
 		return linkedTFile instanceof TFile && linkedTFile.path === codeFile.path;
 	});
 	if (!linkToCodeFile)
 		return `Data File "${dataFile.basename}", line "${blockId}" has no valid link to the Code File.`;
-	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "").replace(/ {2,}/g, " ");
+
+	// remove link to CODFILE from DATAFILE line
+	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "");
 	await app.vault.modify(dataFile, dataFileLines.join("\n"));
 	return "";
 }
@@ -75,7 +82,7 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	const lineText = editor.getLine(ln);
 
 	// remove link from DATAFILE
-	const updatedLine = lineText.replace(code.wikilink, "").replace(/ {2,}/g, " ");
+	const updatedLine = lineText.replace(code.wikilink, "");
 	editor.setLine(ln, updatedLine);
 
 	// find corresponding line in CODEFILE
@@ -87,15 +94,15 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	const codeFileLines = (await app.vault.read(code.tFile)).split("\n");
 	const refInCodeFile = codeFileLines.findIndex((line) => {
 		if (!line.includes(blockId)) return false;
-		const linksInLine = line.match(/\[\[.+?\]\]/g) || [];
-		for (const link of linksInLine) {
-			const linkPath = link.slice(2, -2).split("#")[0] || "";
-			const linkedFile = app.metadataCache.getFirstLinkpathDest(linkPath, code.tFile.path);
+		const linksInLine = line.match(new RegExp(WIKILINK_REGEX, "g")) || [];
+		for (const wikilink of linksInLine) {
+			const [_, innerWikilink] = wikilink.match(WIKILINK_REGEX) || [];
+			if (!innerWikilink) continue;
+			const linkedFile = app.metadataCache.getFirstLinkpathDest(innerWikilink, code.tFile.path);
 			if (linkedFile?.path === dataFile.path) return true;
 		}
 		return false;
 	});
-
 	if (refInCodeFile < 0) {
 		new Notice(
 			`"Code File "${code.tFile.basename}" contains not reference to ` +

@@ -18,18 +18,21 @@ export interface Code {
 	wikilink: string;
 }
 
+/** $0 matches the full link, $1 the inner link
+ * includes optional trailing space to remove it when unassigning code */
+export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
+
 export function getCodesFilesInParagraphOfDatafile(
 	plugin: Quadro,
 	dataFile: TFile,
 	paragraphText: string,
 ): Code[] {
 	const { app, settings } = plugin;
-	const wikilinkRegex = /\[\[(.+?)([|#].*?)?\]\]/;
 
-	const wikilinksInParagr = paragraphText.match(new RegExp(wikilinkRegex, "g")) || [];
+	const wikilinksInParagr = paragraphText.match(new RegExp(WIKILINK_REGEX, "g")) || [];
 
 	const codesInParagr = wikilinksInParagr.reduce((acc: Code[], wikilink) => {
-		const [_, innerWikilink] = wikilink.match(wikilinkRegex) || [];
+		const [_, innerWikilink] = wikilink.match(WIKILINK_REGEX) || [];
 		if (!innerWikilink) return acc;
 
 		const linkTarget = app.metadataCache.getFirstLinkpathDest(innerWikilink, dataFile.path);
@@ -44,7 +47,7 @@ export function getCodesFilesInParagraphOfDatafile(
 
 //──────────────────────────────────────────────────────────────────────────────
 
-/** Returns all Code Files, exlucindg the Template and sorted based on setting */
+/** Returns all Code Files, excluding the Template.md, and sorted based on setting */
 export function getAllCodeFiles(plugin: Quadro): TFile[] {
 	const settings = plugin.settings;
 	const codeFolderItems = plugin.app.vault.getFolderByPath(settings.coding.folder)?.children || [];
@@ -54,8 +57,8 @@ export function getAllCodeFiles(plugin: Quadro): TFile[] {
 		const isTemplate = tFile.name === "Template.md";
 		return isMarkdownFile && !isTemplate;
 	}) as TFile[];
-	allCodeFiles.sort(sortFuncs[settings.coding.sortFunc]);
 
+	allCodeFiles.sort(sortFuncs[settings.coding.sortFunc]);
 	return allCodeFiles;
 }
 
