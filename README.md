@@ -187,7 +187,7 @@ install the plugin there, for several reasons:
 #### Migrating from an existing research project with other QDA software
 Unfortunately, this is not supported. Main reason being that commercial QDA
 software use proprietary formats, the exact reason why researchers should
-use research software using open formats to begin with.
+use research software utilizing open formats to begin with.
 
 If your research data is
 saved in [Markdown, Obsidian is able to import
