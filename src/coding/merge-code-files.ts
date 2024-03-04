@@ -42,10 +42,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		await this.app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, toAppend, false);
 		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
 
-		new Notice(
-			`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}" `,
-			4000,
-		);
+		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
 	}
 }
 

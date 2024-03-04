@@ -14,14 +14,12 @@
 	"formatter": {
 		"lineWidth": 100,
 		"indentStyle": "tab",
-		"indentWidth": 3,
 		"formatWithErrors": true
 	},
 	"linter": {
 		"rules": {
 			"all": true,
 			"nursery": { "useImportType": "off" },
-			"suspicious": { "noConsoleLog": "off" },
 			"complexity": { "noExcessiveCognitiveComplexity": "off" },
 			"style": {
 				"useTemplate": "off",

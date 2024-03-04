@@ -8,7 +8,7 @@ set -o errexit
 echo "Pre-Commit Hook"
 
 echo "(1/3) Biome"
-npx biome check --log-kind="compact" "$(git rev-parse --show-toplevel)"
+npx biome check --apply --log-kind="compact" "$(git rev-parse --show-toplevel)"
 
 echo "(2/3) TypeScript"
 npx tsc --noEmit --skipLibCheck --strict

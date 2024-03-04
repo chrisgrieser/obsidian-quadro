@@ -46,7 +46,6 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 		const extractionFiles = extractionType.children.filter((f) => {
 			return f instanceof TFile && f.name !== "Template.md";
 		}) as TFile[];
-		console.log("Extraction files:", extractionFiles);
 		for (const extractionFile of extractionFiles) {
 			const fileFrontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
 			if (!fileFrontmatter) continue;

@@ -23,7 +23,7 @@ export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 					file.path.endsWith(".md");
 
 				if (isCodeFile) {
-					console.log(
+					console.info(
 						`"Intercepted deletion of "${file.name}", deleting all references to the Code File before proceeding with deletion.`,
 					);
 					await deleteReferencesToCodeFile(app, file);
@@ -80,7 +80,6 @@ async function deleteReferencesToCodeFile(app: App, codeFile: TFile): Promise<vo
 	const successes = referencedParasInDataFiles.length - errorMsgs.length;
 	let msg = `Code File "${codeFile.basename}" and ${successes} references to it deleted.\n`;
 	if (errorMsgs.length > 0)
-		msg +=
-			`\n⚠️ ${errorMsgs.length} references could not be deleted:\n- ` + errorMsgs.join("\n- ");
+		msg += `\n⚠️ ${errorMsgs.length} references could not be deleted:\n- ` + errorMsgs.join("\n- ");
 	new Notice(msg, (5 + errorMsgs.length) * 1700);
 }
