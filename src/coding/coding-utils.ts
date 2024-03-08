@@ -1,9 +1,11 @@
-import { TFile } from "obsidian";
+import { TFile, TFolder } from "obsidian";
 import Quadro from "src/main";
 import { sortFuncs } from "src/settings/defaults";
 
-export function getFullCode(plugin: Quadro, tFile: TFile): string {
-	return tFile.path.slice(plugin.settings.coding.folder.length + 1, -3);
+export function getFullCode(plugin: Quadro, tFile: TFile | TFolder): string {
+	const relativePathToCodefolder = tFile.path.slice(plugin.settings.coding.folder.length + 1);
+	if (tFile instanceof TFolder) return relativePathToCodefolder;
+	return relativePathToCodefolder.slice(0, -3); // if file, remove `.md`
 }
 
 export function isCodeTemplateFile(plugin: Quadro, tFile: TFile | null): boolean {

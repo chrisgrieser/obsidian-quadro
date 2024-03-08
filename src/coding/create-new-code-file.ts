@@ -1,5 +1,6 @@
 import { Notice, Setting, TFile, getFrontMatterInfo, normalizePath } from "obsidian";
 import Quadro from "src/main";
+import { CodeGroupSuggest } from "src/shared/folder-suggest";
 import { ExtendedInputModal } from "src/shared/modals";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
@@ -26,12 +27,13 @@ class InputForOneFile extends ExtendedInputModal {
 		new Setting(contentEl)
 			.setName("Name of the Code")
 			.setDesc('Use a slash ("/") in the name to create the Code File in a subfolder (group).')
-			.addText((text) =>
+			.addSearch((text) => {
+				new CodeGroupSuggest(this.plugin, text.inputEl);
 				text.onChange((value) => {
 					this.fullCode = value.trim();
 					this.confirmationButton?.setDisabled(this.fullCode === "");
-				}),
-			);
+				});
+			});
 
 		// description input field
 		new Setting(contentEl)
@@ -168,8 +170,6 @@ export function createOneCodeFile(plugin: Quadro, callback: (codeFile: TFile) =>
 		if (codeFile) {
 			new Notice(`Created new code file: "${fullCode}"`);
 			callback(codeFile);
-		} else {
-			new Notice("File creation failed.");
 		}
 	}).open();
 }

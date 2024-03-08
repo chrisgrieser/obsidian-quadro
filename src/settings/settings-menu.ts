@@ -64,7 +64,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			.setName("Code folder")
 			.setDesc("Location where the Code Files are stored.")
 			.addSearch((text) => {
-				new FolderSuggest(this.app, text.inputEl);
+				new FolderSuggest(this.plugin, text.inputEl);
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.coding.folder)
 					.setValue(settings.coding.folder)
@@ -110,7 +110,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			.setName("Extraction folder")
 			.setDesc("Location where the Extraction Files are stored.")
 			.addSearch((text) => {
-				new FolderSuggest(this.app, text.inputEl);
+				new FolderSuggest(this.plugin, text.inputEl);
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.extraction.folder)
 					.setValue(settings.extraction.folder)
@@ -151,11 +151,12 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		// right now only aggregations of extractions, therefore not yet a
 		// separate section
 		// containerEl.createEl("h4", { text: "Analysis" });
+
 		new Setting(containerEl)
 			.setName("Analysis folder")
 			.setDesc("Location where aggregations of extractions are stored.")
 			.addSearch((text) => {
-				new FolderSuggest(this.app, text.inputEl);
+				new FolderSuggest(this.plugin, text.inputEl);
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.analysis.folder)
 					.setValue(settings.analysis.folder)
