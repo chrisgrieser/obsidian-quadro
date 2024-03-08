@@ -118,7 +118,8 @@ async function createCodeFile(
 	fullCode = fullCode
 		.replace(/\.md$/, "") // no extension
 		.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
-		.replace(/^\.|\/\./g, ""); // no hidden files/folders
+		.replace(/^\.|\/\./g, "") // no hidden files/folders
+		.replace(/^\/+|\/+$/g, ""); // leading/trailing slashes
 
 	// GUARD Code File already exists
 	const absolutePath = normalizePath(`${settings.coding.folder}/${fullCode}.md`);
@@ -160,6 +161,11 @@ async function createCodeFile(
 
 	// create CODE FILE
 	const newCodeFile = await app.vault.create(`${parent}/${codeName}.md`, content.join("\n"));
+	if (!newCodeFile) {
+		new Notice("Failed to create new code file.");
+		return false;
+	}
+	new Notice(`Created new code file: "${fullCode}"`);
 	return newCodeFile;
 }
 
@@ -167,10 +173,7 @@ async function createCodeFile(
 export function createOneCodeFile(plugin: Quadro, callback: (codeFile: TFile) => void): void {
 	new InputForOneFile(plugin, async (fullCode, codeDesc) => {
 		const codeFile = await createCodeFile(plugin, fullCode, codeDesc);
-		if (codeFile) {
-			new Notice(`Created new code file: "${fullCode}"`);
-			callback(codeFile);
-		}
+		if (codeFile) callback(codeFile);
 	}).open();
 }
 
