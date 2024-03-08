@@ -1,5 +1,6 @@
 import { PluginSettingTab, Setting, normalizePath } from "obsidian";
 import Quadro from "src/main";
+import { FolderSuggest } from "src/shared/folder-suggest";
 import { suppressCertainFrontmatterSuggestions } from "src/suppress-fm-suggestions";
 import {
 	CsvSeparatorChoices,
@@ -62,15 +63,16 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Code folder")
 			.setDesc("Location where the Code Files are stored.")
-			.addText((text) =>
+			.addSearch((text) => {
+				new FolderSuggest(this.app, text.inputEl);
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.coding.folder)
 					.setValue(settings.coding.folder)
 					.onChange(async (path) => {
-						settings.coding.folder = sanitizePath(path);
+						settings.coding.folder = sanitizePath(path) || DEFAULT_SETTINGS.coding.folder;
 						await this.plugin.saveSettings();
-					}),
-			);
+					});
+			});
 
 		new Setting(containerEl)
 			.setName("Bar chart")
@@ -107,15 +109,16 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Extraction folder")
 			.setDesc("Location where the Extraction Files are stored.")
-			.addText((text) =>
+			.addSearch((text) => {
+				new FolderSuggest(this.app, text.inputEl);
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.extraction.folder)
 					.setValue(settings.extraction.folder)
 					.onChange(async (path) => {
-						settings.extraction.folder = sanitizePath(path);
+						settings.extraction.folder = sanitizePath(path) || DEFAULT_SETTINGS.extraction.folder;
 						await this.plugin.saveSettings();
-					}),
-			);
+					});
+			});
 
 		new Setting(containerEl)
 			.setName("Extraction count")
@@ -148,18 +151,18 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		// right now only aggregations of extractions, therefore not yet a
 		// separate section
 		// containerEl.createEl("h4", { text: "Analysis" });
-
 		new Setting(containerEl)
 			.setName("Analysis folder")
 			.setDesc("Location where aggregations of extractions are stored.")
-			.addText((text) =>
+			.addSearch((text) => {
+				new FolderSuggest(this.app, text.inputEl);
 				text
 					.setPlaceholder(DEFAULT_SETTINGS.analysis.folder)
 					.setValue(settings.analysis.folder)
 					.onChange(async (path) => {
-						settings.analysis.folder = sanitizePath(path);
+						settings.analysis.folder = sanitizePath(path) || DEFAULT_SETTINGS.analysis.folder;
 						await this.plugin.saveSettings();
-					}),
-			);
+					});
+			});
 	}
 }

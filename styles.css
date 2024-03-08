@@ -82,6 +82,7 @@ body .metadata-container {
 /* ────────────────────────────────────────────────────────────────────────── */
 /* QUADRO MODALS & BUTTONS */
 
+/* assign new code */
 .modal.quadro input {
 	min-width: 20rem;
 	width: 100%;
@@ -91,6 +92,7 @@ body .metadata-container {
 	opacity: 0.5;
 }
 
+/* bulk code creation */
 .quadro-bulk-code-creation .setting-item-info {
 	display: none;
 }
@@ -100,11 +102,17 @@ body .metadata-container {
 	min-height: 10rem;
 }
 
-.quadro-property-list textarea {
-	min-height: 5rem;
+/* buttons */
+.quadro.side-dock-ribbon-action {
+	border: 1px solid var(--text-faint);
+}
+
+/* settings */
+.vertical-tab-content.quadro input {
 	min-width: 15rem;
 }
 
-.quadro.side-dock-ribbon-action {
-	border: 1px solid var(--text-faint);
+.quadro-property-list textarea {
+	min-height: 5rem;
+	min-width: 15rem;
 }
