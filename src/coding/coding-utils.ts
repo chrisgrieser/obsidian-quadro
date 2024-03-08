@@ -50,12 +50,13 @@ export function getCodesFilesInParagraphOfDatafile(
 /** Returns all Code Files, excluding the Template.md, and sorted based on setting */
 export function getAllCodeFiles(plugin: Quadro): TFile[] {
 	const settings = plugin.settings;
-	const codeFolderItems = plugin.app.vault.getFolderByPath(settings.coding.folder)?.children || [];
+	const allFiles = plugin.app.vault.getMarkdownFiles();
 
-	const allCodeFiles = codeFolderItems.filter((tFile) => {
+	const allCodeFiles = allFiles.filter((tFile) => {
+		const inCodeFolder = tFile.path.startsWith(settings.coding.folder + "/");
 		const isMarkdownFile = tFile instanceof TFile && tFile.extension === "md";
-		const isTemplate = tFile.name === "Template.md";
-		return isMarkdownFile && !isTemplate;
+		const isNotTemplate = tFile.name !== "Template.md";
+		return isMarkdownFile && isNotTemplate && inCodeFolder;
 	}) as TFile[];
 
 	allCodeFiles.sort(sortFuncs[settings.coding.sortFunc]);
