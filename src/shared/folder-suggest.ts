@@ -5,21 +5,19 @@ import Quadro from "src/main";
 export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 	textInputEl: HTMLInputElement;
 	plugin: Quadro;
+	foldersInVault: TFolder[];
 
 	constructor(plugin: Quadro, textInputEl: HTMLInputElement) {
 		super(plugin.app, textInputEl);
 		this.textInputEl = textInputEl;
 		this.plugin = plugin;
+		this.foldersInVault = plugin.app.vault
+			.getAllLoadedFiles()
+			.filter((abstractFile) => abstractFile instanceof TFolder) as TFolder[];
 	}
 
 	getSuggestions(query: string): TFolder[] {
-		const matchingFolders = this.app.vault.getAllLoadedFiles().filter((abstractFile) => {
-			const isFolder = abstractFile instanceof TFolder;
-			const matchesQuery = abstractFile.path.includes(query);
-			return isFolder && matchesQuery;
-		}) as TFolder[];
-
-		return matchingFolders;
+		return this.foldersInVault.filter((folder) => folder.path.includes(query));
 	}
 
 	renderSuggestion(folder: TFolder, el: HTMLElement): void {
@@ -35,19 +33,17 @@ export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 
 /** A Code Group is a subfolder of the code folder. */
 export class CodeGroupSuggest extends FolderSuggest {
-	// only suggest folders in the Codes Folder, and only if a "/" was types
 	override getSuggestions(query: string): TFolder[] {
+		// only suggest folders in the Codes Folder, and only if a "/" was types
 		if (!query.includes("/")) return [];
 
 		const settings = this.plugin.settings;
-		const allFiles = this.plugin.app.vault.getAllLoadedFiles();
 
-		const matchingFolders = allFiles.filter((abstractFile) => {
-			const isFolder = abstractFile instanceof TFolder;
-			const matchesQuery = abstractFile.path.includes(query);
-			const isInCodeFolder = abstractFile.path.startsWith(settings.coding.folder + "/");
-			return isFolder && matchesQuery && isInCodeFolder;
-		}) as TFolder[];
+		const matchingFolders = this.foldersInVault.filter((folder) => {
+			const matchesQuery = folder.path.includes(query);
+			const isInCodeFolder = folder.path.startsWith(settings.coding.folder + "/");
+			return matchesQuery && isInCodeFolder;
+		});
 
 		return matchingFolders;
 	}
