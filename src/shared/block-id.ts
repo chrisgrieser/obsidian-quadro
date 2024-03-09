@@ -15,9 +15,7 @@ export const EMBEDDED_BLOCKLINK_REGEX = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
  * preferable over counting the number of IDs, it is less likely that content
  * will be deleted due to the same blockID being used multiple times in
  * different files. */
-export async function ensureBlockId(
-	lineText: string,
-): Promise<{ blockId: string; lineWithoutId: string }> {
+export function ensureBlockId(lineText: string): { blockId: string; lineWithoutId: string } {
 	const [blockIdOfLine] = lineText.match(BLOCKID_REGEX) || [];
 
 	// line already has blockID

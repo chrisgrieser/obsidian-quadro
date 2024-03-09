@@ -181,7 +181,7 @@ export function createOneCodeFile(plugin: Quadro, callback: (codeFile: TFile) =>
 	}).open();
 }
 
-export async function bulkCreateCodeFilesCommand(plugin: Quadro): Promise<void> {
+export function bulkCreateCodeFilesCommand(plugin: Quadro): void {
 	new InputForMultipleFiles(plugin, async (userInput) => {
 		let newFiles = 0;
 		const failedFiles: string[] = [];

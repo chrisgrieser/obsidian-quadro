@@ -11,7 +11,7 @@ import { suppressCertainFrontmatterSuggestions } from "./suppress-fm-suggestions
 export default class Quadro extends Plugin {
 	styleEl?: HTMLStyleElement;
 	statusbar = this.addStatusBarItem();
-	trashWatcherUninstaller: (() => void) | undefined;
+	trashWatcherUninstaller?: () => void;
 	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
 	cssclass = "quadro";
 
@@ -73,6 +73,6 @@ export default class Quadro extends Plugin {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 	async saveSettings(): Promise<void> {
-		this.saveData(this.settings);
+		await this.saveData(this.settings);
 	}
 }

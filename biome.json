@@ -3,8 +3,7 @@
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
-		"useIgnoreFile": true,
-		"defaultBranch": "main"
+		"useIgnoreFile": true
 	},
 	"json": {
 		"parser": { "allowComments": true }
@@ -20,12 +19,18 @@
 	"linter": {
 		"rules": {
 			"all": true,
-			"nursery": { "useImportType": "off" },
+			"nursery": {
+				"noUndeclaredDependencies": "off"
+			},
 			"complexity": { "noExcessiveCognitiveComplexity": "off" },
 			"style": {
+				"useImportType": "off",
 				"useTemplate": "off",
 				"noParameterAssign": "off",
-				"useNamingConvention": { "level": "warn", "options": { "strictCase": false } }
+				"useNamingConvention": {
+					"level": "warn",
+					"options": { "strictCase": false }
+				}
 			}
 		}
 	}

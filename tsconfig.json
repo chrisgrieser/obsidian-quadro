@@ -6,8 +6,7 @@
 		"baseUrl": ".",
 		"moduleResolution": "node",
 		"module": "ESNext",
-		"target": "ES6",
-		"lib": ["DOM", "ES5", "ES6", "ES7", "es2021"],
+		"target": "ES2022",
 
 		// SOURCE strictest tsconfig 2.0.0 https://github.com/tsconfig/bases/blob/main/bases/strictest.json
 		"strict": true,
@@ -31,5 +30,5 @@
 	},
 	"include": ["src/**/*.ts"],
 
-	"$schema": "https://json.schemastore.org/tsconfig",
+	"$schema": "https://json.schemastore.org/tsconfig"
 }

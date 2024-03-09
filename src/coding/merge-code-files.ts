@@ -46,7 +46,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 }
 
-export async function mergeCodeFilesCommand(plugin: Quadro) {
+export function mergeCodeFilesCommand(plugin: Quadro) {
 	const app = plugin.app;
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;

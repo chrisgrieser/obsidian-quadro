@@ -151,7 +151,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
  * B. data file, line has 1 code -> remove code, and its reference from code file
  * C. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
  */
-export async function unassignCodeCommand(plugin: Quadro): Promise<void> {
+export function unassignCodeCommand(plugin: Quadro): void {
 	const app = plugin.app;
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
