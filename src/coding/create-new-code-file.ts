@@ -25,19 +25,23 @@ class InputForOneFile extends ExtendedInputModal {
 
 		// name input field
 		new Setting(contentEl)
-			.setName("Name of the Code")
-			.setDesc('Use a slash ("/") in the name to create the Code File in a subfolder (group).')
-			.addSearch((text) => {
+			.setName("Name of the code")
+			.setDesc(
+				'Use a slash ("/") in the name to create the Code File in a subfolder (group). Example: "groupname/codename".',
+			)
+			.addText((text) => {
 				new CodeGroupSuggest(this.plugin, text.inputEl);
 				text.onChange((value) => {
 					this.fullCode = value.trim();
-					this.confirmationButton?.setDisabled(this.fullCode === "");
+					const invalid =
+						this.fullCode === "" || this.fullCode.startsWith("/") || this.fullCode.endsWith("/");
+					this.confirmationButton?.setDisabled(invalid);
 				});
 			});
 
 		// description input field
 		new Setting(contentEl)
-			.setName("Code Description")
+			.setName("Code description")
 			.setDesc('Will be added as metadata with the key "code description".')
 			.addText((text) =>
 				text.onChange((value) => {
