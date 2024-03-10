@@ -19,9 +19,7 @@
 	"linter": {
 		"rules": {
 			"all": true,
-			"nursery": {
-				"noUndeclaredDependencies": "off"
-			},
+			"nursery": { "noConsole": "off" },
 			"complexity": { "noExcessiveCognitiveComplexity": "off" },
 			"style": {
 				"useImportType": "off",
