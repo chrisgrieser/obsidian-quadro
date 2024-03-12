@@ -6,10 +6,10 @@
 		"useIgnoreFile": true
 	},
 	"json": {
-		"parser": { "allowComments": true }
+		"parser": { "allowComments": true } // for `tsconfig.json`
 	},
 	"javascript": {
-		"globals": ["activeDocument"]
+		"globals": ["activeDocument"] // electron
 	},
 	"formatter": {
 		"lineWidth": 100,
@@ -21,16 +21,16 @@
 			"all": true,
 			"nursery": {
 				"all": true,
-				"noConsole": "off",
+				"noConsole": "off", // `console.info` use is intentional
 				"useImportRestrictions": "off",
-				"noUndeclaredDependencies": "off"
+				"noUndeclaredDependencies": "off" // incompatible with typescript's default auto-imports
 			},
 			"complexity": {
 				"noExcessiveCognitiveComplexity": "off"
 			},
 			"style": {
-				"useImportType": "off",
-				"useTemplate": "off",
+				"useImportType": "off", // incompatible with typescript's default auto-imports
+				"useTemplate": "off", // too strict, simple concatenation are fine
 				"noParameterAssign": "off",
 				"useNamingConvention": { "level": "warn", "options": { "strictCase": false } }
 			}
