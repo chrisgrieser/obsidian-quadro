@@ -19,16 +19,20 @@
 	"linter": {
 		"rules": {
 			"all": true,
-			"nursery": { "noConsole": "off" },
-			"complexity": { "noExcessiveCognitiveComplexity": "off" },
+			"nursery": {
+				"all": true,
+				"noConsole": "off",
+				"useImportRestrictions": "off",
+				"noUndeclaredDependencies": "off"
+			},
+			"complexity": {
+				"noExcessiveCognitiveComplexity": "off"
+			},
 			"style": {
 				"useImportType": "off",
 				"useTemplate": "off",
 				"noParameterAssign": "off",
-				"useNamingConvention": {
-					"level": "warn",
-					"options": { "strictCase": false }
-				}
+				"useNamingConvention": { "level": "warn", "options": { "strictCase": false } }
 			}
 		}
 	}

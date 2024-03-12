@@ -1,4 +1,3 @@
-import process from "node:process";
 import builtins from "builtin-modules";
 import esbuild from "esbuild";
 
