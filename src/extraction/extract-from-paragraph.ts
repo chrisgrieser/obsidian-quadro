@@ -96,7 +96,7 @@ async function extractOfType(
 	// Determine DATAFILE info
 	const cursor = editor.getCursor();
 	const lineText = editor.getLine(cursor.line);
-	const { blockId, lineWithoutId } = await ensureBlockId(lineText);
+	const { blockId, lineWithoutId } = ensureBlockId(lineText);
 
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
@@ -120,9 +120,9 @@ async function extractOfType(
 	ensureWikilinksSetting(app);
 	const linkToExtractionFile = app.fileManager.generateMarkdownLink(
 		extractionFile,
-		dataFile.path,
+		extractionFile.path,
 		"",
-		dataFile.basename,
+		extractionFile.basename,
 	);
 	const updatedLine = `${lineWithoutId} ${linkToExtractionFile} ${blockId}`;
 	editor.setLine(cursor.line, updatedLine);
