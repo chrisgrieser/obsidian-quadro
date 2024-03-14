@@ -13,7 +13,7 @@ export default class Quadro extends Plugin {
 	statusbar = this.addStatusBarItem();
 	trashWatcherUninstaller?: () => void;
 	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
-	cssclass = "quadro";
+	cssclass = this.manifest.id;
 
 	override async onload(): Promise<void> {
 		console.info(this.manifest.name + " Plugin loaded.");
@@ -61,13 +61,13 @@ export default class Quadro extends Plugin {
 		ensureCorrectPropertyTypes(this.app);
 	}
 
+	//───────────────────────────────────────────────────────────────────────────
+
 	override onunload(): void {
 		console.info(this.manifest.name + " Plugin unloaded.");
 
 		if (this.trashWatcherUninstaller) this.trashWatcherUninstaller();
 	}
-
-	//───────────────────────────────────────────────────────────────────────────
 
 	async loadSettings(): Promise<void> {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
