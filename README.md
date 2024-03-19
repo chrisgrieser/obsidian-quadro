@@ -86,6 +86,7 @@ extensive functionality and plugin ecosystem of Obsidian:
   [DataLoom](https://obsidian.md/plugins?id=notion-like-tables) for advanced data
   aggregation or [YTranscript](https://obsidian.md/plugins?id=ytranscript) for
   automatic fetching of YouTube video transcripts.
+- Obsidian has been [stress tested and confirmed to be able to handle 20 000+ files](https://www.reddit.com/r/ObsidianMD/comments/zrzqq0/testing_the_scalability_of_obsidian_with_large/).
 - All this allows the researcher to customize the analysis to the particular
   needs of their research. Case-specific adaption of research methods
   is a key demand of qualitative research (which strictly speaking is not
