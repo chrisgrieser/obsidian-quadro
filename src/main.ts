@@ -8,6 +8,7 @@ import { ensureCorrectPropertyTypes } from "./shared/utils";
 import { updateStatusbar } from "./statusbar";
 import { suppressCertainFrontmatterSuggestions } from "./suppress-fm-suggestions";
 
+// biome-ignore lint/style/noDefaultExport: required for Obsidian plugins to work
 export default class Quadro extends Plugin {
 	styleEl?: HTMLStyleElement;
 	statusbar = this.addStatusBarItem();
