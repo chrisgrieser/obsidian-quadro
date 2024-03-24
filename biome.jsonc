@@ -29,6 +29,7 @@
 				"noExcessiveCognitiveComplexity": "off"
 			},
 			"style": {
+				"useBlockStatements": "off",
 				"useImportType": "off", // incompatible with typescript's default auto-imports
 				"useTemplate": "off", // too strict, simple concatenation are fine
 				"noParameterAssign": "off",
