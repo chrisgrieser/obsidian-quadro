@@ -26,7 +26,8 @@
 				"noUndeclaredDependencies": "off" // incompatible with typescript's default auto-imports
 			},
 			"complexity": {
-				"noExcessiveCognitiveComplexity": "off"
+				"noExcessiveCognitiveComplexity": "off",
+				"useSimplifiedLogicExpression": "off" // complains about negated and-conditions
 			},
 			"style": {
 				"useBlockStatements": "off",

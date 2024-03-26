@@ -61,8 +61,8 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 					typeof value !== "object"
 						? value.toString() // primitive
 						: Array.isArray(value)
-						  ? value.join("; ") // array
-						  : JSON.stringify(value); // object
+							? value.join("; ") // array
+							: JSON.stringify(value); // object
 
 				// remove enclosing wikilinks
 				if (key === "extraction source") valueStr = valueStr.slice(2, -2);

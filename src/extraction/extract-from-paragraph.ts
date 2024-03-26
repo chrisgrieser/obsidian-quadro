@@ -40,11 +40,11 @@ class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 			(f) => f instanceof TFile && f.name === "Template.md",
 		);
 		const extractionsCount = extractionType.children.length - 1; // -1 due to `Template.md`
-		const appendix = !templateFile
-			? '  [Select to create "Template.md"]'
-			: settings.extraction.countForExtractionType.enabled
-			  ? ` (${extractionsCount})`
-			  : "";
+		const appendix = templateFile
+			? settings.extraction.countForExtractionType.enabled
+				? ` (${extractionsCount})`
+				: ""
+			: '  [Select to create "Template.md"]';
 		return extractionType.name + appendix;
 	}
 
