@@ -17,11 +17,14 @@ export function updateStatusbar(plugin: Quadro): void {
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	// CODEFILE: links = times code was assigned
+	// CODEFILE: outgoing links = times code was assigned
 	if (currentlyInFolder(plugin, "Codes")) {
 		let codesAssigned = 0;
-		for (const [_, count] of Object.entries(links)) {
-			codesAssigned += count;
+		for (const [linkTarget, count] of Object.entries(links)) {
+			const linkToCodeFile = linkTarget.startsWith(settings.coding.folder);
+			const linkToExtractionFile = linkTarget.startsWith(settings.extraction.folder);
+			const linkToMdFile = linkTarget.endsWith(".md");
+			if (linkToMdFile && !linkToExtractionFile && !linkToCodeFile) codesAssigned += count;
 		}
 		segments.push(`Code ${codesAssigned}x assigned`);
 	}
