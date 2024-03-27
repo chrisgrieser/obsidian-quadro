@@ -13,6 +13,19 @@ export function isCodeTemplateFile(plugin: Quadro, tFile: TFile | null): boolean
 	return tFile.path === plugin.settings.coding.folder + "/Template.md";
 }
 
+export function countTimesCodeIsAssigned(plugin: Quadro, tFile: TFile): number {
+	const { app, settings } = plugin;
+	const outgoingLinks = app.metadataCache.resolvedLinks[tFile.path] || {};
+	let codesAssigned = 0;
+	for (const [linkTarget, count] of Object.entries(outgoingLinks)) {
+		const linkToCodeFile = linkTarget.startsWith(settings.coding.folder + "/");
+		const linkToExtractionFile = linkTarget.startsWith(settings.extraction.folder + "/");
+		const linkToMdFile = linkTarget.endsWith(".md");
+		if (linkToMdFile && !linkToExtractionFile && !linkToCodeFile) codesAssigned += count;
+	}
+	return codesAssigned;
+}
+
 //──────────────────────────────────────────────────────────────────────────────
 
 export interface Code {

@@ -1,11 +1,10 @@
 import moment from "moment";
-import { Notice, TFile } from "obsidian";
+import { Notice, TFile, normalizePath } from "obsidian";
 import Quadro from "src/main";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
 // CONFIG (not worth a separate setting)
 const naString = "-";
-const exportFolderName = "CSV Export";
 
 /** `"` escaped as `""`, otherwise everything is quoted so the separator can be
  * used. See: https://stackoverflow.com/a/4617967/22114136 */
@@ -74,13 +73,14 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 		}
 
 		// write CSV
-		const exportFolder = app.vault.getFolderByPath(exportFolderName);
-		if (!exportFolder) await app.vault.createFolder(exportFolderName);
+		const exportFolderPath = normalizePath(settings.analysis.folder + "/CSV Export");
+		const folderExists = app.vault.getFolderByPath(exportFolderPath);
+		if (!folderExists) await app.vault.createFolder(exportFolderPath);
 
 		const csvContent = csvFileLines.join("\n");
 
 		const timestamp = moment().format("YYYY-MM-DD_HH-mm-ss");
-		const csvPath = `${exportFolderName}/${extractionType.name}_${timestamp}.csv`;
+		const csvPath = normalizePath(`${exportFolderPath}/${extractionType.name}_${timestamp}.csv`);
 
 		const newCsv = await app.vault.create(csvPath, csvContent);
 

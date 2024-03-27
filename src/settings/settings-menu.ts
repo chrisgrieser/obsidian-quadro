@@ -148,13 +148,11 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			});
 
 		// ANALYSIS
-		// right now only aggregations of extractions, therefore not yet a
-		// separate section
-		// containerEl.createEl("h4", { text: "Analysis" });
+		containerEl.createEl("h4", { text: "Analysis" });
 
 		new Setting(containerEl)
 			.setName("Analysis folder")
-			.setDesc("Location where aggregations of extractions are stored.")
+			.setDesc("Location where aggregations, overview files, and export files, etc. are stored.")
 			.addSearch((text) => {
 				new FolderSuggest(this.plugin, text.inputEl);
 				text
