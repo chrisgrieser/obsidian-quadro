@@ -4,10 +4,13 @@ import { countTimesCodeIsAssigned } from "./coding-utils";
 
 function recurseCodeFolder(
 	plugin: Quadro,
-	folder: TFolder,
+	folder: TFolder, // current iteration
+	outputPath: string, // only required for markdownLink-generation
+	currentDepth = 0, // used to calculate indentation
 	accOutput: string[] = [],
-	currentDepth = 0,
 ): string[] {
+	const { app, settings } = plugin;
+
 	// sort folders first
 	const children = [...folder.children]; // cannot use structuralCopy, due to circular references
 	children.sort((a, b) => {
@@ -20,13 +23,17 @@ function recurseCodeFolder(
 	for (const child of children) {
 		const indent = "\t".repeat(currentDepth);
 		if (child instanceof TFolder) {
-			accOutput.push(indent + "- 📁 " + child.name);
-			accOutput = recurseCodeFolder(plugin, child, accOutput, currentDepth + 1);
+			const tfolder = child;
+			accOutput.push(indent + "- 📁 " + tfolder.name);
+			accOutput = recurseCodeFolder(plugin, tfolder, outputPath, currentDepth + 1, accOutput);
 		} else if (child instanceof TFile) {
-			const isTemplate = child.path === plugin.settings.coding.folder + "/Template.md";
+			const tfile = child;
+			const isTemplate = tfile.path === settings.coding.folder + "/Template.md";
 			if (isTemplate) continue;
-			const codeAssignedCount = countTimesCodeIsAssigned(plugin, child);
-			accOutput.push(`${indent}- 📄 ${child.basename} (${codeAssignedCount}x)`);
+
+			const wikiLink = app.fileManager.generateMarkdownLink(tfile, outputPath, "", tfile.basename);
+			const codeAssignedCount = countTimesCodeIsAssigned(plugin, tfile);
+			accOutput.push(`${indent}- 📄 ${wikiLink} (${codeAssignedCount}x)`);
 		}
 	}
 	return accOutput;
@@ -41,15 +48,15 @@ export async function createOverviewOfCodesCommand(plugin: Quadro) {
 		new Notice("Code Folder not found.");
 		return;
 	}
+	const outputPath = normalizePath(settings.analysis.folder + "/Code Overview.md");
 
 	// compile output
 	app.metadataTypeManager.setType("last update", "datetime");
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
-	const outputLines = recurseCodeFolder(plugin, codeFolder);
+	const outputLines = recurseCodeFolder(plugin, codeFolder, outputPath);
 	const output = ["---", "last update: " + isoDate, "---", "", ...outputLines].join("\n");
 
 	// create/update overview file
-	const outputPath = normalizePath(settings.analysis.folder + "/Code Overview.md");
 	let outputFile = app.vault.getFileByPath(outputPath);
 	if (outputFile) {
 		app.vault.modify(outputFile, output);
