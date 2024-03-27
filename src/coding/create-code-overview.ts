@@ -24,12 +24,17 @@ function recurseCodeFolder(
 		const indent = "\t".repeat(currentDepth);
 		if (child instanceof TFolder) {
 			const tfolder = child;
+			const hasCodeFiles = tfolder.children.some(
+				(child) => child instanceof TFile && child.extension === "md",
+			);
+			if (!hasCodeFiles) continue; // excludes empty folder or attachments folders
 			accOutput.push(indent + "- 📁 " + tfolder.name);
 			accOutput = recurseCodeFolder(plugin, tfolder, outputPath, currentDepth + 1, accOutput);
 		} else if (child instanceof TFile) {
 			const tfile = child;
 			const isTemplate = tfile.path === settings.coding.folder + "/Template.md";
-			if (isTemplate) continue;
+			const nonMarkdownFile = tfile.extension !== "md";
+			if (isTemplate || nonMarkdownFile) continue;
 
 			const wikiLink = app.fileManager.generateMarkdownLink(tfile, outputPath, "", tfile.basename);
 			const codeAssignedCount = countTimesCodeIsAssigned(plugin, tfile);
