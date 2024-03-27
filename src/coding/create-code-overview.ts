@@ -2,11 +2,19 @@ import { Notice, TFile, TFolder, normalizePath } from "obsidian";
 import Quadro from "src/main";
 import { countTimesCodeIsAssigned } from "./coding-utils";
 
+/**
+ * @param plugin - plugin instance
+ * @param folder - currently iterated folder
+ * @param outputPath - path of overview file, needed for markdown-link-generation
+ * @param currentDepth - used to calculate indentation
+ * @param accOutput - accumulator
+ * @returns updated `accOutput`
+ */
 function recurseCodeFolder(
 	plugin: Quadro,
-	folder: TFolder, // current iteration
-	outputPath: string, // only required for markdownLink-generation
-	currentDepth = 0, // used to calculate indentation
+	folder: TFolder,
+	outputPath: string,
+	currentDepth = 0,
 	accOutput: string[] = [],
 ): string[] {
 	const { app, settings } = plugin;
@@ -28,17 +36,27 @@ function recurseCodeFolder(
 				(child) => child instanceof TFile && child.extension === "md",
 			);
 			if (!hasCodeFiles) continue; // excludes empty folder or attachments folders
-			accOutput.push(indent + "- 📁 " + tfolder.name);
+			const lineText = indent + "- " + tfolder.name;
+			accOutput.push(lineText);
 			accOutput = recurseCodeFolder(plugin, tfolder, outputPath, currentDepth + 1, accOutput);
 		} else if (child instanceof TFile) {
-			const tfile = child;
-			const isTemplate = tfile.path === settings.coding.folder + "/Template.md";
-			const nonMarkdownFile = tfile.extension !== "md";
+			const codeFile = child;
+			const isTemplate = codeFile.path === settings.coding.folder + "/Template.md";
+			const nonMarkdownFile = codeFile.extension !== "md";
 			if (isTemplate || nonMarkdownFile) continue;
 
-			const wikiLink = app.fileManager.generateMarkdownLink(tfile, outputPath, "", tfile.basename);
-			const codeAssignedCount = countTimesCodeIsAssigned(plugin, tfile);
-			accOutput.push(`${indent}- 📄 ${wikiLink} (${codeAssignedCount}x)`);
+			const codeDesc = app.metadataCache.getFileCache(codeFile)?.frontmatter?.["code description"];
+			const desc = codeDesc ? ": " + codeDesc : "";
+			const codeAssignedCount = countTimesCodeIsAssigned(plugin, codeFile);
+			const wikiLink = app.fileManager.generateMarkdownLink(
+				codeFile,
+				outputPath,
+				"",
+				`${codeFile.basename}`,
+			);
+
+			const lineText = `${indent}- 📄 ${wikiLink} (${codeAssignedCount}x)${desc}`;
+			accOutput.push(lineText);
 		}
 	}
 	return accOutput;
@@ -59,7 +77,16 @@ export async function createOverviewOfCodesCommand(plugin: Quadro) {
 	app.metadataTypeManager.setType("last update", "datetime");
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
 	const outputLines = recurseCodeFolder(plugin, codeFolder, outputPath);
-	const output = ["---", "last update: " + isoDate, "---", "", ...outputLines].join("\n");
+	const output = [
+		"---",
+		"last update: " + isoDate,
+		"---",
+		"",
+		"> [!INFO]",
+		"> This file is auto-generated. Manual edits will be overwritten the next time the command is run.",
+		"",
+		...outputLines,
+	].join("\n");
 
 	// create/update overview file
 	let outputFile = app.vault.getFileByPath(outputPath);
