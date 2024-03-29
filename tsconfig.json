@@ -17,7 +17,7 @@
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
 		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
+		"noUncheckedIndexedAccess": false, // *too* strict since it complains about every [0]
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 

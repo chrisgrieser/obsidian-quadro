@@ -161,7 +161,7 @@ export async function extractFromParagraphCommand(plugin: Quadro): Promise<void>
 	const dataFile = editor.editorComponent.view.file;
 	if (extractionTypes.length === 0) {
 		bootstrapExtractionTypeFolder(plugin);
-	} else if (extractionTypes.length === 1 && extractionTypes[0]) {
+	} else if (extractionTypes.length === 1) {
 		extractOfType(plugin, editor, dataFile, extractionTypes[0]);
 	} else {
 		new SuggesterForExtractionTypes(plugin, editor, extractionTypes, dataFile).open();
