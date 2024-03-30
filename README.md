@@ -272,7 +272,6 @@ representing codes):
 > not supported.
 
 #### Coding capabilities
-
 <!-- LTeX: enabled=false -->
 
 | Action                                    | Description                                                                                                                                                                                                                            |             Sidebar Button             | Default Hotkey | Capability Provider                                                                                              |

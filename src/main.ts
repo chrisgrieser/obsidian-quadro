@@ -1,4 +1,5 @@
 import { Command, Plugin } from "obsidian";
+import { processQuadroCodeOverviewCodeblock } from "./coding/code-overview";
 import { CODING_COMMANDS } from "./coding/coding-commands";
 import { setupTrashWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
@@ -57,22 +58,28 @@ export default class Quadro extends Plugin {
 		await this.loadSettings();
 		this.addSettingTab(new QuadroSettingsMenu(this));
 		suppressCertainFrontmatterSuggestions(this);
-
-		// Ensure correct types
 		ensureCorrectPropertyTypes(this.app);
+
+		// CODE BLOCKS
+		const codeBlockLang = "quadro-code-overview";
+		this.registerMarkdownCodeBlockProcessor(codeBlockLang, (_source, el) => {
+			el.innerHTML = processQuadroCodeOverviewCodeblock(this);
+			el.addClass(this.cssclass);
+		});
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
 
 	override onunload(): void {
-		console.info(this.manifest.name + " Plugin unloaded.");
-
 		if (this.trashWatcherUninstaller) this.trashWatcherUninstaller();
+
+		console.info(this.manifest.name + " Plugin unloaded.");
 	}
 
 	async loadSettings(): Promise<void> {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
+
 	async saveSettings(): Promise<void> {
 		await this.saveData(this.settings);
 	}
