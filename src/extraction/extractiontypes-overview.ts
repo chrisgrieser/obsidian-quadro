@@ -35,9 +35,9 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 		}
 		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionTypeName}</a>`;
 		const dimensions = Object.keys(frontmatter).map((key) => {
-			let typeOfKey = app.metadataTypeManager.getPropertyInfo(key)?.type || "unknown";
+			let typeOfKey = app.metadataTypeManager.getPropertyInfo(key)?.type;
 			if (typeOfKey === "multitext") typeOfKey = "list";
-			return `<li><b>${key}</b>: ${typeOfKey}</li>`;
+			return `<li><b>${key}</b>${typeOfKey ? ": " + typeOfKey : ""}</li>`;
 		});
 		out += "<b>" + htmlLinkToTemplateFile + "</b><ul>" + dimensions.join("") + "</ul><br>";
 	}
