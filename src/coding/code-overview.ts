@@ -43,7 +43,7 @@ function recurseCodeFolder(plugin: Quadro, folder: TFolder): string {
 	return `<ul>${text}</ul>`;
 }
 
-export function insertCodeOverblockCodeblockCommand(plugin: Quadro) {
+export function insertCodeOverviewCodeblockCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor) return;
 
@@ -51,7 +51,7 @@ export function insertCodeOverblockCodeblockCommand(plugin: Quadro) {
 	editor?.replaceSelection(codeblockString);
 }
 
-export function processQuadroCodeOverviewCodeblock(plugin: Quadro): string {
+export function processCodeOverviewCodeblock(plugin: Quadro): string {
 	const { app, settings } = plugin;
 
 	const codeFolder = app.vault.getFolderByPath(settings.coding.folder);

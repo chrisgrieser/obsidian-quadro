@@ -1,8 +1,9 @@
 import { Command, Plugin } from "obsidian";
-import { processQuadroCodeOverviewCodeblock } from "./coding/code-overview";
+import { processCodeOverviewCodeblock } from "./coding/code-overview";
 import { CODING_COMMANDS } from "./coding/coding-commands";
 import { setupTrashWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
+import { processExtractiontypesOverviewCodeblock } from "./extraction/extractiontypes-overview";
 import { DEFAULT_SETTINGS } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
 import { ensureCorrectPropertyTypes } from "./shared/utils";
@@ -61,9 +62,12 @@ export default class Quadro extends Plugin {
 		ensureCorrectPropertyTypes(this.app);
 
 		// CODE BLOCKS
-		const codeBlockLang = "quadro-code-overview";
-		this.registerMarkdownCodeBlockProcessor(codeBlockLang, (_source, el) => {
-			el.innerHTML = processQuadroCodeOverviewCodeblock(this);
+		this.registerMarkdownCodeBlockProcessor("quadro-code-overview", (_source, el) => {
+			el.innerHTML = processCodeOverviewCodeblock(this);
+			el.addClass(this.cssclass);
+		});
+		this.registerMarkdownCodeBlockProcessor("quadro-extractiontypes-overview", (_source, el) => {
+			el.innerHTML = processExtractiontypesOverviewCodeblock(this);
 			el.addClass(this.cssclass);
 		});
 	}
