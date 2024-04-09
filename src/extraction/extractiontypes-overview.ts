@@ -1,6 +1,7 @@
 import { TFile, TFolder, normalizePath } from "obsidian";
 import Quadro from "src/main";
 import { getActiveEditor } from "src/shared/utils";
+import { countExtractionsForType } from "./extraction-utils";
 
 export function insertExtractiontypesOverviewCodeblockCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
@@ -27,19 +28,23 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 
 	let out = "";
 	for (const template of extractionTypeTemplates) {
-		const extractionTypeName = template.parent?.name;
+		const extractionType = template.parent as TFolder;
 		const frontmatter = app.metadataCache.getFileCache(template)?.frontmatter;
 		if (!frontmatter) {
-			out += `⚠️ Invalid properties in template file for "${extractionTypeName}".`;
+			out += `⚠️ Invalid properties in template file for "${extractionType.name}".`;
 			continue;
 		}
-		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionTypeName}</a>`;
+		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionType.name}</a>`;
 		const dimensions = Object.keys(frontmatter).map((key) => {
 			let typeOfKey = app.metadataTypeManager.getPropertyInfo(key)?.type;
 			if (typeOfKey === "multitext") typeOfKey = "list";
-			return `<li><b>${key}</b>${typeOfKey ? ": " + typeOfKey : ""}</li>`;
+			const typeText = typeOfKey ? `: ${typeOfKey}` : "";
+			return `<li><b>${key}</b>${typeText}</li>`;
 		});
-		out += "<b>" + htmlLinkToTemplateFile + "</b><ul>" + dimensions.join("") + "</ul><br>";
+		const extractionsMade = countExtractionsForType(extractionType);
+		out += `<b>${htmlLinkToTemplateFile}</b> (${extractionsMade})<ul>${dimensions.join(
+			"",
+		)}</ul><br>`;
 	}
 
 	return out;

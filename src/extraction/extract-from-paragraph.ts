@@ -15,6 +15,7 @@ import {
 	bootstrapExtractionTemplate,
 	bootstrapExtractionTypeFolder,
 } from "./bootstrap-extraction-files";
+import { countExtractionsForType } from "./extraction-utils";
 
 class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 	extractionTypes: TFolder[];
@@ -39,7 +40,7 @@ class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 		const templateFile = extractionType.children.find(
 			(f) => f instanceof TFile && f.name === "Template.md",
 		);
-		const extractionsCount = extractionType.children.length - 1; // -1 due to `Template.md`
+		const extractionsCount = countExtractionsForType(extractionType);
 		const appendix = templateFile
 			? settings.extraction.countForExtractionType.enabled
 				? ` (${extractionsCount})`

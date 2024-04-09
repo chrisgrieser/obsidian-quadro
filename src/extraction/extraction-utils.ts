@@ -1,4 +1,4 @@
-import { App, FrontMatterCache, Notice, TFolder } from "obsidian";
+import { App, FrontMatterCache, Notice, TFile, TFolder } from "obsidian";
 import Quadro from "src/main";
 
 /** gets properties from Template.md of extraction type */
@@ -39,4 +39,11 @@ export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 		return;
 	}
 	return extractionTypes;
+}
+
+export function countExtractionsForType(extractionType: TFolder): number {
+	const extractionsMade = extractionType.children.filter(
+		(type) => type instanceof TFile && type.extension === "md" && type.name !== "Template.md",
+	);
+	return extractionsMade.length;
 }

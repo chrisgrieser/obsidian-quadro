@@ -1,5 +1,5 @@
-import { TFolder } from "obsidian";
 import { countTimesCodeIsAssigned } from "./coding/coding-utils";
+import { countExtractionsForType } from "./extraction/extraction-utils";
 import Quadro from "./main";
 import { currentlyInFolder } from "./shared/utils";
 
@@ -24,9 +24,11 @@ export function updateStatusbar(plugin: Quadro): void {
 	}
 	// EXTRACTION FILE: number of extractions made for the type
 	else if (currentlyInFolder(plugin, "Extractions")) {
-		const extractionType = activeFile.parent as TFolder;
-		const extractionsMade = extractionType.children.length - 1; // -1 due to `Template.md`
-		segments.push(`${extractionsMade}x extracted`);
+		const extractionType = activeFile.parent;
+		if (extractionType) {
+			const extractionsMade = countExtractionsForType(extractionType);
+			segments.push(`${extractionsMade}x extracted`);
+		}
 	}
 	// DATAFILE: differentiate links by whether they are extractions or codes
 	else {
