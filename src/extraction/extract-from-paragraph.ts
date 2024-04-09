@@ -86,7 +86,7 @@ async function extractOfType(
 
 	// Determine path of EXTRACTION-FILE to be created
 	let extractionPath: string;
-	let extractionCount = extractionTypeFolder.children.length - 1; // -1 due to `Template.md`
+	let extractionCount = countExtractionsForType(extractionTypeFolder);
 	while (true) {
 		extractionCount++;
 		extractionPath = `${dir}/${type} ${extractionCount}.md`;
