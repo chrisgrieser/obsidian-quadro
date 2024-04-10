@@ -68,18 +68,6 @@ body .internal-embed .markdown-embed-content {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* PROPERTIES */
-
-/* broader, so dimension are visible */
-body .metadata-property-key {
-	min-width: 25%;
-}
-
-body .metadata-container {
-	font-size: 0.9em;
-}
-
-/* ────────────────────────────────────────────────────────────────────────── */
 /* QUADRO MODALS & BUTTONS */
 
 /* assign new code */

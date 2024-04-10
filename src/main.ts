@@ -4,19 +4,22 @@ import { CODING_COMMANDS } from "./coding/coding-commands";
 import { setupTrashWatcher } from "./coding/delete-code-everywhere";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
 import { processExtractiontypesOverviewCodeblock } from "./extraction/extractiontypes-overview";
+import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions";
+import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys";
 import { DEFAULT_SETTINGS } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
 import { ensureCorrectPropertyTypes } from "./shared/utils";
 import { updateStatusbar } from "./statusbar";
-import { suppressCertainFrontmatterSuggestions } from "./suppress-fm-suggestions";
 
 // biome-ignore lint/style/noDefaultExport: required for Obsidian plugins to work
 export default class Quadro extends Plugin {
-	styleEl?: HTMLStyleElement;
+	styleElSuppressSuggestionsInFields?: HTMLStyleElement;
+	styleElPropertyKeyWidth?: HTMLStyleElement;
+	cssclass = this.manifest.id;
+
 	statusbar = this.addStatusBarItem();
 	trashWatcherUninstaller?: () => void;
 	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
-	cssclass = this.manifest.id;
 
 	override async onload(): Promise<void> {
 		console.info(this.manifest.name + " Plugin loaded.");
@@ -58,7 +61,8 @@ export default class Quadro extends Plugin {
 		// SETTINGS
 		await this.loadSettings();
 		this.addSettingTab(new QuadroSettingsMenu(this));
-		suppressCertainFrontmatterSuggestions(this);
+		setCssForSuggestionSurpression(this);
+		setCssForWidthOfKeys(this);
 		ensureCorrectPropertyTypes(this.app);
 
 		// CODE BLOCKS

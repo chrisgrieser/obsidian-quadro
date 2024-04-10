@@ -1,7 +1,8 @@
 import { PluginSettingTab, Setting, normalizePath } from "obsidian";
+import { suppressCertainFrontmatterSuggestions } from "src/frontmatter-modifications/suppress-suggestions";
+import { setCssForWidthOfKeys } from "src/frontmatter-modifications/width-of-keys";
 import Quadro from "src/main";
 import { FolderSuggest } from "src/shared/folder-suggest";
-import { suppressCertainFrontmatterSuggestions } from "src/suppress-fm-suggestions";
 import {
 	CsvSeparatorChoices,
 	DEFAULT_SETTINGS,
@@ -33,6 +34,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		containerEl.empty();
 		const settings = this.plugin.settings;
 
+		// General
 		new Setting(containerEl)
 			.setName("Properties without suggestions")
 			.setDesc(
@@ -43,20 +45,35 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			.addTextArea((textarea) =>
 				textarea
 					.setPlaceholder("One property per line")
-					.setValue(settings.suppressSuggestionFields?.join("\n") || "")
+					.setValue(settings.suppressSuggestionInFields.join("\n"))
 					.onChange(async (value) => {
 						const fields = value
 							.split("\n")
 							.map((line) => line.trim())
 							.filter((line) => line !== "");
+						settings.suppressSuggestionInFields = fields;
 
-						settings.suppressSuggestionFields = fields;
 						await this.plugin.saveSettings();
-
 						suppressCertainFrontmatterSuggestions(this.plugin);
 					}),
 			)
 			.settingEl.addClass("quadro-property-list");
+
+		new Setting(containerEl)
+			.setName("Width of property keys")
+			.setDesc("Minimum width of keys in the list of properties, in percent.")
+			.addSlider((slider) =>
+				slider
+					.setLimits(25, 75, 5)
+					.setDynamicTooltip()
+					.setValue(settings.propertiesKeysWidthPercent)
+					.onChange(async (value) => {
+						settings.propertiesKeysWidthPercent = value;
+
+						await this.plugin.saveSettings();
+						setCssForWidthOfKeys(this.plugin);
+					}),
+			);
 
 		// CODING
 		containerEl.createEl("h3", { text: "Coding" });
@@ -147,12 +164,9 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					});
 			});
 
-		// ANALYSIS
-		containerEl.createEl("h4", { text: "Analysis" });
-
 		new Setting(containerEl)
 			.setName("Analysis folder")
-			.setDesc("Location where aggregations, overview files, and export files, etc. are stored.")
+			.setDesc("Location where aggregations and export files are stored.")
 			.addSearch((text) => {
 				new FolderSuggest(this.plugin, text.inputEl);
 				text

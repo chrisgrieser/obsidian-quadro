@@ -39,9 +39,10 @@ export const DEFAULT_SETTINGS = {
 			enabled: true,
 		},
 	},
-	suppressSuggestionFields: [] as string[],
 	analysis: {
 		folder: "Analysis",
 	},
+	suppressSuggestionInFields: [] as string[],
+	propertiesKeysWidthPercent: 35,
 };
 export type QuadroSettings = typeof DEFAULT_SETTINGS;
