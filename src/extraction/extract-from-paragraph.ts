@@ -94,9 +94,17 @@ async function extractOfType(
 		if (!fileExistsAlready) break;
 	}
 
-	// Determine DATAFILE info
+	// Add highlight to DATAFILE & determine DATAFILE info
 	const cursor = editor.getCursor();
-	const lineText = editor.getLine(cursor.line);
+	let lineText = editor.getLine(cursor.line);
+
+	const selection = editor.getSelection();
+	if (selection) {
+		// spaces need to be moved outside, otherwise they make the highlights invalid
+		const highlightAdded = selection.replace(/^( ?)(.+?)( ?)$/g, "$1==$2==$3");
+		editor.replaceSelection(highlightAdded);
+		lineText = editor.getLine(cursor.line);
+	}
 	const { blockId, lineWithoutId } = ensureBlockId(lineText);
 
 	// insert data into TEMPLATE
@@ -141,6 +149,12 @@ export async function extractFromParagraphCommand(plugin: Quadro): Promise<void>
 
 	if (currentlyInFolder(plugin, "Codes") || currentlyInFolder(plugin, "Extractions")) {
 		new Notice("You must be in a Data File to make an extraction.", 3000);
+		return;
+	}
+
+	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
+	if (hasHighlightMarkupInSel) {
+		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
 		return;
 	}
 

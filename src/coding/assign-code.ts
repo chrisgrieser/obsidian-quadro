@@ -77,6 +77,9 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 	async assignCode(app: App, codeFile: TFile, dataFile: TFile): Promise<void> {
 		const cursor = this.editor.getCursor();
 		const fullCode = getFullCode(this.plugin, codeFile);
+
+		// DATAFILE Changes
+		// add highlight if selection
 		let lineText = this.editor.getLine(cursor.line);
 
 		const selection = this.editor.getSelection();
@@ -86,9 +89,8 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 			this.editor.replaceSelection(highlightAdded);
 			lineText = this.editor.getLine(cursor.line);
 		}
-		const { blockId, lineWithoutId } = await ensureBlockId(lineText);
+		const { blockId, lineWithoutId } = ensureBlockId(lineText);
 
-		// DATAFILE Changes
 		ensureWikilinksSetting(app);
 		const linkToCodeFile = app.fileManager.generateMarkdownLink(
 			codeFile,
