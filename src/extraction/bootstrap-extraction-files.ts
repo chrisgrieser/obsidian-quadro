@@ -1,7 +1,7 @@
 import { Notice, Setting, TFolder, normalizePath } from "obsidian";
 import Quadro from "src/main";
 import { ExtendedInputModal } from "src/shared/modals";
-import { moveCursorToFirstProperty, openFileInSplitToRight } from "src/shared/utils";
+import { moveCursorToFirstProperty, openFileInNewWin } from "src/shared/utils";
 
 class InputForNewExtractionType extends ExtendedInputModal {
 	onSubmit: (nameOfNewType: string) => void;
@@ -80,7 +80,7 @@ export async function bootstrapExtractionTemplate(plugin: Quadro, newExtractionT
 
 	const templateFile = await app.vault.create(templatePath, templateForTemplate + dataloomBugInfo);
 
-	await openFileInSplitToRight(app, templateFile);
+	await openFileInNewWin(plugin, templateFile);
 	app.commands.executeCommandById("file-explorer:reveal-active-file");
 	moveCursorToFirstProperty(app, "key");
 }

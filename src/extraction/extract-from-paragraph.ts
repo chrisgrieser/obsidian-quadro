@@ -9,7 +9,7 @@ import {
 	ensureWikilinksSetting,
 	getActiveEditor,
 	moveCursorToFirstProperty,
-	openFileInSplitToRight,
+	openFileInNewWin,
 } from "src/shared/utils";
 import {
 	bootstrapExtractionTemplate,
@@ -80,7 +80,7 @@ async function extractOfType(
 				"\n\nYou need to add valid fields before you can make extractions.",
 			6000,
 		);
-		openFileInSplitToRight(app, templateFile);
+		openFileInNewWin(plugin, templateFile);
 		return;
 	}
 
@@ -130,7 +130,7 @@ async function extractOfType(
 	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 	// Open EXTRACTION-FILE
-	await openFileInSplitToRight(app, extractionFile);
+	await openFileInNewWin(plugin, extractionFile);
 	moveCursorToFirstProperty(app, "value");
 }
 

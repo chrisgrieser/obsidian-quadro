@@ -6,8 +6,10 @@ import { FolderSuggest } from "src/shared/folder-suggest";
 import {
 	CsvSeparatorChoices,
 	DEFAULT_SETTINGS,
+	OpeningModes,
 	SortFuncChoices,
 	csvSeparators,
+	openingModes,
 	sortFuncs,
 } from "./defaults";
 
@@ -150,6 +152,21 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					}),
 			);
+
+		new Setting(containerEl)
+			.setName("Location of Extraction Window")
+			.setDesc(
+				"When creating a new extraction, a new split window opens. This setting determines where that window opens.",
+			)
+			.addDropdown((dropdown) => {
+				dropdown
+					.addOptions(openingModes)
+					.setValue(settings.extraction.openingMode)
+					.onChange(async (value) => {
+						settings.extraction.openingMode = value as OpeningModes;
+						await this.plugin.saveSettings();
+					});
+			});
 
 		new Setting(containerEl)
 			.setName("CSV Separator")

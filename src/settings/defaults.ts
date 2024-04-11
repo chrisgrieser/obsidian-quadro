@@ -12,12 +12,19 @@ export type SortFuncChoices = keyof typeof sortFuncs;
 
 //──────────────────────────────────────────────────────────────────────────────
 
+// `Records` also used by dropdowns in the settings menu
 export const csvSeparators = {
 	",": "Comma (,)",
 	";": "Semicolon (;)",
 	"\t": "Tab",
 };
 export type CsvSeparatorChoices = keyof typeof csvSeparators;
+
+export const openingModes = {
+	"right-split": "to the right",
+	"down-split": "to the bottom",
+};
+export type OpeningModes = keyof typeof openingModes;
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -38,6 +45,7 @@ export const DEFAULT_SETTINGS = {
 		countForExtractionType: {
 			enabled: true,
 		},
+		openingMode: "down-split" as OpeningModes,
 	},
 	analysis: {
 		folder: "Analysis",
@@ -45,4 +53,5 @@ export const DEFAULT_SETTINGS = {
 	suppressSuggestionInFields: [] as string[],
 	propertiesKeysWidthPercent: 35,
 };
+
 export type QuadroSettings = typeof DEFAULT_SETTINGS;

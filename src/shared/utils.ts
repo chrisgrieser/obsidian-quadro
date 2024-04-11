@@ -20,12 +20,9 @@ export function getActiveEditor(app: App): Editor | undefined {
 //──────────────────────────────────────────────────────────────────────────────
 
 export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void {
-	// ensure properties in document are available in case user changed it
 	app.vault.setConfig("propertiesInDocument", "visible");
 
 	const selector = `.workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-${type} :is([contenteditable='true'], input)`;
-
-	// `activeDocument` instead of `document` ensures it works in popup windows as well
 	const firstProperty = activeDocument.querySelector(selector);
 
 	// focus the field
@@ -58,15 +55,19 @@ function moveCursorToHthmlElement(elem: HTMLElement, pos: number): void {
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
 
-export async function openFileInSplitToRight(app: App, tfile: TFile): Promise<void> {
-	const currentLeaf = app.workspace.getLeaf();
+export async function openFileInNewWin(plugin: Quadro, tfile: TFile): Promise<void> {
+	const { app, settings } = plugin;
+
+	const direction1 = settings.extraction.openingMode === "right-split" ? "right" : "bottom";
+	const direction2 = settings.extraction.openingMode === "right-split" ? "vertical" : "horizontal";
 
 	// use existing leaf if it exists, otherwise create new one
-	const leafToTheRight =
-		app.workspace.getAdjacentLeafInDirection(currentLeaf, "right") ||
-		app.workspace.createLeafBySplit(currentLeaf, "vertical", false);
+	const currentLeaf = app.workspace.getLeaf();
+	const leaf =
+		app.workspace.getAdjacentLeafInDirection(currentLeaf, direction1) ||
+		app.workspace.createLeafBySplit(currentLeaf, direction2, false);
 
-	await leafToTheRight.openFile(tfile, LIVE_PREVIEW);
+	await leaf.openFile(tfile, LIVE_PREVIEW);
 }
 
 //──────────────────────────────────────────────────────────────────────────────
