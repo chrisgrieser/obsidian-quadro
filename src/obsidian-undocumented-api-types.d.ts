@@ -1,7 +1,6 @@
 import "obsidian";
 
 declare module "obsidian" {
-	// biome-ignore lint/correctness/noUnusedVariables: declaration file
 	interface FuzzySuggestModal<T> {
 		chooser?: {
 			useSelectedItem: (evt: KeyboardEvent) => boolean;
