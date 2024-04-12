@@ -24,6 +24,7 @@ declare module "obsidian" {
 		// result in in a 1:3 ratio, making the tab group take 3/4 or 75% of the
 		// width/height in the workspace.
 		setDimension: (dimension: number) => void;
+		children: WorkspaceLeaf[];
 	}
 	interface Editor {
 		editorComponent: {

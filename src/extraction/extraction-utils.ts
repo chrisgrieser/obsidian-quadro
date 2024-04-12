@@ -4,18 +4,25 @@ import { LIVE_PREVIEW } from "src/shared/utils";
 
 export async function openExtractionInNewWin(plugin: Quadro, tfile: TFile): Promise<void> {
 	const { app, settings } = plugin;
+	const mode = settings.extraction.openingMode;
 
-	const direction1 = settings.extraction.openingMode === "right-split" ? "right" : "bottom";
-	const direction2 = settings.extraction.openingMode === "right-split" ? "vertical" : "horizontal";
-
-	// use existing leaf if it exists, otherwise create new one
 	const currentLeaf = app.workspace.getLeaf();
-	const leaf =
-		app.workspace.getAdjacentLeafInDirection(currentLeaf, direction1) ||
-		app.workspace.createLeafBySplit(currentLeaf, direction2, false);
+	if (mode === "tab") {
+		const tabgroup = currentLeaf.parent;
+		const newTab = app.workspace.createLeafInParent(tabgroup, tabgroup.children.length);
+		await newTab.openFile(tfile, LIVE_PREVIEW);
+	} else {
+		const direction1 = mode === "right-split" ? "right" : "bottom";
+		const direction2 = mode === "right-split" ? "vertical" : "horizontal";
 
-	await leaf.openFile(tfile, LIVE_PREVIEW);
-	leaf.parent.setDimension(3); // resize split to 75% width/height
+		// use existing leaf if it exists, otherwise create new one
+		const newWin =
+			app.workspace.getAdjacentLeafInDirection(currentLeaf, direction1) ||
+			app.workspace.createLeafBySplit(currentLeaf, direction2, false);
+
+		await newWin.openFile(tfile, LIVE_PREVIEW);
+		newWin.parent.setDimension(2); // resize split to 66% width/height
+	}
 }
 
 // SOURCE https://discord.com/channels/686053708261228577/840286264964022302/1207053341989929070

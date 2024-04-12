@@ -23,6 +23,7 @@ export type CsvSeparatorChoices = keyof typeof csvSeparators;
 export const openingModes = {
 	"right-split": "to the right",
 	"down-split": "to the bottom",
+	tab: "in new tab",
 };
 export type OpeningModes = keyof typeof openingModes;
 
@@ -45,7 +46,7 @@ export const DEFAULT_SETTINGS = {
 		countForExtractionType: {
 			enabled: true,
 		},
-		openingMode: "down-split" as OpeningModes,
+		openingMode: "tab" as OpeningModes,
 	},
 	analysis: {
 		folder: "Analysis",
