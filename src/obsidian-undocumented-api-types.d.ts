@@ -1,6 +1,7 @@
 import "obsidian";
 
 declare module "obsidian" {
+	// biome-ignore lint/correctness/noUnusedVariables: declaration file
 	interface FuzzySuggestModal<T> {
 		chooser?: {
 			useSelectedItem: (evt: KeyboardEvent) => boolean;
@@ -10,11 +11,20 @@ declare module "obsidian" {
 	}
 	interface Workspace {
 		getAdjacentLeafInDirection: (
-			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
 			leaf: WorkspaceLeaf,
 			direction: "top" | "bottom" | "left" | "right",
-			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
 		) => WorkspaceLeaf | null;
+	}
+	interface WorkspaceLeaf {
+		parent: WorkspaceTabs;
+	}
+	interface WorkspaceTabs {
+		// sets the css `flex-grow` of the tab group, meaning the number is a
+		// ratio, with `1` being the default value for this (and all other tab
+		// groups). Example: Setting to `3` in a split with two tab groups will
+		// result in in a 1:3 ratio, making the tab group take 3/4 or 75% of the
+		// width/height in the workspace.
+		setDimension: (dimension: number) => void;
 	}
 	interface Editor {
 		editorComponent: {

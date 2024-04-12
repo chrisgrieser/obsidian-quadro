@@ -15,6 +15,7 @@ export async function openExtractionInNewWin(plugin: Quadro, tfile: TFile): Prom
 		app.workspace.createLeafBySplit(currentLeaf, direction2, false);
 
 	await leaf.openFile(tfile, LIVE_PREVIEW);
+	leaf.parent.setDimension(3); // resize split to 75% width/height
 }
 
 // SOURCE https://discord.com/channels/686053708261228577/840286264964022302/1207053341989929070
