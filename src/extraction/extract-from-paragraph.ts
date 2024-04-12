@@ -8,14 +8,16 @@ import {
 	ensureCorrectPropertyTypes,
 	ensureWikilinksSetting,
 	getActiveEditor,
-	moveCursorToFirstProperty,
-	openFileInNewWin,
 } from "src/shared/utils";
 import {
 	bootstrapExtractionTemplate,
 	bootstrapExtractionTypeFolder,
 } from "./bootstrap-extraction-files";
-import { countExtractionsForType } from "./extraction-utils";
+import {
+	countExtractionsForType,
+	moveCursorToFirstProperty,
+	openExtractionInNewWin,
+} from "./extraction-utils";
 
 class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 	extractionTypes: TFolder[];
@@ -80,7 +82,7 @@ async function extractOfType(
 				"\n\nYou need to add valid fields before you can make extractions.",
 			6000,
 		);
-		openFileInNewWin(plugin, templateFile);
+		openExtractionInNewWin(plugin, templateFile);
 		return;
 	}
 
@@ -138,7 +140,7 @@ async function extractOfType(
 	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 	// Open EXTRACTION-FILE
-	await openFileInNewWin(plugin, extractionFile);
+	await openExtractionInNewWin(plugin, extractionFile);
 	moveCursorToFirstProperty(app, "value");
 }
 
