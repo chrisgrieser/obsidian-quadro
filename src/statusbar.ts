@@ -19,7 +19,8 @@ export function updateStatusbar(plugin: Quadro): void {
 
 	// CODEFILE: outgoing links = times code was assigned
 	if (typeOfFile(plugin) === "Code File") {
-		const codeAssignedCount = countTimesCodeIsAssigned(plugin, activeFile);
+		const codeFile = activeFile;
+		const codeAssignedCount = countTimesCodeIsAssigned(plugin, codeFile);
 		segments.push(`Code ${codeAssignedCount}x assigned`);
 	}
 	// EXTRACTION FILE: number of extractions made for the type
