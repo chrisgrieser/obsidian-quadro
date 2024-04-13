@@ -94,15 +94,14 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Bar chart")
+			.setName("Code Count")
 			.setDesc(
-				"When selecting a code to assign, display a small bar chart showing the " +
-					"frequency with which the code has been assigned. " +
+				"When selecting a code to assign, show a count of how often the code has already been assigned. " +
 					"(Note that this is a methodological decision, as it may influence your choice of codes.)",
 			)
 			.addToggle((toggle) =>
-				toggle.setValue(settings.coding.minigraph.enabled).onChange(async (value) => {
-					settings.coding.minigraph.enabled = value;
+				toggle.setValue(settings.coding.displayCount).onChange(async (value) => {
+					settings.coding.displayCount = value;
 					await this.plugin.saveSettings();
 				}),
 			);
@@ -142,15 +141,14 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Extraction count")
 			.setDesc(
-				"When selecting an extraction type, show a count of how often the type has been extracted.",
+				"When selecting an extraction type, show a count of how often the type has been extracted." +
+					"(Note that this is a methodological decision, as it may influence your choice of codes.)",
 			)
 			.addToggle((toggle) =>
-				toggle
-					.setValue(settings.extraction.countForExtractionType.enabled)
-					.onChange(async (value) => {
-						settings.extraction.countForExtractionType.enabled = value;
-						await this.plugin.saveSettings();
-					}),
+				toggle.setValue(settings.extraction.displayCount).onChange(async (value) => {
+					settings.extraction.displayCount = value;
+					await this.plugin.saveSettings();
+				}),
 			);
 
 		new Setting(containerEl)

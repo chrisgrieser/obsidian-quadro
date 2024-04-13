@@ -42,9 +42,10 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 			return `<li><b>${key}</b>${typeText}</li>`;
 		});
 		const extractionsMade = countExtractionsForType(extractionType);
-		out += `<b>${htmlLinkToTemplateFile}</b> (${extractionsMade})<ul>${dimensions.join(
-			"",
-		)}</ul><br>`;
+		out +=
+			`<b>${htmlLinkToTemplateFile}</b> (${extractionsMade}x)<ul>` +
+			dimensions.join("") +
+			"</ul><br>";
 	}
 
 	return out;

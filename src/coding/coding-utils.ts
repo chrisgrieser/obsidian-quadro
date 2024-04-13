@@ -66,10 +66,11 @@ export function getAllCodeFiles(plugin: Quadro): TFile[] {
 
 /** displays full code & appends minigraph (if not disabled by user) */
 export function codeFileDisplay(plugin: Quadro, codeFile: TFile): string {
-	const { char, charsPerBlock, maxLength, enabled } = plugin.settings.coding.minigraph;
-	const miniGraph = enabled
-		? "    " + char.repeat(Math.min(maxLength, codeFile.stat.size / charsPerBlock))
-		: "";
+	const fullCode = getFullCode(plugin, codeFile);
 
-	return getFullCode(plugin, codeFile) + miniGraph;
+	const displayCount = plugin.settings.coding.displayCount;
+	if (!displayCount) return fullCode;
+
+	const count = countTimesCodeIsAssigned(plugin, codeFile);
+	return `${fullCode} (${count}x)`;
 }

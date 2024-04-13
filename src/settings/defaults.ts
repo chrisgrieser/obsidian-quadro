@@ -32,21 +32,14 @@ export type OpeningModes = keyof typeof openingModes;
 export const DEFAULT_SETTINGS = {
 	coding: {
 		folder: "Codes",
+		displayCount: true,
 		sortFunc: "last used first" as SortFuncChoices,
-		minigraph: {
-			enabled: true,
-			char: "🬋",
-			charsPerBlock: 100, // how many characters one block represents
-			maxLength: 100,
-		},
 	},
 	extraction: {
 		folder: "Extractions",
-		csvSeparator: "," as CsvSeparatorChoices,
-		countForExtractionType: {
-			enabled: true,
-		},
+		displayCount: true,
 		openingMode: "tab" as OpeningModes,
+		csvSeparator: "," as CsvSeparatorChoices,
 	},
 	analysis: {
 		folder: "Analysis",
