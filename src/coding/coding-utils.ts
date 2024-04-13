@@ -1,12 +1,10 @@
-import { TFile, TFolder } from "obsidian";
+import { TFile } from "obsidian";
 import Quadro from "src/main";
 import { sortFuncs } from "src/settings/defaults";
-import { WIKILINK_REGEX } from "src/shared/utils";
+import { WIKILINK_REGEX, typeOfFile } from "src/shared/utils";
 
-export function getFullCode(plugin: Quadro, tFile: TFile | TFolder): string {
-	const relativePathToCodefolder = tFile.path.slice(plugin.settings.coding.folder.length + 1);
-	if (tFile instanceof TFolder) return relativePathToCodefolder;
-	return relativePathToCodefolder.slice(0, -3); // if file, remove `.md`
+export function getFullCode(plugin: Quadro, tFile: TFile): string {
+	return tFile.path.slice(plugin.settings.coding.folder.length + 1, -3);
 }
 
 export function isCodeTemplateFile(plugin: Quadro, tFile: TFile | null): boolean {
@@ -14,15 +12,11 @@ export function isCodeTemplateFile(plugin: Quadro, tFile: TFile | null): boolean
 	return tFile.path === plugin.settings.coding.folder + "/Template.md";
 }
 
-export function countTimesCodeIsAssigned(plugin: Quadro, tFile: TFile): number {
-	const { app, settings } = plugin;
-	const outgoingLinks = app.metadataCache.resolvedLinks[tFile.path] || {};
+export function countTimesCodeIsAssigned(plugin: Quadro, codeFile: TFile): number {
+	const outgoingLinks = plugin.app.metadataCache.resolvedLinks[codeFile.path] || {};
 	let codesAssigned = 0;
-	for (const [linkTarget, count] of Object.entries(outgoingLinks)) {
-		const linkToCodeFile = linkTarget.startsWith(settings.coding.folder + "/");
-		const linkToExtractionFile = linkTarget.startsWith(settings.extraction.folder + "/");
-		const linkToMdFile = linkTarget.endsWith(".md");
-		if (linkToMdFile && !linkToExtractionFile && !linkToCodeFile) codesAssigned += count;
+	for (const [linkFromCodeFile, count] of Object.entries(outgoingLinks)) {
+		if (typeOfFile(plugin, linkFromCodeFile) === "Data File") codesAssigned += count;
 	}
 	return codesAssigned;
 }
@@ -39,18 +33,16 @@ export function getCodesFilesInParagraphOfDatafile(
 	dataFile: TFile,
 	paragraphText: string,
 ): Code[] {
-	const { app, settings } = plugin;
-
+	const app = plugin.app;
 	const wikilinksInParagr = paragraphText.match(new RegExp(WIKILINK_REGEX, "g")) || [];
 
 	const codesInParagr = wikilinksInParagr.reduce((acc: Code[], wikilink) => {
 		const [_, innerWikilink] = wikilink.match(WIKILINK_REGEX) || [];
 		if (!innerWikilink) return acc;
 
-		const linkTarget = app.metadataCache.getFirstLinkpathDest(innerWikilink, dataFile.path);
-		const isInCodeFolder =
-			linkTarget instanceof TFile && linkTarget.path.startsWith(settings.coding.folder + "/");
-		if (isInCodeFolder) acc.push({ tFile: linkTarget, wikilink: wikilink });
+		const linkedFile = app.metadataCache.getFirstLinkpathDest(innerWikilink, dataFile.path);
+		if (linkedFile && typeOfFile(plugin, linkedFile) === "Code File")
+			acc.push({ tFile: linkedFile, wikilink: wikilink });
 
 		return acc;
 	}, []);
@@ -61,17 +53,12 @@ export function getCodesFilesInParagraphOfDatafile(
 
 /** Returns all Code Files, excluding the Template.md, and sorted based on setting */
 export function getAllCodeFiles(plugin: Quadro): TFile[] {
-	const settings = plugin.settings;
-	const allFiles = plugin.app.vault.getMarkdownFiles();
+	const allCodeFiles = plugin.app.vault
+		.getMarkdownFiles()
+		.filter((tFile) => typeOfFile(plugin, tFile) === "Code File");
 
-	const allCodeFiles = allFiles.filter((tFile) => {
-		const inCodeFolder = tFile.path.startsWith(settings.coding.folder + "/");
-		const isMarkdownFile = tFile instanceof TFile && tFile.extension === "md";
-		const isNotTemplate = tFile.name !== "Template.md";
-		return isMarkdownFile && isNotTemplate && inCodeFolder;
-	}) as TFile[];
-
-	allCodeFiles.sort(sortFuncs[settings.coding.sortFunc]);
+	const sortFuncToUse = sortFuncs[plugin.settings.coding.sortFunc];
+	allCodeFiles.sort(sortFuncToUse);
 	return allCodeFiles;
 }
 
@@ -79,12 +66,10 @@ export function getAllCodeFiles(plugin: Quadro): TFile[] {
 
 /** displays full code & appends minigraph (if not disabled by user) */
 export function codeFileDisplay(plugin: Quadro, codeFile: TFile): string {
-	const fullCode = getFullCode(plugin, codeFile);
-
 	const { char, charsPerBlock, maxLength, enabled } = plugin.settings.coding.minigraph;
 	const miniGraph = enabled
 		? "    " + char.repeat(Math.min(maxLength, codeFile.stat.size / charsPerBlock))
 		: "";
 
-	return fullCode + miniGraph;
+	return getFullCode(plugin, codeFile) + miniGraph;
 }

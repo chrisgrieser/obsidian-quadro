@@ -4,10 +4,10 @@ import { ensureBlockId } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	ambiguousSelection,
-	currentlyInFolder,
 	ensureCorrectPropertyTypes,
 	ensureWikilinksSetting,
 	getActiveEditor,
+	typeOfFile,
 } from "src/shared/utils";
 import {
 	bootstrapExtractionTemplate,
@@ -149,7 +149,7 @@ export async function extractFromParagraphCommand(plugin: Quadro): Promise<void>
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
-	if (currentlyInFolder(plugin, "Codes") || currentlyInFolder(plugin, "Extractions")) {
+	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to make an extraction.", 3000);
 		return;
 	}

@@ -2,7 +2,7 @@ import { Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
+import { ambiguousSelection, getActiveEditor, typeOfFile } from "src/shared/utils";
 import { codeFileDisplay, getAllCodeFiles, isCodeTemplateFile } from "./coding-utils";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
@@ -50,7 +50,7 @@ export function mergeCodeFilesCommand(plugin: Quadro) {
 	const app = plugin.app;
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
-	if (!currentlyInFolder(plugin, "Codes")) {
+	if (typeOfFile(plugin) !== "Code File") {
 		new Notice("You must be in the Code File for this.", 3000);
 		return;
 	}

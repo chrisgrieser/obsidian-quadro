@@ -11,26 +11,29 @@ export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export function currentlyInFolder(plugin: Quadro, type: "Codes" | "Extractions"): boolean {
-	const { app, settings } = plugin;
-	const folderName = type === "Codes" ? settings.coding.folder : settings.extraction.folder;
-	const activeFile = app.workspace.getActiveFile();
-	if (!activeFile) return false;
-	const isInFolder = activeFile.path.startsWith(folderName + "/");
-	return isInFolder;
-}
-
-export function isSpecialFile(
+/** returns type of file. If no file is given, checks
+ * the active file. Returns false is there is no active file or the file is not
+ * a markdown file. */
+export function typeOfFile(
 	plugin: Quadro,
-	tFile: TAbstractFile,
-): false | "Code File" | "Extraction File" {
-	const isMarkdownFile = tFile instanceof TFile && tFile.extension === "md";
-	const isNoTemplate = tFile.name !== "Template.md";
-	if (!isMarkdownFile || !isNoTemplate) return false;
+	file?: TAbstractFile | string,
+): "Data File" | "Code File" | "Extraction File" | "Template" | false {
+	const { app, settings } = plugin;
 
-	if (tFile.path.startsWith(plugin.settings.coding.folder + "/")) return "Code File";
-	if (tFile.path.startsWith(plugin.settings.extraction.folder + "/")) return "Extraction File";
-	return false;
+	const fileToCheck =
+		file === undefined
+			? app.workspace.getActiveFile()
+			: typeof file === "string"
+				? app.vault.getFileByPath(file)
+				: file;
+	if (!fileToCheck) return false;
+
+	if (!(fileToCheck instanceof TFile) || fileToCheck.extension !== "md") return false;
+	if (fileToCheck.name === "Template.md") return "Template";
+
+	if (fileToCheck.path.startsWith(settings.coding.folder + "/")) return "Code File";
+	if (fileToCheck.path.startsWith(settings.extraction.folder + "/")) return "Extraction File";
+	return "Data File";
 }
 
 //──────────────────────────────────────────────────────────────────────────────

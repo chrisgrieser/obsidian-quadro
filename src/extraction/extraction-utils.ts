@@ -86,7 +86,7 @@ export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 		new Notice("ERROR: Could not find Extraction Folder.", 4000);
 		return;
 	}
-	const extractionTypes = extFolder.children.filter((f) => f instanceof TFolder) as TFolder[];
+	const extractionTypes = extFolder.children.filter((ch) => ch instanceof TFolder) as TFolder[];
 	if (extractionTypes.length === 0) {
 		new Notice("ERROR: Could not find any Extraction Types.", 4000);
 		return;
@@ -96,7 +96,7 @@ export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 
 export function countExtractionsForType(extractionType: TFolder): number {
 	const extractionsMade = extractionType.children.filter(
-		(type) => type instanceof TFile && type.extension === "md" && type.name !== "Template.md",
+		(ch) => ch instanceof TFile && ch.extension === "md" && ch.name !== "Template.md",
 	);
 	return extractionsMade.length;
 }

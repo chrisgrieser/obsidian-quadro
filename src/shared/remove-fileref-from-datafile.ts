@@ -1,6 +1,6 @@
 import { App, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
-import { WIKILINK_REGEX, isSpecialFile } from "./utils";
+import { WIKILINK_REGEX, typeOfFile } from "./utils";
 
 /** Given a file, identifies all references to it in DATAFILES, and removes
  * those. To identify DataFiles, uses the embedded links in the refFile. */
@@ -8,32 +8,32 @@ export async function removeAllFileRefsFromDataFile(plugin: Quadro, refFile: TFi
 	const app = plugin.app;
 	const errors: string[] = [];
 	let successes = 0;
-	const specialFile = isSpecialFile(plugin, refFile);
+	const filetype = typeOfFile(plugin, refFile) as "Code File" | "Extraction File";
 
 	const allEmbeds = app.metadataCache.getFileCache(refFile)?.embeds || [];
 	for (const embed of allEmbeds) {
 		const [linkPath, blockId] = embed.link.split("#");
 		if (!linkPath || !blockId) continue;
-		const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath, refFile.path);
-		const isDataFile = dataFile instanceof TFile && !isSpecialFile(plugin, dataFile);
-		if (!isDataFile) continue;
+		const linkedFile = app.metadataCache.getFirstLinkpathDest(linkPath, refFile.path);
+
+		if (!linkedFile || typeOfFile(plugin, linkedFile) !== "Data File") continue;
+		const dataFile = linkedFile;
 
 		// delete from DATAFILE
 		const errorMsg = await removeSingleFileRefFromDatafile(app, refFile, dataFile, blockId);
-
 		if (errorMsg) errors.push(errorMsg);
 		else successes++;
 	}
 
 	// REPORT
 	if (successes === 0 && errors.length === 0) {
-		const errorMsg = `⚠️ ${specialFile} "${refFile.name}" has no references which could be deleted.`;
+		const errorMsg = `⚠️ ${filetype} "${refFile.name}" has no references which could be deleted.`;
 		new Notice(errorMsg);
 		console.warn(errorMsg);
 		return;
 	}
 
-	const successMsg = `${specialFile} "${refFile.name}" and ${successes} references to it deleted.\n`;
+	const successMsg = `${filetype} "${refFile.name}" and ${successes} references to it deleted.\n`;
 	if (errors.length > 0) {
 		const msg = [
 			successMsg,

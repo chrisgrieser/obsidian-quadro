@@ -1,6 +1,6 @@
 import { Notice } from "obsidian";
 import Quadro from "src/main";
-import { currentlyInFolder } from "src/shared/utils";
+import { typeOfFile } from "src/shared/utils";
 import { isCodeTemplateFile } from "./coding-utils";
 
 // INFO
@@ -10,7 +10,7 @@ import { isCodeTemplateFile } from "./coding-utils";
 // a ribbon button for it, and add some minor validation.
 
 export function renameCodeCommand(plugin: Quadro): void {
-	if (!currentlyInFolder(plugin, "Codes")) {
+	if (typeOfFile(plugin) !== "Code File") {
 		new Notice("You must be in a code file.");
 	} else if (isCodeTemplateFile(plugin, plugin.app.workspace.getActiveFile())) {
 		new Notice("You must not rename the template file.");

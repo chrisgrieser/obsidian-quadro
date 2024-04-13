@@ -2,7 +2,7 @@ import { around } from "monkey-around";
 import { TFile } from "obsidian";
 import Quadro from "./main";
 import { removeAllFileRefsFromDataFile } from "./shared/remove-fileref-from-datafile";
-import { isSpecialFile } from "./shared/utils";
+import { typeOfFile } from "./shared/utils";
 
 /** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to
  * delete files via native Obsidian methods. Check if the file is a CODE FILE,
@@ -17,12 +17,12 @@ export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 	const uninstaller = around(vault, {
 		trash: (originalMethod) => {
 			return async (file, useSystemTrash) => {
-				const specialFile = isSpecialFile(plugin, file);
+				const filetype = typeOfFile(plugin, file);
+				const isCodeOrExtractionFile = filetype === "Code File" || filetype === "Extraction File";
 
-				if (specialFile && file instanceof TFile) {
-					console.info(
-						`Intercepted deletion of "${file.name}", deleting all references to the ${specialFile} before proceeding with deletion.`,
-					);
+				if (isCodeOrExtractionFile && file instanceof TFile) {
+					const msg = `Intercepted deletion of "${file.name}", deleting all references to the ${filetype} before proceeding with deletion.`;
+					console.info(msg);
 					await removeAllFileRefsFromDataFile(plugin, file);
 				}
 

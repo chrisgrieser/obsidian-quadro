@@ -2,12 +2,7 @@ import { App, Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
 import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import {
-	WIKILINK_REGEX,
-	ambiguousSelection,
-	currentlyInFolder,
-	getActiveEditor,
-} from "src/shared/utils";
+import { WIKILINK_REGEX, ambiguousSelection, getActiveEditor, typeOfFile } from "src/shared/utils";
 import { removeSingleFileRefFromDatafile } from "../shared/remove-fileref-from-datafile";
 import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
@@ -113,19 +108,21 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Unassigning code has to deal with 3 scenarios (disregarding invalid cases):
- * A. code file -> determine datafile and code to remove from code file reference
- * B. data file, line has 1 code -> remove code, and its reference from code file
- * C. data file, line has 2+ codes -> prompt user which code to remove, then same as 2.
+ * A CODEFILE -> determine datafile and code to remove from code file reference
+ * B1 DATAFILE, line has 1 code -> remove code, and its reference from code file
+ * B2 DATAFILE, line has 2+ codes -> prompt user which code to remove, then same as 2.
  */
 export function unassignCodeCommand(plugin: Quadro): void {
 	const app = plugin.app;
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
-	if (currentlyInFolder(plugin, "Codes")) {
-		// A: in code file
+	// A: in CODEFILE
+	if (typeOfFile(plugin) === "Code File") {
 		unassignCodeWhileInCodeFile(app, editor);
-	} else {
+	}
+	// B: in DATAFILE
+	else if (typeOfFile(plugin) === "Data File") {
 		const dataFile = editor.editorComponent.view.file;
 		const paragraphText = editor.getLine(editor.getCursor().line);
 		const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText);
@@ -133,11 +130,13 @@ export function unassignCodeCommand(plugin: Quadro): void {
 		if (codesInPara.length === 0) {
 			new Notice("Line does not contain any codes to remove.");
 		} else if (codesInPara.length === 1) {
-			// B: in data file, line has 1 code
+			// B1: in DATAFILE, line has 1 code
 			unassignCodeWhileInDataFile(editor, dataFile, codesInPara[0] as Code);
 		} else {
-			// C: in data file, line has 2+ codes
+			// B2: in DATAFILE, line has 2+ codes
 			new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInPara).open();
 		}
+	} else {
+		new Notice("You must be in a Data File or Code File to unassign a code.", 3000);
 	}
 }

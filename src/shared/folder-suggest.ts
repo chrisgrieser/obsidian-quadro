@@ -1,5 +1,4 @@
 import { AbstractInputSuggest, TFolder } from "obsidian";
-import { getFullCode } from "src/coding/coding-utils";
 import Quadro from "src/main";
 
 export class FolderSuggest extends AbstractInputSuggest<TFolder> {
@@ -31,6 +30,10 @@ export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 	}
 }
 
+function pathRelativeToCodeFolder(plugin: Quadro, codeGroup: TFolder): string {
+	return codeGroup.path.slice(plugin.settings.coding.folder.length + 1) + "/";
+}
+
 /** A Code Group is a subfolder of the code folder. */
 export class CodeGroupSuggest extends FolderSuggest {
 	override getSuggestions(query: string): TFolder[] {
@@ -49,12 +52,12 @@ export class CodeGroupSuggest extends FolderSuggest {
 	}
 
 	override renderSuggestion(folder: TFolder, el: HTMLElement): void {
-		const fullCode = getFullCode(this.plugin, folder) + "/";
+		const fullCode = pathRelativeToCodeFolder(this.plugin, folder);
 		el.createEl("span", { text: fullCode });
 	}
 
 	override selectSuggestion(folder: TFolder): void {
-		this.textInputEl.value = getFullCode(this.plugin, folder) + "/";
+		this.textInputEl.value = pathRelativeToCodeFolder(this.plugin, folder);
 		this.textInputEl.trigger("input");
 		this.close();
 	}

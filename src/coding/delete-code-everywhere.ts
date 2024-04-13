@@ -1,6 +1,6 @@
 import { Notice } from "obsidian";
 import Quadro from "src/main";
-import { currentlyInFolder, getActiveEditor } from "src/shared/utils";
+import { getActiveEditor, typeOfFile } from "src/shared/utils";
 
 /** Trigger deletion of references to CODEFILE via command. Convenience Command
  * for the user, so it is more transparent to them that they are not just
@@ -9,7 +9,7 @@ export async function deleteCodeEverywhereCommand(plugin: Quadro): Promise<void>
 	const app = plugin.app;
 	const editor = getActiveEditor(app);
 	if (!editor) return;
-	if (!currentlyInFolder(plugin, "Codes")) {
+	if (typeOfFile(plugin) !== "Code File") {
 		new Notice("Must be in Code File to delete the code everywhere.");
 		return;
 	}

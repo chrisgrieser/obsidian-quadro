@@ -1,7 +1,7 @@
 import { countTimesCodeIsAssigned } from "./coding/coding-utils";
 import { countExtractionsForType } from "./extraction/extraction-utils";
 import Quadro from "./main";
-import { currentlyInFolder } from "./shared/utils";
+import { typeOfFile } from "./shared/utils";
 
 export function updateStatusbar(plugin: Quadro): void {
 	const { app, statusbar, settings } = plugin;
@@ -18,12 +18,12 @@ export function updateStatusbar(plugin: Quadro): void {
 	//───────────────────────────────────────────────────────────────────────────
 
 	// CODEFILE: outgoing links = times code was assigned
-	if (currentlyInFolder(plugin, "Codes")) {
+	if (typeOfFile(plugin) === "Code File") {
 		const codeAssignedCount = countTimesCodeIsAssigned(plugin, activeFile);
 		segments.push(`Code ${codeAssignedCount}x assigned`);
 	}
 	// EXTRACTION FILE: number of extractions made for the type
-	else if (currentlyInFolder(plugin, "Extractions")) {
+	else if (typeOfFile(plugin) === "Extraction File") {
 		const extractionType = activeFile.parent;
 		if (extractionType) {
 			const extractionsMade = countExtractionsForType(extractionType);

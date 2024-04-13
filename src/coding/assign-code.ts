@@ -4,9 +4,9 @@ import { ensureBlockId } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	ambiguousSelection,
-	currentlyInFolder,
 	ensureWikilinksSetting,
 	getActiveEditor,
+	typeOfFile,
 } from "../shared/utils";
 import {
 	codeFileDisplay,
@@ -44,15 +44,12 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 
 	// code-files, sorted by last use (which is relevant when query is empty)
 	getItems(): CodeAssignItem[] {
-		const allNotAlreadyAssigned = getAllCodeFiles(this.plugin).filter((codeFile) => {
-			const isAlreadyAssigned = this.codesInPara.find((code) => code.path === codeFile.path);
-			return !isAlreadyAssigned;
-		});
+		const allCodeFiles = getAllCodeFiles(this.plugin);
+		const allNotAlreadyAssigned = allCodeFiles.filter(
+			(codeFile) => !this.codesInPara.find((code) => code.path === codeFile.path),
+		);
 
-		const items: CodeAssignItem[] = allNotAlreadyAssigned;
-		items.push("new-code-file");
-
-		return items;
+		return [...allNotAlreadyAssigned, "new-code-file"];
 	}
 
 	getItemText(item: CodeAssignItem): string {
@@ -116,7 +113,7 @@ export function assignCodeCommand(plugin: Quadro): void {
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
-	if (currentlyInFolder(plugin, "Codes") || currentlyInFolder(plugin, "Extractions")) {
+	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to assign a code.", 3000);
 		return;
 	}
