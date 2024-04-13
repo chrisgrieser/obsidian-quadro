@@ -1,7 +1,7 @@
 import { around } from "monkey-around";
 import { TFile } from "obsidian";
-import { deleteReferencesToCodeFile } from "./coding/delete-code-everywhere";
 import Quadro from "./main";
+import { removeAllFileRefsFromDataFile } from "./shared/remove-fileref-from-datafile";
 import { isSpecialFile } from "./shared/utils";
 
 /** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to
@@ -12,23 +12,21 @@ import { isSpecialFile } from "./shared/utils";
  * finding all references is flushed already.)
  * source for the how to monkey-around: https://discord.com/channels/686053708261228577/840286264964022302/1157501519831253002 */
 export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
-	const { app } = plugin;
+	const vault = plugin.app.vault;
 
-	const uninstaller = around(app.vault, {
+	const uninstaller = around(vault, {
 		trash: (originalMethod) => {
 			return async (file, useSystemTrash) => {
 				const specialFile = isSpecialFile(plugin, file);
-				const msg = `Intercepted deletion of "${file.name}", deleting all references to the ${specialFile} before proceeding with deletion.`;
 
-				if (specialFile === "CodeFile") {
-					console.info(msg);
-					await deleteReferencesToCodeFile(app, file as TFile);
-				} else if (specialFile === "ExtractionFile") {
-					console.info(msg);
-					await deleteReferencesToCodeFile(app, file as TFile);
+				if (specialFile && file instanceof TFile) {
+					console.info(
+						`Intercepted deletion of "${file.name}", deleting all references to the ${specialFile} before proceeding with deletion.`,
+					);
+					await removeAllFileRefsFromDataFile(plugin, file);
 				}
 
-				await originalMethod.apply(app.vault, [file, useSystemTrash]);
+				await originalMethod.apply(vault, [file, useSystemTrash]);
 			};
 		},
 	});

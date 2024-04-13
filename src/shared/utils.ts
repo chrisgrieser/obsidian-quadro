@@ -1,7 +1,15 @@
 import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile } from "obsidian";
 import Quadro from "src/main";
 
+//──────────────────────────────────────────────────────────────────────────────
+
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
+
+/** $0 matches the full link, $1 the inner link
+ * includes optional trailing space to remove it when unassigning code */
+export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
+
+//──────────────────────────────────────────────────────────────────────────────
 
 export function currentlyInFolder(plugin: Quadro, type: "Codes" | "Extractions"): boolean {
 	const { app, settings } = plugin;
@@ -15,14 +23,14 @@ export function currentlyInFolder(plugin: Quadro, type: "Codes" | "Extractions")
 export function isSpecialFile(
 	plugin: Quadro,
 	tFile: TAbstractFile,
-): undefined | "CodeFile" | "ExtractionFile" {
+): false | "Code File" | "Extraction File" {
 	const isMarkdownFile = tFile instanceof TFile && tFile.extension === "md";
 	const isNoTemplate = tFile.name !== "Template.md";
-	if (!isMarkdownFile || !isNoTemplate) return;
+	if (!isMarkdownFile || !isNoTemplate) return false;
 
-	if (tFile.path.startsWith(plugin.settings.coding.folder + "/")) return "CodeFile";
-	if (tFile.path.startsWith(plugin.settings.extraction.folder + "/")) return "ExtractionFile";
-	return;
+	if (tFile.path.startsWith(plugin.settings.coding.folder + "/")) return "Code File";
+	if (tFile.path.startsWith(plugin.settings.extraction.folder + "/")) return "Extraction File";
+	return false;
 }
 
 //──────────────────────────────────────────────────────────────────────────────

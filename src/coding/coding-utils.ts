@@ -1,6 +1,7 @@
 import { TFile, TFolder } from "obsidian";
 import Quadro from "src/main";
 import { sortFuncs } from "src/settings/defaults";
+import { WIKILINK_REGEX } from "src/shared/utils";
 
 export function getFullCode(plugin: Quadro, tFile: TFile | TFolder): string {
 	const relativePathToCodefolder = tFile.path.slice(plugin.settings.coding.folder.length + 1);
@@ -32,10 +33,6 @@ export interface Code {
 	tFile: TFile;
 	wikilink: string;
 }
-
-/** $0 matches the full link, $1 the inner link
- * includes optional trailing space to remove it when unassigning code */
-export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
 
 export function getCodesFilesInParagraphOfDatafile(
 	plugin: Quadro,

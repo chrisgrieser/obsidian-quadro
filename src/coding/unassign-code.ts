@@ -2,18 +2,14 @@ import { App, Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
 import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
 import {
-	Code,
 	WIKILINK_REGEX,
-	codeFileDisplay,
-	getCodesFilesInParagraphOfDatafile,
-} from "./coding-utils";
-
-export interface DataFileReference {
-	dataFile: TFile;
-	blockId: string;
-}
+	ambiguousSelection,
+	currentlyInFolder,
+	getActiveEditor,
+} from "src/shared/utils";
+import { removeSingleFileRefFromDatafile } from "../shared/remove-fileref-from-datafile";
+import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -42,36 +38,6 @@ class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 	onChooseItem(code: Code): void {
 		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);
 	}
-}
-
-/** returns an error msg; returns empty string if no error */
-export async function removeIndividualCodeRefFromDatafile(
-	app: App,
-	codeFile: TFile,
-	dataFile: TFile,
-	blockId: string,
-): Promise<string | ""> {
-	// retrieve referenced line in DATAFILE
-	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
-	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
-	if (lnumInDataFile < 0)
-		return `Data File "${dataFile.basename}", has no line with the ID "${blockId}".`;
-	const dataFileLine = dataFileLines[lnumInDataFile] || "";
-
-	// identify link to CODFILE in that DATAFILE line
-	const linksInDataFileLine = dataFileLine.match(new RegExp(WIKILINK_REGEX, "g")) || [];
-	const linkToCodeFile = linksInDataFileLine.find((link) => {
-		link = link.trim().slice(2, -2);
-		const linkedTFile = app.metadataCache.getFirstLinkpathDest(link, dataFile.path);
-		return linkedTFile instanceof TFile && linkedTFile.path === codeFile.path;
-	});
-	if (!linkToCodeFile)
-		return `Data File "${dataFile.basename}", line "${blockId}" has no valid link to the Code File.`;
-
-	// remove link to CODFILE from DATAFILE line
-	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "");
-	await app.vault.modify(dataFile, dataFileLines.join("\n"));
-	return "";
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -131,7 +97,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 		return;
 	}
 
-	const errorMsg = await removeIndividualCodeRefFromDatafile(app, codeFile, dataFile, blockId);
+	const errorMsg = await removeSingleFileRefFromDatafile(app, codeFile, dataFile, blockId);
 	if (errorMsg) {
 		new Notice(errorMsg + "\n\nAborting removal of Code.", 4000);
 		return;
