@@ -1,7 +1,6 @@
-import { TFile, TFolder, normalizePath } from "obsidian";
 import Quadro from "src/main";
 import { getActiveEditor } from "src/shared/utils";
-import { countExtractionsForType } from "./extraction-utils";
+import { countExtractionsForType, getAllExtractionTypes } from "./extraction-utils";
 
 export function insertExtractiontypesOverviewCodeblockCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
@@ -12,23 +11,15 @@ export function insertExtractiontypesOverviewCodeblockCommand(plugin: Quadro) {
 }
 
 export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string {
-	const { app, settings } = plugin;
-
-	const extractionFolder = app.vault.getFolderByPath(settings.extraction.folder);
-	if (!extractionFolder) return `⚠️ Extraction folder "${settings.extraction.folder}" not found.`;
-
-	const extractionTypeTemplates = extractionFolder.children.reduce((acc, child) => {
-		if (!(child instanceof TFolder)) return acc;
-		const templatePath = normalizePath(child.path + "/Template.md");
-		const templateFile = app.vault.getFileByPath(templatePath);
-		if (templateFile) acc.push(templateFile);
-		return acc;
-	}, [] as TFile[]);
-	if (extractionTypeTemplates.length === 0) return "⚠️ No valid extraction templates found.";
-
+	const app = plugin.app;
 	let out = "";
-	for (const template of extractionTypeTemplates) {
-		const extractionType = template.parent as TFolder;
+	const extractionTypes = getAllExtractionTypes(plugin);
+	if (!extractionTypes) return "⚠️ No valid extraction templates found.";
+
+	for (const extractionType of extractionTypes) {
+		const template = app.vault.getFileByPath(extractionType.path + "/Template.md");
+		if (!template) continue;
+
 		const frontmatter = app.metadataCache.getFileCache(template)?.frontmatter;
 		if (!frontmatter) {
 			out += `⚠️ Invalid properties in template file for "${extractionType.name}".`;

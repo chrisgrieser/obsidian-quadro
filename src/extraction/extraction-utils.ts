@@ -78,19 +78,32 @@ export function getPropertiesForExtractionType(
 	return frontmatter;
 }
 
-/** also ensures that extraction type array is not empty */
+/** if extraction folder is missing, or has no valid extraction types, notified
+ * the user and returns undefined */
 export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 	const { app, settings } = plugin;
+
 	const extFolder = app.vault.getFolderByPath(settings.extraction.folder);
 	if (!extFolder) {
 		new Notice("ERROR: Could not find Extraction Folder.", 4000);
 		return;
 	}
-	const extractionTypes = extFolder.children.filter((ch) => ch instanceof TFolder) as TFolder[];
+
+	const extractionTypes = extFolder.children.filter(
+		(child) =>
+			child instanceof TFolder &&
+			child.children.find((grandchild) => grandchild.name === "Template.md"),
+	) as TFolder[];
 	if (extractionTypes.length === 0) {
-		new Notice("ERROR: Could not find any Extraction Types.", 4000);
+		const msg = [
+			"ERROR: Could not find any valid Extraction Types.",
+			'Check that the extraction folder has subfolders, and that the subfolder has a "Template.md" file.',
+			'You can also create a new extraction type with the command "Create new extraction type" or by pressing the button with the dashed box in the left sidebar.',
+		].join("\n\n");
+		new Notice(msg, 0);
 		return;
 	}
+
 	return extractionTypes;
 }
 

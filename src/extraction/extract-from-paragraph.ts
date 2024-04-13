@@ -10,11 +10,8 @@ import {
 	typeOfFile,
 } from "src/shared/utils";
 import {
-	bootstrapExtractionTemplate,
-	bootstrapExtractionTypeFolder,
-} from "./bootstrap-extraction-files";
-import {
 	countExtractionsForType,
+	getAllExtractionTypes,
 	moveCursorToFirstProperty,
 	openExtractionInNewWin,
 } from "./extraction-utils";
@@ -39,16 +36,10 @@ class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 
 	getItemText(extractionType: TFolder): string {
 		const displayCount = this.plugin.settings.extraction.displayCount;
-		const hasTemplate = extractionType.children.find(
-			(f) => f instanceof TFile && f.name === "Template.md",
-		);
-		const extractionsCount = countExtractionsForType(extractionType);
-		const appendix = hasTemplate
-			? displayCount
-				? ` (${extractionsCount}x)`
-				: ""
-			: '  [Select to create "Template.md"]';
-		return extractionType.name + appendix;
+		if (!displayCount) return extractOfType.name;
+
+		const count = countExtractionsForType(extractionType);
+		return `${extractionType.name} (${count}x)`;
 	}
 
 	onChooseItem(extractionType: TFolder): void {
@@ -67,13 +58,12 @@ async function extractOfType(
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;
 
-	// if TEMPLATE is missing, create one instead of performing an extraction
+	// VALIDATE Template
 	const templateFile = app.vault.getFileByPath(`${dir}/Template.md`);
 	if (!templateFile) {
-		bootstrapExtractionTemplate(plugin, type);
+		new Notice(`ERROR: Could not find "Template.md" for Extraction Type "${type}".`);
 		return;
 	}
-	// VALIDATE the TEMPLATE content
 	const templateContent = await app.vault.cachedRead(templateFile);
 	const { exists, frontmatter: templateFrontmatter } = getFrontMatterInfo(templateContent);
 	if (!exists) {
@@ -144,9 +134,8 @@ async function extractOfType(
 	moveCursorToFirstProperty(app, "value");
 }
 
-export async function extractFromParagraphCommand(plugin: Quadro): Promise<void> {
-	const { app, settings } = plugin;
-	const editor = getActiveEditor(app);
+export function extractFromParagraphCommand(plugin: Quadro) {
+	const editor = getActiveEditor(plugin.app);
 	if (!editor || ambiguousSelection(editor)) return;
 
 	if (typeOfFile(plugin) !== "Data File") {
@@ -160,25 +149,12 @@ export async function extractFromParagraphCommand(plugin: Quadro): Promise<void>
 		return;
 	}
 
-	// bootstrap extraction folder, if needed
-	let extractionTFolder = app.vault.getFolderByPath(settings.extraction.folder);
-	if (!extractionTFolder)
-		extractionTFolder = await app.vault.createFolder(settings.extraction.folder);
-	if (!extractionTFolder) {
-		new Notice("ERROR: Could not create Extraction Folder.", 4000);
-		return;
-	}
-
-	// Determine Extraction Types (= subfolders of EXTRACTION_FOLDER)
-	const extractionTypes = extractionTFolder.children.filter(
-		(f) => f instanceof TFolder,
-	) as TFolder[];
+	const extractionTypes = getAllExtractionTypes(plugin);
+	if (!extractionTypes) return;
 
 	// Suggest Extraction Types, or trigger directly if only one type exists
 	const dataFile = editor.editorComponent.view.file;
-	if (extractionTypes.length === 0) {
-		bootstrapExtractionTypeFolder(plugin);
-	} else if (extractionTypes.length === 1) {
+	if (extractionTypes.length === 1) {
 		extractOfType(plugin, editor, dataFile, extractionTypes[0]);
 	} else {
 		new SuggesterForExtractionTypes(plugin, editor, extractionTypes, dataFile).open();

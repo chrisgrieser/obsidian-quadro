@@ -42,9 +42,10 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 		csvFileLines.push(headerRow);
 
 		// csv body
-		const extractionFiles = extractionType.children.filter((f) => {
-			return f instanceof TFile && f.name !== "Template.md";
-		}) as TFile[];
+		const extractionFiles = extractionType.children.filter(
+			(child) => child instanceof TFile && child.name !== "Template.md",
+		) as TFile[];
+
 		for (const extractionFile of extractionFiles) {
 			const fileFrontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
 			if (!fileFrontmatter) continue;
