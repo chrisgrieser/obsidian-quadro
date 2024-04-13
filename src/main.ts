@@ -1,7 +1,7 @@
 import { Command, Plugin } from "obsidian";
 import { processCodeOverviewCodeblock } from "./coding/code-overview";
 import { CODING_COMMANDS } from "./coding/coding-commands";
-import { setupTrashWatcher } from "./coding/delete-code-everywhere";
+import { setupTrashWatcher } from "./deletion-watcher";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
 import { processExtractiontypesOverviewCodeblock } from "./extraction/extractiontypes-overview";
 import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions";

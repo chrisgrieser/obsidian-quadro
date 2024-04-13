@@ -1,9 +1,9 @@
 import { Notice, TFile, getFrontMatterInfo } from "obsidian";
+import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { ambiguousSelection, currentlyInFolder, getActiveEditor } from "src/shared/utils";
 import { codeFileDisplay, getAllCodeFiles, isCodeTemplateFile } from "./coding-utils";
-import { setupTrashWatcher } from "./delete-code-everywhere";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;

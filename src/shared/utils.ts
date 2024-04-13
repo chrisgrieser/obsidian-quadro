@@ -1,4 +1,4 @@
-import { App, Editor, Notice, OpenViewState } from "obsidian";
+import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile } from "obsidian";
 import Quadro from "src/main";
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
@@ -11,6 +11,21 @@ export function currentlyInFolder(plugin: Quadro, type: "Codes" | "Extractions")
 	const isInFolder = activeFile.path.startsWith(folderName + "/");
 	return isInFolder;
 }
+
+export function isSpecialFile(
+	plugin: Quadro,
+	tFile: TAbstractFile,
+): undefined | "CodeFile" | "ExtractionFile" {
+	const isMarkdownFile = tFile instanceof TFile && tFile.extension === "md";
+	const isNoTemplate = tFile.name !== "Template.md";
+	if (!isMarkdownFile || !isNoTemplate) return;
+
+	if (tFile.path.startsWith(plugin.settings.coding.folder + "/")) return "CodeFile";
+	if (tFile.path.startsWith(plugin.settings.extraction.folder + "/")) return "ExtractionFile";
+	return;
+}
+
+//──────────────────────────────────────────────────────────────────────────────
 
 /** if not there is no active editor, also display a notice */
 export function getActiveEditor(app: App): Editor | undefined {
