@@ -1,19 +1,16 @@
 import Quadro from "src/main";
-import { getActiveEditor } from "src/shared/utils";
+import { createCodeBlockFile } from "src/shared/utils";
 import { countExtractionsForType, getAllExtractionTypes } from "./extraction-utils";
 
-export function insertExtractiontypesOverviewCodeblockCommand(plugin: Quadro) {
-	const editor = getActiveEditor(plugin.app);
-	if (!editor) return;
-
+export async function insertExtractiontypesOverviewCodeblockCommand(plugin: Quadro) {
 	const label = plugin.codeblockLabels.extractionOverview;
-	const codeblockString = ["", "```" + label, "```", ""].join("\n");
-	editor?.replaceSelection(codeblockString);
+	const overviewName = "Extraction Type Overview";
+	await createCodeBlockFile(plugin, label, overviewName);
 }
 
 export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string {
 	const app = plugin.app;
-	let out = "";
+	const htmlForExtrationtypes: string[] = [];
 
 	// ensure search core-plugin is enabled
 	app.internalPlugins.plugins["global-search"].enable();
@@ -27,7 +24,9 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 
 		const frontmatter = app.metadataCache.getFileCache(template)?.frontmatter;
 		if (!frontmatter) {
-			out += `⚠️ Invalid properties in template file for "${extractionType.name}".`;
+			htmlForExtrationtypes.push(
+				`⚠️ Invalid properties in template file for "${extractionType.name}".`,
+			);
 			continue;
 		}
 		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionType.name}</a>`;
@@ -52,14 +51,13 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 			let appendix = showValues ? valuesStr : type || "";
 			if (appendix) appendix = ": " + appendix;
 
-			return `<li><b>${key}<b>${appendix}</li>`;
+			return `<li><b>${key}</b>${appendix}</li>`;
 		});
 		const extractionsMade = countExtractionsForType(extractionType);
-		out +=
-			`<b>${htmlLinkToTemplateFile}</b> (${extractionsMade}x)<ul>` +
-			dimensions.join("") +
-			"</ul><br>";
+		htmlForExtrationtypes.push(
+			`<b>${htmlLinkToTemplateFile}</b> (${extractionsMade}x)<ul>` + dimensions.join("") + "</ul>",
+		);
 	}
 
-	return out;
+	return htmlForExtrationtypes.join("<br>");
 }

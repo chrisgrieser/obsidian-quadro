@@ -61,6 +61,13 @@ declare module "obsidian" {
 				[key: string]: object;
 			};
 		};
+		internalPlugins: {
+			plugins: {
+				[key: string]: {
+					enable: () => void;
+				};
+			};
+		};
 		metadataTypeManager: {
 			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
 			getPropertyInfo(property: string): PropertyInfo;

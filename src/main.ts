@@ -36,7 +36,7 @@ export default class Quadro extends Plugin {
 			const cmdObj: Command = {
 				id: cmd.id,
 				name: cmd.name,
-				editorCallback: () => cmd.func(this),
+				editorCallback: async () => cmd.func(this),
 			};
 
 			// INFO Adding a few hotkey by default, since this plugin is going to be

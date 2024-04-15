@@ -1,7 +1,15 @@
 import { TFile, TFolder } from "obsidian";
 import Quadro from "src/main";
-import { getActiveEditor } from "src/shared/utils";
+import { createCodeBlockFile } from "src/shared/utils";
 import { countTimesCodeIsAssigned } from "./coding-utils";
+
+export async function insertCodeOverviewCodeblockCommand(plugin: Quadro) {
+	const label = plugin.codeblockLabels.codeOverview;
+	const overviewName = "Code Overview";
+	await createCodeBlockFile(plugin, label, overviewName);
+}
+
+//──────────────────────────────────────────────────────────────────────────────
 
 function recurseCodeFolder(plugin: Quadro, folder: TFolder): string {
 	const { app, settings } = plugin;
@@ -41,15 +49,6 @@ function recurseCodeFolder(plugin: Quadro, folder: TFolder): string {
 		}
 	}
 	return `<ul>${text}</ul>`;
-}
-
-export function insertCodeOverviewCodeblockCommand(plugin: Quadro) {
-	const editor = getActiveEditor(plugin.app);
-	if (!editor) return;
-
-	const label = plugin.codeblockLabels.codeOverview;
-	const codeblockString = ["", "```" + label, "```", ""].join("\n");
-	editor?.replaceSelection(codeblockString);
 }
 
 export function processCodeOverviewCodeblock(plugin: Quadro): string {

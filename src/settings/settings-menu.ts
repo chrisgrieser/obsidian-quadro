@@ -179,9 +179,12 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					});
 			});
 
+		// ANALYSIS
+		containerEl.createEl("h4", { text: "Analysis" });
+
 		new Setting(containerEl)
 			.setName("Analysis folder")
-			.setDesc("Location where aggregations and export files are stored.")
+			.setDesc("Location where aggregations, overviews, and exports are stored.")
 			.addSearch((text) => {
 				new FolderSuggest(this.plugin, text.inputEl);
 				text

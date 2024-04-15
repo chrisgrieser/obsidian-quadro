@@ -1,4 +1,4 @@
-import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile } from "obsidian";
+import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile, normalizePath } from "obsidian";
 import Quadro from "src/main";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -10,6 +10,11 @@ export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "sour
 export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
 
 //──────────────────────────────────────────────────────────────────────────────
+
+export async function openFileInActiveLeaf(app: App, tfile: TFile): Promise<void> {
+	await app.workspace.getLeaf().openFile(tfile, LIVE_PREVIEW);
+	app.commands.executeCommandById("file-explorer:reveal-active-file");
+}
 
 /** returns type of file. If no file is given, checks
  * the active file. Returns false is there is no active file or the file is not
@@ -34,6 +39,23 @@ export function typeOfFile(
 	if (fileToCheck.path.startsWith(settings.coding.folder + "/")) return "Code File";
 	if (fileToCheck.path.startsWith(settings.extraction.folder + "/")) return "Extraction File";
 	return "Data File";
+}
+
+export async function createCodeBlockFile(plugin: Quadro, label: string, name: string) {
+	const { app, settings } = plugin;
+	const content = ["```" + label, "```", ""];
+
+	const analysisFolderExists = app.vault.getFolderByPath(settings.analysis.folder);
+	if (!analysisFolderExists) app.vault.createFolder(settings.analysis.folder);
+
+	const filepath = normalizePath(settings.analysis.folder + `/${name}.md`);
+	const codeblockFile =
+		app.vault.getFileByPath(filepath) || (await app.vault.create(filepath, content.join("\n")));
+
+	await openFileInActiveLeaf(app, codeblockFile);
+
+	const editor = getActiveEditor(plugin.app);
+	editor?.setCursor({ line: content.length, ch: 0 });
 }
 
 //──────────────────────────────────────────────────────────────────────────────

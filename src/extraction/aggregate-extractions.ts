@@ -1,7 +1,7 @@
 import { App, Notice, TFolder } from "obsidian";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { LIVE_PREVIEW, ensureCorrectPropertyTypes } from "src/shared/utils";
+import { ensureCorrectPropertyTypes, openFileInActiveLeaf } from "src/shared/utils";
 import {
 	LOOM_COLUMN_TEMPLATE,
 	Loom,
@@ -117,8 +117,7 @@ class SuggesterForAggregationCreation extends ExtendedFuzzySuggester<TFolder> {
 		);
 
 		// Open AGGREGATION FILE
-		await this.app.workspace.getLeaf().openFile(aggregationFile, LIVE_PREVIEW);
-		this.app.commands.executeCommandById("file-explorer:reveal-active-file");
+		await openFileInActiveLeaf(this.app, aggregationFile);
 	}
 }
 
