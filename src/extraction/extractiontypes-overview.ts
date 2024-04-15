@@ -31,12 +31,12 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 		}
 		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionType.name}</a>`;
 		const dimensions = Object.keys(frontmatter).map((key) => {
-			const type = app.metadataTypeManager.getPropertyInfo(key)?.type;
+			const type = (app.metadataTypeManager.getPropertyInfo(key)?.type as string) || "";
 			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
-			const threshold = 8; // CONFIG
+			const threshold = 7; // CONFIG
 
 			let valuesStr = "";
-			const showValues = values.length > 0 && (type === "text" || type === "multitext");
+			const showValues = values.length > 0 && !type.startsWith("date");
 			if (showValues) {
 				valuesStr = values
 					.slice(0, threshold)
