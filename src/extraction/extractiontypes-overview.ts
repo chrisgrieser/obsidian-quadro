@@ -33,24 +33,25 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 		const dimensions = Object.keys(frontmatter).map((key) => {
 			const type = app.metadataTypeManager.getPropertyInfo(key)?.type;
 			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
-			const threshold = 10; // CONFIG
-			const showValues = values.length > 0 && (type === "text" || type === "multitext");
+			const threshold = 8; // CONFIG
 			let valuesStr = "";
+
+			const showValues = values.length > 0 && (type === "text" || type === "multitext");
 			if (showValues) {
 				valuesStr = values
 					.slice(0, threshold)
 					.map((value) => {
 						// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
 						const uriForPropertySearch = `obsidian://search?query=["${key}":"${value}"]`;
-						return `<a href='${uriForPropertySearch}'>${value}</a>`;
+						return `<li><a href='${uriForPropertySearch}'>${value}</a></li>`;
 					})
-					.join(", ");
-				if (values.length > threshold) valuesStr += ` (${values.length - threshold} more)`;
+					.join("");
+				if (values.length > threshold)
+					valuesStr += `<li><i>${values.length - threshold} more</i></li>`;
+				valuesStr = "<ul>" + valuesStr + "</ul>";
 			}
 
-			let appendix = showValues ? valuesStr : type || "";
-			if (appendix) appendix = ": " + appendix;
-
+			const appendix = valuesStr || (type ? ": " + type : "");
 			return `<li><b>${key}</b>${appendix}</li>`;
 		});
 		const extractionsMade = countExtractionsForType(extractionType);
