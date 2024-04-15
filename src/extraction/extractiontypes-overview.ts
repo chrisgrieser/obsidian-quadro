@@ -15,6 +15,9 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 	const app = plugin.app;
 	let out = "";
 
+	// ensure search core-plugin is enabled
+	app.internalPlugins.plugins["global-search"].enable();
+
 	const extractionTypes = getAllExtractionTypes(plugin);
 	if (!extractionTypes) return "⚠️ No valid extraction templates found.";
 
@@ -29,23 +32,27 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 		}
 		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionType.name}</a>`;
 		const dimensions = Object.keys(frontmatter).map((key) => {
-			const uriForPropertySearch = `obsidian://search?query=["${key}": ]`;
-			// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
-			const linkToSearchForKey = `<a href='${uriForPropertySearch}'>${key}</a>`;
-
 			const type = app.metadataTypeManager.getPropertyInfo(key)?.type;
 			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
-			const thresholdForShowingValues = 10; // CONFIG
+			const threshold = 10; // CONFIG
 			const showValues = values.length > 0 && (type === "text" || type === "multitext");
-			const shortenValues = showValues && values.length > thresholdForShowingValues;
-			let appendix = showValues
-				? shortenValues
-					? `${values.length} different values`
-					: values.join(", ")
-				: type || "";
+			let valuesStr = "";
+			if (showValues) {
+				valuesStr = values
+					.slice(0, threshold)
+					.map((value) => {
+						// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
+						const uriForPropertySearch = `obsidian://search?query=["${key}":"${value}"]`;
+						return `<a href='${uriForPropertySearch}'>${value}</a>`;
+					})
+					.join(", ");
+				if (values.length > threshold) valuesStr += ` (${values.length - threshold} more)`;
+			}
+
+			let appendix = showValues ? valuesStr : type || "";
 			if (appendix) appendix = ": " + appendix;
 
-			return "<li>" + linkToSearchForKey + appendix + "</li>";
+			return `<li><b>${key}<b>${appendix}</li>`;
 		});
 		const extractionsMade = countExtractionsForType(extractionType);
 		out +=
