@@ -31,6 +31,14 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 		}
 		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionType.name}</a>`;
 		const dimensions = Object.keys(frontmatter).map((key) => {
+			// GUARD
+			if (
+				!app.metadataTypeManager.getPropertyInfo ||
+				!app.metadataCache.getFrontmatterPropertyValuesForKey
+			) {
+				return "⚠️ Obsidian version or Obsidian installer version outdated. Please re-download Obsidian from the website.";
+			}
+
 			const type = app.metadataTypeManager.getPropertyInfo(key)?.type;
 			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
 			const threshold = 8; // CONFIG
