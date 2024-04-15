@@ -34,8 +34,8 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 			const type = app.metadataTypeManager.getPropertyInfo(key)?.type;
 			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
 			const threshold = 8; // CONFIG
-			let valuesStr = "";
 
+			let valuesStr = "";
 			const showValues = values.length > 0 && (type === "text" || type === "multitext");
 			if (showValues) {
 				valuesStr = values
@@ -47,7 +47,7 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 					})
 					.join("");
 				if (values.length > threshold)
-					valuesStr += `<li><i>${values.length - threshold} more</i></li>`;
+					valuesStr += `<li><i>${values.length - threshold} more…</i></li>`;
 				valuesStr = "<ul>" + valuesStr + "</ul>";
 			}
 
