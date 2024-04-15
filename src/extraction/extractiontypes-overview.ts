@@ -2,7 +2,7 @@ import Quadro from "src/main";
 import { createCodeBlockFile } from "src/shared/utils";
 import { countExtractionsForType, getAllExtractionTypes } from "./extraction-utils";
 
-export async function insertExtractiontypesOverviewCodeblockCommand(plugin: Quadro) {
+export async function extractiontypesOverviewCommand(plugin: Quadro) {
 	const label = plugin.codeblockLabels.extractionOverview;
 	const overviewName = "Extraction Type Overview";
 	await createCodeBlockFile(plugin, label, overviewName);

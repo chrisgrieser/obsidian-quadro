@@ -1,7 +1,7 @@
 import { IconName } from "obsidian";
 import Quadro from "src/main";
 import { assignCodeCommand } from "./assign-code";
-import { insertCodeOverviewCodeblockCommand } from "./code-overview";
+import { codeOverviewCommand } from "./code-overview";
 import { bulkCreateCodeFilesCommand } from "./create-new-code-file";
 import { deleteCodeEverywhereCommand } from "./delete-code-everywhere";
 import { mergeCodeFilesCommand } from "./merge-code-files";
@@ -57,9 +57,9 @@ export const CODING_COMMANDS: CommandData[] = [
 		ribbonIcon: "circle-dashed",
 	},
 	{
-		id: "insert-code-overview-codeblock",
-		name: "Insert overview of codes at cursor",
-		func: insertCodeOverviewCodeblockCommand,
+		id: "code-overview-codeblock",
+		name: "Create/Goto Code Overview File",
+		func: codeOverviewCommand,
 		ribbonIcon: "circle-equal",
 	},
 ];

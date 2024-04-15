@@ -3,7 +3,7 @@ import { aggregateExtractionsCommand } from "./aggregate-extractions";
 import { createNewExtractionTypeCommand } from "./create-new-extraction-type";
 import { exportExtractionsAsCsv } from "./export-extractions-as-csv";
 import { extractFromParagraphCommand } from "./extract-from-paragraph";
-import { insertExtractiontypesOverviewCodeblockCommand } from "./extractiontypes-overview";
+import { extractiontypesOverviewCommand } from "./extractiontypes-overview";
 
 export const EXTRACTION_COMMANDS: CommandData[] = [
 	{
@@ -32,9 +32,9 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 		ribbonIcon: "arrow-up-square",
 	},
 	{
-		id: "insert-extractiontypes-overview-codeblock",
-		name: "Insert overview of extraction types at cursor",
-		func: insertExtractiontypesOverviewCodeblockCommand,
+		id: "extractiontypes-overview",
+		name: "Create/Goto Extraction Type Overview File",
+		func: extractiontypesOverviewCommand,
 		ribbonIcon: "square-equal",
 	},
 ];

@@ -3,7 +3,7 @@ import Quadro from "src/main";
 import { createCodeBlockFile } from "src/shared/utils";
 import { countTimesCodeIsAssigned } from "./coding-utils";
 
-export async function insertCodeOverviewCodeblockCommand(plugin: Quadro) {
+export async function codeOverviewCommand(plugin: Quadro) {
 	const label = plugin.codeblockLabels.codeOverview;
 	const overviewName = "Code Overview";
 	await createCodeBlockFile(plugin, label, overviewName);
