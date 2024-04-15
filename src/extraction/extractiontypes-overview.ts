@@ -7,13 +7,14 @@ export function insertExtractiontypesOverviewCodeblockCommand(plugin: Quadro) {
 	if (!editor) return;
 
 	const label = plugin.codeblockLabels.extractionOverview;
-	const codeblockString = ["```" + label, "```", ""].join("\n");
+	const codeblockString = ["", "```" + label, "```", ""].join("\n");
 	editor?.replaceSelection(codeblockString);
 }
 
 export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string {
 	const app = plugin.app;
 	let out = "";
+
 	const extractionTypes = getAllExtractionTypes(plugin);
 	if (!extractionTypes) return "⚠️ No valid extraction templates found.";
 
@@ -28,14 +29,23 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 		}
 		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionType.name}</a>`;
 		const dimensions = Object.keys(frontmatter).map((key) => {
-			const type = app.metadataTypeManager.getPropertyInfo(key)?.type;
-			const typeText = type ? `: ${type}` : "";
-
-			// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
 			const uriForPropertySearch = `obsidian://search?query=["${key}": ]`;
-
+			// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
 			const linkToSearchForKey = `<a href='${uriForPropertySearch}'>${key}</a>`;
-			return `<li><b>${linkToSearchForKey}</b>${typeText}</li>`;
+
+			const type = app.metadataTypeManager.getPropertyInfo(key)?.type;
+			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
+			const thresholdForShowingValues = 10; // CONFIG
+			const showValues = values.length > 0 && (type === "text" || type === "multitext");
+			const shortenValues = showValues && values.length > thresholdForShowingValues;
+			let appendix = showValues
+				? shortenValues
+					? `${values.length} different values`
+					: values.join(", ")
+				: type || "";
+			if (appendix) appendix = ": " + appendix;
+
+			return `<li><b>${linkToSearchForKey}</b>${appendix}</li>`;
 		});
 		const extractionsMade = countExtractionsForType(extractionType);
 		out +=

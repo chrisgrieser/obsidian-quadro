@@ -48,7 +48,7 @@ export function insertCodeOverviewCodeblockCommand(plugin: Quadro) {
 	if (!editor) return;
 
 	const label = plugin.codeblockLabels.codeOverview;
-	const codeblockString = ["```" + label, "```", ""].join("\n");
+	const codeblockString = ["", "```" + label, "```", ""].join("\n");
 	editor?.replaceSelection(codeblockString);
 }
 

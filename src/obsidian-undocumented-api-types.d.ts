@@ -46,6 +46,9 @@ declare module "obsidian" {
 		// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
 		mergeFile(file: TFile, otherFile: TFile, override: string, atStart: boolean): Promise<void>;
 	}
+	interface MetadataCache {
+		getFrontmatterPropertyValuesForKey: (key: string) => string[];
+	}
 	interface App {
 		showInFolder: (path: string) => void;
 		commands: {
