@@ -1,6 +1,6 @@
 import { CommandData } from "src/coding/coding-commands";
 import { aggregateExtractionsCommand } from "./aggregate-extractions";
-import { createNewExtractionTypeCommand } from "./bootstrap-extraction-files";
+import { createNewExtractionTypeCommand } from "./create-new-extraction-type";
 import { exportExtractionsAsCsv } from "./export-extractions-as-csv";
 import { extractFromParagraphCommand } from "./extract-from-paragraph";
 import { insertExtractiontypesOverviewCodeblockCommand } from "./extractiontypes-overview";
