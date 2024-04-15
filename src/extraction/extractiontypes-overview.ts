@@ -28,10 +28,14 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 		}
 		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionType.name}</a>`;
 		const dimensions = Object.keys(frontmatter).map((key) => {
-			let typeOfKey = app.metadataTypeManager.getPropertyInfo(key)?.type;
-			if (typeOfKey === "multitext") typeOfKey = "list";
-			const typeText = typeOfKey ? `: ${typeOfKey}` : "";
-			return `<li><b>${key}</b>${typeText}</li>`;
+			const type = app.metadataTypeManager.getPropertyInfo(key)?.type;
+			const typeText = type ? `: ${type}` : "";
+
+			// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
+			const uriForPropertySearch = `obsidian://search?query=["${key}": ]`;
+
+			const linkToSearchForKey = `<a href='${uriForPropertySearch}'>${key}</a>`;
+			return `<li><b>${linkToSearchForKey}</b>${typeText}</li>`;
 		});
 		const extractionsMade = countExtractionsForType(extractionType);
 		out +=
