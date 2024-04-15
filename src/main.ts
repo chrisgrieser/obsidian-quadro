@@ -16,6 +16,10 @@ export default class Quadro extends Plugin {
 	styleElSuppressSuggestionsInFields?: HTMLStyleElement;
 	styleElPropertyKeyWidth?: HTMLStyleElement;
 	cssclass = this.manifest.id;
+	codeblockLabels = {
+		extractionOverview: "quadro-extractiontypes-overview",
+		codeOverview: "quadro-code-overview",
+	};
 
 	statusbar = this.addStatusBarItem();
 	trashWatcherUninstaller?: () => void;
@@ -66,14 +70,17 @@ export default class Quadro extends Plugin {
 		ensureCorrectPropertyTypes(this.app);
 
 		// CODE BLOCKS
-		this.registerMarkdownCodeBlockProcessor("quadro-code-overview", (_source, el) => {
+		this.registerMarkdownCodeBlockProcessor(this.codeblockLabels.codeOverview, (_source, el) => {
 			el.innerHTML = processCodeOverviewCodeblock(this);
 			el.addClass(this.cssclass);
 		});
-		this.registerMarkdownCodeBlockProcessor("quadro-extractiontypes-overview", (_source, el) => {
-			el.innerHTML = processExtractiontypesOverviewCodeblock(this);
-			el.addClass(this.cssclass);
-		});
+		this.registerMarkdownCodeBlockProcessor(
+			this.codeblockLabels.extractionOverview,
+			(_source, el) => {
+				el.innerHTML = processExtractiontypesOverviewCodeblock(this);
+				el.addClass(this.cssclass);
+			},
+		);
 	}
 
 	//───────────────────────────────────────────────────────────────────────────

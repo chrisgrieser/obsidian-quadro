@@ -6,7 +6,8 @@ export function insertExtractiontypesOverviewCodeblockCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor) return;
 
-	const codeblockString = ["```quadro-extractiontypes-overview", "```", ""].join("\n");
+	const label = plugin.codeblockLabels.extractionOverview;
+	const codeblockString = ["```" + label, "```", ""].join("\n");
 	editor?.replaceSelection(codeblockString);
 }
 
