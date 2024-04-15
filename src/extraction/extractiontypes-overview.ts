@@ -45,7 +45,7 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 				: type || "";
 			if (appendix) appendix = ": " + appendix;
 
-			return `<li><b>${linkToSearchForKey}</b>${appendix}</li>`;
+			return "<li>" + linkToSearchForKey + appendix + "</li>";
 		});
 		const extractionsMade = countExtractionsForType(extractionType);
 		out +=
