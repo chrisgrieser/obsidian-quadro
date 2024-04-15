@@ -22,10 +22,10 @@ the style of _Qualitative Content Analysis_.
 	* [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
-	* [Getting Started](#getting-started)
-		+ [Example Vault](#example-vault)
-		+ [Experienced Obsidian Users](#experienced-obsidian-users)
-		+ [Using a Separate Vault](#using-a-separate-vault)
+	* [Getting started](#getting-started)
+		+ [Example vault](#example-vault)
+		+ [Experienced obsidian users](#experienced-obsidian-users)
+		+ [Using a separate vault](#using-a-separate-vault)
 		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
 	* [Coding](#coding)
 		+ [How coding works in Quadro](#how-coding-works-in-quadro)
@@ -37,7 +37,7 @@ the style of _Qualitative Content Analysis_.
 - [Configuration](#configuration)
 	* [Buttons](#buttons)
 	* [Hotkeys](#hotkeys)
-	* [Plugin Behavior](#plugin-behavior)
+	* [Plugin behavior](#plugin-behavior)
 - [Installation & update](#installation--update)
 - [Development](#development)
 	* [Contribute](#contribute)
@@ -154,9 +154,9 @@ support the creation of those Extraction Files.
 
 ## Usage
 
-### Getting Started
+### Getting started
 
-#### Example Vault
+#### Example vault
 There is a [pre-configured example
 vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
 *Quadro*. Apart from some pre-installed plugins for QDA, it includes some mock
@@ -168,12 +168,12 @@ capabilities, to demonstrate the capabilities of _Quadro_.
    new to Obsidian, see the Obsidian Documentation on how to do
    that.](https://help.obsidian.md/Getting+started/Create+a+vault#Open+existing+folder))
 
-#### Experienced Obsidian Users
+#### Experienced obsidian users
 If you are experienced with Obsidian, you can also directly install the plugin,
 though checking out the example vault is nonetheless helpful to get a grasp on
 the capabilities of _Quadro_.
 
-#### Using a Separate Vault
+#### Using a separate vault
 It is recommended to create a separate vault for data analysis and
 install the plugin there, for several reasons:
 - QDA does not follow the "common logic of note-taking," thus often requiring a
@@ -435,7 +435,7 @@ To remove or re-arrange buttons, go to the Obsidian settings: `Appearance` →
 Every hotkey can be customized by searching for the name of the respective
 action in the Obsidian settings under `Hotkeys`.
 
-### Plugin Behavior
+### Plugin behavior
 The plugin behavior can be customized in the `Quadro` tab of the Obsidian
 settings. Aside from folder locations, there are a few settings which change the
 way codes and extractions are presented. Note that these are not technical or
