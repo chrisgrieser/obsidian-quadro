@@ -5,9 +5,6 @@
 		"clientKind": "git",
 		"useIgnoreFile": true
 	},
-	"json": {
-		"parser": { "allowComments": true } // for `tsconfig.json`
-	},
 	"javascript": {
 		"globals": ["activeDocument"] // electron
 	},
