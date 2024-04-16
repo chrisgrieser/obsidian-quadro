@@ -42,7 +42,7 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 					.slice(0, threshold)
 					.map((value) => {
 						// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
-						const uriForPropertySearch = `obsidian://search?query=["${key}":"${value}"]`;
+						const uriForPropertySearch = `obsidian://search?query=path:"${extractionType.path}" ["${key}":"${value}"]`;
 						return `<li><a href='${uriForPropertySearch}'>${value}</a></li>`;
 					})
 					.join("");
