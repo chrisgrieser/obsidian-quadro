@@ -18,6 +18,14 @@ class InputForOneFile extends ExtendedInputModal {
 		const { contentEl } = this;
 		contentEl.addClass(this.plugin.cssclass);
 
+		const validCode = (fullCode: string) =>
+			fullCode !== "" && !fullCode.startsWith("/") && !fullCode.endsWith("/");
+
+		const confirm = () => {
+			this.close();
+			this.onSubmit(this.fullCode, this.codeDesc);
+		};
+
 		// info text
 		contentEl.createEl("h4", { text: "New code creation" });
 		contentEl.createEl("small", {
@@ -37,11 +45,14 @@ class InputForOneFile extends ExtendedInputModal {
 				text
 					.onChange((value) => {
 						this.fullCode = value.trim();
-						const invalid =
-							this.fullCode === "" || this.fullCode.startsWith("/") || this.fullCode.endsWith("/");
-						this.confirmationButton?.setDisabled(invalid);
+						this.confirmationButton?.setDisabled(!validCode(this.fullCode));
 					})
 					.inputEl.setCssProps({ width: "100%", "min-width": "20rem" });
+
+				// press enter to confirm
+				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
+					if (event.key === "Enter" && validCode(this.fullCode)) confirm();
+				});
 			});
 
 		// description input field
@@ -54,6 +65,11 @@ class InputForOneFile extends ExtendedInputModal {
 						this.codeDesc = value.trim();
 					})
 					.inputEl.setCssProps({ width: "100%", "min-width": "20rem" });
+
+				// press enter to confirm
+				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
+					if (event.key === "Enter" && validCode(this.fullCode)) confirm();
+				});
 			});
 
 		// create & cancel button
@@ -63,10 +79,7 @@ class InputForOneFile extends ExtendedInputModal {
 					.setButtonText("Create")
 					.setCta()
 					.setDisabled(true)
-					.onClick(() => {
-						this.close();
-						this.onSubmit(this.fullCode, this.codeDesc);
-					});
+					.onClick(confirm);
 			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}

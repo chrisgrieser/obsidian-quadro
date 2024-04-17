@@ -17,14 +17,24 @@ class InputForNewExtractionType extends ExtendedInputModal {
 		contentEl.createEl("h4", { text: "New Extraction Type" });
 		contentEl.addClass(this.plugin.cssclass);
 
+		const validInput = (name: string) => name !== "";
+
 		// name input field
 		new Setting(contentEl).setName("Name of the new type").addText((text) => {
 			text
 				.onChange((value) => {
 					this.nameOfNewType = value.trim();
-					this.confirmationButton?.setDisabled(this.nameOfNewType === "");
+					this.confirmationButton?.setDisabled(!validInput(value));
 				})
 				.inputEl.setCssProps({ width: "100%", "min-width": "20rem" });
+
+			// press enter to confirm
+			text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
+				if (event.key === "Enter" && validInput(this.nameOfNewType)) {
+					this.close();
+					this.onSubmit(this.nameOfNewType);
+				}
+			});
 		});
 
 		// create & cancel button
