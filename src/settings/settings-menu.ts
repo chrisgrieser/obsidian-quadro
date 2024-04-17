@@ -97,7 +97,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Code Count")
+			.setName("Code count")
 			.setDesc(
 				"When selecting a code to assign, show a count of how often the code has already been assigned. " +
 					"(Note that this is a methodological decision, as it may influence your choice of codes.)",
@@ -156,7 +156,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName("Location of Extraction Window")
+			.setName("Location of extraction window")
 			.setDesc(
 				"When creating a new extraction, a new split window opens. This setting determines where that window opens.",
 			)
@@ -171,7 +171,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("CSV Separator")
+			.setName("CSV separator")
 			.setDesc("Separator used when exporting extractions as csv files.")
 			.addDropdown((dropdown) => {
 				dropdown
