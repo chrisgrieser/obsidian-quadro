@@ -70,37 +70,6 @@ body .internal-embed .markdown-embed-content {
 /* ────────────────────────────────────────────────────────────────────────── */
 /* QUADRO MODALS & BUTTONS */
 
-/* assign new code */
-.modal.quadro input {
-	min-width: 20rem;
-	width: 100%;
-}
-
-.modal.quadro button[disabled] {
-	opacity: 0.5;
-}
-
-/* bulk code creation */
-.quadro-bulk-code-creation .setting-item-info {
-	display: none;
-}
-
-.quadro-bulk-code-creation textarea {
-	width: 100%;
-	min-height: 10rem;
-}
-
-/* buttons */
-.quadro.side-dock-ribbon-action {
-	border: 1px solid var(--text-faint);
-}
-
-/* settings */
-.vertical-tab-content.quadro input {
-	min-width: 15rem;
-}
-
-.quadro-property-list textarea {
-	min-height: 5rem;
-	min-width: 15rem;
-}
+/* .quadro-property-list textarea { */
+	min-height: 5rem; min-width: 15rem;
+/* } */

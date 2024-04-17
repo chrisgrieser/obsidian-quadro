@@ -16,6 +16,9 @@ class InputForOneFile extends ExtendedInputModal {
 
 	override onOpen() {
 		const { contentEl } = this;
+		contentEl.addClass(this.plugin.cssclass);
+
+		// info text
 		contentEl.createEl("h4", { text: "New code creation" });
 		contentEl.createEl("small", {
 			text: 'If there is a file "Template.md" at the root of the Codes Folder, the new Code File will be populated with its frontmatter.',
@@ -31,23 +34,27 @@ class InputForOneFile extends ExtendedInputModal {
 			)
 			.addText((text) => {
 				new CodeGroupSuggest(this.plugin, text.inputEl);
-				text.onChange((value) => {
-					this.fullCode = value.trim();
-					const invalid =
-						this.fullCode === "" || this.fullCode.startsWith("/") || this.fullCode.endsWith("/");
-					this.confirmationButton?.setDisabled(invalid);
-				});
+				text
+					.onChange((value) => {
+						this.fullCode = value.trim();
+						const invalid =
+							this.fullCode === "" || this.fullCode.startsWith("/") || this.fullCode.endsWith("/");
+						this.confirmationButton?.setDisabled(invalid);
+					})
+					.inputEl.setCssProps({ width: "100%", "min-width": "20rem" });
 			});
 
 		// description input field
 		new Setting(contentEl)
 			.setName("Code description")
 			.setDesc('Will be added as metadata with the key "code description".')
-			.addText((text) =>
-				text.onChange((value) => {
-					this.codeDesc = value.trim();
-				}),
-			);
+			.addText((text) => {
+				text
+					.onChange((value) => {
+						this.codeDesc = value.trim();
+					})
+					.inputEl.setCssProps({ width: "100%", "min-width": "20rem" });
+			});
 
 		// create & cancel button
 		new Setting(contentEl)
@@ -76,6 +83,7 @@ class InputForMultipleFiles extends ExtendedInputModal {
 
 	override onOpen() {
 		const { contentEl } = this;
+		contentEl.addClass(this.plugin.cssclass);
 
 		// info text
 		contentEl.createEl("h4", { text: "Bulk-create new codes" });
@@ -88,12 +96,16 @@ class InputForMultipleFiles extends ExtendedInputModal {
 		});
 
 		// textarea field
-		new Setting(contentEl).setClass("quadro-bulk-code-creation").addTextArea((text) =>
-			text.onChange((value) => {
-				this.input = value.trim();
-				this.confirmationButton?.setDisabled(this.input === "");
-			}),
-		);
+		new Setting(contentEl)
+			.addTextArea((textarea) => {
+				textarea
+					.onChange((value) => {
+						this.input = value.trim();
+						this.confirmationButton?.setDisabled(this.input === "");
+					})
+					.inputEl.setCssProps({ width: "100%", "min-height": "10rem" });
+			})
+			.infoEl.remove();
 
 		// create & cancel button
 		new Setting(contentEl)

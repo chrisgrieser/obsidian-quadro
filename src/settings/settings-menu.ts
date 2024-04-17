@@ -23,7 +23,6 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 	constructor(plugin: Quadro) {
 		super(plugin.app, plugin);
 		this.plugin = plugin;
-		this.containerEl.addClass(plugin.cssclass);
 	}
 
 	// INFO Obsidian Style Guide prescribes sentence case. However, we deviate
@@ -33,8 +32,11 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 	// consistency.
 	display(): void {
 		const { containerEl } = this;
-		containerEl.empty();
 		const settings = this.plugin.settings;
+		const inputElCss = { "min-width": "15rem" };
+
+		containerEl.empty();
+		containerEl.addClass(this.plugin.cssclass);
 
 		// General
 		new Setting(containerEl)
@@ -57,9 +59,9 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 
 						await this.plugin.saveSettings();
 						suppressCertainFrontmatterSuggestions(this.plugin);
-					}),
-			)
-			.settingEl.addClass("quadro-property-list");
+					})
+					.inputEl.setCssProps({ "min-height": "5rem", "min-width": "15rem" }),
+			);
 
 		new Setting(containerEl)
 			.setName("Width of property keys")
@@ -90,7 +92,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					.onChange(async (path) => {
 						settings.coding.folder = sanitizePath(path) || DEFAULT_SETTINGS.coding.folder;
 						await this.plugin.saveSettings();
-					});
+					})
+					.inputEl.setCssProps(inputElCss);
 			});
 
 		new Setting(containerEl)
@@ -135,7 +138,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					.onChange(async (path) => {
 						settings.extraction.folder = sanitizePath(path) || DEFAULT_SETTINGS.extraction.folder;
 						await this.plugin.saveSettings();
-					});
+					})
+					.inputEl.setCssProps(inputElCss);
 			});
 
 		new Setting(containerEl)
@@ -193,7 +197,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					.onChange(async (path) => {
 						settings.analysis.folder = sanitizePath(path) || DEFAULT_SETTINGS.analysis.folder;
 						await this.plugin.saveSettings();
-					});
+					})
+					.inputEl.setCssProps(inputElCss);
 			});
 	}
 }
