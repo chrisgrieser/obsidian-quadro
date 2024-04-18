@@ -35,8 +35,8 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 		const keys = [
 			"File",
 			...Object.keys(templateFrontmatter),
-			"extraction date",
-			"extraction source",
+			"extraction-date",
+			"extraction-source",
 		];
 		const headerRow = createCsvRow(keys, csvSeparator);
 		csvFileLines.push(headerRow);
@@ -65,7 +65,7 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 							: JSON.stringify(value); // object
 
 				// remove enclosing wikilinks
-				if (key === "extraction source") valueStr = valueStr.slice(2, -2);
+				if (key === "extraction-source") valueStr = valueStr.replace(/\[\[|\]\]/g, "");
 
 				cellsInRow.push(valueStr);
 			}

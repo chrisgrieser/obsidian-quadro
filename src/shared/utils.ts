@@ -100,7 +100,7 @@ export function ensureWikilinksSetting(app: App): void {
  * DataLoom. Therefore, we are ensuring the correct type here.
  * NOTE `setType` is marked as internal, so keep an eye on it. */
 export function ensureCorrectPropertyTypes(app: App): void {
-	app.metadataTypeManager.setType("extraction date", "datetime");
-	app.metadataTypeManager.setType("extraction source", "text");
+	app.metadataTypeManager.setType("extraction-date", "datetime");
+	app.metadataTypeManager.setType("extraction-source", "multitext");
 	app.metadataTypeManager.setType("code description", "text");
 }

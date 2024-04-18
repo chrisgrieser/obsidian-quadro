@@ -102,9 +102,9 @@ async function extractOfType(
 
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
-	const dateYamlLine = `extraction date: ${isoDate}`;
+	const dateYamlLine = `extraction-date: ${isoDate}`;
 	const fullSource = `${dataFile.path.slice(0, -3)}#${blockId}`; // slice to rm `.md`
-	const sourceYamlLine = `extraction source: "[[${fullSource}]]"`;
+	const sourceYamlLine = `extraction-source: "[[${fullSource}]]"`;
 	const newFrontmatter = [
 		"---",
 		...templateFrontmatter.split("\n"),

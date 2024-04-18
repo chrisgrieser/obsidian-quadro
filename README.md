@@ -337,7 +337,7 @@ such, each file corresponds to a single extraction, with its parent folder
 indicating what type of extraction it is.
 
 You can then fill out the fields of newly created file. The
-`extraction source` key contains a link back to the paragraph in the Data File
+`extraction-source` key contains a link back to the paragraph in the Data File
 where you initiated the extraction. In the rendered view, the file contains a
 `Properties` header that can conveniently be filled out:
 
@@ -352,8 +352,8 @@ Filepath: ./Extractions/Career Visions/Career Visions 001.md
 occupation: "painter"
 career stage: "novice"
 year of experience: 4
-extraction date: 2024-03-02T12:40:12
-extraction source: "[[Field Notes 3#^id-240302-124012]]"
+extraction-date: 2024-03-02T12:40:12
+extraction-source: "[[Field Notes 3#^id-240302-124012]]"
 ---
 
 **Paragraph extracted from:** ![[Field Notes 3#^id-240302-124012]]

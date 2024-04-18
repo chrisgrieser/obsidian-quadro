@@ -60,7 +60,7 @@ class SuggesterForAggregationCreation extends ExtendedFuzzySuggester<TFolder> {
 		// TEMPLATE FILE: read properties for the extraction type
 		const frontmatter = getPropertiesForExtractionType(this.app, extractionType);
 		if (!frontmatter) return;
-		const properties = [...Object.keys(frontmatter), "extraction source", "extraction date"];
+		const properties = [...Object.keys(frontmatter), "extraction-source", "extraction-date"];
 
 		// create LOOM file content (= AGGREGATION FILE)
 		const loomJson: Loom = structuredClone(TEMPLATE_LOOM);
@@ -90,7 +90,7 @@ class SuggesterForAggregationCreation extends ExtendedFuzzySuggester<TFolder> {
 			column.frontmatterKey = property; // key used
 			column.content = property; // column title
 			column.type = propertyType(this.app, property);
-			column.width = property === "extraction date" ? "150px" : "200px";
+			column.width = property === "extraction-date" ? "150px" : "200px";
 			loomJson.model.columns.push(column);
 		}
 
