@@ -81,7 +81,8 @@ async function extractOfType(
 	let extractionCount = countExtractionsForType(extractionTypeFolder);
 	while (true) {
 		extractionCount++;
-		extractionPath = `${dir}/${type} ${extractionCount}.md`;
+		const countWithLeadingZeros = extractionCount.toString().padStart(3, "0");
+		extractionPath = `${dir}/${type} ${countWithLeadingZeros}.md`;
 		const fileExistsAlready = app.vault.getFileByPath(extractionPath);
 		if (!fileExistsAlready) break;
 	}

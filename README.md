@@ -346,7 +346,7 @@ where you initiated the extraction. In the rendered view, the file contains a
 The underlying plaintext view of the file looks like this:
 
 ```md
-Filepath: ./Extractions/Career Visions/Career Visions 1.md
+Filepath: ./Extractions/Career Visions/Career Visions 001.md
 
 ---
 occupation: "painter"
@@ -388,12 +388,12 @@ All in all, the underlying folder structure for extractions looks like this:
 └── 📂 Extractions
     ├── 📂 Career Obstacles
     │    ├── 📄 Template.md
-    │    ├── 📄 Career Obstacles 1.md
-    │    ├── 📄 Career Obstacles 2.md
+    │    ├── 📄 Career Obstacles 001.md
+    │    ├── 📄 Career Obstacles 002.md
     │    └── …
     └── 📂 Career Visions
          ├── 📄 Template.md
-         ├── 📄 Career Visions 1.md
+         ├── 📄 Career Visions 001.md
          └── …
 ```
 
