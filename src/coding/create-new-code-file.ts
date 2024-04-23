@@ -51,7 +51,10 @@ class InputForOneFile extends ExtendedInputModal {
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
-					if (event.key === "Enter" && validCode(this.fullCode)) confirm();
+					if (event.key === "Enter" && validCode(this.fullCode)) {
+						event.preventDefault(); // https://discord.com/channels/686053708261228577/840286264964022302/1232354740629671967
+						confirm();
+					}
 				});
 			});
 
@@ -68,7 +71,10 @@ class InputForOneFile extends ExtendedInputModal {
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
-					if (event.key === "Enter" && validCode(this.fullCode)) confirm();
+					if (event.key === "Enter" && validCode(this.fullCode)) {
+						event.preventDefault(); // https://discord.com/channels/686053708261228577/840286264964022302/1232354740629671967
+						confirm();
+					}
 				});
 			});
 

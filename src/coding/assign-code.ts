@@ -33,11 +33,12 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		// creates second row of instructions for better visibility
 		this.setInstructions([{ command: "shift ⏎", purpose: "Create new code" }]);
 
-		this.scope.register(["Shift"], "Enter", (evt: KeyboardEvent): void => {
+		this.scope.register(["Shift"], "Enter", (event: KeyboardEvent): void => {
 			// INFO more specific actions like using the selection can be done via
 			// the undocumented `this.chooser`
-			if (evt.isComposing) return;
-			this.close(); // before `onChooseItem`, otherwise results in some weird race conditions
+			if (event.isComposing) return;
+			event.preventDefault();
+			this.close();
 			this.onChooseItem("new-code-file");
 		});
 	}

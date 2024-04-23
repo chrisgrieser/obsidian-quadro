@@ -43,7 +43,6 @@ export class ExtendedInputModal extends Modal {
 	}
 
 	override onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
+		this.contentEl.empty();
 	}
 }

@@ -19,6 +19,11 @@ class InputForNewExtractionType extends ExtendedInputModal {
 
 		const validInput = (name: string) => name !== "";
 
+		const confirm = () => {
+			this.close();
+			this.onSubmit(this.nameOfNewType);
+		};
+
 		// name input field
 		new Setting(contentEl).setName("Name of the new type").addText((text) => {
 			text
@@ -31,8 +36,8 @@ class InputForNewExtractionType extends ExtendedInputModal {
 			// press enter to confirm
 			text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
 				if (event.key === "Enter" && validInput(this.nameOfNewType)) {
-					this.close();
-					this.onSubmit(this.nameOfNewType);
+					event.preventDefault();
+					confirm();
 				}
 			});
 		});
@@ -44,10 +49,7 @@ class InputForNewExtractionType extends ExtendedInputModal {
 					.setButtonText("Create")
 					.setCta()
 					.setDisabled(true)
-					.onClick(() => {
-						this.close();
-						this.onSubmit(this.nameOfNewType);
-					});
+					.onClick(confirm);
 			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}
