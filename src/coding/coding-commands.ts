@@ -33,7 +33,7 @@ export const CODING_COMMANDS: CommandData[] = [
 	},
 	{
 		id: "unassign-code",
-		name: "Delete code from paragraph",
+		name: "Remove code from paragraph",
 		func: unassignCodeCommand,
 		hotkeyLetter: "d",
 		ribbonIcon: "minus-circle",
@@ -58,7 +58,7 @@ export const CODING_COMMANDS: CommandData[] = [
 	},
 	{
 		id: "code-overview-codeblock",
-		name: "Create/Goto Code Overview File",
+		name: "Create/goto code overview file",
 		func: codeOverviewCommand,
 		ribbonIcon: "circle-equal",
 	},

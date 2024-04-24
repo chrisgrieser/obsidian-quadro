@@ -15,7 +15,7 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 	},
 	{
 		id: "create-new-extraction-type",
-		name: "Create new extraction type",
+		name: "Create new Extraction Type",
 		func: createNewExtractionTypeCommand,
 		ribbonIcon: "box-select",
 	},
@@ -33,7 +33,7 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 	},
 	{
 		id: "extractiontypes-overview",
-		name: "Create/Goto Extraction Type Overview File",
+		name: "Create/Goto extraction type overview file",
 		func: extractiontypesOverviewCommand,
 		ribbonIcon: "square-equal",
 	},
