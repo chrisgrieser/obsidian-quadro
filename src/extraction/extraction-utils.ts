@@ -1,4 +1,4 @@
-import { App, FrontMatterCache, Notice, TFile, TFolder } from "obsidian";
+import { App, FrontMatterCache, MarkdownView, Notice, TFile, TFolder } from "obsidian";
 import Quadro from "src/main";
 import { LIVE_PREVIEW } from "src/shared/utils";
 
@@ -25,31 +25,19 @@ export async function openExtractionInNewWin(plugin: Quadro, tfile: TFile): Prom
 	}
 }
 
-// SOURCE https://discord.com/channels/686053708261228577/840286264964022302/1207053341989929070
 export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void {
 	app.vault.setConfig("propertiesInDocument", "visible");
-	const selector = `.workspace-leaf.mod-active .metadata-property:first-of-type .metadata-property-${type} :is([contenteditable='true'], input)`;
-	const elem = activeDocument.querySelector(selector);
-	if (!(elem instanceof HTMLElement)) return;
 
-	if (elem instanceof HTMLInputElement) {
-		elem.focus();
-		// number types cannot be selected, thus temporarily convert to text
-		if (elem.getAttribute("type") === "number") {
-			elem.setAttribute("type", "text");
-			elem.select(); // select all text in the field
-			elem.setAttribute("type", "number");
-		} else {
-			elem.select();
-		}
-	} else {
-		const range = activeDocument.createRange();
-		const sel = window.getSelection();
-		range.setStart(elem, 0);
-		range.collapse(true);
-		sel?.removeAllRanges();
-		sel?.addRange(range);
-	}
+	// HACK unclear what exactly causes the race condition, since previous
+	// file opening is always awaited
+	setTimeout(() => {
+		const firstProperty =
+			app.workspace.getActiveViewOfType(MarkdownView)?.metadataEditor.rendered[0];
+		// TODO further debug which part is nulled https://discord.com/channels/686053708261228577/989603365606531104/1232745273680334888
+		if (!firstProperty) return;
+		const toFocus = type === "key" ? "focusKey" : "focusValue";
+		firstProperty[toFocus]();
+	}, 350);
 }
 
 //──────────────────────────────────────────────────────────────────────────────

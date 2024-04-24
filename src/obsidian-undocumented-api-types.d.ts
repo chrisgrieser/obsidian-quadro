@@ -17,6 +17,14 @@ declare module "obsidian" {
 	interface WorkspaceLeaf {
 		parent: WorkspaceTabs;
 	}
+	interface MarkdownView {
+		metadataEditor: {
+			rendered: {
+				focusValue: () => void;
+				focusKey: () => void;
+			}[];
+		};
+	}
 	interface WorkspaceTabs {
 		// sets the css `flex-grow` of the tab group, meaning the number is a
 		// ratio, with `1` being the default value for this (and all other tab
