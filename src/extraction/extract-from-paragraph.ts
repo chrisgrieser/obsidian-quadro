@@ -112,7 +112,8 @@ async function extractOfType(
 		sourceYamlLine,
 		"---",
 		"",
-		`**Paragraph extracted from:** ![[${fullSource}]]`,
+		"**Paragraph extracted from:**",
+		`![[${fullSource}]]`,
 	].join("\n");
 
 	// Create EXTRACTION FILE
