@@ -57,4 +57,9 @@ const gitCommands = [
 	`git tag ${nextVersion}`, // tag triggers the release action
 	"git push origin --tags",
 ];
-exec(gitCommands.join(" && "));
+exec(gitCommands.join(" && "), (err, stdout, stderr) => {
+	if (err) console.error(err);
+	if (stderr) console.error(stderr);
+	if (stdout) console.info(stdout);
+	process.exit(err || stderr ? 1 : 0);
+});
