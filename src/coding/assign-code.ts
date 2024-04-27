@@ -1,6 +1,5 @@
 import { App, Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
-import { ensureBlockId } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	ambiguousSelection,
@@ -8,6 +7,7 @@ import {
 	getActiveEditor,
 	selHasHighlightMarkup,
 	typeOfFile,
+	updateDatafileLinetext,
 } from "../shared/utils";
 import {
 	codeFileDisplay,
@@ -74,21 +74,11 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 	/** DATAFILE: Add blockID & link to Code-File in the current line
 	 * CODEFILE: Append embedded blocklink to Data-File */
 	async assignCode(app: App, codeFile: TFile, dataFile: TFile): Promise<void> {
-		const cursor = this.editor.getCursor();
+		const editor = this.editor;
 		const fullCode = getFullCode(this.plugin, codeFile);
 
 		// DATAFILE Changes
-		// add highlight if selection
-		let lineText = this.editor.getLine(cursor.line);
-
-		const selection = this.editor.getSelection();
-		if (selection) {
-			// spaces need to be moved outside, otherwise they make the highlights invalid
-			const highlightAdded = selection.replace(/^( ?)(.+?)( ?)$/g, "$1==$2==$3");
-			this.editor.replaceSelection(highlightAdded);
-			lineText = this.editor.getLine(cursor.line);
-		}
-		const { blockId, lineWithoutId } = ensureBlockId(lineText);
+		const { blockId, lineWithoutId, cursor } = updateDatafileLinetext(editor);
 
 		ensureWikilinksSetting(app);
 		const linkToCodeFile = app.fileManager.generateMarkdownLink(
@@ -98,8 +88,8 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 			fullCode,
 		);
 		const updatedLine = `${lineWithoutId} ${linkToCodeFile} ${blockId}`;
-		this.editor.setLine(cursor.line, updatedLine);
-		this.editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
+		editor.setLine(cursor.line, updatedLine);
+		editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 
 		// CODEFILE Changes
 		const dataFileFullPath = dataFile.path.slice(0, -3);

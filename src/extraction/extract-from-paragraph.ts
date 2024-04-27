@@ -1,6 +1,5 @@
 import { Editor, Notice, TFile, TFolder, getFrontMatterInfo } from "obsidian";
 import Quadro from "src/main";
-import { ensureBlockId } from "src/shared/block-id";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	ambiguousSelection,
@@ -9,6 +8,7 @@ import {
 	getActiveEditor,
 	selHasHighlightMarkup,
 	typeOfFile,
+	updateDatafileLinetext,
 } from "src/shared/utils";
 import {
 	countExtractionsForType,
@@ -88,18 +88,8 @@ async function extractOfType(
 		if (!fileExistsAlready) break;
 	}
 
-	// Add highlight to DATAFILE & determine DATAFILE info
-	const cursor = editor.getCursor();
-	let lineText = editor.getLine(cursor.line);
-
-	const selection = editor.getSelection();
-	if (selection) {
-		// spaces need to be moved outside, otherwise they make the highlights invalid
-		const highlightAdded = selection.replace(/^( ?)(.+?)( ?)$/g, "$1==$2==$3");
-		editor.replaceSelection(highlightAdded);
-		lineText = editor.getLine(cursor.line);
-	}
-	const { blockId, lineWithoutId } = ensureBlockId(lineText);
+	// DATAFILE
+	const { blockId, lineWithoutId, cursor } = updateDatafileLinetext(editor);
 
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format

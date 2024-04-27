@@ -1,5 +1,15 @@
-import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile, normalizePath } from "obsidian";
+import {
+	App,
+	Editor,
+	EditorPosition,
+	Notice,
+	OpenViewState,
+	TAbstractFile,
+	TFile,
+	normalizePath,
+} from "obsidian";
 import Quadro from "src/main";
+import { ensureBlockId } from "./block-id";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -95,6 +105,28 @@ export function selHasHighlightMarkup(editor: Editor): boolean {
 		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
 	}
 	return hasHighlightMarkupInSel;
+}
+
+/** 1. save cursor position
+ *  2. update line text with highlight markup (if selection)
+ *  3. generate new block ID */
+export function updateDatafileLinetext(editor: Editor): {
+	blockId: string;
+	lineWithoutId: string;
+	cursor: EditorPosition;
+} {
+	const cursor = editor.getCursor();
+	let lineText = editor.getLine(cursor.line);
+
+	const selection = editor.getSelection();
+	if (selection) {
+		// spaces need to be moved outside, otherwise they make the highlights invalid
+		const highlightAdded = selection.replace(/^( ?)(.+?)( ?)$/g, "$1==$2==$3");
+		editor.replaceSelection(highlightAdded);
+		lineText = editor.getLine(cursor.line);
+	}
+	const { blockId, lineWithoutId } = ensureBlockId(lineText);
+	return { blockId, lineWithoutId, cursor };
 }
 
 /** plugin does not deal with Markdown Links yet, so we enforce usage of
