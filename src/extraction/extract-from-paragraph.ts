@@ -162,3 +162,7 @@ export function extractFromParagraphCommand(plugin: Quadro) {
 		new SuggesterForExtractionTypes(plugin, editor, extractionTypes, dataFile).open();
 	}
 }
+
+export function addToLastExtractionFileCommand(plugin: Quadro) {
+	return;
+}

@@ -2,7 +2,10 @@ import { CommandData } from "src/coding/coding-commands";
 import { aggregateExtractionsCommand } from "./aggregate-extractions";
 import { createNewExtractionTypeCommand } from "./create-new-extraction-type";
 import { exportExtractionsAsCsv } from "./export-extractions-as-csv";
-import { extractFromParagraphCommand } from "./extract-from-paragraph";
+import {
+	addToLastExtractionFileCommand,
+	extractFromParagraphCommand,
+} from "./extract-from-paragraph";
 import { extractiontypesOverviewCommand } from "./extractiontypes-overview";
 
 export const EXTRACTION_COMMANDS: CommandData[] = [
@@ -12,6 +15,13 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 		func: extractFromParagraphCommand,
 		hotkeyLetter: "e",
 		ribbonIcon: "plus-square",
+	},
+	{
+		id: "extract-to-last-extraction-file",
+		name: "Add paragraph to last Extraction File",
+		func: addToLastExtractionFileCommand,
+		hotkeyLetter: "l",
+		ribbonIcon: "square-asterisk",
 	},
 	{
 		id: "create-new-extraction-type",
