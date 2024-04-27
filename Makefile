@@ -22,7 +22,7 @@ check-tsc:
 	npx tsc --noEmit --skipLibCheck --strict && echo "Typescript OK"
 
 release:
-	zsh ./.release.sh
+	node .release.mjs
 
 # install dependencies, build, enable git hooks
 init:

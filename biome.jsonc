@@ -20,7 +20,8 @@
 				"all": true,
 				"noConsole": "off", // `console.info` use is intentional
 				"useImportRestrictions": "off",
-				"noUndeclaredDependencies": "off" // incompatible with typescript's default auto-imports
+				"noUndeclaredDependencies": "off", // incompatible with typescript's default auto-imports
+				"noNodejsModules": "off" // Obsidian is client-site, thus requiring them
 			},
 			"complexity": {
 				"noExcessiveCognitiveComplexity": "off",
