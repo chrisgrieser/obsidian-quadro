@@ -1,14 +1,13 @@
 import { App, Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
-import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	ambiguousSelection,
-	ensureWikilinksSetting,
 	getActiveEditor,
 	selHasHighlightMarkup,
-	typeOfFile,
 	updateDatafileLinetext,
-} from "../shared/utils";
+} from "src/shared/editor-utils";
+import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { ensureWikilinksSetting, typeOfFile } from "../shared/utils";
 import {
 	codeFileDisplay,
 	getAllCodeFiles,
