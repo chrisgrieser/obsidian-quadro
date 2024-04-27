@@ -71,7 +71,7 @@ function ensureBlockId(lineText: string): { blockId: string; lineWithoutId: stri
 /** 1. save cursor position
  *  2. update line text with highlight markup (if selection)
  *  3. generate new block ID */
-export function updateDatafileLinetext(editor: Editor): {
+export function prepareDatafileLineUpdate(editor: Editor): {
 	blockId: string;
 	lineWithoutId: string;
 	cursor: EditorPosition;

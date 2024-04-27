@@ -4,8 +4,8 @@ import {
 	ambiguousSelection,
 	getActiveEditor,
 	insertReferenceToDatafile,
+	prepareDatafileLineUpdate,
 	selHasHighlightMarkup,
-	updateDatafileLinetext,
 } from "src/shared/editor-utils";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { ensureCorrectPropertyTypes, typeOfFile } from "src/shared/utils";
@@ -88,18 +88,17 @@ async function extractOfType(
 	}
 
 	// DATAFILE Changes
-	const { blockId, lineWithoutId, cursor } = updateDatafileLinetext(editor);
+	const { blockId, lineWithoutId, cursor } = prepareDatafileLineUpdate(editor);
 
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
-	const dateYamlLine = `extraction-date: ${isoDate}`;
 	const fullSource = `${dataFile.path.slice(0, -3)}#${blockId}`; // slice to rm `.md`
-	const sourceYamlLine = `extraction-source: "[[${fullSource}]]"`;
 	const newFrontmatter = [
 		"---",
 		...templateFrontmatter.split("\n"),
-		dateYamlLine,
-		sourceYamlLine,
+		"extraction-date: " + isoDate,
+		"extraction-source:",
+		`  - "[[${fullSource}]]"`,
 		"---",
 		"",
 		"**Paragraph extracted from:**",
@@ -138,8 +137,4 @@ export function extractFromParagraphCommand(plugin: Quadro) {
 	} else {
 		new SuggesterForExtractionTypes(plugin, editor, extractionTypes, dataFile).open();
 	}
-}
-
-export function addToLastExtractionFileCommand(plugin: Quadro) {
-	return;
 }

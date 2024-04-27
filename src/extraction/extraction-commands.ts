@@ -1,11 +1,9 @@
 import { CommandData } from "src/coding/coding-commands";
+import { addToLastExtractionFileCommand } from "./add-to-last-extraction-file";
 import { aggregateExtractionsCommand } from "./aggregate-extractions";
 import { createNewExtractionTypeCommand } from "./create-new-extraction-type";
 import { exportExtractionsAsCsv } from "./export-extractions-as-csv";
-import {
-	addToLastExtractionFileCommand,
-	extractFromParagraphCommand,
-} from "./extract-from-paragraph";
+import { extractFromParagraphCommand } from "./extract-from-paragraph";
 import { extractiontypesOverviewCommand } from "./extractiontypes-overview";
 
 export const EXTRACTION_COMMANDS: CommandData[] = [

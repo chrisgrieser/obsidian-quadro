@@ -4,8 +4,8 @@ import {
 	ambiguousSelection,
 	getActiveEditor,
 	insertReferenceToDatafile,
+	prepareDatafileLineUpdate,
 	selHasHighlightMarkup,
-	updateDatafileLinetext,
 } from "src/shared/editor-utils";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { typeOfFile } from "../shared/utils";
@@ -76,7 +76,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		const fullCode = getFullCode(this.plugin, codeFile);
 
 		// DATAFILE Changes
-		const { blockId, lineWithoutId, cursor } = updateDatafileLinetext(editor);
+		const { blockId, lineWithoutId, cursor } = prepareDatafileLineUpdate(editor);
 		insertReferenceToDatafile(editor, codeFile, fullCode, lineWithoutId, blockId, cursor);
 
 		// CODEFILE Changes
