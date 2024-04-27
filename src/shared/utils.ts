@@ -89,6 +89,14 @@ export function ambiguousSelection(editor: Editor): boolean {
 	return false;
 }
 
+export function selHasHighlightMarkup(editor: Editor): boolean {
+	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
+	if (hasHighlightMarkupInSel) {
+		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
+	}
+	return hasHighlightMarkupInSel;
+}
+
 /** plugin does not deal with Markdown Links yet, so we enforce usage of
  * wikilinks for now :S */
 export function ensureWikilinksSetting(app: App): void {

@@ -7,6 +7,7 @@ import {
 	ensureCorrectPropertyTypes,
 	ensureWikilinksSetting,
 	getActiveEditor,
+	selHasHighlightMarkup,
 	typeOfFile,
 } from "src/shared/utils";
 import {
@@ -139,17 +140,12 @@ async function extractOfType(
 export function extractFromParagraphCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor || ambiguousSelection(editor)) return;
-
 	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to make an extraction.", 3000);
 		return;
 	}
-
-	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
-	if (hasHighlightMarkupInSel) {
-		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
-		return;
-	}
+	const hasHighlightMarkupInSel = selHasHighlightMarkup(editor);
+	if (hasHighlightMarkupInSel) return;
 
 	const extractionTypes = getAllExtractionTypes(plugin);
 	if (!extractionTypes) return;

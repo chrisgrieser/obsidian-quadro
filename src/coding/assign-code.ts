@@ -6,6 +6,7 @@ import {
 	ambiguousSelection,
 	ensureWikilinksSetting,
 	getActiveEditor,
+	selHasHighlightMarkup,
 	typeOfFile,
 } from "../shared/utils";
 import {
@@ -113,17 +114,12 @@ export function assignCodeCommand(plugin: Quadro): void {
 	const app = plugin.app;
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
-
 	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to assign a code.", 3000);
 		return;
 	}
-
-	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
-	if (hasHighlightMarkupInSel) {
-		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
-		return;
-	}
+	const hasHighlightMarkupInSel = selHasHighlightMarkup(editor);
+	if (hasHighlightMarkupInSel) return;
 
 	// Determine codes already assigned to paragraph, so they can be excluded
 	// from the list of codes in the Suggester
