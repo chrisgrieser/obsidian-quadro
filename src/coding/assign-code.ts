@@ -1,13 +1,14 @@
-import { App, Editor, Notice, TFile } from "obsidian";
+import { Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
 import {
 	ambiguousSelection,
 	getActiveEditor,
+	insertReferenceToDatafile,
 	selHasHighlightMarkup,
 	updateDatafileLinetext,
 } from "src/shared/editor-utils";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { ensureWikilinksSetting, typeOfFile } from "../shared/utils";
+import { typeOfFile } from "../shared/utils";
 import {
 	codeFileDisplay,
 	getAllCodeFiles,
@@ -60,11 +61,9 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 
 	onChooseItem(codeFile: CodeAssignItem): void {
 		if (codeFile === "new-code-file") {
-			createOneCodeFile(this.plugin, (codeFile) =>
-				this.assignCode(this.app, codeFile, this.dataFile),
-			);
+			createOneCodeFile(this.plugin, (codeFile) => this.assignCode(codeFile, this.dataFile));
 		} else {
-			this.assignCode(this.app, codeFile, this.dataFile);
+			this.assignCode(codeFile, this.dataFile);
 		}
 	}
 
@@ -72,23 +71,13 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 
 	/** DATAFILE: Add blockID & link to Code-File in the current line
 	 * CODEFILE: Append embedded blocklink to Data-File */
-	async assignCode(app: App, codeFile: TFile, dataFile: TFile): Promise<void> {
+	async assignCode(codeFile: TFile, dataFile: TFile): Promise<void> {
 		const editor = this.editor;
 		const fullCode = getFullCode(this.plugin, codeFile);
 
 		// DATAFILE Changes
 		const { blockId, lineWithoutId, cursor } = updateDatafileLinetext(editor);
-
-		ensureWikilinksSetting(app);
-		const linkToCodeFile = app.fileManager.generateMarkdownLink(
-			codeFile,
-			dataFile.path,
-			"",
-			fullCode,
-		);
-		const updatedLine = `${lineWithoutId} ${linkToCodeFile} ${blockId}`;
-		editor.setLine(cursor.line, updatedLine);
-		editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
+		insertReferenceToDatafile(editor, codeFile, fullCode, lineWithoutId, blockId, cursor);
 
 		// CODEFILE Changes
 		const dataFileFullPath = dataFile.path.slice(0, -3);

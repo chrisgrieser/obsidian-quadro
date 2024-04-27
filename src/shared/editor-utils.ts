@@ -1,5 +1,5 @@
 import moment from "moment";
-import { App, Editor, EditorPosition, Notice } from "obsidian";
+import { App, Editor, EditorPosition, Notice, TFile } from "obsidian";
 
 /** if not there is no active editor, also display a notice */
 export function getActiveEditor(app: App): Editor | undefined {
@@ -88,4 +88,28 @@ export function updateDatafileLinetext(editor: Editor): {
 	}
 	const { blockId, lineWithoutId } = ensureBlockId(lineText);
 	return { blockId, lineWithoutId, cursor };
+}
+
+/** assumes datafile is the file in the passed editor */
+export function insertReferenceToDatafile(
+	editor: Editor,
+	referencedFile: TFile,
+	labelForReferenceFile: string,
+	lineWithoutId: string,
+	blockId: string,
+	cursor: EditorPosition,
+): void {
+	const dataFile = editor.editorComponent.view.file;
+	const app = editor.editorComponent.app;
+
+	app.vault.setConfig("useMarkdownLinks", false); // ensure wikilinks
+	const linkedToReferencedFile = app.fileManager.generateMarkdownLink(
+		referencedFile,
+		dataFile.path,
+		"",
+		labelForReferenceFile,
+	);
+	const updatedLine = `${lineWithoutId} ${linkedToReferencedFile} ${blockId}`;
+	editor.setLine(cursor.line, updatedLine);
+	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
 }

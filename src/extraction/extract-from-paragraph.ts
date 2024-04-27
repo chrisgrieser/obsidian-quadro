@@ -3,11 +3,12 @@ import Quadro from "src/main";
 import {
 	ambiguousSelection,
 	getActiveEditor,
+	insertReferenceToDatafile,
 	selHasHighlightMarkup,
 	updateDatafileLinetext,
 } from "src/shared/editor-utils";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { ensureCorrectPropertyTypes, ensureWikilinksSetting, typeOfFile } from "src/shared/utils";
+import { ensureCorrectPropertyTypes, typeOfFile } from "src/shared/utils";
 import {
 	countExtractionsForType,
 	getAllExtractionTypes,
@@ -86,7 +87,7 @@ async function extractOfType(
 		if (!fileExistsAlready) break;
 	}
 
-	// DATAFILE
+	// DATAFILE Changes
 	const { blockId, lineWithoutId, cursor } = updateDatafileLinetext(editor);
 
 	// insert data into TEMPLATE
@@ -109,16 +110,8 @@ async function extractOfType(
 	const extractionFile = await app.vault.create(extractionPath, newFrontmatter);
 
 	// update DATAFILE
-	ensureWikilinksSetting(app);
-	const linkToExtractionFile = app.fileManager.generateMarkdownLink(
-		extractionFile,
-		extractionFile.path,
-		"",
-		extractionFile.basename,
-	);
-	const updatedLine = `${lineWithoutId} ${linkToExtractionFile} ${blockId}`;
-	editor.setLine(cursor.line, updatedLine);
-	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
+	const label = extractionFile.basename;
+	insertReferenceToDatafile(editor, extractionFile, label, lineWithoutId, blockId, cursor);
 
 	// Open EXTRACTION-FILE
 	await openExtractionInNewWin(plugin, extractionFile);
