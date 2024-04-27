@@ -1,14 +1,16 @@
 import { Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
 import {
-	ambiguousSelection,
-	getActiveEditor,
 	insertReferenceToDatafile,
 	prepareDatafileLineUpdate,
-	selHasHighlightMarkup,
-} from "src/shared/editor-utils";
+} from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { typeOfFile } from "../shared/utils";
+import {
+	ambiguousSelection,
+	getActiveEditor,
+	selHasHighlightMarkup,
+	typeOfFile,
+} from "../shared/utils";
 import {
 	codeFileDisplay,
 	getAllCodeFiles,

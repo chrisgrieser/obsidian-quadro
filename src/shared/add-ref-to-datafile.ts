@@ -1,45 +1,5 @@
 import moment from "moment";
-import { App, Editor, EditorPosition, Notice, TFile } from "obsidian";
-
-/** if not there is no active editor, also display a notice */
-export function getActiveEditor(app: App): Editor | undefined {
-	const editor = app.workspace.activeEditor?.editor;
-	if (!editor) new Notice("No active editor.");
-	return editor;
-}
-
-/** check if selection is unambiguous, ensuring that subsequent calls of
- * `getLine` or `getCursor` behave predictably */
-export function ambiguousSelection(editor: Editor): boolean {
-	const emptyLine =
-		editor.getLine(editor.getCursor().line).trim() === "" && !editor.somethingSelected();
-	if (emptyLine) {
-		new Notice("Current lint is empty. \n\nMove cursor to a paragraph and try again.", 4000);
-		return true;
-	}
-
-	const multilineSelection = editor.getCursor("head").line !== editor.getCursor("anchor").line;
-	const multipleSelections = editor.listSelections().length > 1;
-	if (multilineSelection || multipleSelections) {
-		new Notice(
-			"Paragraph ambiguous since multiple lines are selected.\n\n" +
-				"Unselect, move your cursor to the paragraph you want to affect, and use the command again.",
-			5000,
-		);
-		return true;
-	}
-	return false;
-}
-
-export function selHasHighlightMarkup(editor: Editor): boolean {
-	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
-	if (hasHighlightMarkupInSel) {
-		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.");
-	}
-	return hasHighlightMarkupInSel;
-}
-
-//──────────────────────────────────────────────────────────────────────────────
+import { Editor, EditorPosition, TFile } from "obsidian";
 
 /** DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note
  * INFO blockIds may only contain letters, numbers, and a hyphen */

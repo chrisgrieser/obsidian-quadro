@@ -1,13 +1,15 @@
 import { Notice } from "obsidian";
 import Quadro from "src/main";
 import {
-	ambiguousSelection,
-	getActiveEditor,
 	insertReferenceToDatafile,
 	prepareDatafileLineUpdate,
+} from "src/shared/add-ref-to-datafile";
+import {
+	ambiguousSelection,
+	getActiveEditor,
 	selHasHighlightMarkup,
-} from "src/shared/editor-utils";
-import { typeOfFile } from "src/shared/utils";
+	typeOfFile,
+} from "src/shared/utils";
 
 export async function addToLastExtractionFileCommand(plugin: Quadro) {
 	const { app, settings } = plugin;

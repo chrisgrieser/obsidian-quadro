@@ -1,14 +1,9 @@
 import { App, Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
-import {
-	BLOCKID_REGEX,
-	EMBEDDED_BLOCKLINK_REGEX,
-	ambiguousSelection,
-	getActiveEditor,
-} from "src/shared/editor-utils";
+import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { WIKILINK_REGEX, typeOfFile } from "src/shared/utils";
-import { removeSingleFileRefFromDatafile } from "../shared/remove-fileref-from-datafile";
+import { removeSingleFileRefFromDatafile } from "src/shared/remove-file-from-datafile";
+import { WIKILINK_REGEX, ambiguousSelection, getActiveEditor, typeOfFile } from "src/shared/utils";
 import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
