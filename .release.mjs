@@ -21,6 +21,7 @@ const currentVersion = manifest.version;
 console.info(`current version: ${currentVersion}`);
 const rl = readlinePromises.createInterface({ input: process.stdin, output: process.stdout });
 const nextVersion = await rl.question("   next version: ");
+console.info("───────────────────────────");
 rl.close();
 if (!nextVersion?.match(/\d+\.\d+\.\d+/) || nextVersion === currentVersion) {
 	console.error("\x1b[1;31mInvalid target version given, aborting.\x1b[0m");
@@ -59,7 +60,7 @@ const gitCommands = [
 ];
 exec(gitCommands.join(" && "), (err, stdout, stderr) => {
 	if (err) console.error(err);
-	if (stderr) console.error(stderr);
+	if (stderr) console.info(stderr); // git posts some output to stderr without there being an error
 	if (stdout) console.info(stdout);
-	process.exit(err || stderr ? 1 : 0);
+	process.exit(err ? 1 : 0);
 });
