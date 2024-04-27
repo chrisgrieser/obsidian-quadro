@@ -60,7 +60,7 @@ const gitCommands = [
 ];
 exec(gitCommands.join(" && "), (err, stdout, stderr) => {
 	if (err) console.error(err);
-	if (stderr) console.info(stderr); // git posts some output to stderr without there being an error
-	if (stdout) console.info(stdout);
+	if (stderr) console.info(stderr.trim()); // git posts some output to stderr without there being an error
+	if (stdout) console.info(stdout.trim());
 	process.exit(err ? 1 : 0);
 });
