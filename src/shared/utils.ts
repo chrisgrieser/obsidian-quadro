@@ -70,7 +70,7 @@ export function ambiguousSelection(editor: Editor): boolean {
 	const emptyLine =
 		editor.getLine(editor.getCursor().line).trim() === "" && !editor.somethingSelected();
 	if (emptyLine) {
-		new Notice("Current lint is empty. \n\nMove cursor to a paragraph and try again.", 4000);
+		new Notice("Current line is empty. \n\nMove cursor to a paragraph and try again.", 4000);
 		return true;
 	}
 
