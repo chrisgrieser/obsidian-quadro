@@ -46,7 +46,7 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 	}
 
 	// Insert Reference to last EXTRACTION FILE
-	const exFileLines = (await app.vault.read(lastExtractionFile)).split("\n");
+	const exFileLines = (await app.vault.read(lastExtractionFile)).trim().split("\n");
 	const fullSource = `${dataFile.path.slice(0, -3)}#${blockId}`; // slice to rm `.md`
 
 	const sourcePropertyLn =
