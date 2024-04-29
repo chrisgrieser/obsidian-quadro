@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Editor, EditorPosition, TFile } from "obsidian";
+import { Editor, TFile } from "obsidian";
 
 /** DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note
  * INFO blockIds may only contain letters, numbers, and a hyphen */
@@ -34,7 +34,6 @@ function ensureBlockId(lineText: string): { blockId: string; lineWithoutId: stri
 export function prepareDatafileLineUpdate(editor: Editor): {
 	blockId: string;
 	lineWithoutId: string;
-	cursor: EditorPosition;
 } {
 	const cursor = editor.getCursor();
 	let lineText = editor.getLine(cursor.line);
@@ -47,7 +46,7 @@ export function prepareDatafileLineUpdate(editor: Editor): {
 		lineText = editor.getLine(cursor.line);
 	}
 	const { blockId, lineWithoutId } = ensureBlockId(lineText);
-	return { blockId, lineWithoutId, cursor };
+	return { blockId, lineWithoutId };
 }
 
 /** assumes datafile is the file in the passed editor */
@@ -57,7 +56,6 @@ export function insertReferenceToDatafile(
 	labelForReferenceFile: string,
 	lineWithoutId: string,
 	blockId: string,
-	cursor: EditorPosition,
 ): void {
 	const dataFile = editor.editorComponent.view.file;
 	const app = editor.editorComponent.app;
@@ -70,6 +68,8 @@ export function insertReferenceToDatafile(
 		labelForReferenceFile,
 	);
 	const updatedLine = `${lineWithoutId} ${linkedToReferencedFile} ${blockId}`;
+
+	const cursor = editor.getCursor(); // `setLine` moves cursor, so we need to move it back
 	editor.setLine(cursor.line, updatedLine);
-	editor.setCursor(cursor); // `setLine` moves cursor, so we need to move it back
+	editor.setCursor(cursor);
 }

@@ -91,7 +91,7 @@ async function extractOfType(
 	}
 
 	// DATAFILE Changes
-	const { blockId, lineWithoutId, cursor } = prepareDatafileLineUpdate(editor);
+	const { blockId, lineWithoutId } = prepareDatafileLineUpdate(editor);
 
 	// insert data into TEMPLATE
 	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
@@ -113,7 +113,7 @@ async function extractOfType(
 
 	// update DATAFILE
 	const label = extractionFile.basename;
-	insertReferenceToDatafile(editor, extractionFile, label, lineWithoutId, blockId, cursor);
+	insertReferenceToDatafile(editor, extractionFile, label, lineWithoutId, blockId);
 
 	// Open EXTRACTION-FILE
 	await openExtractionInNewWin(plugin, extractionFile);

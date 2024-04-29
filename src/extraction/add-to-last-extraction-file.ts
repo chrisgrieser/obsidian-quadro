@@ -34,11 +34,11 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 
 	// DATAFILE: Insert new reference
 	const dataFile = editor.editorComponent.view.file;
-	const { blockId, lineWithoutId, cursor } = prepareDatafileLineUpdate(editor);
+	const { blockId, lineWithoutId } = prepareDatafileLineUpdate(editor);
 
 	// GUARD
 	const lineAlreadyHasExtraction = editor
-		.getLine(cursor.line)
+		.getLine(editor.getCursor().line)
 		.includes(`[[${lastExtractionFile.basename}]]`);
 	if (lineAlreadyHasExtraction) {
 		new Notice("The paragraph already references the last Extraction File. Aborting.");
@@ -63,6 +63,7 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 
 	exFileLines.splice(nextPropertyLnum, 0, `  - "[[${fullSource}]]"`);
 	exFileLines.push(`![[${fullSource}]]`);
+	exFileLines.push(""); // blank line at end
 
 	// UPDATE BOTH FILES
 	await app.vault.modify(lastExtractionFile, exFileLines.join("\n"));
@@ -72,6 +73,5 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 		lastExtractionFile.basename,
 		lineWithoutId,
 		blockId,
-		cursor,
 	);
 }

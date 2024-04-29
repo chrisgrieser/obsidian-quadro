@@ -78,12 +78,11 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		const fullCode = getFullCode(this.plugin, codeFile);
 
 		// DATAFILE Changes
-		const { blockId, lineWithoutId, cursor } = prepareDatafileLineUpdate(editor);
-		insertReferenceToDatafile(editor, codeFile, fullCode, lineWithoutId, blockId, cursor);
+		const { blockId, lineWithoutId } = prepareDatafileLineUpdate(editor);
+		insertReferenceToDatafile(editor, codeFile, fullCode, lineWithoutId, blockId);
 
 		// CODEFILE Changes
-		const dataFileFullPath = dataFile.path.slice(0, -3);
-		const textToAppend = `![[${dataFileFullPath}#${blockId}]]\n`;
+		const textToAppend = `![[${dataFile.path.slice(0, -3)}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
 	}
 }
