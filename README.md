@@ -10,7 +10,7 @@ alternative to [MAXQDA](https://www.maxqda.com/) and
 [atlas.ti](https://atlasti.com/), using Markdown to store data and research
 codes.
 
-*Quadro* supports both, coding in the style of _Grounded Theory_ and extraction in
+_Quadro_ supports both, coding in the style of _Grounded Theory_ and extraction in
 the style of _Qualitative Content Analysis_.
 
 ## Table of Contents
@@ -98,7 +98,7 @@ extensive functionality and plugin ecosystem of Obsidian:
   usage of the mouse.
 
 If there is a more tech-savvy researcher in the research team, the advantages of
-*Quadro* go even further:
+_Quadro_ go even further:
 - Being Open Source, this plugin can be modified and customized to fit their
   needs. (It is written is TypeScript / JavaScript, a particularly accessible
   and commonly used programming language.)
@@ -113,7 +113,7 @@ theses, this saves a lot of unnecessary hassle with licenses.
 In Qualitative Data Analysis, "coding" is a form of fine-grained tagging of text
 segments, and "extraction" is a transforming prose text into structured data.
 
-*Coding* is implemented in _Quadro_ via "bidirectional" links between Data Files
+_Coding_ is implemented in _Quadro_ via "bidirectional" links between Data Files
 and Code Files by inserting wikilinks in _both_ files. (Obsidian itself does
 have backlinks, but those are unidirectional links, since the implicit backlink
 is only inferred and not stored anywhere in the markdown file.).
@@ -127,7 +127,7 @@ functionality to keep track of coded text segments.
   to two files (the data and the code file) _at the same time_, which is
   necessary to adequately handle the workflow common to coding in QDA.
 
-*Extraction* is implemented by creating separate Extract Files for each
+_Extraction_ is implemented by creating separate Extract Files for each
 extraction, using [YAML
 frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/) to store the
 data in a structured form. Quadro uses a simplistic templating mechanism to
@@ -159,7 +159,7 @@ support the creation of those Extraction Files.
 #### Example vault
 There is a [pre-configured example
 vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
-*Quadro*. Apart from some pre-installed plugins for QDA, it includes some mock
+_Quadro_. Apart from some pre-installed plugins for QDA, it includes some mock
 data with exemplary codes and extractions, and showcases of extraction
 capabilities, to demonstrate the capabilities of _Quadro_.
 
@@ -211,7 +211,7 @@ which are both stored as [Markdown files](https://www.markdownguide.org/).
 **Data Files**
 The empirical material as text files. They can be stored anywhere in the vault
 as `.md` files. (A separate subfolder named `Data` is recommended though.) As
-*Quadro* assigns codes to whole paragraphs, these data files should
+_Quadro_ assigns codes to whole paragraphs, these data files should
 be split up into smaller segments.
 
 When a code is assigned, a link to the corresponding Code File and a unique
@@ -281,7 +281,7 @@ representing codes):
 | Delete code from paragraph                | Removes a code from the current paragraph of a Data File or Code File. The reference is also removed from the corresponding other file.                                                                                                |   ![Icon](./assets/minus-circle.svg)   | `mod+shift+d`  | Quadro                                                                                                           |
 | Delete Code File and all references to it | Moves the Code File to the trash, _and_ deletes all references to it.                                                                                                                                                                  |     ![Icon](./assets/x-circle.svg)     |       —        | Quadro                                                                                                           |
 | Bulk-create new codes                     | Create multiple new codes at once (without assigning them to a paragraph).                                                                                                                                                             |  ![Icon](./assets/circle-dashed.svg)   |       —        | Quadro                                                                                                           |
-| Merge codes                               | Merge the _current_ Code File into another Code File. All references from data files are updated to point to the merged file.                                                                                                          |      ![Icon](./assets/radius.svg)      |       —        | Quadro                                                                                                           |
+| Merge codes                               | Merge the _current_ Code File into another Code File. All references from data files are updated to point to the merged file.                                                                                                          |    ![Icon](./assets/circle-dot.svg)    |       —        | Quadro                                                                                                           |
 | Code grouping                             | Codes can be arranged in subfolders via drag-and-drop in the File Explorer.                                                                                                                                                            |                   —                    |       —        | [Obsidian Built-in][move file]                                                                                   |
 | Overview of Codes                         | Creates an auto-updating overview of all codes in a nested list with code assignment counts.                                                                                                                                           |   ![Icon](./assets/circle-equal.svg)   |       —        | Quadro                                                                                                           |
 | Axial Coding                              | Using the Canvas plugins, you can freely arrange entities on a board, and connect them via lines and arrows, suitable for Axial Coding. <br><br>[Further Documentation][core-canvas]                                                   | ![Icon](./assets/layout-dashboard.svg) |       —        | [Obsidian Core Plugin: Canvas][core-canvas]<br><br>[Obsidian Community Plugin: Semantic Canvas][semantic-canvas] |
@@ -409,8 +409,9 @@ filtered, searched, and modified:
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------:     | :------------: | -------------------------------------------------------- |
 | Extract from paragraph                | Creates an Extraction File from Extraction Template.                                                                                                                                                                                                                                                    |   ![Icon](./assets/plus-square.svg)       | `mod+shift+e`  | Quadro                                                   |
 | Add paragraph to last Extraction File | Adds a reference to the last created Extraction file to the current paragraph. Useful when information is spread across to paragraphs.                                                                                                                                                                  |   ![Icon](./assets/square-asterisk.svg)   | `mod+shift+l`  | Quadro                                                   |
-| Create new extraction type            | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                                |   ![Icon](./assets/box-select.svg)        |       —        | Quadro                                                   |
 | Aggregate extractions                 | Creates a table that aggregates Extraction Files. The table can be sorted, filtered, searched, and modified. <br><br>[Further Documentation][data loom]                                                                                                                                                 |  ![Icon](./assets/sigma-square.svg)       |       —        | [Community Plugin: Data Loom][data loom]                 |
+| Merge extractions                     | Merge the _current_ Extraction File into another Extraction File. All references from data files are updated to point to the merged file.                                                                                                                                                               |     ![Icon](./assets/square-dot.svg)      |       —        | Quadro                                                   |
+| Create new extraction type            | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                                |   ![Icon](./assets/box-select.svg)        |       —        | Quadro                                                   |
 | Overview of Extraction Types          | Creates an auto-updating overview of all Extraction Types and their values.                                                                                                                                                                                                                             |  ![Icon](./assets/square-equal.svg)       |       —        | Quadro                                                   |
 | Co-occurrent extraction dimensions    | Find extractions where two dimensions have a specific value, by using a query such as `["cause of the issue": fragmentation] ["type of compatibility":backward]` in the Obsidian Search. <br><br>[Further Documentation][search]                                                                        |                   —                       | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                   |
 | Rename dimension globally             | Renaming a property field within a file only affects the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties pops up in the sidebar, where you can rename properties via right-click. |                   —                       |       —        | [Obsidian Core Plugin: Properties View][properties view] |
@@ -511,7 +512,7 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 - [Mastodon](https://pkm.social/@pseudometa)
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
 
-*For bug reports and features requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).*
+_For bug reports and features requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues)._
 
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'>
 <img height='36' style='border:0px;height:36px;'

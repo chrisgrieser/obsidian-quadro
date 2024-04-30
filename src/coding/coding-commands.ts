@@ -48,7 +48,7 @@ export const CODING_COMMANDS: CommandData[] = [
 		id: "merge-codes",
 		name: "Merge current Code File into another Code File",
 		func: mergeCodeFilesCommand,
-		ribbonIcon: "radius",
+		ribbonIcon: "circle-dot",
 	},
 	{
 		id: "bulk-create-new-code-files",
