@@ -32,9 +32,9 @@ export function typeOfFile(
 	if (!fileToCheck || !(fileToCheck instanceof TFile) || fileToCheck.extension !== "md")
 		return false;
 
+	if (fileToCheck.name === "Template.md") return "Template";
 	if (fileToCheck.path.startsWith(settings.coding.folder + "/")) return "Code File";
 	if (fileToCheck.path.startsWith(settings.extraction.folder + "/")) return "Extraction File";
-	if (fileToCheck.name === "Template.md") return "Template"; // PERF last, since least likely
 	return "Data File";
 }
 
