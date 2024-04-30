@@ -22,6 +22,7 @@ class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 		this.plugin = plugin;
 
 		this.setPlaceholder("Select code to remove from paragraph");
+		this.setInstructions(this.hotkeyInstructions);
 	}
 
 	getItems(): Code[] {

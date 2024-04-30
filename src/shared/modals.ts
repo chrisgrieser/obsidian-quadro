@@ -4,7 +4,7 @@ import { QuadroSettings } from "src/settings/defaults";
 
 /** adds navigation via tab & the common instructions */
 export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {
-	instructions: Instruction[] = [
+	hotkeyInstructions: Instruction[] = [
 		{ command: "↑ ↓", purpose: "Navigate" },
 		{ command: "↹ ", purpose: "Down" },
 		{ command: "shift ↹ ", purpose: "Up" },
@@ -19,7 +19,7 @@ export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {
 		this.plugin = plugin;
 		this.settings = plugin.settings;
 		this.modalEl.addClass(plugin.cssclass);
-		this.setInstructions(this.instructions);
+		this.setInstructions(this.hotkeyInstructions);
 
 		this.scope.register([], "Tab", (evt: KeyboardEvent): void => {
 			if (evt.isComposing || !this.chooser) return;

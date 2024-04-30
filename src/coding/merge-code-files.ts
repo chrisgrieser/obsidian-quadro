@@ -11,6 +11,14 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		super(plugin);
 		this.toBeMergedFile = toBeMergedFile;
 		this.setPlaceholder(`Select Code File to merge "${toBeMergedFile.basename}" into`);
+
+		this.setInstructions([
+			{
+				command: "INFO",
+				purpose: "In case of property conflicts, the file selected has priority.",
+			},
+			...this.hotkeyInstructions,
+		]);
 	}
 
 	getItems(): TFile[] {

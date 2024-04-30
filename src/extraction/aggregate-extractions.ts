@@ -42,6 +42,7 @@ class SuggesterForAggregationCreation extends ExtendedFuzzySuggester<TFolder> {
 		this.extractionTypes = extractionTypes;
 
 		this.setPlaceholder("Select extraction type to create aggregation for");
+		this.setInstructions(this.hotkeyInstructions);
 	}
 
 	getItems(): TFolder[] {

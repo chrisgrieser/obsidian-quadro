@@ -10,7 +10,15 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
 		this.toBeMergedFile = toBeMergedFile;
-		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into`);
+		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
+
+		this.setInstructions([
+			{
+				command: "INFO",
+				purpose: "In case of property conflicts, the file selected has priority.",
+			},
+			...this.hotkeyInstructions,
+		]);
 	}
 
 	getItems(): TFile[] {

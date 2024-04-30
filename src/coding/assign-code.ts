@@ -33,8 +33,10 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		this.dataFile = dataFile;
 
 		this.setPlaceholder("Select code to assign");
-		// creates second row of instructions for better visibility
-		this.setInstructions([{ command: "shift ⏎", purpose: "Create new code" }]);
+		this.setInstructions([
+			...this.hotkeyInstructions,
+			{ command: "shift ⏎", purpose: "Create new code" },
+		]);
 
 		this.scope.register(["Shift"], "Enter", (event: KeyboardEvent): void => {
 			// INFO more specific actions like using the selection can be done via
