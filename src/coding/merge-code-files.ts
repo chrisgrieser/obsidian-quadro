@@ -2,23 +2,23 @@ import { Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, typeOfFile } from "src/shared/utils";
+import { MERGING_INFO, getActiveEditor, typeOfFile } from "src/shared/utils";
 import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
+	permaNotice: Notice;
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
 		this.toBeMergedFile = toBeMergedFile;
 		this.setPlaceholder(`Select Code File to merge "${toBeMergedFile.basename}" into`);
 
-		this.setInstructions([
-			{
-				command: "INFO",
-				purpose: "In case of property conflicts, the file selected has priority.",
-			},
-			...this.hotkeyInstructions,
-		]);
+		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
+		this.permaNotice = new Notice(MERGING_INFO, 0);
+	}
+
+	override onClose() {
+		this.permaNotice.hide();
 	}
 
 	getItems(): TFile[] {

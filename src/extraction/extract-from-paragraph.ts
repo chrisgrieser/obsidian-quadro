@@ -31,7 +31,6 @@ class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 		this.dataFile = dataFile;
 
 		this.setPlaceholder("Select extraction type");
-		this.setInstructions(this.hotkeyInstructions);
 	}
 
 	getItems(): TFolder[] {
