@@ -118,25 +118,26 @@ export function unassignCodeCommand(plugin: Quadro): void {
 	if (!editor || ambiguousSelection(editor)) return;
 
 	// A: in CODEFILE
-	if (typeOfFile(plugin) === "Code File") {
-		unassignCodeWhileInCodeFile(app, editor);
-	}
-	// B: in DATAFILE
-	else if (typeOfFile(plugin) === "Data File") {
-		const dataFile = editor.editorComponent.view.file;
-		const paragraphText = editor.getLine(editor.getCursor().line);
-		const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText);
+	if (typeOfFile(plugin) === "Code File") unassignCodeWhileInCodeFile(app, editor);
 
-		if (codesInPara.length === 0) {
-			new Notice("Line does not contain any codes to remove.");
-		} else if (codesInPara.length === 1) {
-			// B1: in DATAFILE, line has 1 code
-			unassignCodeWhileInDataFile(editor, dataFile, codesInPara[0] as Code);
-		} else {
-			// B2: in DATAFILE, line has 2+ codes
-			new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInPara).open();
-		}
-	} else {
+	// GUARD
+	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File or Code File to unassign a code.", 3000);
+		return;
+	}
+
+	// B: in DATAFILE
+	const dataFile = editor.editorComponent.view.file;
+	const paragraphText = editor.getLine(editor.getCursor().line);
+	const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText);
+
+	if (codesInPara.length === 0) {
+		new Notice("Line does not contain any codes to remove.");
+	} else if (codesInPara.length === 1) {
+		// B1: in DATAFILE, line has 1 code
+		unassignCodeWhileInDataFile(editor, dataFile, codesInPara[0] as Code);
+	} else {
+		// B2: in DATAFILE, line has 2+ codes
+		new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInPara).open();
 	}
 }

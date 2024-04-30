@@ -3,7 +3,6 @@ import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { MERGING_INFO, getActiveEditor, typeOfFile } from "src/shared/utils";
-import { countExtractionsForType } from "./extraction-utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
@@ -18,6 +17,11 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 	override onClose() {
 		this.permaNotice.hide();
+	}
+
+	override onNoSuggestion() {
+		new Notice("There must be at least two extractions of the same type to merge.", 4000);
+		this.close();
 	}
 
 	getItems(): TFile[] {
@@ -69,10 +73,5 @@ export function mergeExtractionFilesCommand(plugin: Quadro) {
 	}
 
 	const toBeMergedFile = editor.editorComponent.view.file;
-	const extractionsMade = countExtractionsForType(toBeMergedFile.parent as TFolder);
-	if (extractionsMade < 2) {
-		new Notice("There must be at least two extractions of the same type to merge.", 4000);
-		return;
-	}
 	new SuggesterForExtractionMerging(plugin, toBeMergedFile).open();
 }
