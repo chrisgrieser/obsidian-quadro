@@ -2,8 +2,8 @@ import { Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { ambiguousSelection, getActiveEditor, typeOfFile } from "src/shared/utils";
-import { codeFileDisplay, getAllCodeFiles, isCodeTemplateFile } from "./coding-utils";
+import { getActiveEditor, typeOfFile } from "src/shared/utils";
+import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
@@ -26,20 +26,19 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	async onChooseItem(toMergeInFile: TFile) {
 		const plugin = this.plugin;
 
-		// Determine content of MERGED FILE, insert heading for clarity
+		// Determine non-frontmatter content of merged file manually, so that the
+		// heading can be inserted into it
+		const heading = `## Codes from "${this.toBeMergedFile.basename}"`;
 		const toBeMergedFileContents = await this.app.vault.cachedRead(this.toBeMergedFile);
 		const { contentStart } = getFrontMatterInfo(toBeMergedFileContents);
 		const toBeMergedWithoutFrontMatter = toBeMergedFileContents.slice(contentStart).trim();
-		const toAppend = [
-			`## Codes from "${this.toBeMergedFile.basename}"`,
-			toBeMergedWithoutFrontMatter,
-		].join("\n");
+		const newFileContent = [heading, toBeMergedWithoutFrontMatter].join("\n");
 
 		// MERGE (via Obsidian API)
 		// INFO temporarily disable trashWatcher, as the merge operation trashes
 		// the toBeMergedFile file, triggering an unwanted removal of references
 		if (plugin.trashWatcherUninstaller) plugin.trashWatcherUninstaller();
-		await this.app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, toAppend, false);
+		await this.app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, newFileContent, false);
 		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
 
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
@@ -47,19 +46,13 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 }
 
 export function mergeCodeFilesCommand(plugin: Quadro) {
-	const app = plugin.app;
-	const editor = getActiveEditor(app);
-	if (!editor || ambiguousSelection(editor)) return;
+	const editor = getActiveEditor(plugin.app);
+	if (!editor) return;
 	if (typeOfFile(plugin) !== "Code File") {
 		new Notice("You must be in the Code File for this.", 3000);
 		return;
 	}
 
 	const toBeMergedFile = editor.editorComponent.view.file;
-	if (isCodeTemplateFile(plugin, toBeMergedFile)) {
-		new Notice("You cannot merge the Template File.", 3000);
-		return;
-	}
-
 	new SuggesterForCodeMerging(plugin, toBeMergedFile).open();
 }
