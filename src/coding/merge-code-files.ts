@@ -32,12 +32,12 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		return codeFileDisplay(this.plugin, codeFile);
 	}
 	async onChooseItem(toMergeInFile: TFile) {
-		const plugin = this.plugin;
+		const { plugin, app } = this;
 
 		// Determine non-frontmatter content of merged file manually, so that the
 		// heading can be inserted into it
 		const heading = `## Codes from "${this.toBeMergedFile.basename}"`;
-		const toBeMergedFileContents = await this.app.vault.cachedRead(this.toBeMergedFile);
+		const toBeMergedFileContents = await app.vault.cachedRead(this.toBeMergedFile);
 		const { contentStart } = getFrontMatterInfo(toBeMergedFileContents);
 		const toBeMergedWithoutFrontMatter = toBeMergedFileContents.slice(contentStart).trim();
 		const newFileContent = [heading, toBeMergedWithoutFrontMatter].join("\n");
@@ -46,8 +46,12 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		// INFO temporarily disable trashWatcher, as the merge operation trashes
 		// the toBeMergedFile file, triggering an unwanted removal of references
 		if (plugin.trashWatcherUninstaller) plugin.trashWatcherUninstaller();
-		await this.app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, newFileContent, false);
+		await app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, newFileContent, false);
 		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
+
+		// HACK needed, so embeds are loaded (and there is no `await` for that);
+		// appending empty string to force reload
+		setTimeout(async () => await app.vault.append(toMergeInFile, ""), 200);
 
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
 	}
