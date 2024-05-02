@@ -2,7 +2,7 @@ import { Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { MERGING_INFO, getActiveEditor, typeOfFile } from "src/shared/utils";
+import { getActiveEditor, typeOfFile } from "src/shared/utils";
 import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
@@ -10,15 +10,25 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	permaNotice: Notice;
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
-		this.toBeMergedFile = toBeMergedFile;
 		this.setPlaceholder(`Select Code File to merge "${toBeMergedFile.basename}" into`);
 
-		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
-		this.permaNotice = new Notice(MERGING_INFO, 0);
+		this.toBeMergedFile = toBeMergedFile;
+
+		const msg = [
+			"MERGING INFO",
+			"- Lists properties are fully merged.",
+			`- For conflicting, non-list properties, the values from "${toBeMergedFile.basename}" are take priority.`,
+		].join("\n");
+		this.permaNotice = new Notice(msg, 0);
 	}
 
 	override onClose() {
 		this.permaNotice.hide();
+	}
+
+	override onNoSuggestion() {
+		new Notice("There must be at least two Code Files to merge.", 4000);
+		this.close();
 	}
 
 	getItems(): TFile[] {
