@@ -1,18 +1,28 @@
-import { Notice, TFile, TFolder } from "obsidian";
+import { FrontMatterCache, Notice, TFile, TFolder, stringifyYaml } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { MERGING_INFO, getActiveEditor, typeOfFile } from "src/shared/utils";
+import { getActiveEditor, typeOfFile } from "src/shared/utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
+	toBeMergedFrontmatter: FrontMatterCache;
 	permaNotice: Notice;
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
-		this.toBeMergedFile = toBeMergedFile;
-
 		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
-		this.permaNotice = new Notice(MERGING_INFO, 0);
+
+		const msg = [
+			"MERGING INFO",
+			"- List properties are fully merged.",
+			`- For conflicting, non-list properties, the values from "${toBeMergedFile.basename}" take priority.`,
+			"- The discarded values are copied to the clipboard.",
+		].join("\n");
+		this.permaNotice = new Notice(msg, 0);
+
+		this.toBeMergedFile = toBeMergedFile;
+		this.toBeMergedFrontmatter =
+			this.app.metadataCache.getFileCache(this.toBeMergedFile)?.frontmatter || {};
 	}
 
 	override onClose() {
@@ -22,6 +32,27 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	override onNoSuggestion() {
 		new Notice("There must be at least two extractions of the same type to merge.", 4000);
 		this.close();
+	}
+
+	// helper function
+	getConflictingProperties(secondFile: TFile): FrontMatterCache {
+		const frontmatter = this.app.metadataCache.getFileCache(secondFile)?.frontmatter || {};
+		const discardedProps: FrontMatterCache = {};
+
+		for (const key in this.toBeMergedFrontmatter) {
+			const value1 = frontmatter[key];
+			const value2 = this.toBeMergedFrontmatter[key];
+
+			const isList = Array.isArray(value1) && Array.isArray(value2);
+			const isEmpty = (!value1 && value1 !== 0) || (!value2 && value2 !== 0);
+			const isEqual = value1 === value2;
+			const ignoredKey = key === "extraction-date" || key === "extraction-source";
+
+			if (isList || isEmpty || isEqual || ignoredKey) continue;
+			discardedProps[key] = value1; // values from `toBeMergedFile` are kept
+		}
+
+		return discardedProps;
 	}
 
 	getItems(): TFile[] {
@@ -39,11 +70,26 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	getItemText(extractionFile: TFile): string {
-		// TODO better display of extraction information here?
-		return extractionFile.basename;
+		const conflictingKeys = Object.keys(this.getConflictingProperties(extractionFile));
+		const conflictInfo =
+			conflictingKeys.length > 0
+				? conflictingKeys.length <= 5
+					? `   ⚠️ conflicting: ${conflictingKeys.join(", ")}`
+					: `   ⚠️ ${conflictingKeys.length} conflicting properties`
+				: "";
+		return extractionFile.basename + conflictInfo;
 	}
+
 	async onChooseItem(toMergeInFile: TFile) {
 		const { plugin, app } = this;
+
+		// save discarded properties
+		const discardedProps = stringifyYaml(this.getConflictingProperties(toMergeInFile));
+		if (discardedProps !== "{}") {
+			navigator.clipboard.writeText(discardedProps);
+			const msg = `Discarded properties copied to clipboard\n―――――――\n${discardedProps}`;
+			new Notice(msg, 7000);
+		}
 
 		// MERGE (via Obsidian API)
 		// INFO temporarily disable trashWatcher, as the merge operation trashes

@@ -7,14 +7,6 @@ export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "sour
  * includes optional trailing space to remove it when unassigning code */
 export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
 
-export const MERGING_INFO = [
-	"MERGING INFO",
-	"- Contents of both files are fully merged.",
-	"- LIST properties are combined.",
-	"- For non-list properties, that exist in both files, the properties of the SECOND file (the one you are now prompted to select) takes priority.",
-	"- The original FIRST file (whose non-list properties are discarded) is moved to the trash.",
-].join("\n");
-
 //──────────────────────────────────────────────────────────────────────────────
 
 export async function openFileInActiveLeaf(app: App, tfile: TFile): Promise<void> {
