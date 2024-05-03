@@ -120,7 +120,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		}
 
 		// HACK timeout needed, so embeds are loaded correctly (and there is no `await` for that)
-		setTimeout(async () => await app.vault.modify(mergedFile, newFileContent), 200);
+		setTimeout(async () => await app.vault.modify(mergedFile, newFileContent), 500);
 
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
 	}

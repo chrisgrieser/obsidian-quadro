@@ -61,7 +61,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 
 		// HACK needed, so embeds are loaded (and there is no `await` for that);
 		// appending empty string to force reload
-		setTimeout(async () => await app.vault.append(toMergeInFile, ""), 200);
+		setTimeout(async () => await app.vault.append(toMergeInFile, ""), 500);
 
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
 	}
