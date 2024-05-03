@@ -1,4 +1,11 @@
-import { FrontMatterCache, Notice, TFile, TFolder, stringifyYaml } from "obsidian";
+import {
+	FrontMatterCache,
+	Notice,
+	TFile,
+	TFolder,
+	getFrontMatterInfo,
+	stringifyYaml,
+} from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
@@ -12,17 +19,14 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		super(plugin);
 		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
 
-		const msg = [
-			"MERGING INFO",
-			"- List properties are fully merged.",
-			`- For conflicting, non-list properties, the values from "${toBeMergedFile.basename}" take priority.`,
-			"- The discarded values are copied to the clipboard.",
-		].join("\n");
-		this.permaNotice = new Notice(msg, 0);
-
 		this.toBeMergedFile = toBeMergedFile;
 		this.toBeMergedFrontmatter =
 			this.app.metadataCache.getFileCache(this.toBeMergedFile)?.frontmatter || {};
+
+		const congruenceInfo =
+			'INFO\n"Incongruence" refers to the dimensions that can not be automatically merged. ' +
+			"The discarded values are saved, so you can manually fix the Extraction File after the merge operation.";
+		this.permaNotice = new Notice(congruenceInfo, 0);
 	}
 
 	override onClose() {
@@ -35,7 +39,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	// helper function
-	getConflictingProperties(secondFile: TFile): FrontMatterCache {
+	getDiscardedProperties(secondFile: TFile): FrontMatterCache {
 		const frontmatter = this.app.metadataCache.getFileCache(secondFile)?.frontmatter || {};
 		const discardedProps: FrontMatterCache = {};
 
@@ -70,26 +74,14 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	getItemText(extractionFile: TFile): string {
-		const conflictingKeys = Object.keys(this.getConflictingProperties(extractionFile));
-		const conflictInfo =
-			conflictingKeys.length > 0
-				? conflictingKeys.length <= 5
-					? `   ⚠️ conflicting: ${conflictingKeys.join(", ")}`
-					: `   ⚠️ ${conflictingKeys.length} conflicting properties`
-				: "";
-		return extractionFile.basename + conflictInfo;
+		const conflictingKeys = Object.keys(this.getDiscardedProperties(extractionFile)).length;
+		const incongruentInfo = conflictingKeys > 0 ? `    (${conflictingKeys}x incongruent)` : "";
+		return extractionFile.basename + incongruentInfo;
 	}
 
 	async onChooseItem(toMergeInFile: TFile) {
 		const { plugin, app } = this;
-
-		// save discarded properties
-		const discardedProps = stringifyYaml(this.getConflictingProperties(toMergeInFile));
-		if (discardedProps !== "{}") {
-			navigator.clipboard.writeText(discardedProps);
-			const msg = `Discarded properties copied to clipboard\n―――――――\n${discardedProps}`;
-			new Notice(msg, 7000);
-		}
+		const discardedProps = this.getDiscardedProperties(toMergeInFile);
 
 		// MERGE (via Obsidian API)
 		// INFO temporarily disable trashWatcher, as the merge operation trashes
@@ -100,11 +92,29 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		const mergedFile = toMergeInFile;
 
 		// cleanup merged file
-		const newFileContent = (await app.vault.read(mergedFile))
+		let newFileContent = (await app.vault.read(mergedFile))
 			.replaceAll("**Paragraph extracted from:**\n", "")
 			.replaceAll("\n\n\n", "\n");
 
-		// HACK needed, so embeds are loaded (and there is no `await` for that)
+		// insert discarded properties between frontmatter and content
+		const hasDiscardedProps = Object.keys(discardedProps).length > 0;
+		if (hasDiscardedProps) {
+			const frontmatterStart = getFrontMatterInfo(newFileContent).contentStart;
+			const discardedPropsCodeblock = [
+				"",
+				"```yaml",
+				"# Properties that could be not be automatically merged",
+				stringifyYaml(discardedProps).trim(),
+				"```",
+				"",
+			].join("\n");
+			newFileContent =
+				newFileContent.slice(0, frontmatterStart) +
+				discardedPropsCodeblock +
+				newFileContent.slice(frontmatterStart);
+		}
+
+		// HACK timeout needed, so embeds are loaded correctly (and there is no `await` for that)
 		setTimeout(async () => await app.vault.modify(mergedFile, newFileContent), 200);
 
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
