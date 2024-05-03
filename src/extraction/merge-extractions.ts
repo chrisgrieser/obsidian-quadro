@@ -99,18 +99,23 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		// insert discarded properties between frontmatter and content
 		const hasDiscardedProps = Object.keys(discardedProps).length > 0;
 		if (hasDiscardedProps) {
-			const frontmatterStart = getFrontMatterInfo(newFileContent).contentStart;
-			const discardedPropsCodeblock = [
+			const listOfDiscarded = stringifyYaml(discardedProps)
+				.trim()
+				.split("\n")
+				.map((item) => "- " + item);
+			const discardedInfo = [
 				"",
-				"```yaml",
-				"# Properties that could be not be automatically merged",
-				stringifyYaml(discardedProps).trim(),
-				"```",
+				"#### Properties that could be not be automatically merged",
+				...listOfDiscarded,
+				"",
+				"---",
 				"",
 			].join("\n");
+
+			const frontmatterStart = getFrontMatterInfo(newFileContent).contentStart;
 			newFileContent =
 				newFileContent.slice(0, frontmatterStart) +
-				discardedPropsCodeblock +
+				discardedInfo +
 				newFileContent.slice(frontmatterStart);
 		}
 
