@@ -38,7 +38,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		containerEl.empty();
 		containerEl.addClass(this.plugin.cssclass);
 
-		// General
+		// GENERAL
 		new Setting(containerEl)
 			.setName("Properties without suggestions")
 			.setDesc(
@@ -81,6 +81,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 
 		// CODING
 		containerEl.createEl("h3", { text: "Coding" });
+
 		new Setting(containerEl)
 			.setName("Code folder")
 			.setDesc("Location where the Code Files are stored.")
@@ -95,7 +96,6 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					})
 					.inputEl.setCssProps(inputElCss);
 			});
-
 		new Setting(containerEl)
 			.setName("Code count")
 			.setDesc(
@@ -141,7 +141,6 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					})
 					.inputEl.setCssProps(inputElCss);
 			});
-
 		new Setting(containerEl)
 			.setName("Extraction count")
 			.setDesc(
@@ -154,7 +153,6 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}),
 			);
-
 		new Setting(containerEl)
 			.setName("Location of extraction window")
 			.setDesc(
