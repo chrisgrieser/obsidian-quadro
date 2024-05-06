@@ -167,7 +167,29 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					});
 			});
+		new Setting(containerEl)
+			.setName("Ignore properties on merging")
+			.setDesc(
+				"List of properties, one per line, which should not trigger manual incongruence resolvement when merging Extraction Files. " +
+					"The properties are still added to the frontmatter, there merging just happens automatically without considering potential conflicts. " +
+					"This is intended for properties where it does not matter which value is chosen, such as IDs. ",
+			)
+			.addTextArea((textarea) =>
+				textarea
+					.setPlaceholder("One property per line")
+					.setValue(settings.extraction.ignorePropertyOnMerge.join("\n"))
+					.onChange(async (value) => {
+						const fields = value
+							.split("\n")
+							.map((line) => line.trim())
+							.filter((line) => line !== "");
+						settings.extraction.ignorePropertyOnMerge = fields;
 
+						await this.plugin.saveSettings();
+						suppressCertainFrontmatterSuggestions(this.plugin);
+					})
+					.inputEl.setCssProps({ "min-height": "5rem", "min-width": "15rem" }),
+			);
 		new Setting(containerEl)
 			.setName("CSV separator")
 			.setDesc("Separator used when exporting extractions as csv files.")

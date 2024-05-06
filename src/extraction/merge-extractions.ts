@@ -40,7 +40,8 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 	// helper function
 	getDiscardedProperties(secondFile: TFile): FrontMatterCache {
-		const frontmatter = this.app.metadataCache.getFileCache(secondFile)?.frontmatter || {};
+		const { app, settings } = this;
+		const frontmatter = app.metadataCache.getFileCache(secondFile)?.frontmatter || {};
 		const discardedProps: FrontMatterCache = {};
 
 		for (const key in this.toBeMergedFrontmatter) {
@@ -50,7 +51,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 			const isList = Array.isArray(value1) && Array.isArray(value2);
 			const isEmpty = (!value1 && value1 !== 0) || (!value2 && value2 !== 0);
 			const isEqual = value1 === value2;
-			const ignoredKey = key === "extraction-date" || key === "extraction-source";
+			const ignoredKey = settings.extraction.ignorePropertyOnMerge.includes(key);
 
 			if (isList || isEmpty || isEqual || ignoredKey) continue;
 			discardedProps[key] = value1; // values from `toBeMergedFile` are kept
