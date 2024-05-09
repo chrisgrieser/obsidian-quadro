@@ -1,4 +1,4 @@
-import { exec } from "node:child_process";
+import { spawn } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import readlinePromises from "node:readline/promises";
 
@@ -16,17 +16,18 @@ function writeJson(filepath, jsonObj) {
 // PROMPT FOR TARGET VERSION
 
 const manifest = readJson("manifest.json");
-
 const currentVersion = manifest.version;
-console.info(`current version: ${currentVersion}`);
 const rl = readlinePromises.createInterface({ input: process.stdin, output: process.stdout });
+
+console.info(`current version: ${currentVersion}`);
 const nextVersion = await rl.question("   next version: ");
 console.info("───────────────────────────");
-rl.close();
 if (!nextVersion?.match(/\d+\.\d+\.\d+/) || nextVersion === currentVersion) {
 	console.error("\x1b[1;31mInvalid target version given, aborting.\x1b[0m");
 	process.exit(1);
 }
+
+rl.close();
 
 //──────────────────────────────────────────────────────────────────────────────
 // UPDATE VERSION IN VARIOUS JSONS
@@ -58,9 +59,9 @@ const gitCommands = [
 	`git tag ${nextVersion}`, // tag triggers the release action
 	"git push origin --tags",
 ];
-exec(gitCommands.join(" && "), (err, stdout, stderr) => {
-	if (err) console.error(err);
-	if (stderr) console.info(stderr.trim()); // git posts some output to stderr without there being an error
-	if (stdout) console.info(stdout.trim());
-	process.exit(err ? 1 : 0);
-});
+
+// INFO as opposed to `exec`, `spawn` does not buffer the output
+const gitProcess = spawn(gitCommands.join(" && "), [], { shell: true });
+gitProcess.stdout.on("data", (data) => console.info(data.toString()));
+gitProcess.stderr.on("data", (data) => console.info(data.toString()));
+gitProcess.on("error", (_err) => process.exit(1));
