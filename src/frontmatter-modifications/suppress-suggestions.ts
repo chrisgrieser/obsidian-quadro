@@ -1,7 +1,7 @@
 import Quadro from "src/main";
 
 // EXAMPLE css needed to suppress suggestions in the field "foobar"
-// .app-container:has(.metadata-property[data-property-key="foobar"] .metadata-input-longtext:focus-within)~.suggestion-container {
+// .app-container:has(.metadata-property[data-property-key="foobar"] .metadata-input-longtext:focus-within)~.suggestion-popover {
 // 	display: none;
 // }
 
@@ -12,7 +12,7 @@ export function suppressCertainFrontmatterSuggestions(plugin: Quadro): void {
 
 	const cssToApply = fieldSelector
 		? `.app-container:has(.metadata-property:is(${fieldSelector}) ` +
-			":is(.metadata-input-longtext, .multi-select-container):focus-within) ~ .suggestion-container" +
+			":is(.metadata-input-longtext, .multi-select-container):focus-within) ~ .suggestion-popover" +
 			"{ display: none; }"
 		: "";
 
