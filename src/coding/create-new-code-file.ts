@@ -167,7 +167,7 @@ async function createCodeFile(
 	// create folder
 	const parts = fullCode.split("/");
 	const codeName = parts.pop();
-	const codeSubfolder = parts.length ? "/" + parts.join("/") : "";
+	const codeSubfolder = parts.length > 0 ? "/" + parts.join("/") : "";
 	const parent = settings.coding.folder + codeSubfolder;
 	const folderExists = app.vault.getFolderByPath(parent);
 	if (!folderExists) await app.vault.createFolder(parent);
