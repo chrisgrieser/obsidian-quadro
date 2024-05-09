@@ -62,6 +62,6 @@ const gitCommands = [
 
 // INFO as opposed to `exec`, `spawn` does not buffer the output
 const gitProcess = spawn(gitCommands.join(" && "), [], { shell: true });
-gitProcess.stdout.on("data", (data) => console.info(data.toString()));
-gitProcess.stderr.on("data", (data) => console.info(data.toString()));
+gitProcess.stdout.on("data", (data) => console.info(data.toString().trim()));
+gitProcess.stderr.on("data", (data) => console.info(data.toString().trim()));
 gitProcess.on("error", (_err) => process.exit(1));
