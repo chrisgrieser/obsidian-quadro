@@ -5,34 +5,36 @@ import { typeOfFile } from "./shared/utils";
 
 export function updateStatusbar(plugin: Quadro): void {
 	const { app, statusbar, settings } = plugin;
+	const segments: string[] = [];
+	const filetype = typeOfFile(plugin);
+	const activeFile = app.workspace.getActiveFile();
 
 	// GUARD
-	const activeFile = app.workspace.getActiveFile();
-	if (!activeFile) {
+	if (!activeFile || !filetype || filetype === "Template") {
 		statusbar.setText("");
 		return;
 	}
 
-	const segments: string[] = [];
-
 	//───────────────────────────────────────────────────────────────────────────
 
 	// CODEFILE: outgoing links = times code was assigned
-	if (typeOfFile(plugin) === "Code File") {
+	if (filetype === "Code File") {
 		const codeFile = activeFile;
 		const codeAssignedCount = countTimesCodeIsAssigned(plugin, codeFile);
 		segments.push(`Code ${codeAssignedCount}x assigned`);
 	}
+
 	// EXTRACTION FILE: number of extractions made for the type
-	else if (typeOfFile(plugin) === "Extraction File") {
+	else if (filetype === "Extraction File") {
 		const extractionType = activeFile.parent;
 		if (extractionType) {
 			const extractionsMade = countExtractionsForType(extractionType);
 			segments.push(`${extractionsMade}x extracted`);
 		}
 	}
+
 	// DATAFILE: differentiate links by whether they are extractions or codes
-	else {
+	else if (filetype === "Data File") {
 		const outgoingLinks = app.metadataCache.resolvedLinks[activeFile.path] || {};
 		let codeAssignedCount = 0;
 		let extractionsMade = 0;
