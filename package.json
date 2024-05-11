@@ -2,7 +2,7 @@
 	"name": "Quadro",
 	"author": "Chris Grieser",
 	"description": "Obsidian Plugin for Qualitative Data Analysis (QDA). An open alternative to `MAXQDA` and `atlas.ti`, using Markdown to store data and research codes.",
-	"version": "1.13.8",
+	"version": "1.13.9",
 	"keywords": [],
 	"license": "MIT",
 	"main": "main.js",
