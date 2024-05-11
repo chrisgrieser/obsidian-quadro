@@ -6,7 +6,7 @@
 		"useIgnoreFile": true
 	},
 	"javascript": {
-		"globals": ["activeDocument"] // electron
+		"globals": ["activeDocument", "activeWindow"] // electron
 	},
 	"formatter": {
 		"lineWidth": 100,
