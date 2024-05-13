@@ -23,7 +23,7 @@ the style of _Qualitative Content Analysis_.
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
 	* [Getting started](#getting-started)
-		+ [Example vault](#example-vault)
+		+ [Example vault for Quadro](#example-vault-for-quadro)
 		+ [Experienced obsidian users](#experienced-obsidian-users)
 		+ [Using a separate vault](#using-a-separate-vault)
 		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
@@ -156,7 +156,12 @@ support the creation of those Extraction Files.
 
 ### Getting started
 
-#### Example vault
+> [!NOTE]
+> A "vault" is a local folder on your device that Obsidian uses as project
+> folder. Obsidian configurations are on a per-vault-basis, so you can have
+> separate configurations for your note-taking and for your data analysis.
+
+#### Example vault for Quadro
 There is a [pre-configured example
 vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
 _Quadro_. Apart from some pre-installed plugins for QDA, it includes some mock
