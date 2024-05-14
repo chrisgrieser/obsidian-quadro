@@ -34,7 +34,10 @@ class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 	}
 
 	getItems(): TFolder[] {
-		return this.extractionTypes;
+		const extractionTypesByFrequency = this.extractionTypes.sort(
+			(a, b) => countExtractionsForType(b) - countExtractionsForType(a),
+		);
+		return extractionTypesByFrequency;
 	}
 
 	getItemText(extractionType: TFolder): string {
