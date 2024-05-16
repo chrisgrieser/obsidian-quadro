@@ -23,8 +23,9 @@ the style of _Qualitative Content Analysis_.
 	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
 	* [Getting started](#getting-started)
+		+ [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
 		+ [Example vault for Quadro](#example-vault-for-quadro)
-		+ [Experienced obsidian users](#experienced-obsidian-users)
+		+ [Experienced Obsidian users](#experienced-obsidian-users)
 		+ [Using a separate vault](#using-a-separate-vault)
 		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
 	* [Coding](#coding)
@@ -156,10 +157,12 @@ support the creation of those Extraction Files.
 
 ### Getting started
 
-> [!NOTE]
-> A "vault" is a local folder on your device that Obsidian uses as project
-> folder. Obsidian configurations are on a per-vault-basis, so you can have
-> separate configurations for your note-taking and for your data analysis.
+#### Basics for academics new to Obsidian
+- You should familiarize yourself with [Markdown](https://help.obsidian.md/Getting+started/Glossary#Markdown), a simple standard
+  for human-readable text files, such as `**bold text**` for **bold text**.
+- A ["vault"](https://help.obsidian.md/Getting+started/Glossary#Vault) is a local folder on your device that Obsidian uses as project
+  folder. Obsidian configurations are on a per-vault-basis, so you can have
+  separate configurations for your note-taking and for your data analysis.
 
 #### Example vault for Quadro
 There is a [pre-configured example
@@ -173,7 +176,7 @@ capabilities, to demonstrate the capabilities of _Quadro_.
    new to Obsidian, see the Obsidian Documentation on how to do
    that.](https://help.obsidian.md/Getting+started/Create+a+vault#Open+existing+folder))
 
-#### Experienced obsidian users
+#### Experienced Obsidian users
 If you are experienced with Obsidian, you can also directly install the plugin,
 though checking out the example vault is nonetheless helpful to get a grasp on
 the capabilities of _Quadro_.
