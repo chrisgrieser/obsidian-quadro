@@ -158,11 +158,14 @@ support the creation of those Extraction Files.
 ### Getting started
 
 #### Basics for academics new to Obsidian
-- You should familiarize yourself with [Markdown](https://help.obsidian.md/Getting+started/Glossary#Markdown), a simple standard
-  for human-readable text files, such as `**bold text**` for **bold text**.
-- A ["vault"](https://help.obsidian.md/Getting+started/Glossary#Vault) is a local folder on your device that Obsidian uses as project
-  folder. Obsidian configurations are on a per-vault-basis, so you can have
-  separate configurations for your note-taking and for your data analysis.
+- You should familiarize yourself with
+  [Markdown](https://help.obsidian.md/Getting+started/Glossary#Markdown), a
+  simple standard for human-readable text files, such as `**bold text**` for
+  **bold text**.
+- A ["vault"](https://help.obsidian.md/Getting+started/Glossary#Vault) is a
+  local folder on your device that Obsidian uses as project folder. Obsidian
+  configurations are on a per-vault-basis, so you can have separate
+  configurations for your note-taking and for your data analysis.
 
 #### Example vault for Quadro
 There is a [pre-configured example
