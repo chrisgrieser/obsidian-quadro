@@ -29,7 +29,8 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 		// csv header
 		const templateFrontmatter = getPropertiesForExtractionType(app, extractionType);
 		if (!templateFrontmatter) {
-			new Notice(`Export of Extraction Type "${extractionType.name}" is skipped.`, 5000);
+			const msg = `Export of Extraction Type "${extractionType.name}" is skipped, as the Templade.md has no valid properties.`;
+			new Notice(msg, 0);
 			continue;
 		}
 		const keys = [
@@ -88,11 +89,11 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 		const msg = newCsv
 			? `Successfully exported "${extractionType.name}".`
 			: `ERROR: Export for "${extractionType.name}" failed.`;
-		new Notice(msg, 5000);
+		new Notice(msg, newCsv ? 5000 : 0);
 
 		if (!fileToReveal && newCsv) fileToReveal = newCsv;
 	}
 
-	new Notice("All CSV exports finished.", 5000);
+	new Notice("All CSV exports finished.", 3500);
 	if (fileToReveal) app.showInFolder(fileToReveal.path);
 }

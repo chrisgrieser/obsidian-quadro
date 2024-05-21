@@ -70,7 +70,7 @@ class SuggesterForAggregationCreation extends ExtendedFuzzySuggester<TFolder> {
 			!loomJson.model?.columns[0] || // Source
 			!loomJson.model?.columns[1] // Extraction File
 		) {
-			new Notice("ERROR: Loom Template invalid.", 4000);
+			new Notice("ERROR: Loom Template invalid.", 0);
 			return;
 		}
 		loomJson.model.sources[0].path = extractionType.path;
@@ -99,7 +99,7 @@ class SuggesterForAggregationCreation extends ExtendedFuzzySuggester<TFolder> {
 		if (!analysisFolder)
 			analysisFolder = await this.app.vault.createFolder(settings.analysis.folder);
 		if (!analysisFolder) {
-			new Notice("ERROR: Could not create Analysis Folder.", 4000);
+			new Notice("ERROR: Could not create Analysis Folder.", 0);
 			return;
 		}
 		let aggregationName = extractionType.name;
@@ -132,13 +132,13 @@ export async function aggregateExtractionsCommand(plugin: Quadro): Promise<void>
 		if (!installedPlugins.includes("notion-like-tables")) {
 			new Notice(
 				'Plugin "DataLoom" not installed.\n\nPlease install it from the Obsidian Community Store.',
-				7000,
+				0,
 			);
 			return;
 		}
 		const success = await app.plugins.enablePluginAndSave("dataview");
 		if (!success) {
-			new Notice("ERROR: DataLoom plugin could not be enabled.", 4000);
+			new Notice("ERROR: DataLoom plugin could not be enabled.", 0);
 			return;
 		}
 	}

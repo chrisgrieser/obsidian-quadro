@@ -67,7 +67,7 @@ async function extractOfType(
 	// VALIDATE Template
 	const templateFile = app.vault.getFileByPath(`${dir}/Template.md`);
 	if (!templateFile) {
-		new Notice(`ERROR: Could not find "Template.md" for Extraction Type "${type}".`);
+		new Notice(`ERROR: Could not find "Template.md" for Extraction Type "${type}".`, 0);
 		return;
 	}
 	const templateContent = await app.vault.cachedRead(templateFile);
@@ -76,7 +76,7 @@ async function extractOfType(
 		new Notice(
 			`The file "Template.md" in the folder "${dir}" does not contain valid metadata fields.` +
 				"\n\nYou need to add valid fields before you can make extractions.",
-			6000,
+			0,
 		);
 		openExtractionInNewWin(plugin, templateFile);
 		return;
@@ -127,7 +127,7 @@ export function extractFromParagraphCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor || ambiguousSelection(editor)) return;
 	if (typeOfFile(plugin) !== "Data File") {
-		new Notice("You must be in a Data File to make an extraction.", 3000);
+		new Notice("You must be in a Data File to make an extraction.", 4000);
 		return;
 	}
 	const hasHighlightMarkupInSel = selHasHighlightMarkup(editor);

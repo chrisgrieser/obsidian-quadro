@@ -16,7 +16,7 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 	if (typeOfFile(plugin) !== "Data File") {
-		new Notice("You must be in a Data File to make an extraction.", 3000);
+		new Notice("You must be in a Data File to make an extraction.", 5000);
 		return;
 	}
 	const hasHighlightMarkupInSel = selHasHighlightMarkup(editor);
@@ -27,7 +27,7 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 		.getMarkdownFiles()
 		.filter((f) => f.name !== "Template.md" && f.path.startsWith(settings.extraction.folder + "/"));
 	if (allExtractionFiles.length === 0) {
-		new Notice("No extractions have been created yet.");
+		new Notice("No extractions have been created yet.", 3000);
 		return;
 	}
 	const lastExtractionFile = allExtractionFiles.sort((a, b) => b.stat.ctime - a.stat.ctime)[0];
@@ -41,7 +41,7 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 		.getLine(editor.getCursor().line)
 		.includes(`[[${lastExtractionFile.basename}]]`);
 	if (lineAlreadyHasExtraction) {
-		new Notice("The paragraph already references the last Extraction File. Aborting.");
+		new Notice("The paragraph already references the last Extraction File. Aborting.", 4000);
 		return;
 	}
 
@@ -52,7 +52,10 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 	const sourcePropertyLn =
 		1 + exFileLines.findIndex((line) => line.startsWith("extraction-source:"));
 	if (sourcePropertyLn === 0) {
-		new Notice('Could not find "extraction-source:" property in last Extraction File. Aborting.');
+		new Notice(
+			'Could not find "extraction-source:" property in last Extraction File. Aborting.',
+			0,
+		);
 		return;
 	}
 	const nextPropertyLnum =

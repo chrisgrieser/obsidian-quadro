@@ -49,7 +49,7 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	// find corresponding line in CODEFILE
 	const [blockId] = lineText.match(BLOCKID_REGEX) || [];
 	if (!blockId) {
-		new Notice("No ID found in current line.\nReference in Code File thus not deleted.");
+		new Notice("No ID found in current line.\nReference in Code File thus not deleted.", 0);
 		return;
 	}
 	const codeFileLines = (await app.vault.read(code.tFile)).split("\n");
@@ -66,10 +66,10 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	});
 	if (refInCodeFile < 0) {
 		new Notice(
-			`"Code File "${code.tFile.basename}" contains not reference to ` +
+			`"Code File "${code.tFile.basename}" contains no reference to ` +
 				`Data File "${dataFile.basename}" with the ID "${blockId}". ` +
 				"Reference in Code File is thus not deleted.",
-			7000,
+			0,
 		);
 		return;
 	}
@@ -77,7 +77,7 @@ async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code
 	// remove corresponding line in CODEFILE
 	codeFileLines.splice(refInCodeFile, 1);
 	await app.vault.modify(code.tFile, codeFileLines.join("\n"));
-	new Notice(`Assignment of code "${code.tFile.basename}" removed.`);
+	new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
 }
 
 async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<void> {
@@ -88,13 +88,13 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 	const codeFile = editor.editorComponent.view.file;
 	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath || "", codeFile.path);
 	if (!blockId || !linkPath || !dataFile) {
-		new Notice("Current line has no correct reference.");
+		new Notice("Current line has no correct reference.", 0);
 		return;
 	}
 
 	const errorMsg = await removeSingleFileRefFromDatafile(app, codeFile, dataFile, blockId);
 	if (errorMsg) {
-		new Notice(errorMsg + "\n\nAborting removal of Code.", 4000);
+		new Notice(errorMsg + "\n\nAborting removal of Code.", 0);
 		return;
 	}
 
@@ -102,7 +102,7 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 	app.commands.executeCommandById("editor:delete-paragraph");
 	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); // moving to BoL prevents EditorSuggester from opening
 
-	new Notice(`Assignment of code "${codeFile.basename}" removed.`);
+	new Notice(`Assignment of code "${codeFile.basename}" removed.`, 3500);
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -122,7 +122,7 @@ export function unassignCodeCommand(plugin: Quadro): void {
 
 	// GUARD
 	if (typeOfFile(plugin) !== "Data File") {
-		new Notice("You must be in a Data File or Code File to unassign a code.", 3000);
+		new Notice("You must be in a Data File or Code File to unassign a code.", 4000);
 		return;
 	}
 
@@ -132,7 +132,7 @@ export function unassignCodeCommand(plugin: Quadro): void {
 	const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText);
 
 	if (codesInPara.length === 0) {
-		new Notice("Line does not contain any codes to remove.");
+		new Notice("Line does not contain any codes to remove.", 3500);
 	} else if (codesInPara.length === 1) {
 		// B1: in DATAFILE, line has 1 code
 		unassignCodeWhileInDataFile(editor, dataFile, codesInPara[0] as Code);

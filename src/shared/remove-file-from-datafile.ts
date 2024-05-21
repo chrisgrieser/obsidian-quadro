@@ -28,8 +28,7 @@ export async function removeAllFileRefsFromDataFile(plugin: Quadro, refFile: TFi
 	// REPORT
 	if (successes === 0 && errors.length === 0) {
 		const errorMsg = `⚠️ ${filetype} "${refFile.name}" has no references which could be deleted.`;
-		new Notice(errorMsg);
-		console.warn(errorMsg);
+		new Notice(errorMsg, 0);
 		return;
 	}
 
@@ -40,7 +39,6 @@ export async function removeAllFileRefsFromDataFile(plugin: Quadro, refFile: TFi
 			`⚠️ ${errors.length} references could not be deleted:`,
 			"- " + errors.join("\n- "),
 		].join("\n");
-		console.warn(msg);
 		new Notice(msg, 0);
 	} else {
 		new Notice(successMsg);

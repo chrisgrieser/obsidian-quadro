@@ -11,9 +11,9 @@ import { isCodeTemplateFile } from "./coding-utils";
 
 export function renameCodeCommand(plugin: Quadro): void {
 	if (typeOfFile(plugin) !== "Code File") {
-		new Notice("You must be in a code file.");
+		new Notice("You must be in a code file.", 4000);
 	} else if (isCodeTemplateFile(plugin, plugin.app.workspace.getActiveFile())) {
-		new Notice("You must not rename the template file.");
+		new Notice("You cannot rename the template file.", 5000);
 	} else {
 		plugin.app.commands.executeCommandById("workspace:edit-file-title");
 	}

@@ -96,7 +96,7 @@ export function assignCodeCommand(plugin: Quadro): void {
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 	if (typeOfFile(plugin) !== "Data File") {
-		new Notice("You must be in a Data File to assign a code.", 3000);
+		new Notice("You must be in a Data File to assign a code.", 4000);
 		return;
 	}
 	const hasHighlightMarkupInSel = selHasHighlightMarkup(editor);

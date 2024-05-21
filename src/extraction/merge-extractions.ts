@@ -34,7 +34,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	override onNoSuggestion() {
-		new Notice("There must be at least two extractions of the same type to merge.", 4000);
+		new Notice("There must be at least two extractions of the same type to merge.", 5000);
 		this.close();
 	}
 
@@ -123,7 +123,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		// HACK timeout needed, so embeds are loaded correctly (and there is no `await` for that)
 		setTimeout(async () => await app.vault.modify(mergedFile, newFileContent), 500);
 
-		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
+		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 5000);
 	}
 }
 

@@ -160,7 +160,7 @@ async function createCodeFile(
 	const absolutePath = normalizePath(`${settings.coding.folder}/${fullCode}.md`);
 	const fileExists = app.vault.getFileByPath(absolutePath);
 	if (fileExists) {
-		new Notice(`Code "${fullCode}" already exists, Code File not created.`);
+		new Notice(`Code "${fullCode}" already exists, Code File not created.`, 0);
 		return false;
 	}
 
@@ -197,10 +197,10 @@ async function createCodeFile(
 	// create CODE FILE
 	const newCodeFile = await app.vault.create(`${parent}/${codeName}.md`, content.join("\n"));
 	if (!newCodeFile) {
-		new Notice("Failed to create new code file.");
+		new Notice("Failed to create new code file.", 0);
 		return false;
 	}
-	new Notice(`Created new code file: "${fullCode}"`);
+	new Notice(`Created new code file: "${fullCode}"`, 3500);
 	return newCodeFile;
 }
 
@@ -225,6 +225,6 @@ export function bulkCreateCodeFilesCommand(plugin: Quadro): void {
 		// report
 		let msg = `${newFiles} file(s) created`;
 		if (failedFiles.length > 0) msg += "\nCould not create: " + failedFiles.join(", ");
-		new Notice(msg, (failedFiles.length + 2) * 1000);
+		new Notice(msg, failedFiles.length > 0 ? 0 : 3000);
 	}).open();
 }

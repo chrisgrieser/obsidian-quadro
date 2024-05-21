@@ -10,7 +10,7 @@ export async function deleteCodeEverywhereCommand(plugin: Quadro): Promise<void>
 	const editor = getActiveEditor(app);
 	if (!editor) return;
 	if (typeOfFile(plugin) !== "Code File") {
-		new Notice("Must be in Code File to delete the code everywhere.");
+		new Notice("Must be in Code File to delete the code everywhere.", 4000);
 		return;
 	}
 

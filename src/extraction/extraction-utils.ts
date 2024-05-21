@@ -51,7 +51,7 @@ export function getPropertiesForExtractionType(
 	if (!templateFile) {
 		new Notice(
 			`ERROR: Could not find "Template.md" for Extraction Type "${extractionType.name}".`,
-			5000,
+			0,
 		);
 		return;
 	}
@@ -59,7 +59,7 @@ export function getPropertiesForExtractionType(
 	if (!frontmatter) {
 		new Notice(
 			`ERROR: Properties of "Template.md" for Extraction Type "${extractionType.name}" are invalid.`,
-			5000,
+			0,
 		);
 		return;
 	}
@@ -73,7 +73,7 @@ export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 
 	const extFolder = app.vault.getFolderByPath(settings.extraction.folder);
 	if (!extFolder) {
-		new Notice("ERROR: Could not find Extraction Folder.", 4000);
+		new Notice("ERROR: Could not find Extraction Folder.", 0);
 		return;
 	}
 
