@@ -13,7 +13,7 @@ export interface CommandData {
 	name: string;
 	func: (plugin: Quadro) => void;
 	hotkeyLetter?: string;
-	ribbonIcon: IconName;
+	icon: IconName;
 }
 
 export const CODING_COMMANDS: CommandData[] = [
@@ -22,44 +22,44 @@ export const CODING_COMMANDS: CommandData[] = [
 		name: "Assign code to paragraph",
 		func: assignCodeCommand,
 		hotkeyLetter: "a",
-		ribbonIcon: "plus-circle",
+		icon: "plus-circle",
 	},
 	{
 		id: "rename-code",
 		name: "Rename code",
 		func: renameCodeCommand,
 		hotkeyLetter: "r",
-		ribbonIcon: "circle-slash",
+		icon: "circle-slash",
 	},
 	{
 		id: "unassign-code",
 		name: "Remove code from paragraph",
 		func: unassignCodeCommand,
 		hotkeyLetter: "d",
-		ribbonIcon: "minus-circle",
+		icon: "minus-circle",
 	},
 	{
 		id: "delete-code-everywhere",
 		name: "Delete Code File and all references to it",
 		func: deleteCodeEverywhereCommand,
-		ribbonIcon: "x-circle",
+		icon: "x-circle",
 	},
 	{
 		id: "merge-codes",
 		name: "Merge current Code File into another Code File",
 		func: mergeCodeFilesCommand,
-		ribbonIcon: "circle-dot",
+		icon: "circle-dot",
 	},
 	{
 		id: "bulk-create-new-code-files",
 		name: "Bulk create new Code Files",
 		func: bulkCreateCodeFilesCommand,
-		ribbonIcon: "circle-dashed",
+		icon: "circle-dashed",
 	},
 	{
 		id: "code-overview-codeblock",
 		name: "Create/goto code overview file",
 		func: codeOverviewCommand,
-		ribbonIcon: "circle-equal",
+		icon: "circle-equal",
 	},
 ];
