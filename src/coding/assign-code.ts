@@ -6,6 +6,7 @@ import {
 } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
+	activeFileHasInvalidName,
 	ambiguousSelection,
 	getActiveEditor,
 	selHasHighlightMarkup,
@@ -92,15 +93,14 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 //──────────────────────────────────────────────────────────────────────────────
 
 export function assignCodeCommand(plugin: Quadro): void {
-	const app = plugin.app;
+	const { app } = plugin;
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to assign a code.", 4000);
 		return;
 	}
-	const hasHighlightMarkupInSel = selHasHighlightMarkup(editor);
-	if (hasHighlightMarkupInSel) return;
+	if (selHasHighlightMarkup(editor) || activeFileHasInvalidName(app)) return;
 
 	// Determine codes already assigned to paragraph, so they can be excluded
 	// from the list of codes in the Suggester

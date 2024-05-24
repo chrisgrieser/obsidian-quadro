@@ -6,6 +6,7 @@ import {
 } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
+	activeFileHasInvalidName,
 	ambiguousSelection,
 	ensureCorrectPropertyTypes,
 	getActiveEditor,
@@ -124,14 +125,14 @@ async function extractOfType(
 }
 
 export function extractFromParagraphCommand(plugin: Quadro) {
-	const editor = getActiveEditor(plugin.app);
+	const { app } = plugin;
+	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to make an extraction.", 4000);
 		return;
 	}
-	const hasHighlightMarkupInSel = selHasHighlightMarkup(editor);
-	if (hasHighlightMarkupInSel) return;
+	if (selHasHighlightMarkup(editor) || activeFileHasInvalidName(app)) return;
 
 	const extractionTypes = getAllExtractionTypes(plugin);
 	if (!extractionTypes) return;

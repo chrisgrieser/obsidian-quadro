@@ -95,6 +95,18 @@ export function selHasHighlightMarkup(editor: Editor): boolean {
 	return hasHighlightMarkupInSel;
 }
 
+export function activeFileHasInvalidName(app: App): boolean {
+	const file = app.workspace.getActiveFile();
+	if (!file) return false;
+	const invalidCharRegex = /[|^#]/; // other chars are already disallowed by Obsidian
+	const invalidChar = file.basename.match(invalidCharRegex)?.[0];
+	if (!invalidChar) return false;
+
+	const msg = `The current file contains an invalid character: ${invalidChar}\n\nRename the file and try again.`;
+	new Notice(msg, 0);
+	return true;
+}
+
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Changed types makes breaks some things, such as the display of dates in
