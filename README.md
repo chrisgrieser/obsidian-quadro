@@ -86,7 +86,7 @@ extensive functionality and plugin ecosystem of Obsidian:
   of all data files a code is assigned to.
 - The qualitative analysis is easily extended with a [comprehensive ecosystem of
   more than 1000 plugins](https://obsidian.md/plugins), for example
-  [DataLoom](https://obsidian.md/plugins?id=notion-like-tables) for advanced data
+  [Projects](https://obsidian.md/plugins?id=obsidian-projects) for advanced data
   aggregation or [YTranscript](https://obsidian.md/plugins?id=ytranscript) for
   automatic fetching of YouTube video transcripts.
 - Obsidian has been [stress tested and confirmed to be able to handle 20 000+ files](https://www.reddit.com/r/ObsidianMD/comments/zrzqq0/testing_the_scalability_of_obsidian_with_large/).
@@ -314,7 +314,7 @@ representing codes):
 - Splitting Code Files is not yet supported. Doing so with any other
   method (such as another plugin) is likely going to result in broken references.
 - ⚠️ Renaming or moving Code/Data Files should be done from within Obsidian.
-  Using the Windows Explorer or macOS' Finder does not trigger the automatic
+  Using the Windows Explorer or macOS Finder does not trigger the automatic
   updating of references, meaning a loss of information.
 
 ### Extraction
@@ -409,10 +409,17 @@ All in all, the underlying folder structure for extractions looks like this:
 ```
 
 #### Aggregate extractions
-Using the `Aggregate extractions` command creates a table that can be sorted,
-filtered, searched, and modified:
+There are various Obsidian plugins that allow you to get a spreadsheet-like
+overview of all extractions.
 
-<https://github.com/chrisgrieser/obsidian-quadro/assets/73286100/6242a113-b17e-42e3-9398-806cdbec3b2d>
+The recommended one is the [Projects
+Plugin](https://obsidian.md/plugins?id=obsidian-projects), due to its
+flexibility, and it's long-term design philosophy.
+
+To aggregate extractions, with the `Projects Plugin`, open the command palette
+with `cmd/ctrl+p`, search for the `Projects: Create New Project` command, and
+enter as `Path` the extraction type you would like to aggregate, for example
+`Extractions/Career Visions`.
 
 #### Extraction capabilities
 
@@ -420,7 +427,6 @@ filtered, searched, and modified:
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------:     | :------------: | -------------------------------------------------------- |
 | Extract from paragraph                | Creates an Extraction File from Extraction Template.                                                                                                                                                                                                                                                    |   ![Icon](./assets/plus-square.svg)       | `mod+shift+e`  | Quadro                                                   |
 | Add paragraph to last Extraction File | Adds a reference to the last created Extraction file to the current paragraph. Useful when information is spread across to paragraphs.                                                                                                                                                                  |   ![Icon](./assets/square-asterisk.svg)   | `mod+shift+l`  | Quadro                                                   |
-| Aggregate extractions                 | Creates a table that aggregates Extraction Files. The table can be sorted, filtered, searched, and modified. <br><br>[Further Documentation][data loom]                                                                                                                                                 |  ![Icon](./assets/sigma-square.svg)       |       —        | [Community Plugin: Data Loom][data loom]                 |
 | Merge extractions                     | Merge the _current_ Extraction File into another Extraction File. All references from data files are updated to point to the merged file.                                                                                                                                                               |     ![Icon](./assets/square-dot.svg)      |       —        | Quadro                                                   |
 | Create new extraction type            | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                                |   ![Icon](./assets/box-select.svg)        |       —        | Quadro                                                   |
 | Overview of Extraction Types          | Creates an auto-updating overview of all Extraction Types and their values.                                                                                                                                                                                                                             |  ![Icon](./assets/square-equal.svg)       |       —        | Quadro                                                   |
@@ -428,14 +434,13 @@ filtered, searched, and modified:
 | Rename dimension globally             | Renaming a property field within a file only affects the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties pops up in the sidebar, where you can rename properties via right-click. |                   —                       |       —        | [Obsidian Core Plugin: Properties View][properties view] |
 | Export all extractions as `.csv`      | All extractions for all extraction types are exported as `,`-separated `.csv`.                                                                                                                                                                                                                          | ![Icon](./assets/arrow-up-square.svg)     |       —        | Quadro                                                   |
 
-[data loom]: https://dataloom.xyz/
 [properties view]: https://help.obsidian.md/Plugins/Properties+view
 
 - `mod` refers the `ctrl` on Windows and to `cmd` on macOS.
-- For aggregations, overviews, and `.csv` exports, the included properties are
+- For overviews and `.csv` exports, the included properties are
   determined by the properties of the template files (`Template.md`).
 - ⚠️ Renaming or moving Extraction/Data Files should be done from within
-  Obsidian. Using the Windows Explorer or macOS' Finder does not trigger the
+  Obsidian. Using the Windows Explorer or macOS Finder does not trigger the
   automatic updating of references, meaning a loss of information.
 
 ## Configuration
@@ -458,9 +463,7 @@ of codes and extraction values.
 ![Settings](./assets/settings.png)
 
 ## Installation & update
-- **Requirements:** _Quadro_ requires at least Obsidian **version 1.5.8**. The
-  _Aggregate extractions_ command requires the [DataLoom
-  plugin](https://obsidian.md/plugins?id=notion-like-tables).
+- **Requirements:** _Quadro_ requires at least Obsidian **version 1.5.8**.
 - **Installation:** [Install in Obsidian](https://obsidian.md/plugins?id=quadro)
 - **Update:** In Obsidian, go to `Settings` → `Community plugins` → `Check for
   updates` → `Update all`.

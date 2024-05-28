@@ -1,6 +1,5 @@
 import { CommandData } from "src/coding/coding-commands";
 import { addToLastExtractionFileCommand } from "./add-to-last-extraction-file";
-import { aggregateExtractionsCommand } from "./aggregate-extractions";
 import { createNewExtractionTypeCommand } from "./create-new-extraction-type";
 import { exportExtractionsAsCsv } from "./export-extractions-as-csv";
 import { extractFromParagraphCommand } from "./extract-from-paragraph";
@@ -27,12 +26,6 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 		name: "Merge current Extraction File into another Extraction File",
 		func: mergeExtractionFilesCommand,
 		icon: "square-dot",
-	},
-	{
-		id: "aggregate-extractions",
-		name: "Aggregate extractions",
-		func: aggregateExtractionsCommand,
-		icon: "sigma-square",
 	},
 	{
 		id: "create-new-extraction-type",

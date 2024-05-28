@@ -109,8 +109,8 @@ export function activeFileHasInvalidName(app: App): boolean {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-/** Changed types makes breaks some things, such as the display of dates in
- * DataLoom. Therefore, we are ensuring the correct type here.
+/** Changed types breaks some things, such as the display of dates in
+ * DataLoom/Projects. Therefore, we are ensuring the correct type here.
  * NOTE `setType` is marked as internal, so keep an eye on it. */
 export function ensureCorrectPropertyTypes(app: App): void {
 	app.metadataTypeManager.setType("extraction-date", "datetime");
