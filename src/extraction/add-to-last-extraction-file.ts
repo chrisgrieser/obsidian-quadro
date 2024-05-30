@@ -14,15 +14,13 @@ import {
 export async function addToLastExtractionFileCommand(plugin: Quadro) {
 	const { app, settings } = plugin;
 	const editor = getActiveEditor(app);
-	if (!editor || ambiguousSelection(editor)) return;
+	if (!editor || ambiguousSelection(editor) || selHasHighlightMarkup(editor)) return;
 	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to make an extraction.", 5000);
 		return;
 	}
-	const hasHighlightMarkupInSel = selHasHighlightMarkup(editor);
-	if (hasHighlightMarkupInSel) return;
 
-	// Identify last created EXTRACTION FILE
+	// Identify last modified EXTRACTION FILE
 	const allExtractionFiles = app.vault
 		.getMarkdownFiles()
 		.filter((f) => f.name !== "Template.md" && f.path.startsWith(settings.extraction.folder + "/"));
@@ -30,7 +28,7 @@ export async function addToLastExtractionFileCommand(plugin: Quadro) {
 		new Notice("No extractions have been created yet.", 3000);
 		return;
 	}
-	const lastExtractionFile = allExtractionFiles.sort((a, b) => b.stat.ctime - a.stat.ctime)[0];
+	const lastExtractionFile = allExtractionFiles.sort((a, b) => b.stat.mtime - a.stat.mtime)[0];
 
 	// DATAFILE: Insert new reference
 	const dataFile = editor.editorComponent.view.file;
