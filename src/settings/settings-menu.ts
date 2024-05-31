@@ -13,9 +13,27 @@ import {
 	sortFuncs,
 } from "./defaults";
 
+//──────────────────────────────────────────────────────────────────────────────
+
 function sanitizePath(path: string) {
 	return normalizePath(path).replace(/:/g, "-");
 }
+
+const textareaCss = {
+	"min-height": "5rem",
+	"min-width": "15rem",
+};
+
+function textareaValToArr(val: string) {
+	return val
+		.split("\n")
+		.map((line) => line.trim())
+		.filter((line) => line !== "");
+}
+
+const inputElCss = { "min-width": "15rem" };
+
+//──────────────────────────────────────────────────────────────────────────────
 
 export class QuadroSettingsMenu extends PluginSettingTab {
 	plugin: Quadro;
@@ -33,7 +51,6 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 	display(): void {
 		const { containerEl } = this;
 		const settings = this.plugin.settings;
-		const inputElCss = { "min-width": "15rem" };
 
 		containerEl.empty();
 		containerEl.addClass(this.plugin.cssclass);
@@ -51,16 +68,11 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					.setPlaceholder("One property per line")
 					.setValue(settings.suppressSuggestionInFields.join("\n"))
 					.onChange(async (value) => {
-						const fields = value
-							.split("\n")
-							.map((line) => line.trim())
-							.filter((line) => line !== "");
-						settings.suppressSuggestionInFields = fields;
-
+						settings.suppressSuggestionInFields = textareaValToArr(value);
 						await this.plugin.saveSettings();
 						suppressCertainFrontmatterSuggestions(this.plugin);
 					})
-					.inputEl.setCssProps({ "min-height": "5rem", "min-width": "15rem" }),
+					.inputEl.setCssProps(textareaCss),
 			);
 
 		new Setting(containerEl)
@@ -179,20 +191,31 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					.setPlaceholder("One property per line")
 					.setValue(settings.extraction.ignorePropertyOnMerge.join("\n"))
 					.onChange(async (value) => {
-						const fields = value
-							.split("\n")
-							.map((line) => line.trim())
-							.filter((line) => line !== "");
-						settings.extraction.ignorePropertyOnMerge = fields;
-
+						settings.extraction.ignorePropertyOnMerge = textareaValToArr(value);
 						await this.plugin.saveSettings();
 						suppressCertainFrontmatterSuggestions(this.plugin);
 					})
-					.inputEl.setCssProps({ "min-height": "5rem", "min-width": "15rem" }),
+					.inputEl.setCssProps(textareaCss),
+			);
+		new Setting(containerEl)
+			.setName("Display property when merging")
+			.setDesc(
+				"Property which should be displayed in the merge selection window. " +
+					"If a list of properties is specified, the first one that exists in the Extraction File is used.",
+			)
+			.addTextArea((textarea) =>
+				textarea
+					.setPlaceholder("One property per line")
+					.setValue(settings.extraction.displayPropertyOnMerge.join("\n"))
+					.onChange(async (value) => {
+						settings.extraction.displayPropertyOnMerge = textareaValToArr(value);
+						await this.plugin.saveSettings();
+					})
+					.inputEl.setCssProps(textareaCss),
 			);
 		new Setting(containerEl)
 			.setName("CSV separator")
-			.setDesc("Separator used when exporting extractions as csv files.")
+			.setDesc("Separator used when exporting extractions as .csv files.")
 			.addDropdown((dropdown) => {
 				dropdown
 					.addOptions(csvSeparators)

@@ -14,7 +14,6 @@ import { getActiveEditor, typeOfFile } from "src/shared/utils";
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
 	toBeMergedFrontmatter: FrontMatterCache;
-	permaNotice: Notice;
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
 		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
@@ -22,42 +21,11 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		this.toBeMergedFile = toBeMergedFile;
 		this.toBeMergedFrontmatter =
 			this.app.metadataCache.getFileCache(this.toBeMergedFile)?.frontmatter || {};
-
-		const congruenceInfo =
-			'INFO\n"Incongruence" refers to the dimensions that can not be automatically merged. ' +
-			"The discarded values are saved, so you can manually fix the Extraction File after the merge operation.";
-		this.permaNotice = new Notice(congruenceInfo, 0);
-	}
-
-	override onClose() {
-		this.permaNotice.hide();
 	}
 
 	override onNoSuggestion() {
 		new Notice("There must be at least two extractions of the same type to merge.", 5000);
 		this.close();
-	}
-
-	// helper function
-	getDiscardedProperties(secondFile: TFile): FrontMatterCache {
-		const { app, settings } = this;
-		const frontmatter = app.metadataCache.getFileCache(secondFile)?.frontmatter || {};
-		const discardedProps: FrontMatterCache = {};
-
-		for (const key in this.toBeMergedFrontmatter) {
-			const value1 = frontmatter[key];
-			const value2 = this.toBeMergedFrontmatter[key];
-
-			const isList = Array.isArray(value1) && Array.isArray(value2);
-			const isEmpty = (!value1 && value1 !== 0) || (!value2 && value2 !== 0);
-			const isEqual = value1 === value2;
-			const ignoredKey = settings.extraction.ignorePropertyOnMerge.includes(key);
-
-			if (isList || isEmpty || isEqual || ignoredKey) continue;
-			discardedProps[key] = value1; // values from `toBeMergedFile` are kept
-		}
-
-		return discardedProps;
 	}
 
 	getItems(): TFile[] {
@@ -75,14 +43,43 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	getItemText(extractionFile: TFile): string {
-		const conflictingKeys = Object.keys(this.getDiscardedProperties(extractionFile)).length;
-		const incongruentInfo = conflictingKeys > 0 ? `    (${conflictingKeys}x incongruent)` : "";
-		return extractionFile.basename + incongruentInfo;
+		const { app, settings } = this;
+		const frontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
+		if (!frontmatter) return extractionFile.basename;
+
+		// use first existing property as display
+		const displayKey = settings.extraction.displayPropertyOnMerge.find((key) => {
+			const val = frontmatter[key];
+			const keyExists = val || val === 0;
+			return keyExists;
+		});
+		if (!displayKey) return extractionFile.basename;
+
+		let displayVal = frontmatter[displayKey];
+		if (Array.isArray(displayVal)) displayVal = displayVal.join(", ");
+
+		const displayPropInfo = displayVal ? `  ⬩  ${displayKey}: ${displayVal}` : "";
+		return extractionFile.basename + displayPropInfo;
 	}
 
 	async onChooseItem(toMergeInFile: TFile) {
-		const { plugin, app } = this;
-		const discardedProps = this.getDiscardedProperties(toMergeInFile);
+		const { plugin, app, settings } = this;
+
+		// save discarded properties
+		const discardedProps: FrontMatterCache = {};
+		const frontmatter = app.metadataCache.getFileCache(toMergeInFile)?.frontmatter || {};
+		for (const key in this.toBeMergedFrontmatter) {
+			const value1 = frontmatter[key];
+			const value2 = this.toBeMergedFrontmatter[key];
+
+			const isList = Array.isArray(value1) && Array.isArray(value2);
+			const isEmpty = (!value1 && value1 !== 0) || (!value2 && value2 !== 0);
+			const isEqual = value1 === value2;
+			const ignoredKey = settings.extraction.ignorePropertyOnMerge.includes(key);
+
+			if (isList || isEmpty || isEqual || ignoredKey) continue;
+			discardedProps[key] = value1; // values from `toBeMergedFile` are kept
+		}
 
 		// MERGE (via Obsidian API)
 		// INFO temporarily disable trashWatcher, as the merge operation trashes
