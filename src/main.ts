@@ -6,7 +6,7 @@ import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
 import { processExtractiontypesOverviewCodeblock } from "./extraction/extractiontypes-overview";
 import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions";
 import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys";
-import { DEFAULT_SETTINGS } from "./settings/defaults";
+import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
 import { ensureCorrectPropertyTypes } from "./shared/utils";
 import { updateStatusbar } from "./statusbar";
@@ -23,7 +23,7 @@ export default class Quadro extends Plugin {
 
 	statusbar = this.addStatusBarItem();
 	trashWatcherUninstaller?: () => void;
-	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
+	settings: QuadroSettings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
 
 	override async onload(): Promise<void> {
 		console.info(this.manifest.name + " Plugin loaded.");
@@ -94,7 +94,31 @@ export default class Quadro extends Plugin {
 	}
 
 	async loadSettings(): Promise<void> {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		function isObject(item: unknown): boolean {
+			return Boolean(item && typeof item === "object" && !Array.isArray(item));
+		}
+
+		function deepExtend(target: Record<string, unknown>, ...sources: Record<string, unknown>[]) {
+			if (sources.length === 0) return target;
+			const source = sources.shift();
+
+			if (isObject(target) && isObject(source)) {
+				for (const key in source) {
+					if (isObject(source[key])) {
+						if (!target[key]) Object.assign(target, { [key]: {} });
+						deepExtend(
+							target[key] as Record<string, unknown>,
+							source[key] as Record<string, unknown>,
+						);
+					} else {
+						Object.assign(target, { [key]: source[key] });
+					}
+				}
+			}
+
+			return deepExtend(target, ...sources);
+		}
+		this.settings = deepExtend({}, DEFAULT_SETTINGS, await this.loadData()) as QuadroSettings;
 	}
 
 	async saveSettings(): Promise<void> {
