@@ -37,7 +37,7 @@ export default class Quadro extends Plugin {
 			const cmdObj: Command = {
 				id: cmd.id,
 				name: cmd.name,
-				icon: cmd.icon,
+				icon: cmd.icon, // only used on mobile toolbar
 				editorCallback: async () => cmd.func(this),
 			};
 
