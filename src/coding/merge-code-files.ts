@@ -70,7 +70,7 @@ export function mergeCodeFilesCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor) return;
 	if (typeOfFile(plugin) !== "Code File") {
-		new Notice("You must be in the Code File for this.", 3500);
+		new Notice("You must be in a Code File for this.", 3500);
 		return;
 	}
 

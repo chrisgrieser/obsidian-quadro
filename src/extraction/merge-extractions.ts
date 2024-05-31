@@ -128,7 +128,7 @@ export function mergeExtractionFilesCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor) return;
 	if (typeOfFile(plugin) !== "Extraction File") {
-		new Notice("You must be in the Extraction File for this.", 3000);
+		new Notice("You must be in an Extraction File for this.", 4000);
 		return;
 	}
 
