@@ -45,10 +45,11 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	getItemText(extractionFile: TFile): string {
 		const { app, settings } = this;
 		const frontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
-		if (!frontmatter) return extractionFile.basename;
+		const displayProps = settings.extraction.displayPropertyOnMerge;
+		if (!frontmatter || displayProps.length === 0) return extractionFile.basename;
 
 		// use first existing property as display
-		const displayKey = settings.extraction.displayPropertyOnMerge.find((key) => {
+		const displayKey = displayProps.find((key) => {
 			const val = frontmatter[key];
 			const keyExists = val || val === 0;
 			return keyExists;
