@@ -20,12 +20,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 		this.toBeMergedFile = toBeMergedFile;
 		this.toBeMergedFrontmatter =
-			this.app.metadataCache.getFileCache(this.toBeMergedFile)?.frontmatter || {};
-	}
-
-	override onNoSuggestion() {
-		new Notice("There must be at least two extractions of the same type to merge.", 5000);
-		this.close();
+			this.app.metadataCache.getFileCache(toBeMergedFile)?.frontmatter || {};
 	}
 
 	getItems(): TFile[] {
@@ -39,6 +34,10 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 					ch.path !== this.toBeMergedFile.path,
 			) as TFile[]
 		).sort((a, b) => b.stat.mtime - a.stat.mtime);
+		if (extractionsOfSameType.length === 0) {
+			new Notice("No other extractions have been created yet.", 4000);
+			this.close();
+		}
 		return extractionsOfSameType;
 	}
 
