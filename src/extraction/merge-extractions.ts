@@ -51,7 +51,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		// use first existing property as display
 		const displayKey = displayProps.find((key) => {
 			const val = frontmatter[key];
-			const keyExists = val || val === 0;
+			const keyExists = Array.isArray(val) ? val.length > 0 : val || val === 0;
 			return keyExists;
 		});
 		if (!displayKey) return extractionFile.basename;
