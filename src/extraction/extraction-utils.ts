@@ -42,6 +42,27 @@ export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void
 
 //──────────────────────────────────────────────────────────────────────────────
 
+export function getExtractionFileDisplay(plugin: Quadro, extractionFile: TFile): string {
+	const { app, settings } = plugin;
+	const frontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
+	const displayProps = settings.extraction.displayProperty;
+	if (!frontmatter || displayProps.length === 0) return extractionFile.basename;
+
+	// use first existing property as display
+	const displayKey = displayProps.find((key) => {
+		const val = frontmatter[key];
+		const keyExists = Array.isArray(val) ? val.length > 0 : val || val === 0;
+		return keyExists;
+	});
+	if (!displayKey) return extractionFile.basename;
+
+	let displayVal = frontmatter[displayKey];
+	if (Array.isArray(displayVal)) displayVal = displayVal.join(", ");
+
+	const displayPropInfo = displayVal ? `  ⬩  ${displayKey}: ${displayVal}` : "";
+	return extractionFile.basename + displayPropInfo;
+}
+
 /** gets properties from Template.md of extraction type */
 export function getPropertiesForExtractionType(
 	app: App,

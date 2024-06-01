@@ -200,15 +200,16 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Display property when merging")
 			.setDesc(
-				"Property which should be displayed in the merge selection window. " +
-					"If a list of properties is specified, the first one that exists in the Extraction File is used.",
+				"Property which should be displayed when selecting an Extraction File, " +
+					"for instance when merging Extraction Files. If a list of properties " +
+					"is specified, the first one that exists in the Extraction File is used. ",
 			)
 			.addTextArea((textarea) =>
 				textarea
-					.setPlaceholder("One property per line")
-					.setValue(settings.extraction.displayPropertyOnMerge.join("\n"))
+					.setPlaceholder("One property per line, the first existing property is used.")
+					.setValue(settings.extraction.displayProperty.join("\n"))
 					.onChange(async (value) => {
-						settings.extraction.displayPropertyOnMerge = textareaValToArr(value);
+						settings.extraction.displayProperty = textareaValToArr(value);
 						await this.plugin.saveSettings();
 					})
 					.inputEl.setCssProps(textareaCss),
@@ -231,7 +232,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Analysis folder")
-			.setDesc("Location where aggregations, overviews, and exports are stored.")
+			.setDesc("Location where overviews and exports are placed.")
 			.addSearch((text) => {
 				new FolderSuggest(this.plugin, text.inputEl);
 				text

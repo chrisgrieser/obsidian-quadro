@@ -10,6 +10,7 @@ import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor, typeOfFile } from "src/shared/utils";
+import { getExtractionFileDisplay } from "./extraction-utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
@@ -42,24 +43,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	getItemText(extractionFile: TFile): string {
-		const { app, settings } = this;
-		const frontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
-		const displayProps = settings.extraction.displayPropertyOnMerge;
-		if (!frontmatter || displayProps.length === 0) return extractionFile.basename;
-
-		// use first existing property as display
-		const displayKey = displayProps.find((key) => {
-			const val = frontmatter[key];
-			const keyExists = Array.isArray(val) ? val.length > 0 : val || val === 0;
-			return keyExists;
-		});
-		if (!displayKey) return extractionFile.basename;
-
-		let displayVal = frontmatter[displayKey];
-		if (Array.isArray(displayVal)) displayVal = displayVal.join(", ");
-
-		const displayPropInfo = displayVal ? `  ⬩  ${displayKey}: ${displayVal}` : "";
-		return extractionFile.basename + displayPropInfo;
+		return getExtractionFileDisplay(this.plugin, extractionFile);
 	}
 
 	async onChooseItem(toMergeInFile: TFile) {
