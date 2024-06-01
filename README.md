@@ -477,13 +477,13 @@ of codes and extraction values.
 
 ```bash
 git clone "git@github.com:chrisgrieser/obsidian-quadro.git"
-make init
+just init
 ```
 
 ```bash
-make format    # run all formatters
-make build     # builds the plugin
-make check-all # runs the pre-commit hook (without committing)
+just format    # run all formatters
+just build     # builds the plugin
+just check-all # runs the pre-commit hook (without committing)
 ```
 
 > [!NOTE]
