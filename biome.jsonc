@@ -1,22 +1,6 @@
 // DOCS https://biomejs.dev/reference/configuration/
+//──────────────────────────────────────────────────────────────────────────────
 {
-	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-	"files": {
-		"ignoreUnknown": true
-	},
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
-	},
-	"javascript": {
-		"globals": ["activeDocument", "activeWindow"] // electron
-	},
-	"formatter": {
-		"lineWidth": 100,
-		"indentStyle": "tab",
-		"formatWithErrors": true
-	},
 	"linter": {
 		"rules": {
 			"all": true,
@@ -25,19 +9,47 @@
 				"noConsole": "off", // `console.info` use is intentional
 				"useImportRestrictions": "off",
 				"noUndeclaredDependencies": "off", // incompatible with typescript's default auto-imports
-				"noNodejsModules": "off" // Obsidian is client-site, thus requiring them
+				"noUnknownProperty": "off", // css variables, TODO buggy, investigate later
+				"useImportExtensions": "off", // incompatible with typescript's default auto-imports
+				"useTopLevelRegex": "info"
 			},
 			"complexity": {
 				"noExcessiveCognitiveComplexity": "off",
 				"useSimplifiedLogicExpression": "off" // complains about negated and-conditions
+			},
+			"suspicious": {
+				"noConsoleLog": "info"
+			},
+			"correctness": {
+				"noNodejsModules": "off" // Obsidian is client-site, thus requiring them
 			},
 			"style": {
 				"useBlockStatements": "off",
 				"useImportType": "off", // incompatible with typescript's default auto-imports
 				"useTemplate": "off", // too strict, simple concatenation are fine
 				"noParameterAssign": "off",
-				"useNamingConvention": { "level": "warn", "options": { "strictCase": false } }
+				"useNamingConvention": { "level": "info", "options": { "strictCase": false } }
 			}
 		}
-	}
+	},
+	"javascript": {
+		"globals": ["activeDocument", "activeWindow"] // electron
+	},
+	"css": {
+		// opt-in at biome 1.8
+		"linter": { "enabled": true },
+		"formatter": { "enabled": true }
+	},
+	"formatter": {
+		"lineWidth": 100,
+		"indentStyle": "tab",
+		"formatWithErrors": true
+	},
+	"files": { "ignoreUnknown": true },
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json"
 }

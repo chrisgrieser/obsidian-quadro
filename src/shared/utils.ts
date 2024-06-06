@@ -95,10 +95,10 @@ export function selHasHighlightMarkup(editor: Editor): boolean {
 	return hasHighlightMarkupInSel;
 }
 
+const invalidCharRegex = /[|^#]/; // other chars are already disallowed by Obsidian
 export function activeFileHasInvalidName(app: App): boolean {
 	const file = app.workspace.getActiveFile();
 	if (!file) return false;
-	const invalidCharRegex = /[|^#]/; // other chars are already disallowed by Obsidian
 	const invalidChar = file.basename.match(invalidCharRegex)?.[0];
 	if (!invalidChar) return false;
 
