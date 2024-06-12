@@ -1,4 +1,5 @@
 .variable-safety-for-obsidian-css {
+	/* biome-ignore lint/nursery/useConsistentGridAreas: <explanation> */
 	--text-faint: "";
 }
 
