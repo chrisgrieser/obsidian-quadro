@@ -1,5 +1,7 @@
 set quiet := true
 
+alias i := init
+
 dev_vault := "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Development"
 plugin_path := dev_vault + "/.obsidian/plugins/" + `basename "$PWD"`
 
