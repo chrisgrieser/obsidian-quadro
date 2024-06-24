@@ -87,7 +87,7 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 	}
 }
 
-export function addExistingExtractionFileCommand(plugin: Quadro) {
+export function addToExistingExtractionFileCommand(plugin: Quadro) {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor || ambiguousSelection(editor) || selHasHighlightMarkup(editor)) return;
 	if (typeOfFile(plugin) !== "Data File") {

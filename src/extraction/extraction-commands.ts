@@ -1,5 +1,5 @@
 import { CommandData } from "src/coding/coding-commands";
-import { addExistingExtractionFileCommand } from "./add-to-last-extraction-file";
+import { addToExistingExtractionFileCommand } from "./add-to-extraction-file";
 import { createNewExtractionTypeCommand } from "./create-new-extraction-type";
 import { exportExtractionsAsCsv } from "./export-extractions-as-csv";
 import { extractFromParagraphCommand } from "./extract-from-paragraph";
@@ -17,7 +17,7 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 	{
 		id: "extract-existing-extraction-file",
 		name: "Add paragraph as source to existing Extraction File",
-		func: addExistingExtractionFileCommand,
+		func: addToExistingExtractionFileCommand,
 		hotkeyLetter: "l",
 		icon: "square-asterisk",
 	},
