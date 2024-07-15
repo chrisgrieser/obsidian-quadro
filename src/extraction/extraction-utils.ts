@@ -1,4 +1,12 @@
-import { App, FrontMatterCache, MarkdownView, Notice, TFile, TFolder } from "obsidian";
+import {
+	App,
+	FrontMatterCache,
+	MarkdownView,
+	Notice,
+	TFile,
+	TFolder,
+	WorkspaceTabs,
+} from "obsidian";
 import Quadro from "src/main";
 import { LIVE_PREVIEW } from "src/shared/utils";
 
@@ -8,7 +16,7 @@ export async function openExtractionInNewWin(plugin: Quadro, tfile: TFile): Prom
 
 	const currentLeaf = app.workspace.getLeaf();
 	if (mode === "tab") {
-		const tabgroup = currentLeaf.parent;
+		const tabgroup = currentLeaf.parent as WorkspaceTabs;
 		const newTab = app.workspace.createLeafInParent(tabgroup, tabgroup.children.length);
 		await newTab.openFile(tfile, LIVE_PREVIEW);
 	} else {
@@ -21,7 +29,7 @@ export async function openExtractionInNewWin(plugin: Quadro, tfile: TFile): Prom
 			app.workspace.createLeafBySplit(currentLeaf, direction2, false);
 
 		await newWin.openFile(tfile, LIVE_PREVIEW);
-		newWin.parent.setDimension(2); // resize split to 66% width/height
+		(newWin.parent as WorkspaceTabs).setDimension(2); // resize split to 66% width/height
 	}
 }
 

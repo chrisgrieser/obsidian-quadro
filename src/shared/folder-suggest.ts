@@ -23,7 +23,7 @@ export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 		el.createEl("span", { text: folder.path });
 	}
 
-	selectSuggestion(folder: TFolder): void {
+	override selectSuggestion(folder: TFolder): void {
 		this.textInputEl.value = folder.path;
 		this.textInputEl.trigger("input");
 		this.close();
