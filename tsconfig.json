@@ -1,5 +1,6 @@
 // DOCS https://www.typescriptlang.org/tsconfig
 //──────────────────────────────────────────────────────────────────────────────
+
 {
 	"compilerOptions": {
 		"baseUrl": ".",
@@ -16,10 +17,12 @@
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
-		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": false, // *too* strict since it complains about every `[0]`
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
+
+		// disabled
+		"noUncheckedIndexedAccess": false, // *too* strict since it complains about every [0]
+		"noPropertyAccessFromIndexSignature": false, // not useful https://stackoverflow.com/a/70748402/22114136
 
 		// helpers
 		"isolatedModules": true,
