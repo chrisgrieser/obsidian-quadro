@@ -257,8 +257,7 @@ File:
 
 ![Embedded block link in reading & source mode](./assets/embedded-blocklink_reading-and-source-mode.png)
 
-The underlying folder structure for coding looks like this (with the colors
-representing codes):
+The underlying folder structure for coding looks like this:
 
 ```txt
 .
@@ -267,11 +266,11 @@ representing codes):
 │   ├── 📄 Field Notes 1.md
 │   └── …
 └── 📂 Coding
-    ├── 📄 blue.md
-    ├── 📄 red.md
+    ├── 📄 code 1.md
+    ├── 📄 code 2.md
     └── 📂 Group 1
-         ├── 📄 white.md
-         ├── 📄 black.md
+         ├── 📄 code 3.md
+         ├── 📄 code 4.md
          └── …
 ```
 
@@ -279,7 +278,7 @@ representing codes):
 > The main caveat of this approach is that the assignment of codes is mostly
 > restricted to the paragraph level. Assigning codes to only segments of a
 > paragraph is limited to adding highlights to the respective section.
-> Assignment of codes to individual words and coded segments with overlap are
+> Assignment of codes to individual words and coded segments with overlap is
 > not supported.
 
 #### Coding capabilities
