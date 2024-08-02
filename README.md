@@ -87,8 +87,10 @@ extensive functionality and plugin ecosystem of Obsidian:
 - The qualitative analysis is easily extended with a [comprehensive ecosystem of
   more than 1000 plugins](https://obsidian.md/plugins), for example
   [Projects](https://obsidian.md/plugins?id=obsidian-projects) for advanced data
-  aggregation or [YTranscript](https://obsidian.md/plugins?id=ytranscript) for
-  automatic fetching of YouTube video transcripts.
+  aggregation, [Relay](https://github.com/no-instructions/relay) for
+  live-collaboration like in Google Docs, or
+  [YTranscript](https://obsidian.md/plugins?id=ytranscript) for automatic
+  fetching of YouTube video transcripts.
 - Obsidian has been [stress tested and confirmed to be able to handle 20 000+ files](https://www.reddit.com/r/ObsidianMD/comments/zrzqq0/testing_the_scalability_of_obsidian_with_large/).
 - All this allows the researcher to customize the analysis to the particular
   needs of their research. Case-specific adaption of research methods
