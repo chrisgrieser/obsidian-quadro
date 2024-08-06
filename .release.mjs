@@ -54,10 +54,10 @@ writeJson("package-lock.json", packageLock);
 const gitCommands = [
 	"git add manifest.json versions.json package.json package-lock.json",
 	`git commit -m "release: ${nextVersion}"`,
-	"git pull",
-	"git push",
+	"git pull --no-progress",
+	"git push --no-progress",
 	`git tag ${nextVersion}`, // tag triggers the release action
-	"git push origin --tags",
+	"git push --no-progress origin --tags",
 ];
 
 // INFO as opposed to `exec`, `spawn` does not buffer the output
