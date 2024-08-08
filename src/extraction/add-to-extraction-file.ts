@@ -18,7 +18,7 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 
 	constructor(plugin: Quadro, editor: Editor) {
 		super(plugin);
-		this.setPlaceholder("Select Extraction File add the paragraph to:");
+		this.setPlaceholder("Add paragraph to following Extraction File:");
 		this.editor = editor;
 	}
 
