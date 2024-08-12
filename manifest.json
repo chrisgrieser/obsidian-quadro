@@ -6,7 +6,10 @@
 	"minAppVersion": "1.5.8",
 	"isDesktopOnly": false,
 	"author": "Chris Grieser (aka pseudometa)",
-	"fundingUrl": "https://ko-fi.com/pseudometa",
+	"fundingUrl": {
+		"Ko-Fi": "https://ko-fi.com/pseudometa",
+		"PayPal": "https://www.paypal.me/ChrisGrieser"
+	},
 	"authorUrl": "https://chris-grieser.de/",
 	"helpUrl": "https://github.com/chrisgrieser/obsidian-quadro#table-of-contents"
 }
