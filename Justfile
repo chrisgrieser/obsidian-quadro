@@ -2,19 +2,19 @@ set quiet := true
 
 alias i := init
 
-dev_vault := "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Development"
-plugin_path := dev_vault + "/.obsidian/plugins/" + `basename "$PWD"`
+vault_path := "$HOME/phd-data-analysis"
 
 #───────────────────────────────────────────────────────────────────────────────
 
-_build:
-    node .esbuild.mjs
-
 # if on macOS, open dev-vault & create symlink to it if needed
-build-and-reload: _build
-    [[ "$OSTYPE" =~ darwin* ]] || exit 0
-    test -e "{{ plugin_path }}" || ln -sv "$PWD" "{{ plugin_path }}"
-    open "obsidian://open?vault=$(basename "{{ dev_vault }}")"
+build-and-reload:
+    #!/usr/bin/env zsh
+    node .esbuild.mjs
+    cp -f "main.js" "{{ vault_path }}/.obsidian/plugins/quadro/main.js"
+    vault_name=$(basename "{{ vault_path }}")
+    open "obsidian://open?vault=$vault_name"
+    # reload, if using `Advanced URI` plugin
+    open "obsidian://advanced-uri?vault=$vault_name&commandid=app%253Areload"
 
 format:
     npx biome format --write "$(git rev-parse --show-toplevel)"
@@ -30,9 +30,13 @@ release:
     node .release.mjs
 
 # install dependencies, build, enable git hooks
-init: && _build
+init:
+    #!/usr/bin/env zsh
     git config core.hooksPath .githooks
     npm install
+    node .esbuild.mjs
 
-update-deps: && _build
+update-deps:
+    #!/usr/bin/env zsh
     npm update
+    node .esbuild.mjs
