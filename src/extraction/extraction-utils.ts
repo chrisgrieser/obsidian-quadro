@@ -56,19 +56,25 @@ export function getExtractionFileDisplay(plugin: Quadro, extractionFile: TFile):
 	const displayProps = settings.extraction.displayProperty;
 	if (!frontmatter || displayProps.length === 0) return extractionFile.basename;
 
+	// count of extraction-sources
+	const sourceCount = frontmatter?.["extraction-source"]?.length || 0;
+	const displayCount = sourceCount > 1 ? `${sourceCount}x` : "";
+
 	// use first existing property as display
 	const displayKey = displayProps.find((key) => {
 		const val = frontmatter[key];
 		const keyExists = Array.isArray(val) ? val.length > 0 : val || val === 0;
 		return keyExists;
 	});
+
 	if (!displayKey) return extractionFile.basename;
 
 	let displayVal = frontmatter[displayKey];
 	if (Array.isArray(displayVal)) displayVal = displayVal.join(", ");
+	const displayProp = displayVal ? `${displayKey}: ${displayVal}` : "";
 
-	const displayPropInfo = displayVal ? `  ⬩  ${displayKey}: ${displayVal}` : "";
-	return extractionFile.basename + displayPropInfo;
+	const components = [extractionFile.basename, displayCount, displayProp].filter(Boolean);
+	return components.join("  ⬩  ");
 }
 
 /** gets properties from Template.md of extraction type */
