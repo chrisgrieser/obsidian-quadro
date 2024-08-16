@@ -512,10 +512,6 @@ Grieser, C. (2024). Quadro – Qualitative Data Analysis Realized in Obsidian [C
 https://github.com/chrisgrieser/obsidian-qualitative-data-analysis
 ```
 
-For other citation styles, use the following metadata:
-- [Citation File Format (.cff)](./recommended-citation/CITATION.cff)
-- [BibTeX (.bib)](./recommended-citation/CITATION.bib)
-
 ### About the developer
 I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
