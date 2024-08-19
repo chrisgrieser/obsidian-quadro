@@ -53,9 +53,9 @@ export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void
 
 export class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
 	extractionTypes: TFolder[];
-	callback: (plugin: Quadro, selectedExtrType: TFolder) => void;
+	callback: (selectedExtrType: TFolder) => void;
 
-	constructor(plugin: Quadro, callback: (plugin: Quadro, selectedExtrType: TFolder) => void) {
+	constructor(plugin: Quadro, callback: (selectedExtrType: TFolder) => void) {
 		super(plugin);
 		this.extractionTypes = getAllExtractionTypes(plugin) as TFolder[];
 		this.callback = callback;
@@ -77,7 +77,7 @@ export class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder>
 	}
 
 	onChooseItem(extractionType: TFolder): void {
-		this.callback(this.plugin, extractionType);
+		this.callback(extractionType);
 	}
 }
 

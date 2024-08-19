@@ -1,4 +1,4 @@
-import { Notice, TFolder, getFrontMatterInfo } from "obsidian";
+import { Editor, Notice, TFolder, getFrontMatterInfo } from "obsidian";
 import Quadro from "src/main";
 import {
 	insertReferenceToDatafile,
@@ -20,13 +20,15 @@ import {
 	openExtractionInNewWin,
 } from "./extraction-utils";
 
-async function extractOfType(plugin: Quadro, extractionTypeFolder: TFolder): Promise<void> {
+async function extractOfType(
+	plugin: Quadro,
+	editor: Editor,
+	extractionTypeFolder: TFolder,
+): Promise<void> {
 	const app = plugin.app;
 	ensureCorrectPropertyTypes(app);
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;
-	const editor = getActiveEditor(app);
-	if (!editor) return;
 	const dataFile = editor.editorComponent.view.file;
 
 	// VALIDATE Template
@@ -104,8 +106,10 @@ export function extractFromParagraphCommand(plugin: Quadro) {
 
 	// Suggest Extraction Types, or trigger directly if only one type exists
 	if (extractionTypes.length === 1) {
-		extractOfType(plugin, extractionTypes[0]);
+		extractOfType(plugin, editor, extractionTypes[0]);
 	} else {
-		new SuggesterForExtractionTypes(plugin, extractOfType).open();
+		new SuggesterForExtractionTypes(plugin, (selectedExtrType) => {
+			extractOfType(plugin, editor, selectedExtrType);
+		}).open();
 	}
 }
