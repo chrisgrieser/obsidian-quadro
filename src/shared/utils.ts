@@ -51,7 +51,7 @@ export async function createCodeBlockFile(plugin: Quadro, label: string, name: s
 
 	await openFileInActiveLeaf(app, codeblockFile);
 
-	const editor = getActiveEditor(plugin.app);
+	const editor = getActiveEditor(app);
 	editor?.setCursor({ line: content.length, ch: 0 });
 }
 

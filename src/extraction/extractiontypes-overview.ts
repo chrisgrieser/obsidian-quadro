@@ -1,3 +1,4 @@
+import { TFile } from "obsidian";
 import Quadro from "src/main";
 import { createCodeBlockFile } from "src/shared/utils";
 import { countExtractionsForType, getAllExtractionTypes } from "./extraction-utils";
@@ -7,8 +8,6 @@ export async function extractiontypesOverviewCommand(plugin: Quadro) {
 	const overviewName = "Extraction Type Overview";
 	await createCodeBlockFile(plugin, label, overviewName);
 }
-
-const maxListItems = 7; // CONFIG
 
 export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string {
 	const app = plugin.app;
@@ -31,35 +30,37 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 			);
 			continue;
 		}
-		const htmlLinkToTemplateFile = `<a href="${template.path}" class="internal-link">${extractionType.name}</a>`;
-		const dimensions = Object.keys(frontmatter).map((key) => {
+		const keysForExtractionType = Object.keys(frontmatter);
+
+		const extrFilesForType = extractionType.children.filter(
+			(f) => f instanceof TFile && f.extension === "md",
+		) as TFile[];
+
+		const dimensions = keysForExtractionType.map((key) => {
 			const type = (app.metadataTypeManager.getPropertyInfo(key)?.type as string) || "";
 			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
+			if (values.length === 0) return "";
+			if (type.startsWith("date")) return `<li><b>${key}</b>: ${type}</li>`;
 
-			let valuesStr = "";
-			const showValues = values.length > 0 && !type.startsWith("date");
-			if (showValues) {
-				valuesStr = values
-					.slice(0, maxListItems)
-					.map((value) => {
-						// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
-						const uriForPropertySearch = `obsidian://search?query=path:"${extractionType.path}" ["${key}":"${value}"]`;
-						return `<li><a href='${uriForPropertySearch}'>${value}</a></li>`;
-					})
-					.join("");
-				if (values.length > maxListItems)
-					valuesStr += `<li><i>${values.length - maxListItems} more…</i></li>`;
-				valuesStr = "<ul>" + valuesStr + "</ul>";
-			} else {
-				valuesStr = type ? ": " + type : "";
-			}
+			const valuesThatExistForType = values.filter((value) =>
+				extrFilesForType.some((file) => {
+					const fileValue = app.metadataCache.getFileCache(file)?.frontmatter?.[key];
+					return fileValue === value || fileValue?.includes(value);
+				}),
+			);
+			const valuesStrs = valuesThatExistForType.map((value) => {
+				// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
+				const uriForPropertySearch = `obsidian://search?query=path:"${extractionType.path}" ["${key}":"${value}"]`;
+				return `<li><a href='${uriForPropertySearch}'>${value}</a></li>`;
+			});
 
-			return `<li><b>${key}</b>${valuesStr}</li>`;
+			return `<li><b>${key}</b>: <small><ul>${valuesStrs.join("")}</ul></small></li>`;
 		});
-		const extractionsMade = countExtractionsForType(extractionType);
-		htmlForExtrationtypes.push(
-			`<b>${htmlLinkToTemplateFile}</b> (${extractionsMade}x)<ul>` + dimensions.join("") + "</ul>",
-		);
+
+		const html =
+			`<b><a href="${template.path}" class="internal-link">${extractionType.name}</a></b> (${countExtractionsForType(extractionType)}x)` +
+			`<ul>${dimensions.join("")}</ul>`;
+		htmlForExtrationtypes.push(html);
 	}
 
 	return htmlForExtrationtypes.join("<br>");
