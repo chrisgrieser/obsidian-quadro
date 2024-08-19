@@ -17,7 +17,7 @@ export default class Quadro extends Plugin {
 	styleElPropertyKeyWidth?: HTMLStyleElement;
 	cssclass = this.manifest.id;
 	codeblockLabels = {
-		extractionOverview: "quadro-extractiontypes-overview",
+		extractionOverview: "quadro-extractiontype-overview",
 		codeOverview: "quadro-code-overview",
 	};
 
@@ -83,6 +83,12 @@ export default class Quadro extends Plugin {
 				el.addClass(this.cssclass);
 			},
 		);
+		// DEPRECATION
+		this.registerMarkdownCodeBlockProcessor("quadro-extractiontypes-overview", (_, el) => {
+			el.innerHTML =
+				"INFO: This overview is outdated. Please delete this file and re-run " +
+				'"Show extraction type overview".';
+		});
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
