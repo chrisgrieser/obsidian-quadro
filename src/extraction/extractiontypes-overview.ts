@@ -22,17 +22,15 @@ export function processExtractiontypeOverviewCodeblock(
 	codeblockContent: string,
 ): string {
 	const app = plugin.app;
+	app.internalPlugins.plugins["global-search"].enable(); // in case user disabled it
 	const opts = parseYaml(codeblockContent);
 	const extractionName = opts["extraction-type"];
 	const extractionFolderPath = plugin.settings.extraction.folder + "/" + extractionName;
 	const ignoreKeys = opts.ignore || [];
 
-	// in case user disabled it
-	app.internalPlugins.plugins["global-search"].enable();
-
 	// GUARD
 	const extractionType = app.vault.getFolderByPath(extractionFolderPath);
-	if (!extractionType) return `⚠️ Could not find extraction folder "${extractionName}".`;
+	if (!extractionType) return `⚠️ Extraction Type "${extractionName}" invalid.`;
 	const frontmatter = getPropertiesForExtractionType(app, extractionType);
 	if (!frontmatter) return `⚠️ Invalid template or frontmatter for "${extractionName}".`;
 
