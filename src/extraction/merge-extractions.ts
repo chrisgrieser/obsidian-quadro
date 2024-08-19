@@ -10,7 +10,7 @@ import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor, typeOfFile } from "src/shared/utils";
-import { getExtractionFileDisplay } from "./extraction-utils";
+import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
@@ -26,15 +26,9 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 	getItems(): TFile[] {
 		const extractionType = this.toBeMergedFile.parent as TFolder;
-		const extractionsOfSameType = (
-			extractionType.children.filter(
-				(ch) =>
-					ch instanceof TFile &&
-					ch.extension === "md" &&
-					ch.name !== "Template.md" &&
-					ch.path !== this.toBeMergedFile.path,
-			) as TFile[]
-		).sort((a, b) => b.stat.mtime - a.stat.mtime);
+		const extractionsOfSameType = getExtractionsOfType(extractionType)
+			.filter((f) => f !== this.toBeMergedFile)
+			.sort((a, b) => b.stat.mtime - a.stat.mtime);
 		if (extractionsOfSameType.length === 0) {
 			new Notice("No other extractions have been created yet.", 4000);
 			this.close();
