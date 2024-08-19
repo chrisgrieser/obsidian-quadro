@@ -27,9 +27,9 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	getItems(): TFile[] {
-		const allOtherCodeFiles = getAllCodeFiles(this.plugin).filter((codeFile) => {
-			return codeFile.path !== this.toBeMergedFile.path;
-		});
+		const allOtherCodeFiles = getAllCodeFiles(this.plugin).filter(
+			(codeFile) => codeFile.path !== this.toBeMergedFile.path,
+		);
 		if (allOtherCodeFiles.length === 0) {
 			new Notice("No other codes have been created yet.", 4000);
 			this.close();

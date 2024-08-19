@@ -27,7 +27,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	getItems(): TFile[] {
 		const extractionType = this.toBeMergedFile.parent as TFolder;
 		const extractionsOfSameType = getExtractionsOfType(extractionType)
-			.filter((f) => f !== this.toBeMergedFile)
+			.filter((extrFile) => extrFile.path !== this.toBeMergedFile.path)
 			.sort((a, b) => b.stat.mtime - a.stat.mtime);
 		if (extractionsOfSameType.length === 0) {
 			new Notice("No other extractions have been created yet.", 4000);
