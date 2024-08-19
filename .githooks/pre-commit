@@ -1,9 +1,6 @@
 #!/usr/bin/env zsh
-# vim: filetype=sh
+set -o errexit # block commit if there are any issues reported
 #───────────────────────────────────────────────────────────────────────────────
-
-# INFO block commit if there are any issues reported
-set -o errexit
 
 echo "Pre-Commit Hook"
 
