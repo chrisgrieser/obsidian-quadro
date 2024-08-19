@@ -1,67 +1,71 @@
-import { TFile } from "obsidian";
+import { parseYaml } from "obsidian";
 import Quadro from "src/main";
 import { createCodeBlockFile } from "src/shared/utils";
-import { countExtractionsForType, getAllExtractionTypes } from "./extraction-utils";
+import {
+	SuggesterForExtractionTypes,
+	getExtractionsOfType,
+	getPropertiesForExtractionType,
+} from "./extraction-utils";
 
-export async function extractiontypesOverviewCommand(plugin: Quadro) {
+export function extractiontypesOverviewCommand(plugin: Quadro) {
 	const label = plugin.codeblockLabels.extractionOverview;
-	const overviewName = "Extraction Type Overview";
-	await createCodeBlockFile(plugin, label, overviewName);
+
+	new SuggesterForExtractionTypes(plugin, async (_, selectedExtrType) => {
+		const name = "Extraction Overview – " + selectedExtrType.name;
+		const content = ["extraction-type: " + selectedExtrType.name];
+		await createCodeBlockFile(plugin, label, name, content);
+	}).open();
 }
 
-export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string {
+export function processExtractiontypeOverviewCodeblock(
+	plugin: Quadro,
+	codeblockContent: string,
+): string {
 	const app = plugin.app;
-	const htmlForExtrationtypes: string[] = [];
+	const opts = parseYaml(codeblockContent);
+	const extractionName = opts["extraction-type"];
+	const extractionFolderPath = plugin.settings.extraction.folder + "/" + extractionName;
+	const ignoreKeys = opts["ignore-keys"] || [];
 
-	// ensure search core-plugin is enabled
+	// in case user disabled it
 	app.internalPlugins.plugins["global-search"].enable();
 
-	const extractionTypes = getAllExtractionTypes(plugin);
-	if (!extractionTypes) return "⚠️ No valid extraction templates found.";
+	// GUARD
+	const extractionType = app.vault.getFolderByPath(extractionFolderPath);
+	if (!extractionType) return `⚠️ Could not find extraction folder "${extractionName}".`;
+	const frontmatter = getPropertiesForExtractionType(app, extractionType);
+	if (!frontmatter) return "";
 
-	for (const extractionType of extractionTypes) {
-		const template = app.vault.getFileByPath(extractionType.path + "/Template.md");
-		if (!template) continue;
+	const keysForExtractionType = Object.keys(frontmatter);
+	const extrFilesForType = getExtractionsOfType(extractionType);
 
-		const frontmatter = app.metadataCache.getFileCache(template)?.frontmatter;
-		if (!frontmatter) {
-			htmlForExtrationtypes.push(
-				`⚠️ Invalid properties in template file for "${extractionType.name}".`,
-			);
-			continue;
+	const dimensions = keysForExtractionType.map((key) => {
+		const type = (app.metadataTypeManager.getPropertyInfo(key)?.type as string) || "";
+		const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
+		if (values.length === 0) return "";
+		if (type.startsWith("date") || ignoreKeys.includes(key)) {
+			return `<b>${key}</b> <small>(type "${type}")</small><br>`;
 		}
-		const keysForExtractionType = Object.keys(frontmatter);
 
-		const extrFilesForType = extractionType.children.filter(
-			(f) => f instanceof TFile && f.extension === "md",
-		) as TFile[];
+		const valuesStrs = values.reduce((acc: string[], value) => {
+			let freqOfValue = 0;
+			// values can be included in `getFrontmatterPropertyValuesForKey` due
+			// to being used in extractions of a different type, thus we need to
+			// filter for this extraction type
+			for (const file of extrFilesForType) {
+				const fileValue = app.metadataCache.getFileCache(file)?.frontmatter?.[key];
+				if (fileValue === value || fileValue?.includes(value)) freqOfValue++;
+			}
+			if (freqOfValue === 0) return acc;
 
-		const dimensions = keysForExtractionType.map((key) => {
-			const type = (app.metadataTypeManager.getPropertyInfo(key)?.type as string) || "";
-			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
-			if (values.length === 0) return "";
-			if (type.startsWith("date")) return `<li><b>${key}</b>: ${type}</li>`;
+			// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
+			const uriForPropertySearch = `obsidian://search?query=["${key}":"${value}"] path:"${extractionType.path}"`;
+			acc.push(`<li><a href='${uriForPropertySearch}'>${value}</a> (${freqOfValue}x)</li>`);
+			return acc;
+		}, []);
 
-			const valuesThatExistForType = values.filter((value) =>
-				extrFilesForType.some((file) => {
-					const fileValue = app.metadataCache.getFileCache(file)?.frontmatter?.[key];
-					return fileValue === value || fileValue?.includes(value);
-				}),
-			);
-			const valuesStrs = valuesThatExistForType.map((value) => {
-				// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
-				const uriForPropertySearch = `obsidian://search?query=path:"${extractionType.path}" ["${key}":"${value}"]`;
-				return `<li><a href='${uriForPropertySearch}'>${value}</a></li>`;
-			});
+		return `<b>${key}</b> <small><ul>${valuesStrs.join("")}</ul></small>`;
+	});
 
-			return `<li><b>${key}</b>: <small><ul>${valuesStrs.join("")}</ul></small></li>`;
-		});
-
-		const html =
-			`<b><a href="${template.path}" class="internal-link">${extractionType.name}</a></b> (${countExtractionsForType(extractionType)}x)` +
-			`<ul>${dimensions.join("")}</ul>`;
-		htmlForExtrationtypes.push(html);
-	}
-
-	return htmlForExtrationtypes.join("<br>");
+	return dimensions.join("");
 }

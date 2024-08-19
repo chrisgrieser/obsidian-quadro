@@ -58,7 +58,7 @@ export const CODING_COMMANDS: CommandData[] = [
 	},
 	{
 		id: "code-overview-codeblock",
-		name: "Create/goto code overview file",
+		name: "Show code overview",
 		func: codeOverviewCommand,
 		icon: "circle-equal",
 	},

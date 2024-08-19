@@ -1,5 +1,5 @@
 import { countTimesCodeIsAssigned } from "./coding/coding-utils";
-import { countExtractionsForType } from "./extraction/extraction-utils";
+import { getExtractionsOfType } from "./extraction/extraction-utils";
 import Quadro from "./main";
 import { typeOfFile } from "./shared/utils";
 
@@ -28,8 +28,8 @@ export function updateStatusbar(plugin: Quadro): void {
 	else if (filetype === "Extraction File") {
 		const extractionType = activeFile.parent;
 		if (extractionType) {
-			const extractionsMade = countExtractionsForType(extractionType);
-			segments.push(`${extractionsMade}x extracted`);
+			const count = getExtractionsOfType(extractionType).length;
+			segments.push(`${count}x extracted`);
 		}
 	}
 

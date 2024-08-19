@@ -3,7 +3,7 @@ import { processCodeOverviewCodeblock } from "./coding/code-overview";
 import { CODING_COMMANDS } from "./coding/coding-commands";
 import { setupTrashWatcher } from "./deletion-watcher";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
-import { processExtractiontypesOverviewCodeblock } from "./extraction/extractiontypes-overview";
+import { processExtractiontypeOverviewCodeblock } from "./extraction/extractiontypes-overview";
 import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions";
 import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys";
 import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
@@ -78,8 +78,8 @@ export default class Quadro extends Plugin {
 		});
 		this.registerMarkdownCodeBlockProcessor(
 			this.codeblockLabels.extractionOverview,
-			(_source, el) => {
-				el.innerHTML = processExtractiontypesOverviewCodeblock(this);
+			(source, el) => {
+				el.innerHTML = processExtractiontypeOverviewCodeblock(this, source);
 				el.addClass(this.cssclass);
 			},
 		);

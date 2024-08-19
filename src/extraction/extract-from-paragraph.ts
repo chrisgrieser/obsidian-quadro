@@ -14,8 +14,8 @@ import {
 } from "src/shared/utils";
 import {
 	SuggesterForExtractionTypes,
-	countExtractionsForType,
 	getAllExtractionTypes,
+	getExtractionsOfType,
 	moveCursorToFirstProperty,
 	openExtractionInNewWin,
 } from "./extraction-utils";
@@ -49,7 +49,7 @@ async function extractOfType(plugin: Quadro, extractionTypeFolder: TFolder): Pro
 
 	// Determine path of EXTRACTION-FILE to be created
 	let extractionPath: string;
-	let extractionCount = countExtractionsForType(extractionTypeFolder);
+	let extractionCount = getExtractionsOfType(extractionTypeFolder).length;
 	while (true) {
 		extractionCount++;
 		const countWithLeadingZeros = extractionCount.toString().padStart(3, "0");

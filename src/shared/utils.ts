@@ -38,9 +38,16 @@ export function typeOfFile(
 	return "Data File";
 }
 
-export async function createCodeBlockFile(plugin: Quadro, label: string, name: string) {
+export async function createCodeBlockFile(
+	plugin: Quadro,
+	label: string,
+	name: string,
+	codeblockContent?: string[],
+) {
 	const { app, settings } = plugin;
-	const content = ["```" + label, "```", ""];
+	codeblockContent = codeblockContent || [];
+	// empty line at the beginning for cursor to move to
+	const content = ["", "```" + label, ...codeblockContent, "```", ""];
 
 	const analysisFolderExists = app.vault.getFolderByPath(settings.analysis.folder);
 	if (!analysisFolderExists) app.vault.createFolder(settings.analysis.folder);
@@ -52,7 +59,7 @@ export async function createCodeBlockFile(plugin: Quadro, label: string, name: s
 	await openFileInActiveLeaf(app, codeblockFile);
 
 	const editor = getActiveEditor(app);
-	editor?.setCursor({ line: content.length, ch: 0 });
+	editor?.setCursor({ line: 0, ch: 0 });
 }
 
 //──────────────────────────────────────────────────────────────────────────────

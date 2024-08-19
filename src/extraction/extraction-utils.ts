@@ -64,7 +64,7 @@ export class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder>
 
 	getItems(): TFolder[] {
 		return this.extractionTypes.sort(
-			(a, b) => countExtractionsForType(b) - countExtractionsForType(a),
+			(a, b) => getExtractionsOfType(b).length - getExtractionsOfType(a).length,
 		);
 	}
 
@@ -72,7 +72,7 @@ export class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder>
 		const displayCount = this.plugin.settings.extraction.displayCount;
 		if (!displayCount) return extractionType.name;
 
-		const count = countExtractionsForType(extractionType);
+		const count = getExtractionsOfType(extractionType).length;
 		return `${extractionType.name} (${count}x)`;
 	}
 
@@ -134,7 +134,7 @@ export function getPropertiesForExtractionType(
 	return frontmatter;
 }
 
-/** if extraction folder is missing, or has no valid extraction types, notified
+/** if extraction folder is missing, or has no valid extraction types, notifies
  * the user and returns undefined */
 export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 	const { app, settings } = plugin;
@@ -163,9 +163,9 @@ export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 	return extractionTypes;
 }
 
-export function countExtractionsForType(extractionType: TFolder): number {
+export function getExtractionsOfType(extractionType: TFolder): TFile[] {
 	const extractionsMade = extractionType.children.filter(
 		(ch) => ch instanceof TFile && ch.extension === "md" && ch.name !== "Template.md",
-	);
-	return extractionsMade.length;
+	) as TFile[];
+	return extractionsMade;
 }

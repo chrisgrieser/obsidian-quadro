@@ -41,7 +41,7 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 	},
 	{
 		id: "extractiontypes-overview",
-		name: "Create/Goto extraction type overview file",
+		name: "Show extraction type overview",
 		func: extractiontypesOverviewCommand,
 		icon: "square-equal",
 	},
