@@ -4,7 +4,6 @@ import {
 	insertReferenceToDatafile,
 	prepareDatafileLineUpdate,
 } from "src/shared/add-ref-to-datafile";
-import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	activeFileHasInvalidName,
 	ambiguousSelection,
@@ -14,41 +13,12 @@ import {
 	typeOfFile,
 } from "src/shared/utils";
 import {
+	SuggesterForExtractionTypes,
 	countExtractionsForType,
 	getAllExtractionTypes,
 	moveCursorToFirstProperty,
 	openExtractionInNewWin,
 } from "./extraction-utils";
-
-class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder> {
-	extractionTypes: TFolder[];
-	callback: (plugin: Quadro, selectedExtrType: TFolder) => void;
-
-	constructor(plugin: Quadro, callback: (plugin: Quadro, selectedExtrType: TFolder) => void) {
-		super(plugin);
-		this.extractionTypes = getAllExtractionTypes(plugin) as TFolder[];
-		this.callback = callback;
-		this.setPlaceholder("Select extraction type");
-	}
-
-	getItems(): TFolder[] {
-		return this.extractionTypes.sort(
-			(a, b) => countExtractionsForType(b) - countExtractionsForType(a),
-		);
-	}
-
-	getItemText(extractionType: TFolder): string {
-		const displayCount = this.plugin.settings.extraction.displayCount;
-		if (!displayCount) return extractOfType.name;
-
-		const count = countExtractionsForType(extractionType);
-		return `${extractionType.name} (${count}x)`;
-	}
-
-	onChooseItem(extractionType: TFolder): void {
-		this.callback(this.plugin, extractionType);
-	}
-}
 
 async function extractOfType(plugin: Quadro, extractionTypeFolder: TFolder): Promise<void> {
 	const app = plugin.app;
