@@ -12,7 +12,7 @@ export function extractiontypesOverviewCommand(plugin: Quadro) {
 
 	new SuggesterForExtractionTypes(plugin, async (selectedExtrType) => {
 		const name = "Extraction Overview – " + selectedExtrType.name;
-		const content = ["extraction-type: " + selectedExtrType.name];
+		const content = [`extraction-type: "${selectedExtrType.name}"`];
 		await createCodeBlockFile(plugin, label, name, content);
 	}).open();
 }

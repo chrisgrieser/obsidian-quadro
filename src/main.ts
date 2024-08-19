@@ -84,7 +84,12 @@ export default class Quadro extends Plugin {
 				el.addClass(this.cssclass);
 			},
 		);
-		// DEPRECATION
+		// add yaml-syntax highlighting to codeblocks
+		window.CodeMirror.defineMode(this.codeblockLabels.extractionOverview, (config) =>
+			window.CodeMirror.getMode(config, "yaml"),
+		);
+
+		// DEPRECATION old extraction overview code blocks
 		this.registerMarkdownCodeBlockProcessor("quadro-extractiontypes-overview", (_, el) => {
 			el.innerHTML =
 				"INFO: This overview is outdated. Please delete this file and re-run " +
@@ -96,6 +101,11 @@ export default class Quadro extends Plugin {
 
 	override onunload(): void {
 		if (this.trashWatcherUninstaller) this.trashWatcherUninstaller();
+
+		// de-register yaml-syntax highlighting
+		window.CodeMirror.defineMode(this.codeblockLabels.extractionOverview, (config) =>
+			window.CodeMirror.getMode(config, ""),
+		);
 
 		console.info(this.manifest.name + " Plugin unloaded.");
 	}
