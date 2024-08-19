@@ -8,6 +8,8 @@ export async function extractiontypesOverviewCommand(plugin: Quadro) {
 	await createCodeBlockFile(plugin, label, overviewName);
 }
 
+const maxListItems = 7; // CONFIG
+
 export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string {
 	const app = plugin.app;
 	const htmlForExtrationtypes: string[] = [];
@@ -33,26 +35,26 @@ export function processExtractiontypesOverviewCodeblock(plugin: Quadro): string 
 		const dimensions = Object.keys(frontmatter).map((key) => {
 			const type = (app.metadataTypeManager.getPropertyInfo(key)?.type as string) || "";
 			const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
-			const threshold = 7; // CONFIG
 
 			let valuesStr = "";
 			const showValues = values.length > 0 && !type.startsWith("date");
 			if (showValues) {
 				valuesStr = values
-					.slice(0, threshold)
+					.slice(0, maxListItems)
 					.map((value) => {
 						// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
 						const uriForPropertySearch = `obsidian://search?query=path:"${extractionType.path}" ["${key}":"${value}"]`;
 						return `<li><a href='${uriForPropertySearch}'>${value}</a></li>`;
 					})
 					.join("");
-				if (values.length > threshold)
-					valuesStr += `<li><i>${values.length - threshold} more…</i></li>`;
+				if (values.length > maxListItems)
+					valuesStr += `<li><i>${values.length - maxListItems} more…</i></li>`;
 				valuesStr = "<ul>" + valuesStr + "</ul>";
+			} else {
+				valuesStr = type ? ": " + type : "";
 			}
 
-			const appendix = valuesStr || (type ? ": " + type : "");
-			return `<li><b>${key}</b>${appendix}</li>`;
+			return `<li><b>${key}</b>${valuesStr}</li>`;
 		});
 		const extractionsMade = countExtractionsForType(extractionType);
 		htmlForExtrationtypes.push(
