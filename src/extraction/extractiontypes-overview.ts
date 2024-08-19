@@ -25,7 +25,7 @@ export function processExtractiontypeOverviewCodeblock(
 	const opts = parseYaml(codeblockContent);
 	const extractionName = opts["extraction-type"];
 	const extractionFolderPath = plugin.settings.extraction.folder + "/" + extractionName;
-	const ignoreKeys = opts["ignore-keys"] || [];
+	const ignoreKeys = opts.ignore || [];
 
 	// in case user disabled it
 	app.internalPlugins.plugins["global-search"].enable();
@@ -34,7 +34,7 @@ export function processExtractiontypeOverviewCodeblock(
 	const extractionType = app.vault.getFolderByPath(extractionFolderPath);
 	if (!extractionType) return `⚠️ Could not find extraction folder "${extractionName}".`;
 	const frontmatter = getPropertiesForExtractionType(app, extractionType);
-	if (!frontmatter) return "";
+	if (!frontmatter) return `⚠️ Invalid template or frontmatter for "${extractionName}".`;
 
 	const keysForExtractionType = Object.keys(frontmatter);
 	const extrFilesForType = getExtractionsOfType(extractionType);
@@ -42,7 +42,7 @@ export function processExtractiontypeOverviewCodeblock(
 	const dimensions = keysForExtractionType.map((key) => {
 		const type = (app.metadataTypeManager.getPropertyInfo(key)?.type as string) || "";
 		const values = app.metadataCache.getFrontmatterPropertyValuesForKey(key);
-		if (values.length === 0) return "";
+		if (values.length === 0) return `<b>${key}</b> <small>not used yet</small><br>`;
 		if (type.startsWith("date") || ignoreKeys.includes(key)) {
 			return `<b>${key}</b> <small>(type "${type}")</small><br>`;
 		}
