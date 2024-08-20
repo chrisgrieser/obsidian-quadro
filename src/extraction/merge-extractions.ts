@@ -9,7 +9,7 @@ import {
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, preMergeBackup, typeOfFile } from "src/shared/utils";
+import { getActiveEditor, insertMergeDate, preMergeBackup, typeOfFile } from "src/shared/utils";
 import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
@@ -58,6 +58,11 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		// save discarded properties
 		const discardedProps: FrontMatterCache = {};
 		const frontmatter = app.metadataCache.getFileCache(toMergeInFile)?.frontmatter || {};
+		const ignoreProps = [
+			...settings.extraction.ignorePropertyOnMerge,
+			"extraction-date",
+			"merge-date",
+		];
 		for (const key in this.toBeMergedFrontmatter) {
 			const value1 = frontmatter[key];
 			const value2 = this.toBeMergedFrontmatter[key];
@@ -65,7 +70,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 			const isList = Array.isArray(value1) && Array.isArray(value2);
 			const isEmpty = (!value1 && value1 !== 0) || (!value2 && value2 !== 0);
 			const isEqual = value1 === value2;
-			const ignoredKey = settings.extraction.ignorePropertyOnMerge.includes(key);
+			const ignoredKey = ignoreProps.includes(key);
 
 			if (isList || isEmpty || isEqual || ignoredKey) continue;
 			// values from `toBeMergedFile` are kept, so we save values from `toMergeInFile`
@@ -74,20 +79,18 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 		// MERGE (via Obsidian API)
 		preMergeBackup(plugin, this.toBeMergedFile, toMergeInFile);
-
 		// INFO temporarily disable trashWatcher, as the merge operation trashes
 		// `toBeMergedFile`, triggering an unwanted removal of references
 		if (plugin.trashWatcherUninstaller) plugin.trashWatcherUninstaller();
 		await app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, "", false);
 		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
-
 		const mergedFile = toMergeInFile;
 
 		// CLEANUP merged file
 		let newContent = (await app.vault.read(mergedFile))
 			.replaceAll("**Paragraph extracted from:**\n", "")
-			.replace(/\n{2,}/g, "\n")
-			.replace(/(---.*---)/s, "$1\n"); // line break after frontmatter
+			.replace(/\n{2,}/g, "\n");
+		newContent = insertMergeDate(newContent);
 
 		// INSERT DISCARDED PROPERTIES between frontmatter and content
 		const hasDiscardedProps = Object.keys(discardedProps).length > 0;

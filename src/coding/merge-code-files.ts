@@ -2,7 +2,7 @@ import { Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, preMergeBackup, typeOfFile } from "src/shared/utils";
+import { getActiveEditor, insertMergeDate, preMergeBackup, typeOfFile } from "src/shared/utils";
 import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
@@ -57,10 +57,14 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		preMergeBackup(plugin, this.toBeMergedFile, toMergeInFile, settings.coding.folder);
 
 		// INFO temporarily disable trashWatcher, as the merge operation trashes
-		// the toBeMergedFile file, triggering an unwanted removal of references
+		// `toBeMergedFile`, triggering an unwanted removal of references
 		if (plugin.trashWatcherUninstaller) plugin.trashWatcherUninstaller();
 		await app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, newFileContent, false);
 		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
+		const mergedFile = toMergeInFile;
+
+		const content = insertMergeDate(await app.vault.read(mergedFile));
+		await app.vault.modify(mergedFile, content);
 
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
 

@@ -1,5 +1,14 @@
 import moment from "moment";
-import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile, normalizePath } from "obsidian";
+import {
+	App,
+	Editor,
+	Notice,
+	OpenViewState,
+	TAbstractFile,
+	TFile,
+	getFrontMatterInfo,
+	normalizePath,
+} from "obsidian";
 import Quadro from "src/main";
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
@@ -132,6 +141,17 @@ export async function preMergeBackup(
 	await app.vault.copy(file2, `${backupDir}/${file2.basename} ${timestamp}.md`);
 }
 
+export function insertMergeDate(fileContent: string): string {
+	const fm = getFrontMatterInfo(fileContent);
+	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
+	return (
+		fileContent.slice(0, fm.to) +
+		`merge-date: ${isoDate}\n` +
+		"---\n" +
+		fileContent.slice(fm.contentStart)
+	);
+}
+
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Changed types breaks some things, such as the display of dates in
@@ -139,6 +159,7 @@ export async function preMergeBackup(
  * NOTE `setType` is marked as internal, so keep an eye on it. */
 export function ensureCorrectPropertyTypes(app: App): void {
 	app.metadataTypeManager.setType("extraction-date", "datetime");
+	app.metadataTypeManager.setType("merge-date", "datetime");
 	app.metadataTypeManager.setType("extraction-source", "multitext");
 	app.metadataTypeManager.setType("code description", "text");
 }
