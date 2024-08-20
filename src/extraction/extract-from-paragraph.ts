@@ -9,6 +9,7 @@ import {
 	ambiguousSelection,
 	ensureCorrectPropertyTypes,
 	getActiveEditor,
+	getLocalIsoDateTime,
 	selHasHighlightMarkup,
 	typeOfFile,
 } from "src/shared/utils";
@@ -68,12 +69,11 @@ async function extractOfType(
 	const { blockId, lineWithoutId } = prepareDatafileLineUpdate(editor);
 
 	// insert data into TEMPLATE
-	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
 	const fullSource = `${dataFile.path.slice(0, -3)}#${blockId}`; // slice to rm `.md`
 	const newFrontmatter = [
 		"---",
 		...templateFrontmatter.split("\n"),
-		"extraction-date: " + isoDate,
+		"extraction-date: " + getLocalIsoDateTime(),
 		"extraction-source:",
 		`  - "[[${fullSource}]]"`,
 		"---",

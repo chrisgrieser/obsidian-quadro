@@ -125,6 +125,12 @@ export function activeFileHasInvalidName(app: App): boolean {
 	return true;
 }
 
+export function getLocalIsoDateTime() {
+	// as opposed to `.toISOString`, `.format` returns *local* string https://stackoverflow.com/a/28641878/22114136
+	// `.slice`, as Obsidian does not accept the timezone appendix
+	return moment().format().slice(0, -5);
+}
+
 export async function preMergeBackup(
 	plugin: Quadro,
 	file1: TFile,
@@ -143,8 +149,7 @@ export async function preMergeBackup(
 
 export function insertMergeDate(fileContent: string): string {
 	const fm = getFrontMatterInfo(fileContent);
-	const isoDate = moment().toISOString().slice(0, -5); // slice get Obsidian's date format
-	const mergeProperty = "merge-date: " + isoDate;
+	const mergeProperty = "merge-date: " + getLocalIsoDateTime();
 	let fmContent = fileContent.slice(0, fm.to);
 
 	if (fmContent.includes("\nmerge-date")) {
