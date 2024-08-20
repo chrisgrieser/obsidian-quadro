@@ -23,10 +23,14 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	getItems(): TFile[] {
-		const extractionFolder = this.settings.extraction.folder;
-		const allExtractionFiles = this.app.vault
+		const { app, settings, plugin } = this;
+
+		const extrFolder = settings.extraction.folder;
+		const allExtractionFiles = app.vault
 			.getMarkdownFiles()
-			.filter((f) => f.name !== "Template.md" && f.path.startsWith(extractionFolder + "/"))
+			.filter(
+				(f) => f.path.startsWith(extrFolder + "/") && typeOfFile(plugin, f) === "Extraction File",
+			)
 			.sort((a, b) => b.stat.mtime - a.stat.mtime); // sort by last modified
 		if (allExtractionFiles.length === 0) {
 			new Notice("No extractions have been created yet.", 3000);
