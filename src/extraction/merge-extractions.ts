@@ -58,7 +58,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 			if (isList || isEmpty || isEqual || ignoredKey) continue;
 			// values from `toBeMergedFile` are kept, so we save values from `toMergeInFile`
-			discardedProps[key] = value1; 
+			discardedProps[key] = value1;
 		}
 
 		// MERGE (via Obsidian API)
@@ -98,6 +98,16 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 		await app.vault.modify(mergedFile, newContent);
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 5000);
+
+		// VALIDATE extraction sources
+		const extrSources =
+			app.metadataCache.getFileCache(mergedFile)?.frontmatter?.["extraction-source"];
+		if (extrSources.length < 2 || !Array.isArray(extrSources)) {
+			const msg =
+				"Extraction sources have not been been merged correctly.\n" +
+				"Please check original files.";
+			new Notice(msg, 0);
+		}
 
 		// FIX wrong embeds sometimes occurring
 		app.workspace.getActiveViewOfType(MarkdownView)?.currentMode.cleanupLivePreview();
