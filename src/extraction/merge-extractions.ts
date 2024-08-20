@@ -89,6 +89,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 				...listOfDiscarded,
 				"",
 				"---",
+				"",
 			].join("\n");
 
 			const fmStart = getFrontMatterInfo(newContent).contentStart;
