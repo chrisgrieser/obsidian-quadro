@@ -24,7 +24,6 @@ declare module "obsidian" {
 				focusKey: () => void;
 			}[];
 		};
-		currentMode: MarkdownSubView;
 	}
 	interface MarkdownSubView {
 		cleanupLivePreview: () => void;
@@ -40,10 +39,7 @@ declare module "obsidian" {
 	}
 	interface Editor {
 		editorComponent: {
-			view: {
-				// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
-				file: TFile;
-			};
+			view: MarkdownView;
 			app: App;
 		};
 	}

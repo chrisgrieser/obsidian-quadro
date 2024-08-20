@@ -1,4 +1,4 @@
-import { MarkdownView, Notice, TFile, getFrontMatterInfo } from "obsidian";
+import { Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
@@ -61,7 +61,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
 
 		// FIX wrong embeds sometimes occurring
-		app.workspace.getActiveViewOfType(MarkdownView)?.currentMode.cleanupLivePreview();
+		app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview();
 	}
 }
 

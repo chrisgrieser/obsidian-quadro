@@ -1,6 +1,5 @@
 import {
 	FrontMatterCache,
-	MarkdownView,
 	Notice,
 	TFile,
 	TFolder,
@@ -109,7 +108,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		}
 
 		// FIX wrong embeds sometimes occurring
-		app.workspace.getActiveViewOfType(MarkdownView)?.currentMode.cleanupLivePreview();
+		app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview();
 	}
 }
 
