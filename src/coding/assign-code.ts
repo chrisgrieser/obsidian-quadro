@@ -105,6 +105,10 @@ export function assignCodeCommand(plugin: Quadro): void {
 	// Determine codes already assigned to paragraph, so they can be excluded
 	// from the list of codes in the Suggester
 	const dataFile = editor.editorComponent.view.file;
+	if (!dataFile) {
+		new Notice("No file open.", 4000);
+		return;
+	}
 	const paragraphText = editor.getLine(editor.getCursor().line);
 	const codesFilesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText).map(
 		(code) => code.tFile,

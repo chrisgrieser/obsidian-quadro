@@ -15,6 +15,10 @@ export async function deleteCodeEverywhereCommand(plugin: Quadro): Promise<void>
 	}
 
 	const codeFile = editor.editorComponent.view.file;
+	if (!codeFile) {
+		new Notice("No file open.", 4000);
+		return;
+	}
 
 	// due to our monkeying-around, `app.vault.trash` already triggers
 	// `deleteReferencesToCodeFile`, so we don't need to call it again here

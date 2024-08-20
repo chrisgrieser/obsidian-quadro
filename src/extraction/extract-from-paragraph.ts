@@ -30,6 +30,10 @@ async function extractOfType(
 	const type = extractionTypeFolder.name;
 	const dir = extractionTypeFolder.path;
 	const dataFile = editor.editorComponent.view.file;
+	if (!dataFile) {
+		new Notice("No file open.", 4000);
+		return;
+	}
 
 	// VALIDATE Template
 	const templateFile = app.vault.getFileByPath(`${dir}/Template.md`);

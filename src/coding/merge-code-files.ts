@@ -72,7 +72,11 @@ export function mergeCodeFilesCommand(plugin: Quadro) {
 		new Notice("You must be in a Code File for this.", 3500);
 		return;
 	}
-
 	const toBeMergedFile = editor.editorComponent.view.file;
+	if (!toBeMergedFile) {
+		new Notice("No file open.", 4000);
+		return;
+	}
+
 	new SuggesterForCodeMerging(plugin, toBeMergedFile).open();
 }

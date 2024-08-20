@@ -44,6 +44,10 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 
 		// DATAFILE: Insert new reference
 		const dataFile = editor.editorComponent.view.file;
+		if (!dataFile) {
+			new Notice("No file open.", 4000);
+			return;
+		}
 		const { blockId, lineWithoutId } = prepareDatafileLineUpdate(editor);
 
 		// GUARD

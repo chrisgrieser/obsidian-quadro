@@ -58,6 +58,7 @@ export function insertReferenceToDatafile(
 	blockId: string,
 ): void {
 	const dataFile = editor.editorComponent.view.file;
+	if (!dataFile) return;
 	const app = editor.editorComponent.app;
 
 	app.vault.setConfig("useMarkdownLinks", false); // ensure wikilinks

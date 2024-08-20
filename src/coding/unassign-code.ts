@@ -86,6 +86,10 @@ async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<vo
 	// Remove from DATAFILE
 	const [_, linkPath, blockId] = lineText.match(EMBEDDED_BLOCKLINK_REGEX) || [];
 	const codeFile = editor.editorComponent.view.file;
+	if (!codeFile) {
+		new Notice("No file open.", 4000);
+		return;
+	}
 	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath || "", codeFile.path);
 	if (!blockId || !linkPath || !dataFile) {
 		new Notice("Current line has no correct reference.", 0);
@@ -128,6 +132,10 @@ export function unassignCodeCommand(plugin: Quadro): void {
 
 	// B: in DATAFILE
 	const dataFile = editor.editorComponent.view.file;
+	if (!dataFile) {
+		new Notice("No file open.", 4000);
+		return;
+	}
 	const paragraphText = editor.getLine(editor.getCursor().line);
 	const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText);
 

@@ -119,7 +119,11 @@ export function mergeExtractionFilesCommand(plugin: Quadro) {
 		new Notice("You must be in an Extraction File for this.", 4000);
 		return;
 	}
-
 	const toBeMergedFile = editor.editorComponent.view.file;
+	if (!toBeMergedFile) {
+		new Notice("No file open.", 4000);
+		return;
+	}
+
 	new SuggesterForExtractionMerging(plugin, toBeMergedFile).open();
 }
