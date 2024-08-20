@@ -147,7 +147,7 @@ export function insertMergeDate(fileContent: string): string {
 	return (
 		fileContent.slice(0, fm.to) +
 		`merge-date: ${isoDate}\n` +
-		"---\n" +
+		"---\n\n" +
 		fileContent.slice(fm.contentStart)
 	);
 }
