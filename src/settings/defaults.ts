@@ -40,7 +40,7 @@ export const DEFAULT_SETTINGS = {
 		displayCount: true,
 		openingMode: "tab" as OpeningModes,
 		csvSeparator: "," as CsvSeparatorChoices,
-		ignorePropertyOnMerge: ["extraction-source", "extraction-date"],
+		ignorePropertyOnMerge: ["extraction-date"],
 		displayProperty: [] as string[],
 	},
 	analysis: {

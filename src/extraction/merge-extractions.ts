@@ -57,7 +57,8 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 			const ignoredKey = settings.extraction.ignorePropertyOnMerge.includes(key);
 
 			if (isList || isEmpty || isEqual || ignoredKey) continue;
-			discardedProps[key] = value1; // values from `toBeMergedFile` are kept
+			// values from `toBeMergedFile` are kept, so we save values from `toMergeInFile`
+			discardedProps[key] = value1; 
 		}
 
 		// MERGE (via Obsidian API)
