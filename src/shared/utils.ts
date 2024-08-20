@@ -143,13 +143,17 @@ export async function preMergeBackup(
 
 export function insertMergeDate(fileContent: string): string {
 	const fm = getFrontMatterInfo(fileContent);
-	const isoDate = new Date().toISOString().slice(0, -5); // slice get Obsidian's date format
-	return (
-		fileContent.slice(0, fm.to) +
-		`merge-date: ${isoDate}\n` +
-		"---\n\n" +
-		fileContent.slice(fm.contentStart)
-	);
+	const isoDate = moment().toISOString().slice(0, -5); // slice get Obsidian's date format
+	const mergeProperty = "merge-date: " + isoDate;
+	let fmContent = fileContent.slice(0, fm.to);
+
+	if (fmContent.includes("\nmerge-date")) {
+		fmContent = fmContent.replace(/^merge-date:.*$/m, mergeProperty);
+	} else {
+		fmContent += "\n" + mergeProperty;
+	}
+
+	return fmContent + "\n---\n\n" + fileContent.slice(fm.contentStart);
 }
 
 //──────────────────────────────────────────────────────────────────────────────
