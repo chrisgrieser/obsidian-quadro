@@ -24,6 +24,10 @@ declare module "obsidian" {
 				focusKey: () => void;
 			}[];
 		};
+		currentMode: MarkdownSubView;
+	}
+	interface MarkdownSubView {
+		cleanupLivePreview: () => void;
 	}
 	interface WorkspaceTabs {
 		// sets the css `flex-grow` of the tab group, meaning the number is a

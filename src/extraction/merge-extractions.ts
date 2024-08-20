@@ -1,5 +1,6 @@
 import {
 	FrontMatterCache,
+	MarkdownView,
 	Notice,
 	TFile,
 	TFolder,
@@ -67,12 +68,14 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
 		const mergedFile = toMergeInFile;
 
-		// cleanup merged file
-		let newFileContent = (await app.vault.read(mergedFile))
+		// CLEANUP merged file
+		let newContent = (await app.vault.read(mergedFile))
 			.replaceAll("**Paragraph extracted from:**\n", "")
-			.replaceAll("\n\n\n", "\n");
+			.replace(/\n{2,}/g, "\n")
+			// biome-ignore lint/nursery/useTopLevelRegex: not relevant here
+			.replace(/(---.*---)/s, "$1\n"); // line break after frontmatter
 
-		// insert discarded properties between frontmatter and content
+		// INSERT DISCARDED PROPERTIES between frontmatter and content
 		const hasDiscardedProps = Object.keys(discardedProps).length > 0;
 		if (hasDiscardedProps) {
 			const listOfDiscarded = stringifyYaml(discardedProps)
@@ -85,20 +88,17 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 				...listOfDiscarded,
 				"",
 				"---",
-				"",
 			].join("\n");
 
-			const frontmatterStart = getFrontMatterInfo(newFileContent).contentStart;
-			newFileContent =
-				newFileContent.slice(0, frontmatterStart) +
-				discardedInfo +
-				newFileContent.slice(frontmatterStart);
+			const fmStart = getFrontMatterInfo(newContent).contentStart;
+			newContent = newContent.slice(0, fmStart) + discardedInfo + newContent.slice(fmStart);
 		}
 
-		// HACK timeout needed, so embeds are loaded correctly (and there is no `await` for that)
-		setTimeout(async () => await app.vault.modify(mergedFile, newFileContent), 500);
-
+		await app.vault.modify(mergedFile, newContent);
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 5000);
+
+		// FIX wrong embeds sometimes occurring
+		app.workspace.getActiveViewOfType(MarkdownView)?.currentMode.cleanupLivePreview();
 	}
 }
 

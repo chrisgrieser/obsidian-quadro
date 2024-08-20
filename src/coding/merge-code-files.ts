@@ -1,4 +1,4 @@
-import { Notice, TFile, getFrontMatterInfo } from "obsidian";
+import { MarkdownView, Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
@@ -58,11 +58,10 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		await app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, newFileContent, false);
 		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
 
-		// HACK needed, so embeds are loaded (and there is no `await` for that);
-		// appending empty string to force reload
-		setTimeout(async () => await app.vault.append(toMergeInFile, ""), 500);
-
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
+
+		// FIX wrong embeds sometimes occurring
+		app.workspace.getActiveViewOfType(MarkdownView)?.currentMode.cleanupLivePreview();
 	}
 }
 
