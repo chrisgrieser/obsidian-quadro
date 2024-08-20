@@ -61,11 +61,9 @@ export function createNewExtractionTypeCommand(plugin: Quadro) {
 	new InputForNewExtractionType(plugin, async (nameOfNewType) => {
 		// CREATE NEW FOLDER
 		nameOfNewType = nameOfNewType
-			// biome-ignore lint/nursery/useTopLevelRegex: not needed
 			.replace(/\.md$/, "") // no extension, in case user misunderstood
 			.replaceAll("/", "_") // no groups allowed for extraction types
 			.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
-			// biome-ignore lint/nursery/useTopLevelRegex: not needed
 			.replace(/^\./, ""); // no hidden files/folders
 
 		const folderPath = normalizePath(settings.extraction.folder + "/" + nameOfNewType);

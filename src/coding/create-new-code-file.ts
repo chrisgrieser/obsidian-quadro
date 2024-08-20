@@ -151,7 +151,6 @@ async function createCodeFile(
 ): Promise<TFile | false> {
 	const { app, settings } = plugin;
 	fullCode = fullCode
-		// biome-ignore lint/nursery/useTopLevelRegex: not needed
 		.replace(/\.md$/, "") // no extension
 		.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters
 		.replace(/^\.|\/\./g, "") // no hidden files/folders
@@ -180,7 +179,6 @@ async function createCodeFile(
 	const templateFile = app.vault.getFileByPath(settings.coding.folder + "/Template.md");
 	const frontmatterLines: string[] = [];
 	if (templateFile) {
-		// biome-ignore lint/nursery/useTopLevelRegex: not needed
 		const codeDescRegex = /^code description: (.*)$/m;
 		const templateContent = await app.vault.read(templateFile);
 		let { exists, frontmatter: templateFrontmatter } = getFrontMatterInfo(templateContent);

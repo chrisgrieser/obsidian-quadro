@@ -73,7 +73,6 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		let newContent = (await app.vault.read(mergedFile))
 			.replaceAll("**Paragraph extracted from:**\n", "")
 			.replace(/\n{2,}/g, "\n")
-			// biome-ignore lint/nursery/useTopLevelRegex: not relevant here
 			.replace(/(---.*---)/s, "$1\n"); // line break after frontmatter
 
 		// INSERT DISCARDED PROPERTIES between frontmatter and content

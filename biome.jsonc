@@ -11,7 +11,7 @@
 				"noUndeclaredDependencies": "off", // incompatible with typescript's default auto-imports
 				"noUnknownProperty": "off", // css variables, TODO buggy, investigate later
 				"useImportExtensions": "off", // incompatible with typescript's default auto-imports
-				"useTopLevelRegex": "info"
+				"useTopLevelRegex": "off"
 			},
 			"complexity": {
 				"noExcessiveCognitiveComplexity": "off",
