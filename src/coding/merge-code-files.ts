@@ -19,7 +19,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 			"MERGING INFO",
 			"- Lists properties are fully merged.",
 			`- For conflicting, non-list properties, the values from "${toBeMergedFile.basename}" are take priority.`,
-			`- A backup of the original files will be saved in the subfolder "${plugin.backupDirName}"`,
+			`- A backup of the original files will be saved in the subfolder "${plugin.backupDirName}."`,
 		].join("\n");
 		this.permaNotice = new Notice(msg, 0);
 	}

@@ -27,7 +27,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 		const msg = [
 			"MERGING INFO",
-			`A backup of the original files will be saved in the subfolder "${plugin.backupDirName}"`,
+			`A backup of the original files will be saved in the subfolder "${plugin.backupDirName}."`,
 		].join("\n");
 		this.permaNotice = new Notice(msg, 0);
 	}
