@@ -9,12 +9,14 @@ import {
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, typeOfFile } from "src/shared/utils";
+import { getActiveEditor, preMergeBackup, typeOfFile } from "src/shared/utils";
 import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
 	toBeMergedFrontmatter: FrontMatterCache;
+	permaNotice: Notice;
+
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
 		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
@@ -22,11 +24,21 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		this.toBeMergedFile = toBeMergedFile;
 		this.toBeMergedFrontmatter =
 			this.app.metadataCache.getFileCache(toBeMergedFile)?.frontmatter || {};
+
+		const msg = [
+			"MERGING INFO",
+			`A backup of the original files will be saved in the subfolder "${plugin.backupDirName}"`,
+		].join("\n");
+		this.permaNotice = new Notice(msg, 0);
+	}
+
+	override onClose() {
+		this.permaNotice.hide();
 	}
 
 	getItems(): TFile[] {
 		const extractionType = this.toBeMergedFile.parent as TFolder;
-		const extractionsOfSameType = getExtractionsOfType(extractionType)
+		const extractionsOfSameType = getExtractionsOfType(this.plugin, extractionType)
 			.filter((extrFile) => extrFile.path !== this.toBeMergedFile.path)
 			.sort((a, b) => b.stat.mtime - a.stat.mtime);
 		if (extractionsOfSameType.length === 0) {
@@ -61,11 +73,14 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		}
 
 		// MERGE (via Obsidian API)
+		preMergeBackup(plugin, this.toBeMergedFile, toMergeInFile);
+
 		// INFO temporarily disable trashWatcher, as the merge operation trashes
-		// the toBeMergedFile file, triggering an unwanted removal of references
+		// `toBeMergedFile`, triggering an unwanted removal of references
 		if (plugin.trashWatcherUninstaller) plugin.trashWatcherUninstaller();
 		await app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, "", false);
 		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
+
 		const mergedFile = toMergeInFile;
 
 		// CLEANUP merged file

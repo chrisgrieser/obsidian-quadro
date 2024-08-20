@@ -55,7 +55,7 @@ async function extractOfType(
 
 	// Determine path of EXTRACTION-FILE to be created
 	let extractionPath: string;
-	let extractionCount = getExtractionsOfType(extractionTypeFolder).length;
+	let extractionCount = getExtractionsOfType(plugin, extractionTypeFolder).length;
 	while (true) {
 		extractionCount++;
 		const countWithLeadingZeros = extractionCount.toString().padStart(3, "0");

@@ -1,3 +1,4 @@
+import moment from "moment";
 import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile, normalizePath } from "obsidian";
 import Quadro from "src/main";
 
@@ -20,7 +21,7 @@ export async function openFileInActiveLeaf(app: App, tfile: TFile): Promise<void
 export function typeOfFile(
 	plugin: Quadro,
 	file?: TAbstractFile | string,
-): "Data File" | "Code File" | "Extraction File" | "Template" | false {
+): "Data File" | "Code File" | "Extraction File" | "Template" | "Backup" | "Not Markdown" {
 	const { app, settings } = plugin;
 
 	const fileToCheck =
@@ -30,9 +31,10 @@ export function typeOfFile(
 				? app.vault.getFileByPath(file)
 				: file;
 	if (!fileToCheck || !(fileToCheck instanceof TFile) || fileToCheck.extension !== "md")
-		return false;
+		return "Not Markdown";
 
 	if (fileToCheck.name === "Template.md") return "Template";
+	if (fileToCheck.path.includes(plugin.backupDirName)) return "Backup";
 	if (fileToCheck.path.startsWith(settings.coding.folder + "/")) return "Code File";
 	if (fileToCheck.path.startsWith(settings.extraction.folder + "/")) return "Extraction File";
 	return "Data File";
@@ -112,6 +114,22 @@ export function activeFileHasInvalidName(app: App): boolean {
 	const msg = `The current file contains an invalid character: ${invalidChar}\n\nRename the file and try again.`;
 	new Notice(msg, 0);
 	return true;
+}
+
+export async function preMergeBackup(
+	plugin: Quadro,
+	file1: TFile,
+	file2: TFile,
+	backupDir?: string,
+): Promise<void> {
+	const app = plugin.app;
+
+	backupDir = normalizePath((backupDir || file1.parent?.path || "") + "/" + plugin.backupDirName);
+	if (!app.vault.getFolderByPath(backupDir)) await app.vault.createFolder(backupDir);
+	const timestamp = moment().format("YY-MM-DD_HH-mm-ss"); // ensures unique filename
+
+	await app.vault.copy(file1, `${backupDir}/${file1.basename} ${timestamp}.md`);
+	await app.vault.copy(file2, `${backupDir}/${file2.basename} ${timestamp}.md`);
 }
 
 //──────────────────────────────────────────────────────────────────────────────

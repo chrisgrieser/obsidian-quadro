@@ -10,7 +10,7 @@ export function updateStatusbar(plugin: Quadro): void {
 	const activeFile = app.workspace.getActiveFile();
 
 	// GUARD
-	if (!activeFile || !filetype || filetype === "Template") {
+	if (!activeFile || !["Data File", "Code File", "Extraction File"].includes(filetype)) {
 		statusbar.setText("");
 		return;
 	}
@@ -28,7 +28,7 @@ export function updateStatusbar(plugin: Quadro): void {
 	else if (filetype === "Extraction File") {
 		const extractionType = activeFile.parent;
 		if (extractionType) {
-			const count = getExtractionsOfType(extractionType).length;
+			const count = getExtractionsOfType(plugin, extractionType).length;
 			segments.push(`${count}x extracted`);
 		}
 	}

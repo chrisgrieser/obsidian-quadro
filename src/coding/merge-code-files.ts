@@ -2,12 +2,13 @@ import { Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, typeOfFile } from "src/shared/utils";
+import { getActiveEditor, preMergeBackup, typeOfFile } from "src/shared/utils";
 import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
 	permaNotice: Notice;
+
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
 		this.setPlaceholder(`Select Code File to merge "${toBeMergedFile.basename}" into`);
@@ -18,6 +19,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 			"MERGING INFO",
 			"- Lists properties are fully merged.",
 			`- For conflicting, non-list properties, the values from "${toBeMergedFile.basename}" are take priority.`,
+			`- A backup of the original files will be saved in the subfolder "${plugin.backupDirName}"`,
 		].join("\n");
 		this.permaNotice = new Notice(msg, 0);
 	}
@@ -41,7 +43,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		return codeFileDisplay(this.plugin, codeFile);
 	}
 	async onChooseItem(toMergeInFile: TFile) {
-		const { plugin, app } = this;
+		const { plugin, app, settings } = this;
 
 		// Determine non-frontmatter content of merged file manually, so that the
 		// heading can be inserted into it
@@ -52,6 +54,8 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		const newFileContent = [heading, toBeMergedWithoutFrontMatter].join("\n");
 
 		// MERGE (via Obsidian API)
+		preMergeBackup(plugin, this.toBeMergedFile, toMergeInFile, settings.coding.folder);
+
 		// INFO temporarily disable trashWatcher, as the merge operation trashes
 		// the toBeMergedFile file, triggering an unwanted removal of references
 		if (plugin.trashWatcherUninstaller) plugin.trashWatcherUninstaller();

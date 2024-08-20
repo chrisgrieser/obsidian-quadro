@@ -35,7 +35,7 @@ export function processExtractiontypeOverviewCodeblock(
 	if (!frontmatter) return `⚠️ Invalid template or frontmatter for "${extractionName}".`;
 
 	const keysForExtractionType = Object.keys(frontmatter);
-	const extrFilesForType = getExtractionsOfType(extractionType);
+	const extrFilesForType = getExtractionsOfType(plugin, extractionType);
 
 	const dimensions = keysForExtractionType.map((key) => {
 		const type = (app.metadataTypeManager.getPropertyInfo(key)?.type as string) || "";

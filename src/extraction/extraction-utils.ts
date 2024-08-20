@@ -9,7 +9,7 @@ import {
 } from "obsidian";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { LIVE_PREVIEW } from "src/shared/utils";
+import { LIVE_PREVIEW, typeOfFile } from "src/shared/utils";
 
 export async function openExtractionInNewWin(plugin: Quadro, tfile: TFile): Promise<void> {
 	const { app, settings } = plugin;
@@ -63,16 +63,18 @@ export class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder>
 	}
 
 	getItems(): TFolder[] {
-		return this.extractionTypes.sort(
-			(a, b) => getExtractionsOfType(b).length - getExtractionsOfType(a).length,
-		);
+		return this.extractionTypes.sort((a, b) => {
+			const aCount = getExtractionsOfType(this.plugin, a).length;
+			const bCount = getExtractionsOfType(this.plugin, b).length;
+			return bCount - aCount;
+		});
 	}
 
 	getItemText(extractionType: TFolder): string {
 		const displayCount = this.plugin.settings.extraction.displayCount;
 		if (!displayCount) return extractionType.name;
 
-		const count = getExtractionsOfType(extractionType).length;
+		const count = getExtractionsOfType(this.plugin, extractionType).length;
 		return `${extractionType.name} (${count}x)`;
 	}
 
@@ -163,9 +165,9 @@ export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 	return extractionTypes;
 }
 
-export function getExtractionsOfType(extractionType: TFolder): TFile[] {
+export function getExtractionsOfType(plugin: Quadro, extractionType: TFolder): TFile[] {
 	const extractionsMade = extractionType.children.filter(
-		(ch) => ch instanceof TFile && ch.extension === "md" && ch.name !== "Template.md",
+		(file) => typeOfFile(plugin, file) === "Extraction File",
 	) as TFile[];
 	return extractionsMade;
 }
