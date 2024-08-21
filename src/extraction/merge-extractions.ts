@@ -126,6 +126,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		}
 
 		// FIX wrong embeds sometimes occurring
+		// potential alternative: `app.workspace.activeEditor.leaf.rebuildView()`
 		app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview();
 	}
 }

@@ -69,6 +69,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
 
 		// FIX wrong embeds sometimes occurring
+		// potential alternative: `app.workspace.activeEditor.leaf.rebuildView()`
 		app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview();
 	}
 }
