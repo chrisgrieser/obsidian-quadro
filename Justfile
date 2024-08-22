@@ -2,7 +2,7 @@ set quiet := true
 
 alias i := init
 
-vault_path := "$HOME/phd-data-analysis"
+vault_path := "$HOME/vaults/phd-data-analysis"
 
 #───────────────────────────────────────────────────────────────────────────────
 

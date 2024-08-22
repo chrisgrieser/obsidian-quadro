@@ -2,7 +2,13 @@ import { Notice, TFile, getFrontMatterInfo } from "obsidian";
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, insertMergeDate, preMergeBackup, typeOfFile } from "src/shared/utils";
+import {
+	getActiveEditor,
+	insertMergeDate,
+	preMergeBackup,
+	reloadLivePreview,
+	typeOfFile,
+} from "src/shared/utils";
 import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
@@ -65,12 +71,9 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 
 		const content = insertMergeDate(await app.vault.read(mergedFile));
 		await app.vault.modify(mergedFile, content);
+		reloadLivePreview(app);
 
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
-
-		// FIX wrong embeds sometimes occurring
-		// potential alternative: `app.workspace.activeEditor.leaf.rebuildView()`
-		app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview();
 	}
 }
 

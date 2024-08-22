@@ -9,7 +9,13 @@ import {
 import { setupTrashWatcher } from "src/deletion-watcher";
 import Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, insertMergeDate, preMergeBackup, typeOfFile } from "src/shared/utils";
+import {
+	getActiveEditor,
+	insertMergeDate,
+	preMergeBackup,
+	reloadLivePreview,
+	typeOfFile,
+} from "src/shared/utils";
 import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
@@ -111,11 +117,13 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 			const fmStart = getFrontMatterInfo(newContent).contentStart;
 			newContent = newContent.slice(0, fmStart) + discardedInfo + newContent.slice(fmStart);
 		}
-
 		await app.vault.modify(mergedFile, newContent);
+
+		// POST MERGE
+		reloadLivePreview(app);
 		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 5000);
 
-		// VALIDATE extraction sources
+		// validate extraction sources
 		const extrSources =
 			app.metadataCache.getFileCache(mergedFile)?.frontmatter?.["extraction-source"];
 		if (extrSources.length < 2 || !Array.isArray(extrSources)) {
@@ -124,10 +132,6 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 				"Please check original files.";
 			new Notice(msg, 0);
 		}
-
-		// FIX wrong embeds sometimes occurring
-		// potential alternative: `app.workspace.activeEditor.leaf.rebuildView()`
-		app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview();
 	}
 }
 

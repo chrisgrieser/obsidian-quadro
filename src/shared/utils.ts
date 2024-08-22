@@ -172,3 +172,9 @@ export function ensureCorrectPropertyTypes(app: App): void {
 	app.metadataTypeManager.setType("extraction-source", "multitext");
 	app.metadataTypeManager.setType("code description", "text");
 }
+
+/** FIX wrong embeds sometimes occurring */
+export function reloadLivePreview(app: App): void {
+	// potential alternative: `app.workspace.activeEditor.leaf.rebuildView()`
+	app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview();
+}
