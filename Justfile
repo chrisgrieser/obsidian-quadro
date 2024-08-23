@@ -2,19 +2,20 @@ set quiet := true
 
 alias i := init
 
-vault_path := "$HOME/vaults/phd-data-analysis"
+vault_path := "$HOME/Vaults/phd-data-analysis"
 
 #───────────────────────────────────────────────────────────────────────────────
 
-# if on macOS, open dev-vault & create symlink to it if needed
 build-and-reload:
     #!/usr/bin/env zsh
     node .esbuild.mjs
     cp -f "main.js" "{{ vault_path }}/.obsidian/plugins/quadro/main.js"
     vault_name=$(basename "{{ vault_path }}")
     open "obsidian://open?vault=$vault_name"
-    # reload, if using `Advanced URI` plugin
-    open "obsidian://advanced-uri?vault=$vault_name&commandid=app%253Areload"
+
+    # reload (INFO: requires registering the URI manually)
+    plugin_id=$(grep '"id"' "./manifest.json" | cut -d'"' -f4)
+    open "obsidian://reload-plugin?id=$plugin_id&vault=$vault_name"
 
 format:
     npx biome format --write "$(git rev-parse --show-toplevel)"
