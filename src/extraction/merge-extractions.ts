@@ -74,7 +74,9 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 			const value2 = this.toBeMergedFrontmatter[key];
 
 			const isList = Array.isArray(value1) && Array.isArray(value2);
-			const isEmpty = (!value1 && value1 !== 0) || (!value2 && value2 !== 0);
+			const isEmpty =
+				(!value1 && value1 !== 0 && value1 !== false) ||
+				(!value2 && value2 !== 0 && value2 !== false);
 			const isEqual = value1 === value2;
 			const ignoredKey = ignoreProps.includes(key);
 
