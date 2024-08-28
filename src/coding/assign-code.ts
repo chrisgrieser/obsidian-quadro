@@ -60,7 +60,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 	}
 
 	getItemText(item: CodeAssignItem): string {
-		if (item === "new-code-file") return "🞜 Create new code";
+		if (item === "new-code-file") return "⭑ Create new code";
 		return codeFileDisplay(this.plugin, item);
 	}
 
