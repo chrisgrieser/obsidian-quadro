@@ -33,7 +33,7 @@ jobs:
       - name: Build plugin
         run: |
           npm install
-          node .esbuild.mjs minified
+          node .esbuild.mjs "production"
           mkdir ${{ env.PLUGIN_NAME }}
           cp main.js manifest.json styles.css ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}

@@ -7,7 +7,7 @@ if you want to view the source, please visit the github repository of this plugi
 */
 `;
 
-const minified = process.argv[2] === "minified";
+const production = process.argv[2] === "production";
 
 esbuild
 	.build({
@@ -18,9 +18,9 @@ esbuild
 		format: "cjs",
 		target: "es2022",
 		logLevel: "info",
-		sourcemap: false,
+		sourcemap: production ? false : "inline",
 		treeShaking: true,
-		minify: minified,
+		minify: production,
 		outfile: "main.js",
 	})
 	.catch(() => process.exit(1));
