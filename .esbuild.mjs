@@ -12,17 +12,33 @@ const production = process.argv[2] === "production";
 
 await esbuild
 	.build({
-		banner: { js: banner },
 		entryPoints: ["src/main.ts"],
+		banner: { js: banner },
+		outfile: "main.js",
 		bundle: true,
-		external: ["obsidian", "electron", ...builtins],
+		external: [
+			"obsidian",
+			"electron",
+			"@codemirror/autocomplete",
+			"@codemirror/collab",
+			"@codemirror/commands",
+			"@codemirror/language",
+			"@codemirror/lint",
+			"@codemirror/search",
+			"@codemirror/state",
+			"@codemirror/view",
+			"@lezer/common",
+			"@lezer/highlight",
+			"@lezer/lr",
+			...builtins,
+		],
 		format: "cjs",
 		target: "es2022",
-		logLevel: "info",
 		sourcemap: production ? false : "external",
-		treeShaking: true,
 		minify: production,
-		outfile: "main.js",
+		drop: ["debugger"],
+		treeShaking: true,
+		logLevel: "info",
 	})
 	.catch(() => process.exit(1));
 
