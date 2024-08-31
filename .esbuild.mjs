@@ -1,3 +1,4 @@
+import { appendFileSync } from "node:fs";
 import builtins from "builtin-modules";
 import esbuild from "esbuild";
 
@@ -9,7 +10,7 @@ if you want to view the source, please visit the github repository of this plugi
 
 const production = process.argv[2] === "production";
 
-esbuild
+await esbuild
 	.build({
 		banner: { js: banner },
 		entryPoints: ["src/main.ts"],
@@ -18,9 +19,19 @@ esbuild
 		format: "cjs",
 		target: "es2022",
 		logLevel: "info",
-		sourcemap: production ? false : "inline",
+		sourcemap: production ? false : "external",
 		treeShaking: true,
 		minify: production,
 		outfile: "main.js",
 	})
 	.catch(() => process.exit(1));
+
+//──────────────────────────────────────────────────────────────────────────────
+
+// insert correct link to sourcemap file `main.js.map`, as `sourcemap = "inline"`
+// does not seem to work
+if (!production) {
+	const sourcemapFileUrl = import.meta.resolve("./main.js.map");
+	const mainJs = import.meta.dirname + "/main.js";
+	appendFileSync(mainJs, `\n//# sourceMappingURL=${sourcemapFileUrl}`);
+}
