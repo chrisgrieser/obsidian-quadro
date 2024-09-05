@@ -8,12 +8,23 @@ import {
 } from "./extraction-utils";
 
 export function extractiontypesOverviewCommand(plugin: Quadro) {
-	const label = plugin.codeblockLabels.extractionOverview;
-
 	new SuggesterForExtractionTypes(plugin, async (selectedExtrType) => {
-		const name = "Extraction Overview – " + selectedExtrType.name;
-		const content = [`extraction-type: "${selectedExtrType.name}"`];
-		await createCodeBlockFile(plugin, label, name, content);
+		const filename = "Extraction Overview – " + selectedExtrType.name;
+		const content = [
+			"*This file updates automatically, any manual changes to it will be lost.*",
+			"",
+			"> [!INFO]",
+			'> You can use the codeblock property "filter" to only show specific values, ' +
+				"Click the `</>` icon to edit the filter, for example: `filter: 'word'`. " +
+				"Leave it empty to show all values. ",
+			"",
+			"```" + plugin.codeblockLabels.extractionOverview,
+			`extraction-type: "${selectedExtrType.name}"`,
+			'filter: ""',
+			"```",
+			"",
+		];
+		await createCodeBlockFile(plugin, filename, content);
 	}).open();
 }
 
@@ -25,6 +36,7 @@ export function processExtractiontypeOverviewCodeblock(
 	app.internalPlugins.plugins["global-search"].enable(); // in case user disabled it
 	const opts = parseYaml(codeblockContent);
 	const extractionName = opts["extraction-type"];
+	const filter = (opts.filter || "").trim().toLowerCase();
 	const extractionFolderPath = plugin.settings.extraction.folder + "/" + extractionName;
 	const ignoreKeys = opts.ignore || [];
 
@@ -46,6 +58,9 @@ export function processExtractiontypeOverviewCodeblock(
 		}
 
 		const valuesStrs = values.reduce((acc: string[], value) => {
+			const valueDoesNotMatchFilter = filter && !value.toLowerCase().includes(filter);
+			if (valueDoesNotMatchFilter) return acc;
+
 			let freqOfValue = 0;
 			// values can be included in `getFrontmatterPropertyValuesForKey` due
 			// to being used in extractions of a different type, thus we need to

@@ -51,20 +51,10 @@ export function typeOfFile(
 
 export async function createCodeBlockFile(
 	plugin: Quadro,
-	label: string,
 	name: string,
-	codeblockContent?: string[],
+	content: string[],
 ) {
 	const { app, settings } = plugin;
-	const content = [
-		"", // empty line at beginning for cursor to move to
-		"*This file updates automatically, any manual changes to it will be lost.*",
-		"",
-		"```" + label,
-		...(codeblockContent || []),
-		"```",
-		"",
-	];
 
 	const analysisFolder = settings.analysis.folder;
 	const analysisFolderExists = app.vault.getFolderByPath(analysisFolder);
