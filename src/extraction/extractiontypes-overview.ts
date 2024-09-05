@@ -15,8 +15,8 @@ export function extractiontypesOverviewCommand(plugin: Quadro) {
 			"",
 			"> [!INFO]",
 			'> You can use the codeblock property "filter" to only show specific values, ' +
-				"Click the `</>` icon to edit the filter, for example: `filter: 'word'`. " +
-				"Leave it empty to show all values. ",
+				"Click the `</>` icon to edit the filter, for example: `filter: 'word'`, " +
+				"and move the cursor out of the codeblock. (Leave it empty to show all values.)",
 			"",
 			"```" + plugin.codeblockLabels.extractionOverview,
 			`extraction-type: "${selectedExtrType.name}"`,
@@ -81,5 +81,6 @@ export function processExtractiontypeOverviewCodeblock(
 		return `<b>${key}</b> <small><ul>${valuesStrs.join("")}</ul></small>`;
 	});
 
-	return dimensions.join("");
+	const prefix = filter ? `<hr><b>Filter:</b> <mark>${filter}</mark><hr><br>` : "";
+	return prefix + dimensions.join("");
 }
