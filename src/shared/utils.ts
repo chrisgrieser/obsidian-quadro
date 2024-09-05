@@ -56,19 +56,29 @@ export async function createCodeBlockFile(
 	codeblockContent?: string[],
 ) {
 	const { app, settings } = plugin;
-	codeblockContent = codeblockContent || [];
-	// empty line at the beginning for cursor to move to
-	const content = ["", "```" + label, ...codeblockContent, "```", ""];
+	const content = [
+		"", // empty line at beginning for cursor to move to
+		"*This file updates automatically, any manual changes to it will be lost.*",
+		"",
+		"```" + label,
+		...(codeblockContent || []),
+		"```",
+		"",
+	];
 
-	const analysisFolderExists = app.vault.getFolderByPath(settings.analysis.folder);
-	if (!analysisFolderExists) app.vault.createFolder(settings.analysis.folder);
+	const analysisFolder = settings.analysis.folder;
+	const analysisFolderExists = app.vault.getFolderByPath(analysisFolder);
+	if (!analysisFolderExists) app.vault.createFolder(analysisFolder);
+	const filepath = normalizePath(analysisFolder + `/${name}.md`);
 
-	const filepath = normalizePath(settings.analysis.folder + `/${name}.md`);
-	const codeblockFile =
-		app.vault.getFileByPath(filepath) || (await app.vault.create(filepath, content.join("\n")));
+	let codeblockFile = app.vault.getFileByPath(filepath);
+	if (codeblockFile) {
+		await app.vault.modify(codeblockFile, content.join("\n"));
+	} else {
+		codeblockFile = await app.vault.create(filepath, content.join("\n"));
+	}
 
 	await openFileInActiveLeaf(app, codeblockFile);
-
 	const editor = getActiveEditor(app);
 	editor?.setCursor({ line: 0, ch: 0 });
 }
