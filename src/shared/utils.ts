@@ -49,11 +49,7 @@ export function typeOfFile(
 	return "Data File";
 }
 
-export async function createCodeBlockFile(
-	plugin: Quadro,
-	name: string,
-	content: string[],
-) {
+export async function createCodeBlockFile(plugin: Quadro, name: string, content: string[]) {
 	const { app, settings } = plugin;
 
 	const analysisFolder = settings.analysis.folder;

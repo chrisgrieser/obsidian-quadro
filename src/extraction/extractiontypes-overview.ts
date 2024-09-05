@@ -72,7 +72,8 @@ export function processExtractiontypeOverviewCodeblock(
 			if (freqOfValue === 0) return acc;
 
 			// DOCS https://help.obsidian.md/Plugins/Search#Search+properties
-			const uriForPropertySearch = `obsidian://search?query=["${key}":"${value}"] path:"${extractionType.path}"`;
+			const escapedValue = value.replaceAll('"', '\\"');
+			const uriForPropertySearch = `obsidian://search?query=["${key}":"${escapedValue}"] path:"${extractionType.path}"`;
 			acc.push(`<li><a href='${uriForPropertySearch}'>${value}</a> (${freqOfValue}x)</li>`);
 			return acc;
 		}, []);
