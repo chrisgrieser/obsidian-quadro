@@ -57,8 +57,8 @@ export function updateStatusbar(plugin: Quadro): void {
 	//───────────────────────────────────────────────────────────────────────────
 
 	const text = segments
-		// singular/plural S
-		.map((segment) => (segment.startsWith("1") ? segment.slice(0, -1) : segment))
+		// singular/plural s
+		.map((segment) => (segment.startsWith("1 ") ? segment.slice(0, -1) : segment))
 		.join(", ");
 	statusbar.setText(text);
 }
