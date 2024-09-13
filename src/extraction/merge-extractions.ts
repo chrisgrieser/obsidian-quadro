@@ -123,7 +123,10 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 		// POST MERGE
 		reloadLivePreview(app);
-		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 5000);
+		new Notice(
+			`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`,
+			5000,
+		);
 
 		// validate extraction sources
 		const extrSources =

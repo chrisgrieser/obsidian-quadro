@@ -44,7 +44,8 @@ function recurseCodeFolder(plugin: Quadro, folder: TFolder): string {
 			const nonMarkdownFile = codeFile.extension !== "md";
 			if (isTemplate || nonMarkdownFile) continue;
 
-			const codeDesc = app.metadataCache.getFileCache(codeFile)?.frontmatter?.["code description"];
+			const codeDesc =
+				app.metadataCache.getFileCache(codeFile)?.frontmatter?.["code description"];
 			const desc = codeDesc ? ": " + codeDesc : "";
 			// `class="internal-link"` is needed for Obsidian to recognize it as clickable link
 			const htmlLink = `<a href="${codeFile.path}" class="internal-link">${codeFile.basename}</a>`;

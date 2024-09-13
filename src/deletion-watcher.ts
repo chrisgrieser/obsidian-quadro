@@ -18,7 +18,8 @@ export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 		trash: (originalMethod) => {
 			return async (file, useSystemTrash) => {
 				const filetype = typeOfFile(plugin, file);
-				const isCodeOrExtractionFile = filetype === "Code File" || filetype === "Extraction File";
+				const isCodeOrExtractionFile =
+					filetype === "Code File" || filetype === "Extraction File";
 
 				if (isCodeOrExtractionFile && file instanceof TFile) {
 					const msg = `Intercepted deletion of "${file.name}", deleting all references to the ${filetype} before proceeding with deletion.`;

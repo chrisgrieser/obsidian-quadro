@@ -148,7 +148,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 					.setPlaceholder(DEFAULT_SETTINGS.extraction.folder)
 					.setValue(settings.extraction.folder)
 					.onChange(async (path) => {
-						settings.extraction.folder = sanitizePath(path) || DEFAULT_SETTINGS.extraction.folder;
+						settings.extraction.folder =
+							sanitizePath(path) || DEFAULT_SETTINGS.extraction.folder;
 						await this.plugin.saveSettings();
 					})
 					.inputEl.setCssProps(inputElCss);

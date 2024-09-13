@@ -6,21 +6,23 @@
 			"all": true,
 			"nursery": {
 				"all": true,
-				"noConsole": "off", // `console.info` use is intentional
 				"useImportRestrictions": "off",
-				"noUndeclaredDependencies": "off", // incompatible with typescript's default auto-imports
-				"noUnknownProperty": "off", // css variables, TODO buggy, investigate later
-				"useImportExtensions": "off", // incompatible with typescript's default auto-imports
-				"useTopLevelRegex": "off"
+				"noSecrets": "off" // buggy, many false positives
 			},
 			"complexity": {
 				"noExcessiveCognitiveComplexity": "off",
 				"useSimplifiedLogicExpression": "off" // complains about negated and-conditions
 			},
+			"performance": {
+				"useTopLevelRegex": "off"
+			},
 			"suspicious": {
-				"noConsoleLog": "info"
+				"noConsoleLog": "info",
+				"noConsole": "off" // `console.info` use is intentional
 			},
 			"correctness": {
+				"noUndeclaredDependencies": "off", // incompatible with typescript's default auto-imports
+				"useImportExtensions": "off", // incompatible with typescript's default auto-imports
 				"noNodejsModules": "off" // Obsidian is client-site, thus requiring them
 			},
 			"style": {
@@ -35,17 +37,14 @@
 	"javascript": {
 		"globals": ["activeDocument", "activeWindow"] // electron
 	},
-	"css": {
-		// opt-in at biome 1.8
-		"linter": { "enabled": true },
-		"formatter": { "enabled": true }
-	},
 	"formatter": {
-		"lineWidth": 100,
-		"indentStyle": "tab",
+		"useEditorconfig": true,
+		"lineWidth": 100, // FIX value from editorconfig not correctly applied
 		"formatWithErrors": true
 	},
-	"files": { "ignoreUnknown": true },
+	"files": {
+		"ignoreUnknown": true
+	},
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",

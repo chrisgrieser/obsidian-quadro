@@ -73,7 +73,10 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		await app.vault.modify(mergedFile, content);
 		reloadLivePreview(app);
 
-		new Notice(`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`, 4000);
+		new Notice(
+			`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`,
+			4000,
+		);
 	}
 }
 
