@@ -17,8 +17,10 @@
 				"useTopLevelRegex": "off"
 			},
 			"suspicious": {
-				"noConsoleLog": "info",
-				"noConsole": "off" // `console.info` use is intentional
+				"noConsole": {
+					"level": "info",
+					"options": { "allow": ["assert", "error", "info", "warn"] } // only disallow `.log`
+				}
 			},
 			"correctness": {
 				"noUndeclaredDependencies": "off", // incompatible with typescript's default auto-imports
@@ -30,7 +32,10 @@
 				"useImportType": "off", // incompatible with typescript's default auto-imports
 				"useTemplate": "off", // too strict, simple concatenation are fine
 				"noParameterAssign": "off",
-				"useNamingConvention": { "level": "info", "options": { "strictCase": false } }
+				"useNamingConvention": {
+					"level": "info",
+					"options": { "strictCase": false }
+				}
 			}
 		}
 	},
@@ -39,7 +44,6 @@
 	},
 	"formatter": {
 		"useEditorconfig": true,
-		"lineWidth": 100, // FIX value from editorconfig not correctly applied
 		"formatWithErrors": true
 	},
 	"files": {
