@@ -20,17 +20,14 @@ export async function mergeFiles(
 	plugin: Quadro,
 	toBeMergedFile: TFile,
 	toMergeInFile: TFile,
-	backupDir?: string,
+	backupDir: string,
 ): Promise<void> {
 	const { app, settings } = plugin;
 
 	// PRE MERGE BACKUP
-	backupDir = normalizePath(
-		(backupDir || toBeMergedFile.parent?.path || "") + "/" + plugin.backupDirName,
-	);
+	backupDir = normalizePath(backupDir + "/" + plugin.backupDirName);
 	if (!app.vault.getFolderByPath(backupDir)) await app.vault.createFolder(backupDir);
 	const timestamp = moment().format("YY-MM-DD_HH-mm-ss"); // ensures unique filename
-
 	await app.vault.copy(toBeMergedFile, `${backupDir}/${toBeMergedFile.basename} ${timestamp}.md`);
 	await app.vault.copy(toMergeInFile, `${backupDir}/${toMergeInFile.basename} ${timestamp}.md`);
 
@@ -102,7 +99,7 @@ export async function mergeFiles(
 	const uniqueOutdatesFiles = [...new Set(outdatesFiles)];
 	let changedFilesCounter = 0;
 	for (const filepath of uniqueOutdatesFiles) {
-		const linkedFile = app.metadataCache.getFirstLinkpathDest(filepath, toMergeInFile.path);
+		const linkedFile = app.vault.getFileByPath(filepath);
 		if (!linkedFile) continue;
 
 		const content = await app.vault.read(linkedFile);
