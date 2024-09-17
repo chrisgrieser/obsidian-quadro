@@ -29,8 +29,7 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 		const allExtractionFiles = app.vault
 			.getMarkdownFiles()
 			.filter(
-				(f) =>
-					f.path.startsWith(extrFolder + "/") && typeOfFile(plugin, f) === "Extraction File",
+				(f) => f.path.startsWith(extrFolder + "/") && typeOfFile(plugin, f) === "Extraction File",
 			)
 			.sort((a, b) => b.stat.mtime - a.stat.mtime); // sort by last modified
 		if (allExtractionFiles.length === 0) {
@@ -46,8 +45,6 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 
 	async onChooseItem(extractionFile: TFile) {
 		const { app, editor } = this;
-
-		// DATAFILE: Insert new reference
 		const dataFile = editor.editorComponent.view.file;
 		if (!dataFile) {
 			new Notice("No file open.", 4000);
@@ -64,29 +61,16 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 			return;
 		}
 
-		// Insert Reference to last EXTRACTION FILE
-		const exFileLines = (await app.vault.read(extractionFile)).trim().split("\n");
+		// UPDATE EXTRACTION FILE
 		const fullSource = `${dataFile.path.slice(0, -3)}#${blockId}`; // slice to rm `.md`
+		const addedRef = `[[${fullSource}]]`;
+		app.fileManager.processFrontMatter(extractionFile, (frontmatter) => {
+			const source = frontmatter["extraction-source"];
+			frontmatter["extraction-source"] = source ? [...source, addedRef] : [addedRef];
+		});
+		await app.vault.append(extractionFile, `![[${fullSource}]]\n`);
 
-		const sourcePropertyLn =
-			1 + exFileLines.findIndex((line) => line.startsWith("extraction-source:"));
-		if (sourcePropertyLn === 0) {
-			const msg = `Could not find "extraction-source:" property in the "${extractionFile.basename}". Aborting.`;
-			new Notice(msg, 0);
-			return;
-		}
-		const nextPropertyLnum =
-			sourcePropertyLn +
-			exFileLines
-				.slice(sourcePropertyLn) // search after line starting with "extraction-source:"
-				.findIndex((line) => !line.startsWith("  - "));
-
-		exFileLines.splice(nextPropertyLnum, 0, `  - "[[${fullSource}]]"`);
-		exFileLines.push(`![[${fullSource}]]`);
-		exFileLines.push(""); // blank line at end
-
-		// UPDATE BOTH FILES
-		await app.vault.modify(extractionFile, exFileLines.join("\n"));
+		// UPDATE DATAFILE
 		insertReferenceToDatafile(
 			editor,
 			extractionFile,
