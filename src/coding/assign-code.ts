@@ -40,8 +40,6 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		]);
 
 		this.scope.register(["Shift"], "Enter", (event: KeyboardEvent): void => {
-			// INFO more specific actions like using the selection can be done via
-			// the undocumented `this.chooser`
 			if (event.isComposing) return;
 			event.preventDefault();
 			this.close();

@@ -1,13 +1,6 @@
 import "obsidian";
 
 declare module "obsidian" {
-	interface FuzzySuggestModal<T> {
-		chooser?: {
-			useSelectedItem: (evt: KeyboardEvent) => boolean;
-			moveDown: (count: number) => void;
-			moveUp: (count: number) => void;
-		};
-	}
 	interface Workspace {
 		getAdjacentLeafInDirection: (
 			leaf: WorkspaceLeaf,
