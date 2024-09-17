@@ -100,6 +100,7 @@ export async function mergeFiles(
 		if (targets.includes(toMergeInFile.path)) outdatesFiles.push(filepath);
 	}
 	const uniqueOutdatesFiles = [...new Set(outdatesFiles)];
+	let changedFilesCounter = 0;
 	for (const filepath of uniqueOutdatesFiles) {
 		const linkedFile = app.metadataCache.getFirstLinkpathDest(filepath, toMergeInFile.path);
 		if (!linkedFile) continue;
@@ -111,6 +112,7 @@ export async function mergeFiles(
 			`${toBeMergedFile.basename}]]`,
 		);
 		await app.vault.modify(linkedFile, newContent);
+		changedFilesCounter++;
 	}
 
 	// DISCARD `toMergeInFile`
@@ -122,8 +124,8 @@ export async function mergeFiles(
 	reloadLivePreview(app);
 	const msg = [
 		`"${toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`,
-		"",
+		`References in ${changedFilesCounter} files were updated.`,
 		`A backup of the original files has been saved in the subfolder "${plugin.backupDirName}."`,
-	].join("\n");
-	new Notice(msg, 7000);
+	].join("\n\n");
+	new Notice(msg, 12000);
 }
