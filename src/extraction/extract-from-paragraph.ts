@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Editor, Notice, TFolder, getFrontMatterInfo } from "obsidian";
 import Quadro from "src/main";
 import {
@@ -9,7 +10,6 @@ import {
 	ambiguousSelection,
 	ensureCorrectPropertyTypes,
 	getActiveEditor,
-	getLocalIsoDateTime,
 	selHasHighlightMarkup,
 	typeOfFile,
 } from "src/shared/utils";
@@ -70,10 +70,11 @@ async function extractOfType(
 
 	// insert data into TEMPLATE
 	const fullSource = `${dataFile.path.slice(0, -3)}#${blockId}`; // slice to rm `.md`
+	const timestamp = moment().format("YYYY-MM-DDTHH:mm"); // obsidian has trouble with timezone data
 	const newFrontmatter = [
 		"---",
 		...templateFrontmatter.split("\n"),
-		"extraction-date: " + getLocalIsoDateTime(),
+		"extraction-date: " + timestamp,
 		"extraction-source:",
 		`  - "[[${fullSource}]]"`,
 		"---",

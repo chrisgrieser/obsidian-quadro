@@ -1,4 +1,3 @@
-import moment from "moment";
 import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile, normalizePath } from "obsidian";
 import Quadro from "src/main";
 
@@ -110,14 +109,6 @@ export function activeFileHasInvalidName(app: App): boolean {
 	const msg = `The current file contains an invalid character: ${invalidChar}\n\nRename the file and try again.`;
 	new Notice(msg, 0);
 	return true;
-}
-
-export function getLocalIsoDateTime() {
-	// as opposed to `.toISOString`, `.format` returns *local* string https://stackoverflow.com/a/28641878/22114136
-	// `.slice`, as Obsidian does not accept the timezone appendix.
-	// Furthermore, we slice away three for characters since the seconds are not
-	// relevant to us
-	return moment().format().slice(0, -9);
 }
 
 //──────────────────────────────────────────────────────────────────────────────

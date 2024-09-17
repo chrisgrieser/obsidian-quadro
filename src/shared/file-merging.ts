@@ -9,7 +9,6 @@ import {
 	stringifyYaml,
 } from "obsidian";
 import Quadro from "src/main";
-import { getLocalIsoDateTime } from "./utils";
 
 /** FIX wrong embeds sometimes occurring */
 function reloadLivePreview(app: App): void {
@@ -67,7 +66,8 @@ export async function mergeFiles(
 			discardedProps[key] = val2; // save the value that was discarded
 		}
 
-		toBeMergedFrontmatter["merge-date"] = getLocalIsoDateTime();
+		// obsidian has trouble with timezone data, thus leaving it out
+		toBeMergedFrontmatter["merge-date"] = moment().format("YYYY-MM-DDTHH:mm");
 	});
 
 	// MERGE CONTENT into `toMergeInFile`
