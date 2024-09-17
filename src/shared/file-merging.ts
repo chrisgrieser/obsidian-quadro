@@ -27,14 +27,15 @@ export async function mergeFiles(
 ): Promise<void> {
 	const { app, settings } = plugin;
 
-	// PRE MERGE BACKUP
+	// PRE-MERGE BACKUP
 	backupDir = normalizePath(backupDir + "/" + plugin.backupDirName);
 	if (!app.vault.getFolderByPath(backupDir)) await app.vault.createFolder(backupDir);
 	const timestamp = moment().format("YY-MM-DD_HH-mm-ss"); // ensures unique filename
 	await app.vault.copy(toBeMergedFile, `${backupDir}/${toBeMergedFile.basename} ${timestamp}.md`);
 	await app.vault.copy(toMergeInFile, `${backupDir}/${toMergeInFile.basename} ${timestamp}.md`);
 
-	// MERGE FRONTMATTER into into `` & SAVE DISCARDED PROPS
+	// MERGE FRONTMATTER into into `toMergeInFile`
+	// & SAVE DISCARDED PROPS
 	const ignoreProps = [
 		...settings.extraction.ignorePropertyOnMerge,
 		"extraction-date",
@@ -92,6 +93,7 @@ export async function mergeFiles(
 		.replace(/\n{2,}/g, "\n");
 	const toBeMergedRawfm = toBeMerged.slice(0, getFrontMatterInfo(toBeMerged).contentStart);
 	await app.vault.modify(toBeMergedFile, toBeMergedRawfm + discardedInfo + mergedContent);
+	reloadLivePreview(app);
 	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 }); // move cursor to the beginning of the file
 
 	// POINT REFERENCES from `toMergeInFile` to `toBeMergedFile``
