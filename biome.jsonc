@@ -44,6 +44,7 @@
 	},
 	"formatter": {
 		"useEditorconfig": true,
+		"lineWidth": 100, // FIX value from editorconfig not correctly applied
 		"formatWithErrors": true
 	},
 	"files": {
