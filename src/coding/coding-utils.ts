@@ -51,7 +51,7 @@ export function getCodesFilesInParagraphOfDatafile(
 
 //──────────────────────────────────────────────────────────────────────────────
 
-/** Returns all Code Files, excluding the Template.md, and sorted based on setting */
+/** Returns all Code Files, sorted based on user setting */
 export function getAllCodeFiles(plugin: Quadro): TFile[] {
 	const allCodeFiles = plugin.app.vault
 		.getMarkdownFiles()
@@ -64,7 +64,6 @@ export function getAllCodeFiles(plugin: Quadro): TFile[] {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-/** displays full code & appends minigraph (if not disabled by user) */
 export function codeFileDisplay(plugin: Quadro, codeFile: TFile): string {
 	const fullCode = getFullCode(plugin, codeFile);
 

@@ -10,7 +10,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
-		this.setPlaceholder(`Select Code File to merge "${toBeMergedFile.basename}" into`);
+		this.setPlaceholder(`Select Code File to merge into "${toBeMergedFile.basename}":`);
 		this.toBeMergedFile = toBeMergedFile;
 	}
 
@@ -30,7 +30,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 	async onChooseItem(toMergeInFile: TFile) {
 		const backupDir = this.plugin.settings.coding.folder;
-		await mergeFiles(this.plugin, this.toBeMergedFile, toMergeInFile, backupDir);
+		await mergeFiles(this.plugin, this.toBeMergedFile, toMergeInFile, backupDir, true);
 	}
 }
 

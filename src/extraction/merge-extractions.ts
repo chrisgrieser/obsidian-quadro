@@ -10,7 +10,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
-		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
+		this.setPlaceholder(`Select Extraction File to merge into "${toBeMergedFile.basename}":`);
 		this.toBeMergedFile = toBeMergedFile;
 	}
 
@@ -32,7 +32,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 
 	async onChooseItem(toMergeInFile: TFile) {
 		const backupDir = this.toBeMergedFile.parent?.path || "";
-		await mergeFiles(this.plugin, this.toBeMergedFile, toMergeInFile, backupDir);
+		await mergeFiles(this.plugin, this.toBeMergedFile, toMergeInFile, backupDir, false);
 	}
 }
 

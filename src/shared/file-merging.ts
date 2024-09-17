@@ -8,6 +8,7 @@ import {
 	normalizePath,
 	stringifyYaml,
 } from "obsidian";
+import { getFullCode } from "src/coding/coding-utils";
 import Quadro from "src/main";
 
 /** FIX wrong embeds sometimes occurring */
@@ -21,6 +22,7 @@ export async function mergeFiles(
 	toBeMergedFile: TFile,
 	toMergeInFile: TFile,
 	backupDir: string,
+	isCodeFile: boolean,
 ): Promise<void> {
 	const { app, settings } = plugin;
 
@@ -97,19 +99,26 @@ export async function mergeFiles(
 		if (targets.includes(toMergeInFile.path)) outdatesFiles.push(filepath);
 	}
 	const uniqueOutdatesFiles = [...new Set(outdatesFiles)];
-	let changedFilesCounter = 0;
+	let changedFilesCount = 0;
+	let changedLinksCount = 0;
 	for (const filepath of uniqueOutdatesFiles) {
 		const linkedFile = app.vault.getFileByPath(filepath);
 		if (!linkedFile) continue;
 
-		const content = await app.vault.read(linkedFile);
-		// CAVEAT not fully safe, links may be formatted differently
-		const newContent = content.replaceAll(
-			`${toMergeInFile.basename}]]`,
-			`${toBeMergedFile.basename}]]`,
-		);
-		await app.vault.modify(linkedFile, newContent);
-		changedFilesCounter++;
+		// UPDATE LINKS safely
+		let content = await app.vault.read(linkedFile);
+		const outlinks = app.metadataCache.getFileCache(linkedFile)?.links || [];
+		for (const link of outlinks) {
+			if (link.link !== toMergeInFile.basename && link.link !== toMergeInFile.path) continue;
+			const alias = isCodeFile ? "|" + getFullCode(plugin, toBeMergedFile) : "";
+			const newLinkText = `[[${toBeMergedFile.basename}${alias}]]`;
+			const { start, end } = link.position;
+			content = content.slice(0, start.offset) + newLinkText + content.slice(end.offset);
+			changedLinksCount++;
+		}
+
+		await app.vault.modify(linkedFile, content);
+		changedFilesCount++;
 	}
 
 	// DISCARD `toMergeInFile`
@@ -119,9 +128,11 @@ export async function mergeFiles(
 
 	// POST MERGE
 	reloadLivePreview(app);
+	const s1 = changedLinksCount === 1 ? "" : "s";
+	const s2 = changedFilesCount === 1 ? "" : "s";
 	const msg = [
 		`"${toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`,
-		`References in ${changedFilesCounter} files were updated.`,
+		`${changedLinksCount} reference${s1} in ${changedFilesCount} file${s2} updated.`,
 		`A backup of the original files has been saved in the subfolder "${plugin.backupDirName}."`,
 	].join("\n\n");
 	new Notice(msg, 12000);
