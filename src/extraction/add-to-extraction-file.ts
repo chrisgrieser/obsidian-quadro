@@ -29,7 +29,8 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 		const allExtractionFiles = app.vault
 			.getMarkdownFiles()
 			.filter(
-				(f) => f.path.startsWith(extrFolder + "/") && typeOfFile(plugin, f) === "Extraction File",
+				(f) =>
+					f.path.startsWith(extrFolder + "/") && typeOfFile(plugin, f) === "Extraction File",
 			)
 			.sort((a, b) => b.stat.mtime - a.stat.mtime); // sort by last modified
 		if (allExtractionFiles.length === 0) {

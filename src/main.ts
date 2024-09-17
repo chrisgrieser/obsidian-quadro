@@ -1,7 +1,6 @@
 import { Command, Plugin } from "obsidian";
 import { processCodeOverviewCodeblock } from "./coding/code-overview";
 import { CODING_COMMANDS } from "./coding/coding-commands";
-import { setupTrashWatcher } from "./deletion-watcher";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
 import { processExtractiontypeOverviewCodeblock } from "./extraction/extractiontypes-overview";
 import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions";
@@ -11,6 +10,7 @@ import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
 import { ensureCorrectPropertyTypes } from "./shared/utils";
 import { updateStatusbar } from "./statusbar";
+import { setupTrashWatcher } from "./trashing-watcher";
 
 // biome-ignore lint/style/noDefaultExport: required for Obsidian plugins to work
 export default class Quadro extends Plugin {

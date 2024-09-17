@@ -1,14 +1,5 @@
 import moment from "moment";
-import {
-	App,
-	Editor,
-	Notice,
-	OpenViewState,
-	TAbstractFile,
-	TFile,
-	getFrontMatterInfo,
-	normalizePath,
-} from "obsidian";
+import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile, normalizePath } from "obsidian";
 import Quadro from "src/main";
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
@@ -129,36 +120,6 @@ export function getLocalIsoDateTime() {
 	return moment().format().slice(0, -9);
 }
 
-export async function preMergeBackup(
-	plugin: Quadro,
-	file1: TFile,
-	file2: TFile,
-	backupDir?: string,
-): Promise<void> {
-	const app = plugin.app;
-
-	backupDir = normalizePath((backupDir || file1.parent?.path || "") + "/" + plugin.backupDirName);
-	if (!app.vault.getFolderByPath(backupDir)) await app.vault.createFolder(backupDir);
-	const timestamp = moment().format("YY-MM-DD_HH-mm-ss"); // ensures unique filename
-
-	await app.vault.copy(file1, `${backupDir}/${file1.basename} ${timestamp}.md`);
-	await app.vault.copy(file2, `${backupDir}/${file2.basename} ${timestamp}.md`);
-}
-
-export function insertMergeDate(fileContent: string): string {
-	const fm = getFrontMatterInfo(fileContent);
-	const mergeProperty = "merge-date: " + getLocalIsoDateTime();
-	let fmContent = fileContent.slice(0, fm.to);
-
-	if (fmContent.includes("\nmerge-date")) {
-		fmContent = fmContent.replace(/^merge-date:.*$/m, mergeProperty);
-	} else {
-		fmContent += "\n" + mergeProperty;
-	}
-
-	return fmContent + "\n---\n\n" + fileContent.slice(fm.contentStart);
-}
-
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Changed types breaks some things, such as the display of dates in
@@ -169,10 +130,4 @@ export function ensureCorrectPropertyTypes(app: App): void {
 	app.metadataTypeManager.setType("merge-date", "datetime");
 	app.metadataTypeManager.setType("extraction-source", "multitext");
 	app.metadataTypeManager.setType("code description", "text");
-}
-
-/** FIX wrong embeds sometimes occurring */
-export function reloadLivePreview(app: App): void {
-	// potential alternative: `app.workspace.activeEditor.leaf.rebuildView()`
-	app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview?.();
 }

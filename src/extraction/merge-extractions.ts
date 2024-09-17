@@ -1,45 +1,17 @@
-import {
-	FrontMatterCache,
-	Notice,
-	TFile,
-	TFolder,
-	getFrontMatterInfo,
-	stringifyYaml,
-} from "obsidian";
-import { setupTrashWatcher } from "src/deletion-watcher";
+import { Notice, TFile, TFolder } from "obsidian";
 import Quadro from "src/main";
+import { mergeFiles } from "src/shared/file-merging";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import {
-	getActiveEditor,
-	insertMergeDate,
-	preMergeBackup,
-	reloadLivePreview,
-	typeOfFile,
-} from "src/shared/utils";
+import { getActiveEditor, typeOfFile } from "src/shared/utils";
 import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	toBeMergedFile: TFile;
-	toBeMergedFrontmatter: FrontMatterCache;
-	permaNotice: Notice;
 
 	constructor(plugin: Quadro, toBeMergedFile: TFile) {
 		super(plugin);
 		this.setPlaceholder(`Select Extraction File to merge "${toBeMergedFile.basename}" into.`);
-
 		this.toBeMergedFile = toBeMergedFile;
-		this.toBeMergedFrontmatter =
-			this.app.metadataCache.getFileCache(toBeMergedFile)?.frontmatter || {};
-
-		const msg = [
-			"MERGING INFO",
-			`A backup of the original files will be saved in the subfolder "${plugin.backupDirName}."`,
-		].join("\n");
-		this.permaNotice = new Notice(msg, 0);
-	}
-
-	override onClose() {
-		this.permaNotice.hide();
 	}
 
 	getItems(): TFile[] {
@@ -59,84 +31,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	async onChooseItem(toMergeInFile: TFile) {
-		const { plugin, app, settings } = this;
-
-		// save discarded properties
-		const discardedProps: FrontMatterCache = {};
-		const frontmatter = app.metadataCache.getFileCache(toMergeInFile)?.frontmatter || {};
-		const ignoreProps = [
-			...settings.extraction.ignorePropertyOnMerge,
-			"extraction-date",
-			"merge-date",
-		];
-		for (const key in this.toBeMergedFrontmatter) {
-			const value1 = frontmatter[key];
-			const value2 = this.toBeMergedFrontmatter[key];
-
-			const isList = Array.isArray(value1) && Array.isArray(value2);
-			const isEmpty =
-				(!value1 && value1 !== 0 && value1 !== false) ||
-				(!value2 && value2 !== 0 && value2 !== false);
-			const isEqual = value1 === value2;
-			const ignoredKey = ignoreProps.includes(key);
-
-			if (isList || isEmpty || isEqual || ignoredKey) continue;
-			// values from `toBeMergedFile` are kept, so we save values from `toMergeInFile`
-			discardedProps[key] = value1;
-		}
-
-		// MERGE (via Obsidian API)
-		preMergeBackup(plugin, this.toBeMergedFile, toMergeInFile);
-		// INFO temporarily disable trashWatcher, as the merge operation trashes
-		// `toBeMergedFile`, triggering an unwanted removal of references
-		if (plugin.trashWatcherUninstaller) plugin.trashWatcherUninstaller();
-		await app.fileManager.mergeFile(toMergeInFile, this.toBeMergedFile, "", false);
-		plugin.trashWatcherUninstaller = setupTrashWatcher(plugin);
-		const mergedFile = toMergeInFile;
-
-		// CLEANUP merged file
-		let newContent = (await app.vault.read(mergedFile))
-			.replaceAll("**Paragraph extracted from:**\n", "")
-			.replace(/\n{2,}/g, "\n");
-		newContent = insertMergeDate(newContent);
-
-		// INSERT DISCARDED PROPERTIES between frontmatter and content
-		const hasDiscardedProps = Object.keys(discardedProps).length > 0;
-		if (hasDiscardedProps) {
-			const listOfDiscarded = stringifyYaml(discardedProps)
-				.trim()
-				.split("\n")
-				.map((item) => "- " + item);
-			const discardedInfo = [
-				"",
-				"#### Properties that could be not be automatically merged",
-				...listOfDiscarded,
-				"",
-				"---",
-				"",
-			].join("\n");
-
-			const fmStart = getFrontMatterInfo(newContent).contentStart;
-			newContent = newContent.slice(0, fmStart) + discardedInfo + newContent.slice(fmStart);
-		}
-		await app.vault.modify(mergedFile, newContent);
-
-		// POST MERGE
-		reloadLivePreview(app);
-		new Notice(
-			`"${this.toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`,
-			5000,
-		);
-
-		// validate extraction sources
-		const extrSources =
-			app.metadataCache.getFileCache(mergedFile)?.frontmatter?.["extraction-source"];
-		if (extrSources.length < 2 || !Array.isArray(extrSources)) {
-			const msg =
-				"Extraction sources have not been been merged correctly.\n" +
-				"Please check original files.";
-			new Notice(msg, 0);
-		}
+		await mergeFiles(this.plugin, this.toBeMergedFile, toMergeInFile);
 	}
 }
 

@@ -43,17 +43,6 @@ declare module "obsidian" {
 			app: App;
 		};
 	}
-	interface FileManager {
-		/**
-		 * Merge two files
-		 * @param file - File to merge to
-		 * @param otherFile - File to merge from
-		 * @param override - If not empty, will override the contents of the file with this string
-		 * @param atStart - Whether to insert text at the start or end of the file
-		 */
-		// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
-		mergeFile(file: TFile, otherFile: TFile, override: string, atStart: boolean): Promise<void>;
-	}
 	interface MetadataCache {
 		getFrontmatterPropertyValuesForKey: (key: string) => string[];
 	}

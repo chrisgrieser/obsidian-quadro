@@ -21,6 +21,6 @@ export async function deleteCodeEverywhereCommand(plugin: Quadro): Promise<void>
 	}
 
 	// due to our monkeying-around, `app.vault.trash` already triggers
-	// `deleteReferencesToCodeFile`, so we don't need to call it again here
+	// deleting references, so we do not need to do it here
 	await app.vault.trash(codeFile, true);
 }
