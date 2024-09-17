@@ -10,6 +10,7 @@ import {
 } from "obsidian";
 import { getFullCode } from "src/coding/coding-utils";
 import Quadro from "src/main";
+import { getActiveEditor } from "./utils";
 
 /** FIX wrong embeds sometimes occurring */
 function reloadLivePreview(app: App): void {
@@ -91,6 +92,7 @@ export async function mergeFiles(
 		.replace(/\n{2,}/g, "\n");
 	const toBeMergedRawfm = toBeMerged.slice(0, getFrontMatterInfo(toBeMerged).contentStart);
 	await app.vault.modify(toBeMergedFile, toBeMergedRawfm + discardedInfo + mergedContent);
+	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 }); // move cursor to the beginning of the file
 
 	// POINT REFERENCES from `toMergeInFile` to `toBeMergedFile``
 	const outdatesFiles: string[] = [];
@@ -126,8 +128,7 @@ export async function mergeFiles(
 	// temporarily disable out trash-watcher
 	app.vault.delete(toMergeInFile); // can be async
 
-	// POST MERGE
-	reloadLivePreview(app);
+	// NOTIFY
 	const s1 = changedLinksCount === 1 ? "" : "s";
 	const s2 = changedFilesCount === 1 ? "" : "s";
 	const msg = [
