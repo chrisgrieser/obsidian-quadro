@@ -6,18 +6,18 @@ import { getActiveEditor, typeOfFile } from "src/shared/utils";
 import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
-	toBeMergedFile: TFile;
+	mergeKeepFile: TFile;
 
-	constructor(plugin: Quadro, toBeMergedFile: TFile) {
+	constructor(plugin: Quadro, mergeKeepFile: TFile) {
 		super(plugin);
-		this.setPlaceholder(`Select Extraction File to merge into "${toBeMergedFile.basename}":`);
-		this.toBeMergedFile = toBeMergedFile;
+		this.setPlaceholder(`Select Extraction File to merge into "${mergeKeepFile.basename}":`);
+		this.mergeKeepFile = mergeKeepFile;
 	}
 
 	getItems(): TFile[] {
-		const extractionType = this.toBeMergedFile.parent as TFolder;
+		const extractionType = this.mergeKeepFile.parent as TFolder;
 		const extractionsOfSameType = getExtractionsOfType(this.plugin, extractionType)
-			.filter((extrFile) => extrFile.path !== this.toBeMergedFile.path)
+			.filter((extrFile) => extrFile.path !== this.mergeKeepFile.path)
 			.sort((a, b) => b.stat.mtime - a.stat.mtime);
 		if (extractionsOfSameType.length === 0) {
 			new Notice("No other extractions have been created yet.", 4000);
@@ -30,9 +30,9 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		return getExtractionFileDisplay(this.plugin, extractionFile);
 	}
 
-	async onChooseItem(toMergeInFile: TFile) {
-		const backupDir = this.toBeMergedFile.parent?.path || "";
-		await mergeFiles(this.plugin, this.toBeMergedFile, toMergeInFile, backupDir, false);
+	async onChooseItem(mergeAwayFile: TFile) {
+		const backupDir = this.mergeKeepFile.parent?.path || "";
+		await mergeFiles(this.plugin, this.mergeKeepFile, mergeAwayFile, backupDir, false);
 	}
 }
 
@@ -43,11 +43,11 @@ export function mergeExtractionFilesCommand(plugin: Quadro) {
 		new Notice("You must be in an Extraction File for this.", 4000);
 		return;
 	}
-	const toBeMergedFile = editor.editorComponent.view.file;
-	if (!toBeMergedFile) {
+	const mergeKeepFile = editor.editorComponent.view.file;
+	if (!mergeKeepFile) {
 		new Notice("No file open.", 4000);
 		return;
 	}
 
-	new SuggesterForExtractionMerging(plugin, toBeMergedFile).open();
+	new SuggesterForExtractionMerging(plugin, mergeKeepFile).open();
 }

@@ -20,8 +20,8 @@ function reloadLivePreview(app: App): void {
 
 export async function mergeFiles(
 	plugin: Quadro,
-	toBeMergedFile: TFile,
-	toMergeInFile: TFile,
+	mergeKeepFile: TFile,
+	mergeAwayFile: TFile,
 	backupDir: string,
 	isCodeFile: boolean,
 ): Promise<void> {
@@ -31,23 +31,23 @@ export async function mergeFiles(
 	backupDir = normalizePath(backupDir + "/" + plugin.backupDirName);
 	if (!app.vault.getFolderByPath(backupDir)) await app.vault.createFolder(backupDir);
 	const timestamp = moment().format("YY-MM-DD_HH-mm-ss"); // ensures unique filename
-	await app.vault.copy(toBeMergedFile, `${backupDir}/${toBeMergedFile.basename} ${timestamp}.md`);
-	await app.vault.copy(toMergeInFile, `${backupDir}/${toMergeInFile.basename} ${timestamp}.md`);
+	await app.vault.copy(mergeKeepFile, `${backupDir}/${mergeKeepFile.basename} ${timestamp}.md`);
+	await app.vault.copy(mergeAwayFile, `${backupDir}/${mergeAwayFile.basename} ${timestamp}.md`);
 
-	// MERGE FRONTMATTER into into `toMergeInFile`
+	// MERGE FRONTMATTER into into `mergeKeepFile`
 	// & SAVE DISCARDED PROPS
 	const ignoreProps = [
 		...settings.extraction.ignorePropertyOnMerge,
 		"extraction-date",
 		"merge-date",
 	];
-	const toMergeInFrontmatter = app.metadataCache.getFileCache(toMergeInFile)?.frontmatter || {};
+	const mergeAwayFrontmatter = app.metadataCache.getFileCache(mergeAwayFile)?.frontmatter || {};
 
 	const discardedProps: FrontMatterCache = {};
-	await app.fileManager.processFrontMatter(toBeMergedFile, (toBeMergedFrontmatter) => {
-		for (const key in toMergeInFrontmatter) {
-			const val1 = toBeMergedFrontmatter[key];
-			const val2 = toMergeInFrontmatter[key];
+	await app.fileManager.processFrontMatter(mergeKeepFile, (mergeKeepFrontmatter) => {
+		for (const key in mergeAwayFrontmatter) {
+			const val1 = mergeKeepFrontmatter[key];
+			const val2 = mergeAwayFrontmatter[key];
 			const val1Empty = !val1 && val1 !== 0 && val1 !== false;
 			const val2Empty = !val2 && val2 !== 0 && val2 !== false;
 			const isIgnored = ignoreProps.includes(key);
@@ -55,27 +55,27 @@ export async function mergeFiles(
 
 			if (isIgnored || isEqual || val2Empty) continue;
 			if (val1Empty) {
-				toBeMergedFrontmatter[key] = val2;
+				mergeKeepFrontmatter[key] = val2;
 				continue;
 			}
 			if (Array.isArray(val1) && Array.isArray(val2)) {
-				toBeMergedFrontmatter[key] = [...new Set([...val1, ...val2])];
+				mergeKeepFrontmatter[key] = [...new Set([...val1, ...val2])];
 				continue;
 			}
 
-			toBeMergedFrontmatter[key] = val1;
-			discardedProps[key] = val2; // save the value that was discarded
+			mergeKeepFrontmatter[key] = val1;
+			discardedProps[key] = val2; // save the value that is discarded
 		}
 
 		// obsidian has trouble with timezone data, thus leaving it out
-		toBeMergedFrontmatter["merge-date"] = moment().format("YYYY-MM-DDTHH:mm");
+		mergeKeepFrontmatter["merge-date"] = moment().format("YYYY-MM-DDTHH:mm");
 	});
 
-	// MERGE CONTENT into `toMergeInFile`
-	const toBeMerged = await app.vault.read(toBeMergedFile);
-	const toMergeIn = await app.vault.read(toMergeInFile);
-	const toBeMergedContent = toBeMerged.slice(getFrontMatterInfo(toBeMerged).contentStart);
-	const toMergeInContent = toMergeIn.slice(getFrontMatterInfo(toMergeIn).contentStart);
+	// MERGE CONTENT into `mergeKeepFile`
+	const mergeKeep = await app.vault.read(mergeKeepFile);
+	const mergeAway = await app.vault.read(mergeAwayFile);
+	const mergeKeepContent = mergeKeep.slice(getFrontMatterInfo(mergeKeep).contentStart);
+	const mergeAwayContent = mergeAway.slice(getFrontMatterInfo(mergeAway).contentStart);
 
 	let discardedInfo = "";
 	const hasDiscardedProps = Object.keys(discardedProps).length > 0;
@@ -88,24 +88,24 @@ export async function mergeFiles(
 		discardedInfo = "\n" + [heading, ...listOfDiscarded, "", "---"].join("\n") + "\n\n";
 	}
 
-	const mergedContent = (toBeMergedContent + "\n" + toMergeInContent)
+	const mergedContent = (mergeKeepContent + "\n" + mergeAwayContent)
 		.replaceAll("**Paragraph extracted from:**\n", "")
 		.replace(/\n{2,}/g, "\n");
-	const toBeMergedRawfm = toBeMerged.slice(0, getFrontMatterInfo(toBeMerged).contentStart);
-	await app.vault.modify(toBeMergedFile, toBeMergedRawfm + discardedInfo + mergedContent);
+	const mergeKeepRawfm = mergeKeep.slice(0, getFrontMatterInfo(mergeKeep).contentStart);
+	await app.vault.modify(mergeKeepFile, mergeKeepRawfm + discardedInfo + mergedContent);
 	reloadLivePreview(app);
-	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 }); // move cursor to the beginning of the file
+	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 }); // move cursor to beginning of file
 
-	// POINT REFERENCES from `toMergeInFile` to `toBeMergedFile``
-	const outdatesFiles: string[] = [];
+	// POINT REFERENCES from `mergeAway` to `mergeKeep`
+	const filesPointingToMergeAway: string[] = [];
 	for (const [filepath, links] of Object.entries(app.metadataCache.resolvedLinks)) {
 		const targets = Object.keys(links);
-		if (targets.includes(toMergeInFile.path)) outdatesFiles.push(filepath);
+		if (targets.includes(mergeAwayFile.path)) filesPointingToMergeAway.push(filepath);
 	}
-	const uniqueOutdatesFiles = [...new Set(outdatesFiles)];
+	const uniqueOutdatedFiles = [...new Set(filesPointingToMergeAway)];
 	let changedFilesCount = 0;
 	let changedLinksCount = 0;
-	for (const filepath of uniqueOutdatesFiles) {
+	for (const filepath of uniqueOutdatedFiles) {
 		const linkedFile = app.vault.getFileByPath(filepath);
 		if (!linkedFile) continue;
 
@@ -113,9 +113,12 @@ export async function mergeFiles(
 		let content = await app.vault.read(linkedFile);
 		const outlinks = app.metadataCache.getFileCache(linkedFile)?.links || [];
 		for (const link of outlinks) {
-			if (link.link !== toMergeInFile.basename && link.link !== toMergeInFile.path) continue;
-			const alias = isCodeFile ? "|" + getFullCode(plugin, toBeMergedFile) : "";
-			const newLinkText = `[[${toBeMergedFile.basename}${alias}]]`;
+			// skip if not pointing to `mergeAwayFile`
+			if (link.link !== mergeAwayFile.basename && link.link !== mergeAwayFile.path) continue;
+
+			// point links to `mergeKeepFile`
+			const alias = isCodeFile ? "|" + getFullCode(plugin, mergeKeepFile) : "";
+			const newLinkText = `[[${mergeKeepFile.basename}${alias}]]`;
 			const { start, end } = link.position;
 			content = content.slice(0, start.offset) + newLinkText + content.slice(end.offset);
 			changedLinksCount++;
@@ -125,16 +128,16 @@ export async function mergeFiles(
 		changedFilesCount++;
 	}
 
-	// DISCARD `toMergeInFile`
-	// not using `vault.trash` as we already have a backup & to avoid the need to
-	// temporarily disable out trash-watcher
-	app.vault.delete(toMergeInFile); // can be async
+	// DISCARD `mergeAway`
+	// not using `app.vault.trash` as we already have a backup & to avoid the
+	// need to temporarily disable out trash-watcher
+	app.vault.delete(mergeAwayFile); // can be async
 
 	// NOTIFY
 	const s1 = changedLinksCount === 1 ? "" : "s";
 	const s2 = changedFilesCount === 1 ? "" : "s";
 	const msg = [
-		`"${toBeMergedFile.basename}" merged into "${toMergeInFile.basename}".`,
+		`"${mergeAwayFile.basename}" merged into "${mergeKeepFile.basename}".`,
 		`${changedLinksCount} reference${s1} in ${changedFilesCount} file${s2} updated.`,
 		`A backup of the original files has been saved in the subfolder "${plugin.backupDirName}."`,
 	].join("\n\n");
