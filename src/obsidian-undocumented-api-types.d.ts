@@ -26,7 +26,7 @@ declare module "obsidian" {
 		};
 	}
 	interface MarkdownSubView {
-		cleanupLivePreview: () => void;
+		cleanupLivePreview?: () => void;
 	}
 	interface WorkspaceTabs {
 		// sets the css `flex-grow` of the tab group, meaning the number is a
