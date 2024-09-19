@@ -9,11 +9,6 @@ export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export async function openFileInActiveLeaf(app: App, tfile: TFile): Promise<void> {
-	await app.workspace.getLeaf().openFile(tfile, LIVE_PREVIEW);
-	app.commands.executeCommandById("file-explorer:reveal-active-file");
-}
-
 /** returns type of file. If no file is given, checks
  * the active file. Returns false is there is no active file or the file is not
  * a markdown file. */
@@ -54,9 +49,9 @@ export async function createCodeBlockFile(plugin: Quadro, name: string, content:
 		codeblockFile = await app.vault.create(filepath, content.join("\n"));
 	}
 
-	await openFileInActiveLeaf(app, codeblockFile);
-	const editor = getActiveEditor(app);
-	editor?.setCursor({ line: 0, ch: 0 });
+	await app.workspace.getLeaf().openFile(codeblockFile, LIVE_PREVIEW);
+	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 });
+	app.commands.executeCommandById("file-explorer:reveal-active-file");
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -99,11 +94,10 @@ export function selHasHighlightMarkup(editor: Editor): boolean {
 	return hasHighlightMarkupInSel;
 }
 
-const invalidCharRegex = /[|^#]/; // other chars are already disallowed by Obsidian
 export function activeFileHasInvalidName(app: App): boolean {
 	const file = app.workspace.getActiveFile();
 	if (!file) return false;
-	const invalidChar = file.basename.match(invalidCharRegex)?.[0];
+	const invalidChar = file.basename.match(/[|^#]/)?.[0];
 	if (!invalidChar) return false;
 
 	const msg = `The current file contains an invalid character: ${invalidChar}\n\nRename the file and try again.`;
