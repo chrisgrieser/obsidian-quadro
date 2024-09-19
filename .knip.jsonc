@@ -1,0 +1,11 @@
+// DOCS https://knip.dev/overview/configuration
+{
+	"$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
+	"entry": ["src/main.ts"],
+	"project": ["**/*.ts"],
+	"ignoreDependencies": [
+		"moment", // globally exported by Obsidian
+		"@biomejs/biome", // used only in pre-commit hook / task
+		"markdownlint-cli" // used only in pre-commit hook / task
+	]
+}
