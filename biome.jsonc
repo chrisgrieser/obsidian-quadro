@@ -6,15 +6,15 @@
 			"all": true,
 			"nursery": {
 				"all": true,
-				"useImportRestrictions": "off",
+				"useImportRestrictions": "off", // over-complicating stuff
 				"noSecrets": "off" // buggy, many false positives
 			},
 			"complexity": {
-				"noExcessiveCognitiveComplexity": "off",
+				"noExcessiveCognitiveComplexity": "info",
 				"useSimplifiedLogicExpression": "off" // complains about negated and-conditions
 			},
 			"performance": {
-				"useTopLevelRegex": "off"
+				"useTopLevelRegex": "off" // often not needed
 			},
 			"suspicious": {
 				"noConsole": {
@@ -28,14 +28,11 @@
 				"noNodejsModules": "off" // Obsidian is client-site, thus requiring them
 			},
 			"style": {
-				"useBlockStatements": "off",
+				"useBlockStatements": "off", // too much clutter
 				"useImportType": "off", // incompatible with typescript's default auto-imports
-				"useTemplate": "off", // too strict, simple concatenation are fine
-				"noParameterAssign": "off",
-				"useNamingConvention": {
-					"level": "info",
-					"options": { "strictCase": false }
-				}
+				"useTemplate": "off", // too strict, simple concatenations are often fine
+				"noParameterAssign": "off", // not useful
+				"useNamingConvention": { "level": "info", "options": { "strictCase": false } }
 			}
 		}
 	},

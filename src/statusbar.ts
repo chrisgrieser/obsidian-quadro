@@ -3,6 +3,7 @@ import { getExtractionsOfType } from "./extraction/extraction-utils";
 import Quadro from "./main";
 import { typeOfFile } from "./shared/utils";
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: linear enough so it's fine
 export function updateStatusbar(plugin: Quadro): void {
 	const { app, statusbar, settings } = plugin;
 	const segments: string[] = [];

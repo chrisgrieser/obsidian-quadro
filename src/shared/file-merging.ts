@@ -18,6 +18,7 @@ function reloadLivePreview(app: App): void {
 	app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview?.();
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: todo
 export async function mergeFiles(
 	plugin: Quadro,
 	mergeKeepFile: TFile,

@@ -15,6 +15,7 @@ function createCsvRow(cells: string[], csvSeparator: string): string {
 
 //──────────────────────────────────────────────────────────────────────────────
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: todo
 export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 	const { app, settings } = plugin;
 	const csvSeparator = settings.extraction.csvSeparator;
