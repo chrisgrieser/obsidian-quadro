@@ -28,13 +28,13 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	getItemText(codeFile: TFile): string {
 		return codeFileDisplay(this.plugin, codeFile);
 	}
-	async onChooseItem(mergeAwayFile: TFile) {
+	async onChooseItem(mergeAwayFile: TFile): Promise<void> {
 		const backupDir = this.plugin.settings.coding.folder;
 		await mergeFiles(this.plugin, this.mergeKeepFile, mergeAwayFile, backupDir, true);
 	}
 }
 
-export function mergeCodeFilesCommand(plugin: Quadro) {
+export function mergeCodeFilesCommand(plugin: Quadro): void {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor) return;
 	if (typeOfFile(plugin) !== "Code File") {

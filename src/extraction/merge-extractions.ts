@@ -30,13 +30,13 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		return getExtractionFileDisplay(this.plugin, extractionFile);
 	}
 
-	async onChooseItem(mergeAwayFile: TFile) {
+	async onChooseItem(mergeAwayFile: TFile): Promise<void> {
 		const backupDir = this.mergeKeepFile.parent?.path || "";
 		await mergeFiles(this.plugin, this.mergeKeepFile, mergeAwayFile, backupDir, false);
 	}
 }
 
-export function mergeExtractionFilesCommand(plugin: Quadro) {
+export function mergeExtractionFilesCommand(plugin: Quadro): void {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor) return;
 	if (typeOfFile(plugin) !== "Extraction File") {

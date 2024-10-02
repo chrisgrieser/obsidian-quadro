@@ -95,7 +95,7 @@ async function extractOfType(
 	moveCursorToFirstProperty(app, "value");
 }
 
-export function extractFromParagraphCommand(plugin: Quadro) {
+export function extractFromParagraphCommand(plugin: Quadro): void {
 	const { app } = plugin;
 	const editor = getActiveEditor(app);
 

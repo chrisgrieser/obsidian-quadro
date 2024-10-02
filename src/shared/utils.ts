@@ -14,27 +14,27 @@ export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
  * a markdown file. */
 export function typeOfFile(
 	plugin: Quadro,
-	file?: TAbstractFile | string,
+	file?: TAbstractFile | string | null,
 ): "Data File" | "Code File" | "Extraction File" | "Template" | "Backup" | "Not Markdown" {
 	const { app, settings } = plugin;
 
-	const fileToCheck =
-		file === undefined
-			? app.workspace.getActiveFile()
-			: typeof file === "string"
-				? app.vault.getFileByPath(file)
-				: file;
-	if (!fileToCheck || !(fileToCheck instanceof TFile) || fileToCheck.extension !== "md")
-		return "Not Markdown";
+	if (!file) file = app.workspace.getActiveFile();
+	if (typeof file === "string") file = app.vault.getFileByPath(file);
 
-	if (fileToCheck.name === "Template.md") return "Template";
-	if (fileToCheck.path.includes(plugin.backupDirName)) return "Backup";
-	if (fileToCheck.path.startsWith(settings.coding.folder + "/")) return "Code File";
-	if (fileToCheck.path.startsWith(settings.extraction.folder + "/")) return "Extraction File";
+	if (!file || !(file instanceof TFile) || file.extension !== "md") return "Not Markdown";
+
+	if (file.name === "Template.md") return "Template";
+	if (file.path.includes(plugin.backupDirName)) return "Backup";
+	if (file.path.startsWith(settings.coding.folder + "/")) return "Code File";
+	if (file.path.startsWith(settings.extraction.folder + "/")) return "Extraction File";
 	return "Data File";
 }
 
-export async function createCodeBlockFile(plugin: Quadro, name: string, content: string[]) {
+export async function createCodeBlockFile(
+	plugin: Quadro,
+	name: string,
+	content: string[],
+): Promise<void> {
 	const { app, settings } = plugin;
 
 	const analysisFolder = settings.analysis.folder;

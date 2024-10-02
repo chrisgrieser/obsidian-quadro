@@ -12,14 +12,14 @@ class InputForNewExtractionType extends ExtendedInputModal {
 		this.onSubmit = onSubmit;
 	}
 
-	override onOpen() {
+	override onOpen(): void {
 		const { contentEl } = this;
 		contentEl.createEl("h4", { text: "New Extraction Type" });
 		contentEl.addClass(this.plugin.cssclass);
 
-		const validInput = (name: string) => name !== "";
+		const validInput = (name: string): boolean => name !== "";
 
-		const confirm = () => {
+		const confirm = (): void => {
 			this.close();
 			this.onSubmit(this.nameOfNewType);
 		};
@@ -55,7 +55,7 @@ class InputForNewExtractionType extends ExtendedInputModal {
 	}
 }
 
-export function createNewExtractionTypeCommand(plugin: Quadro) {
+export function createNewExtractionTypeCommand(plugin: Quadro): void {
 	const { app, settings } = plugin;
 
 	new InputForNewExtractionType(plugin, async (nameOfNewType) => {

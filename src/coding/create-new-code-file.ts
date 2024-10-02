@@ -14,14 +14,14 @@ class InputForOneFile extends ExtendedInputModal {
 		this.onSubmit = onSubmit;
 	}
 
-	override onOpen() {
+	override onOpen(): void {
 		const { contentEl } = this;
 		contentEl.addClass(this.plugin.cssclass);
 
-		const validCode = (fullCode: string) =>
+		const validCode = (fullCode: string): boolean =>
 			fullCode !== "" && !fullCode.startsWith("/") && !fullCode.endsWith("/");
 
-		const confirm = () => {
+		const confirm = (): void => {
 			this.close();
 			this.onSubmit(this.fullCode, this.codeDesc);
 		};
@@ -100,7 +100,7 @@ class InputForMultipleFiles extends ExtendedInputModal {
 		this.onSubmit = onSubmit;
 	}
 
-	override onOpen() {
+	override onOpen(): void {
 		const { contentEl } = this;
 		contentEl.addClass(this.plugin.cssclass);
 

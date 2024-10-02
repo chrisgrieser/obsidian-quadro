@@ -40,7 +40,7 @@ export class ExtendedInputModal extends Modal {
 		this.modalEl.addClass(plugin.cssclass);
 	}
 
-	override onClose() {
+	override onClose(): void {
 		this.contentEl.empty();
 	}
 }

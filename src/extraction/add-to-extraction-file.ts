@@ -44,7 +44,7 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 		return getExtractionFileDisplay(this.plugin, extractionFile);
 	}
 
-	async onChooseItem(extractionFile: TFile) {
+	async onChooseItem(extractionFile: TFile): Promise<void> {
 		const { app, editor } = this;
 		const dataFile = editor.editorComponent.view.file;
 		if (!dataFile) {
@@ -82,7 +82,7 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 	}
 }
 
-export function addToExistingExtractionFileCommand(plugin: Quadro) {
+export function addToExistingExtractionFileCommand(plugin: Quadro): void {
 	const editor = getActiveEditor(plugin.app);
 	if (!editor || ambiguousSelection(editor) || selHasHighlightMarkup(editor)) return;
 	if (typeOfFile(plugin) !== "Data File") {

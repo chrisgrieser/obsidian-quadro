@@ -2,7 +2,10 @@ function isObject(item: unknown): boolean {
 	return Boolean(item && typeof item === "object" && !Array.isArray(item));
 }
 
-export function deepExtend(target: Record<string, unknown>, ...sources: Record<string, unknown>[]) {
+export function deepExtend(
+	target: Record<string, unknown>,
+	...sources: Record<string, unknown>[]
+): Record<string, unknown> {
 	if (sources.length === 0) return target;
 	const source = sources.shift();
 

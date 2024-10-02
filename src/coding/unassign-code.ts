@@ -37,7 +37,11 @@ class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-async function unassignCodeWhileInDataFile(editor: Editor, dataFile: TFile, code: Code) {
+async function unassignCodeWhileInDataFile(
+	editor: Editor,
+	dataFile: TFile,
+	code: Code,
+): Promise<void> {
 	const app = editor.editorComponent.app;
 	const ln = editor.getCursor().line;
 	const lineText = editor.getLine(ln);

@@ -16,7 +16,7 @@ export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 
 	const uninstaller = around(vault, {
 		trash: (originalMethod) => {
-			return async (file, useSystemTrash) => {
+			return async (file, useSystemTrash): Promise<void> => {
 				const filetype = typeOfFile(plugin, file);
 				const isCodeOrExtractionFile =
 					filetype === "Code File" || filetype === "Extraction File";

@@ -3,7 +3,7 @@ import Quadro from "src/main";
 import { createCodeBlockFile } from "src/shared/utils";
 import { countTimesCodeIsAssigned } from "./coding-utils";
 
-export async function codeOverviewCommand(plugin: Quadro) {
+export async function codeOverviewCommand(plugin: Quadro): Promise<void> {
 	const content = [
 		"*This file updates automatically, any manual changes to it will be lost.*",
 		"",

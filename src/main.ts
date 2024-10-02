@@ -40,7 +40,7 @@ export default class Quadro extends Plugin {
 				id: cmd.id,
 				name: cmd.name,
 				icon: cmd.icon, // only used on mobile toolbar
-				editorCallback: async () => cmd.func(this),
+				editorCallback: async (): Promise<void> => cmd.func(this),
 			};
 
 			// INFO Adding a few hotkey by default, since this plugin is going to be

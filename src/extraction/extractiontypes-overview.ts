@@ -7,7 +7,7 @@ import {
 	getPropertiesForExtractionType,
 } from "./extraction-utils";
 
-export function extractiontypesOverviewCommand(plugin: Quadro) {
+export function extractiontypesOverviewCommand(plugin: Quadro): void {
 	new SuggesterForExtractionTypes(plugin, async (selectedExtrType) => {
 		const filename = "Extraction Overview – " + selectedExtrType.name;
 		const content = [

@@ -59,12 +59,10 @@ export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 					continue;
 				}
 				const value = fileFrontmatter[key] ?? naString; // nullish coalescing to keep 0 or ""
-				let valueStr =
-					typeof value !== "object"
-						? value.toString() // primitive
-						: Array.isArray(value)
-							? value.join("; ") // array
-							: JSON.stringify(value); // object
+				let valueStr: string;
+				if (Array.isArray(value)) valueStr = value.join("; ");
+				else if (typeof value === "object") valueStr = JSON.stringify(value);
+				else valueStr = value.toString();
 
 				// remove enclosing wikilinks
 				if (key === "extraction-source") valueStr = valueStr.replace(/\[\[|\]\]/g, "");

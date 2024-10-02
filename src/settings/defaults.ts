@@ -1,12 +1,12 @@
 import { TFile } from "obsidian";
 
 export const sortFuncs = {
-	"last used first": (a: TFile, b: TFile) => b.stat.mtime - a.stat.mtime,
-	"oldest used first": (a: TFile, b: TFile) => a.stat.mtime - b.stat.mtime,
-	"frequently used first": (a: TFile, b: TFile) => b.stat.size - a.stat.size,
-	"rarely used first": (a: TFile, b: TFile) => a.stat.size - b.stat.size,
-	random: () => Math.random() - 0.5,
-	alphabetical: (a: TFile, b: TFile) => a.basename.localeCompare(b.basename),
+	"last used first": (a: TFile, b: TFile): number => b.stat.mtime - a.stat.mtime,
+	"oldest used first": (a: TFile, b: TFile): number => a.stat.mtime - b.stat.mtime,
+	"frequently used first": (a: TFile, b: TFile): number => b.stat.size - a.stat.size,
+	"rarely used first": (a: TFile, b: TFile): number => a.stat.size - b.stat.size,
+	random: (): number => Math.random() - 0.5,
+	alphabetical: (a: TFile, b: TFile): number => a.basename.localeCompare(b.basename),
 };
 export type SortFuncChoices = keyof typeof sortFuncs;
 

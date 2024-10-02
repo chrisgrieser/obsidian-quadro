@@ -15,7 +15,7 @@ import {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-function sanitizePath(path: string) {
+function sanitizePath(path: string): string {
 	return normalizePath(path).replace(/:/g, "-");
 }
 
@@ -24,7 +24,7 @@ const textareaCss = {
 	"min-width": "15rem",
 };
 
-function textareaValToArr(val: string) {
+function textareaValToArr(val: string): string[] {
 	return val
 		.split("\n")
 		.map((line) => line.trim())

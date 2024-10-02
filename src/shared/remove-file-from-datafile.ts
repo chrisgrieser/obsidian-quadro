@@ -4,7 +4,7 @@ import { WIKILINK_REGEX, typeOfFile } from "./utils";
 
 /** Given a file, identifies all references to it in DATAFILES, and removes
  * those. To identify DataFiles, uses the embedded links in the refFile. */
-export async function removeAllFileRefsFromDataFile(plugin: Quadro, refFile: TFile) {
+export async function removeAllFileRefsFromDataFile(plugin: Quadro, refFile: TFile): Promise<void> {
 	const app = plugin.app;
 	const errors: string[] = [];
 	let successes = 0;
