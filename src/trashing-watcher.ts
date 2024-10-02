@@ -9,7 +9,7 @@ import { typeOfFile } from "./shared/utils";
  * original `app.vault.trash`. (The references cannot be deleted afterwards using
  * the `app.vault.on("delete", ...)` event, as various required information for
  * finding all references is flushed already.)
- * source for the how to monkey-around: https://discord.com/channels/686053708261228577/840286264964022302/1157501519831253002 */
+ * How to monkey-around: https://discord.com/channels/686053708261228577/840286264964022302/1157501519831253002 */
 export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 	const vault = plugin.app.vault;
 
