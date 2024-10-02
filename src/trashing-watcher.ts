@@ -76,7 +76,7 @@ async function removeAllFileRefs(plugin: Quadro, refFile: TFile): Promise<void> 
 	const s1 = removedLinksCount === 1 ? "" : "s";
 	const s2 = changedFilesCount === 1 ? "" : "s";
 	const msg = [
-		`${refFile.basename} was deleted.`,
+		`"${refFile.basename}" was deleted.`,
 		`${removedLinksCount} reference${s1} in ${changedFilesCount} file${s2} have been removed.`,
 	].join("\n\n");
 	new Notice(msg, 8000);

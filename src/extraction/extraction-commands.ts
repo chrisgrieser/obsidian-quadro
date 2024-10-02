@@ -23,7 +23,7 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 	},
 	{
 		id: "merge-extractions",
-		name: "Merge current Extraction File into another Extraction File",
+		name: "Merge another Extraction File into current Extraction File",
 		func: mergeExtractionFilesCommand,
 		icon: "square-dot",
 	},

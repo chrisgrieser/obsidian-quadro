@@ -46,7 +46,7 @@ export const CODING_COMMANDS: CommandData[] = [
 	},
 	{
 		id: "merge-codes",
-		name: "Merge current Code File into another Code File",
+		name: "Merge another Code File into current Code File",
 		func: mergeCodeFilesCommand,
 		icon: "circle-dot",
 	},
