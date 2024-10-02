@@ -4,7 +4,6 @@
 	"entry": ["src/main.ts"],
 	"project": ["**/*.ts"],
 	"ignoreDependencies": [
-		"moment", // globally exported by Obsidian
 		"@biomejs/biome", // used only in pre-commit hook / task
 		"markdownlint-cli" // used only in pre-commit hook / task
 	]

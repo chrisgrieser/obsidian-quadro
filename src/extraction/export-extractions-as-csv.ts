@@ -1,4 +1,4 @@
-import moment from "moment";
+import { moment } from "obsidian";
 import { Notice, TFile, normalizePath } from "obsidian";
 import Quadro from "src/main";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";

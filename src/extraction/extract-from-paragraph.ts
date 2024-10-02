@@ -1,4 +1,4 @@
-import moment from "moment";
+import { moment } from "obsidian";
 import { Editor, Notice, TFolder, getFrontMatterInfo } from "obsidian";
 import Quadro from "src/main";
 import {

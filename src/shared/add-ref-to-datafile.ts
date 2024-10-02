@@ -1,4 +1,4 @@
-import moment from "moment";
+import { moment } from "obsidian";
 import { Editor, TFile } from "obsidian";
 
 /** DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note

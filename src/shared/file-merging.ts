@@ -1,4 +1,4 @@
-import moment from "moment";
+import { moment } from "obsidian";
 import {
 	App,
 	FrontMatterCache,
@@ -68,7 +68,7 @@ export async function mergeFiles(
 			discardedProps[key] = val2; // save the value that is discarded
 		}
 
-		// obsidian has trouble with timezone data, thus leaving it out
+		// Obsidian apparently has trouble with timezone data, thus leaving it out
 		mergeKeepFrontmatter["merge-date"] = moment().format("YYYY-MM-DDTHH:mm");
 	});
 

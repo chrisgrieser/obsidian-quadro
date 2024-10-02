@@ -26,7 +26,7 @@
 
 		// helpers
 		"isolatedModules": true,
-		"esModuleInterop": true,
+		"esModuleInterop": false, // setting to true causes issues with Obsidian's imported `moment`
 		"importHelpers": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true
