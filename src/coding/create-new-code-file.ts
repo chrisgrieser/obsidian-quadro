@@ -47,7 +47,7 @@ class InputForOneFile extends ExtendedInputModal {
 						this.fullCode = value.trim();
 						this.confirmationButton?.setDisabled(!validCode(this.fullCode));
 					})
-					.inputEl.setCssProps({ width: "100%", "min-width": "20rem" });
+					.inputEl.addClass("quadro-wide-input");
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -67,7 +67,7 @@ class InputForOneFile extends ExtendedInputModal {
 					.onChange((value) => {
 						this.codeDesc = value.trim();
 					})
-					.inputEl.setCssProps({ width: "100%", "min-width": "20rem" });
+					.inputEl.addClass("quadro-wide-input");
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -122,7 +122,7 @@ class InputForMultipleFiles extends ExtendedInputModal {
 						this.input = value.trim();
 						this.confirmationButton?.setDisabled(this.input === "");
 					})
-					.inputEl.setCssProps({ width: "100%", "min-height": "10rem" });
+					.inputEl.addClass("quadro-large-textarea");
 			})
 			.infoEl.remove();
 

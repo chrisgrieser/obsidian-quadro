@@ -31,7 +31,7 @@ class InputForNewExtractionType extends ExtendedInputModal {
 					this.nameOfNewType = value.trim();
 					this.confirmationButton?.setDisabled(!validInput(value));
 				})
-				.inputEl.setCssProps({ width: "100%", "min-width": "20rem" });
+				.inputEl.addClass("quadro-wide-input");
 
 			// press enter to confirm
 			text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {

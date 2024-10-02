@@ -19,19 +19,12 @@ function sanitizePath(path: string): string {
 	return normalizePath(path).replace(/:/g, "-");
 }
 
-const textareaCss = {
-	"min-height": "5rem",
-	"min-width": "15rem",
-};
-
 function textareaValToArr(val: string): string[] {
 	return val
 		.split("\n")
 		.map((line) => line.trim())
 		.filter((line) => line !== "");
 }
-
-const inputElCss = { "min-width": "15rem" };
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -72,7 +65,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						suppressCertainFrontmatterSuggestions(this.plugin);
 					})
-					.inputEl.setCssProps(textareaCss),
+					.inputEl.addClass("quadro-settings-textarea"),
 			);
 
 		new Setting(containerEl)
@@ -106,7 +99,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						settings.coding.folder = sanitizePath(path) || DEFAULT_SETTINGS.coding.folder;
 						await this.plugin.saveSettings();
 					})
-					.inputEl.setCssProps(inputElCss);
+					.inputEl.addClass("quadro-settings-input");
 			});
 		new Setting(containerEl)
 			.setName("Code count")
@@ -152,7 +145,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 							sanitizePath(path) || DEFAULT_SETTINGS.extraction.folder;
 						await this.plugin.saveSettings();
 					})
-					.inputEl.setCssProps(inputElCss);
+					.inputEl.addClass("quadro-settings-input");
 			});
 		new Setting(containerEl)
 			.setName("Extraction count")
@@ -196,7 +189,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						suppressCertainFrontmatterSuggestions(this.plugin);
 					})
-					.inputEl.setCssProps(textareaCss),
+					.inputEl.addClass("quadro-settings-textarea"),
 			);
 		new Setting(containerEl)
 			.setName("Display property when merging")
@@ -213,7 +206,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						settings.extraction.displayProperty = textareaValToArr(value);
 						await this.plugin.saveSettings();
 					})
-					.inputEl.setCssProps(textareaCss),
+					.inputEl.addClass("quadro-settings-textarea"),
 			);
 		new Setting(containerEl)
 			.setName("CSV separator")
@@ -243,7 +236,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						settings.analysis.folder = sanitizePath(path) || DEFAULT_SETTINGS.analysis.folder;
 						await this.plugin.saveSettings();
 					})
-					.inputEl.setCssProps(inputElCss);
+					.inputEl.addClass("quadro-settings-input");
 			});
 	}
 }

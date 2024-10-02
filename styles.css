@@ -66,3 +66,29 @@ anyway.
 body .internal-embed .markdown-embed-content {
 	padding: 0;
 }
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* QUADRO UI ELEMENTS */
+
+.quadro-settings-textarea {
+	min-height: 5rem;
+	min-width: 15rem;
+}
+
+.quadro-settings-input {
+	min-width: 15rem;
+}
+
+.quadro-ribbon-button {
+	border: 1px solid var(--text-faint);
+}
+
+.quadro-wide-input {
+	width: 100%;
+	min-width: 20rem;
+}
+
+.quadro-large-textarea {
+	width: 100%;
+	min-height: 10rem;
+}

@@ -33,8 +33,7 @@ export default class Quadro extends Plugin {
 		// COMMANDS
 		for (const cmd of [...CODING_COMMANDS, ...EXTRACTION_COMMANDS]) {
 			const ribbon = this.addRibbonIcon(cmd.icon, `Quadro: ${cmd.name}`, () => cmd.func(this));
-			ribbon.addClass(this.cssclass);
-			ribbon.setCssProps({ border: "1px solid var(--text-faint)" });
+			ribbon.addClasses([this.cssclass, "quadro-ribbon-button"]);
 
 			const cmdObj: Command = {
 				id: cmd.id,
