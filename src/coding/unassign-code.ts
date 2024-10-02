@@ -49,7 +49,7 @@ async function unassignCodeWhileInDataFile(
 	const updatedLine = lineText.replace(code.wikilink, "");
 	editor.setLine(ln, updatedLine);
 
-	// find corresponding line in CODEFILE
+	// GUARD no blockid
 	const [blockId] = lineText.match(BLOCKID_REGEX) || [];
 	if (!blockId) {
 		new Notice("No ID found in current line.\nReference in Code File thus not deleted.", 0);

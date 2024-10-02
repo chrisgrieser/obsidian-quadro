@@ -96,7 +96,7 @@ export async function mergeFiles(
 	});
 
 	reloadLivePreview(app);
-	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 }); // move cursor to BoL
+	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 }); // move cursor to beginning of file
 
 	// POINT REFERENCES from `mergeAway` to `mergeKeep`
 	const filesPointingToMergeAway: string[] = [];
@@ -111,7 +111,6 @@ export async function mergeFiles(
 		const outdatedFile = app.vault.getFileByPath(filepath);
 		if (!outdatedFile) continue;
 
-		// UPDATE LINKS
 		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: okay here
 		await app.vault.process(outdatedFile, (content) => {
 			const outlinks = app.metadataCache.getFileCache(outdatedFile)?.links || [];
@@ -135,8 +134,8 @@ export async function mergeFiles(
 	}
 
 	// DISCARD `mergeAway`
-	// not using `app.vault.trash` as we already have a backup & to avoid the
-	// need to temporarily disable out trash-watcher
+	// Not using `app.vault.trash` as we already have a backup & to avoid the
+	// need to temporarily disable our trash-watcher.
 	app.vault.delete(mergeAwayFile); // can be async
 
 	// NOTIFY
