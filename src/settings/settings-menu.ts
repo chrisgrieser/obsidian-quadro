@@ -85,7 +85,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			);
 
 		// CODING
-		containerEl.createEl("h3", { text: "Coding" });
+		new Setting(containerEl).setName("Coding").setHeading();
 
 		new Setting(containerEl)
 			.setName("Code folder")
@@ -130,7 +130,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			});
 
 		// EXTRACTION
-		containerEl.createEl("h3", { text: "Extraction" });
+		new Setting(containerEl).setName("Extraction").setHeading();
 
 		new Setting(containerEl)
 			.setName("Extraction folder")
@@ -222,7 +222,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			});
 
 		// ANALYSIS
-		containerEl.createEl("h4", { text: "Analysis" });
+		new Setting(containerEl).setName("Analysis").setHeading();
 
 		new Setting(containerEl)
 			.setName("Analysis folder")
