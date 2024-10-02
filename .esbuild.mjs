@@ -16,25 +16,11 @@ await esbuild
 		banner: { js: banner },
 		outfile: "main.js",
 		bundle: true,
-		external: [
-			"obsidian",
-			"electron",
-			"@codemirror/autocomplete",
-			"@codemirror/collab",
-			"@codemirror/commands",
-			"@codemirror/language",
-			"@codemirror/lint",
-			"@codemirror/search",
-			"@codemirror/state",
-			"@codemirror/view",
-			"@lezer/common",
-			"@lezer/highlight",
-			"@lezer/lr",
-			...builtins,
-		],
+		// biome-ignore format: no need to inspect this regularly
+		external: [ "obsidian", "electron", "@codemirror/autocomplete", "@codemirror/collab", "@codemirror/commands", "@codemirror/language", "@codemirror/lint", "@codemirror/search", "@codemirror/state", "@codemirror/view", "@lezer/common", "@lezer/highlight", "@lezer/lr", ...builtins ],
 		format: "cjs",
 		target: "es2022",
-		sourcemap: production ? false : "external",
+		sourcemap: production ? false : "inline",
 		minify: production,
 		drop: ["debugger"],
 		treeShaking: true,
@@ -44,10 +30,6 @@ await esbuild
 
 //──────────────────────────────────────────────────────────────────────────────
 
-// insert correct link to sourcemap file `main.js.map`, as `sourcemap = "inline"`
-// does not seem to work
-if (!production) {
-	const sourcemapFileUrl = import.meta.resolve("./main.js.map");
-	const mainJs = import.meta.dirname + "/main.js";
-	appendFileSync(mainJs, `\n//# sourceMappingURL=${sourcemapFileUrl}`);
-}
+// FIX prevent Obsidian from removing the source map when using dev build
+// https://forum.obsidian.md/t/source-map-trimming-in-dev-builds/87612
+if (!production) appendFileSync(import.meta.dirname + "/main.js", "\n/* nosourcemap */");

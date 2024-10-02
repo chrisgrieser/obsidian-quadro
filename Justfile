@@ -4,6 +4,7 @@ test_vault := "$HOME/Vaults/phd-data-analysis"
 
 #───────────────────────────────────────────────────────────────────────────────
 
+[macos]
 build-and-reload:
     #!/usr/bin/env zsh
     node .esbuild.mjs
@@ -11,7 +12,7 @@ build-and-reload:
     vault_name=$(basename "{{ test_vault }}")
     open "obsidian://open?vault=$vault_name"
 
-    # reload (INFO: requires registering the URI manually)
+    # reload (INFO: requires registering the URI manually in a helper plugin)
     plugin_id=$(grep '"id"' "./manifest.json" | cut -d'"' -f4)
     open "obsidian://reload-plugin?id=$plugin_id&vault=$vault_name"
 

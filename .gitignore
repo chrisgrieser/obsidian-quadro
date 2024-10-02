@@ -1,7 +1,9 @@
 # npm
 node_modules
 
+# external source maps
+*.js.map
+
 # obsidian
 data.json
 main.js
-main.js.map
