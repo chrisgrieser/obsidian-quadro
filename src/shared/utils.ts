@@ -3,9 +3,8 @@ import Quadro from "src/main";
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
 
-/** $0 matches the full link, $1 the inner link
- * includes optional trailing space to remove it when unassigning code */
-export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\] ?/;
+/** $0 matches the full link, $1 the link target */
+export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\]/;
 
 //──────────────────────────────────────────────────────────────────────────────
 

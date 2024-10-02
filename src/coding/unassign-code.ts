@@ -1,8 +1,7 @@
-import { App, Editor, Notice, TFile } from "obsidian";
+import { Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
-import { BLOCKID_REGEX, EMBEDDED_BLOCKLINK_REGEX } from "src/shared/add-ref-to-datafile";
+import { BLOCKID_REGEX } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { removeSingleFileRefFromDatafile } from "src/shared/remove-refs-from-datafile";
 import { WIKILINK_REGEX, ambiguousSelection, getActiveEditor, typeOfFile } from "src/shared/utils";
 import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
@@ -84,35 +83,6 @@ async function unassignCodeWhileInDataFile(
 	new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
 }
 
-async function unassignCodeWhileInCodeFile(app: App, editor: Editor): Promise<void> {
-	const lineText = editor.getLine(editor.getCursor().line);
-
-	// Remove from DATAFILE
-	const [_, linkPath, blockId] = lineText.match(EMBEDDED_BLOCKLINK_REGEX) || [];
-	const codeFile = editor.editorComponent.view.file;
-	if (!codeFile) {
-		new Notice("No file open.", 4000);
-		return;
-	}
-	const dataFile = app.metadataCache.getFirstLinkpathDest(linkPath || "", codeFile.path);
-	if (!blockId || !linkPath || !dataFile) {
-		new Notice("Current line has no correct reference.", 0);
-		return;
-	}
-
-	const errorMsg = await removeSingleFileRefFromDatafile(app, codeFile, dataFile, blockId);
-	if (errorMsg) {
-		new Notice(errorMsg + "\n\nAborting removal of Code.", 0);
-		return;
-	}
-
-	// Remove from CODEFILE
-	app.commands.executeCommandById("editor:delete-paragraph");
-	editor.setCursor({ line: editor.getCursor().line, ch: 0 }); // moving to BoL prevents EditorSuggester from opening
-
-	new Notice(`Assignment of code "${codeFile.basename}" removed.`, 3500);
-}
-
 //──────────────────────────────────────────────────────────────────────────────
 
 /** Unassigning code has to deal with 3 scenarios (disregarding invalid cases):
@@ -125,16 +95,12 @@ export function unassignCodeCommand(plugin: Quadro): void {
 	const editor = getActiveEditor(app);
 	if (!editor || ambiguousSelection(editor)) return;
 
-	// A: in CODEFILE
-	if (typeOfFile(plugin) === "Code File") unassignCodeWhileInCodeFile(app, editor);
-
 	// GUARD
 	if (typeOfFile(plugin) !== "Data File") {
-		new Notice("You must be in a Data File or Code File to unassign a code.", 4000);
+		new Notice("You must be in a Data File to unassign a code.", 4000);
 		return;
 	}
 
-	// B: in DATAFILE
 	const dataFile = editor.editorComponent.view.file;
 	if (!dataFile) {
 		new Notice("No file open.", 4000);
@@ -146,10 +112,8 @@ export function unassignCodeCommand(plugin: Quadro): void {
 	if (codesInPara.length === 0) {
 		new Notice("Line does not contain any codes to remove.", 3500);
 	} else if (codesInPara.length === 1) {
-		// B1: in DATAFILE, line has 1 code
 		unassignCodeWhileInDataFile(editor, dataFile, codesInPara[0] as Code);
 	} else {
-		// B2: in DATAFILE, line has 2+ codes
 		new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInPara).open();
 	}
 }

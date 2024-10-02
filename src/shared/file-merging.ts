@@ -106,24 +106,28 @@ export async function mergeFiles(
 	}
 	const uniqueOutdatedFiles = [...new Set(filesPointingToMergeAway)];
 	let changedFilesCount = 0;
-	let changedLinksCount = 0;
+	let updatedLinksCount = 0;
 	for (const filepath of uniqueOutdatedFiles) {
-		const linkedFile = app.vault.getFileByPath(filepath);
-		if (!linkedFile) continue;
+		const outdatedFile = app.vault.getFileByPath(filepath);
+		if (!outdatedFile) continue;
 
-		// UPDATE LINKS safely
-		await app.vault.process(linkedFile, (content) => {
-			const outlinks = app.metadataCache.getFileCache(linkedFile)?.links || [];
+		// UPDATE LINKS
+		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: okay here
+		await app.vault.process(outdatedFile, (content) => {
+			const outlinks = app.metadataCache.getFileCache(outdatedFile)?.links || [];
+			const rangesToUpdate: [number, number][] = [];
 			for (const link of outlinks) {
-				// skip if not pointing to `mergeAwayFile`
 				if (link.link !== mergeAwayFile.basename && link.link !== mergeAwayFile.path) continue;
+				const { start, end } = link.position;
+				rangesToUpdate.push([start.offset, end.offset]);
+			}
 
-				// point links to `mergeKeepFile`
+			rangesToUpdate.sort((a, b) => b[0] - a[0]); // backwards so offsets do not shift
+			for (const [start, end] of rangesToUpdate) {
 				const alias = isCodeFile ? "|" + getFullCode(plugin, mergeKeepFile) : "";
 				const newLinkText = `[[${mergeKeepFile.basename}${alias}]]`;
-				const { start, end } = link.position;
-				content = content.slice(0, start.offset) + newLinkText + content.slice(end.offset);
-				changedLinksCount++;
+				content = content.slice(0, start) + newLinkText + content.slice(end);
+				updatedLinksCount++;
 			}
 			return content;
 		});
@@ -136,11 +140,11 @@ export async function mergeFiles(
 	app.vault.delete(mergeAwayFile); // can be async
 
 	// NOTIFY
-	const s1 = changedLinksCount === 1 ? "" : "s";
+	const s1 = updatedLinksCount === 1 ? "" : "s";
 	const s2 = changedFilesCount === 1 ? "" : "s";
 	const msg = [
 		`"${mergeAwayFile.basename}" merged into "${mergeKeepFile.basename}".`,
-		`${changedLinksCount} reference${s1} in ${changedFilesCount} file${s2} updated.`,
+		`${updatedLinksCount} reference${s1} in ${changedFilesCount} file${s2} updated.`,
 		`A backup of the original files has been saved in the subfolder "${plugin.backupDirName}."`,
 	].join("\n\n");
 	new Notice(msg, 10000);

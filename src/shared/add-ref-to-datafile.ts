@@ -5,9 +5,6 @@ import { Editor, TFile } from "obsidian";
  * INFO blockIds may only contain letters, numbers, and a hyphen */
 export const BLOCKID_REGEX = /\^[\w-]+$/;
 
-/** group 1: linkpath, group 2: blockID */
-export const EMBEDDED_BLOCKLINK_REGEX = /^!\[\[(.+?)#(\^[\w-]+)\]\]$/;
-
 /**
  * Given a line, returns the blockID and the line without the blockID. If the
  * blockID does not exist, a random 6-digit ID is created. A random ID is
