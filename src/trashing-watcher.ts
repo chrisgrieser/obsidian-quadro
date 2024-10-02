@@ -1,7 +1,7 @@
 import { around } from "monkey-around";
 import { TFile } from "obsidian";
 import Quadro from "./main";
-import { removeAllFileRefsFromDataFile } from "./shared/remove-file-from-datafile";
+import { removeAllFileRefsFromDataFile } from "./shared/remove-refs-from-datafile";
 import { typeOfFile } from "./shared/utils";
 
 /** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to
