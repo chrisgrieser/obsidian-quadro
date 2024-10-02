@@ -6,6 +6,12 @@ import { extractFromParagraphCommand } from "./extract-from-paragraph";
 import { extractiontypesOverviewCommand } from "./extractiontypes-overview";
 import { mergeExtractionFilesCommand } from "./merge-extractions";
 
+// INFO Adding a few hotkey by default, since this plugin is going to be
+// used by many people not familiar with Obsidian. Requiring them to
+// add an hotkey would unnecessarily complicate the onboarding for
+// them. We are, however, using combinations that are unlikely to
+// conflict with other hotkeys.
+
 export const EXTRACTION_COMMANDS: CommandData[] = [
 	{
 		id: "extract-from-paragraph",

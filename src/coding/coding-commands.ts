@@ -16,6 +16,12 @@ export interface CommandData {
 	icon: IconName;
 }
 
+// INFO Adding a few hotkey by default, since this plugin is going to be
+// used by many people not familiar with Obsidian. Requiring them to
+// add an hotkey would unnecessarily complicate the onboarding for
+// them. We are, however, using combinations that are unlikely to
+// conflict with other hotkeys.
+
 export const CODING_COMMANDS: CommandData[] = [
 	{
 		id: "assign-code",
