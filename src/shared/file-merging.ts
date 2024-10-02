@@ -12,13 +12,12 @@ import { getFullCode } from "src/coding/coding-utils";
 import Quadro from "src/main";
 import { getActiveEditor } from "./utils";
 
-/** FIX wrong embeds sometimes occurring */
+/** FIX embedded blocks not being loaded correctly */
 function reloadLivePreview(app: App): void {
 	// potential alternative: `app.workspace.activeEditor.leaf.rebuildView()`
 	app.workspace.activeEditor?.editor?.editorComponent?.view?.currentMode?.cleanupLivePreview?.();
 }
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: todo
 export async function mergeFiles(
 	plugin: Quadro,
 	mergeKeepFile: TFile,
@@ -95,7 +94,8 @@ export async function mergeFiles(
 	const mergeKeepRawfm = mergeKeep.slice(0, getFrontMatterInfo(mergeKeep).contentStart);
 	await app.vault.modify(mergeKeepFile, mergeKeepRawfm + discardedInfo + mergedContent);
 	reloadLivePreview(app);
-	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 }); // move cursor to beginning of file
+	// move cursor to beginning of file, if in edit mode
+	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 });
 
 	// POINT REFERENCES from `mergeAway` to `mergeKeep`
 	const filesPointingToMergeAway: string[] = [];
@@ -142,5 +142,5 @@ export async function mergeFiles(
 		`${changedLinksCount} reference${s1} in ${changedFilesCount} file${s2} updated.`,
 		`A backup of the original files has been saved in the subfolder "${plugin.backupDirName}."`,
 	].join("\n\n");
-	new Notice(msg, 12000);
+	new Notice(msg, 10000);
 }

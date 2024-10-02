@@ -46,8 +46,9 @@ export async function removeAllFileRefsFromDataFile(plugin: Quadro, refFile: TFi
 }
 
 /** Delete a reference to a CodeFile or ExtractionFile.
- * returns an error msg; returns empty string if no error.
- * NOTE: requires references to be formatted as wikilinks. */
+ * returns an error msg (empty string if no error).
+ * TODO: requires references to be formatted as wikilinks, update to work with
+* all links */
 export async function removeSingleFileRefFromDatafile(
 	app: App,
 	refFile: TFile,
@@ -57,21 +58,23 @@ export async function removeSingleFileRefFromDatafile(
 	// retrieve referenced line in DATAFILE
 	const dataFileLines = (await app.vault.read(dataFile)).split("\n");
 	const lnumInDataFile = dataFileLines.findIndex((line) => line.endsWith(blockId));
-	if (lnumInDataFile < 0)
+	if (lnumInDataFile < 0) {
 		return `Data File "${dataFile.basename}", has no line with the ID "${blockId}".`;
+	}
 	const dataFileLine = dataFileLines[lnumInDataFile] || "";
 
-	// identify link to CODFILE in that DATAFILE line
+	// identify link to CODEFILE in that DATAFILE line
 	const linksInDataFileLine = dataFileLine.match(new RegExp(WIKILINK_REGEX, "g")) || [];
 	const linkToCodeFile = linksInDataFileLine.find((link) => {
 		link = link.trim().slice(2, -2);
 		const linkedTFile = app.metadataCache.getFirstLinkpathDest(link, dataFile.path);
 		return linkedTFile instanceof TFile && linkedTFile.path === refFile.path;
 	});
-	if (!linkToCodeFile)
+	if (!linkToCodeFile) {
 		return `Data File "${dataFile.basename}", line "${blockId}" has no valid link to the "${refFile.name}".`;
+	}
 
-	// remove link to CODFILE from DATAFILE line
+	// remove link to CODEFILE from DATAFILE line
 	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "");
 	await app.vault.modify(dataFile, dataFileLines.join("\n"));
 	return "";
