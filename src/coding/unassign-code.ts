@@ -55,32 +55,40 @@ async function unassignCodeWhileInDataFile(
 		new Notice("No ID found in current line.\nReference in Code File thus not deleted.", 0);
 		return;
 	}
-	const codeFileLines = (await app.vault.read(code.tFile)).split("\n");
-	const refInCodeFile = codeFileLines.findIndex((line) => {
-		if (!line.includes(blockId)) return false;
-		const linksInLine = line.match(new RegExp(WIKILINK_REGEX, "g")) || [];
-		for (const wikilink of linksInLine) {
-			const [_, innerWikilink] = wikilink.match(WIKILINK_REGEX) || [];
-			if (!innerWikilink) continue;
-			const linkedFile = app.metadataCache.getFirstLinkpathDest(innerWikilink, code.tFile.path);
-			if (linkedFile?.path === dataFile.path) return true;
-		}
-		return false;
-	});
-	if (refInCodeFile < 0) {
-		new Notice(
-			`"Code File "${code.tFile.basename}" contains no reference to ` +
-				`Data File "${dataFile.basename}" with the ID "${blockId}". ` +
-				"Reference in Code File is thus not deleted.",
-			0,
-		);
-		return;
-	}
 
-	// remove corresponding line in CODEFILE
-	codeFileLines.splice(refInCodeFile, 1);
-	await app.vault.process(code.tFile, () => codeFileLines.join("\n"));
-	new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
+	// CODEFILE
+	app.vault.process(code.tFile, (content) => {
+		// search for reference line in Codefile
+		const codeFileLines = content.split("\n");
+		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: later
+		const refInCodeFile = codeFileLines.findIndex((line) => {
+			if (!line.includes(blockId)) return false;
+			const linksInLine = line.match(new RegExp(WIKILINK_REGEX, "g")) || [];
+			for (const wikilink of linksInLine) {
+				const [_, innerlink] = wikilink.match(WIKILINK_REGEX) || [];
+				if (!innerlink) continue;
+				const linkedFile = app.metadataCache.getFirstLinkpathDest(innerlink, code.tFile.path);
+				if (linkedFile?.path === dataFile.path) return true;
+			}
+			return false;
+		});
+
+		// GUARD
+		if (refInCodeFile < 0) {
+			const msg =
+				`"Code File "${code.tFile.basename}" contains no reference to ` +
+				`Data File "${dataFile.basename}" with the ID "${blockId}". ` +
+				"Reference in Code File is thus not deleted.";
+			new Notice(msg, 0);
+			return content; // unmodified
+		}
+
+		// remove reference line from CODEFILE
+		codeFileLines.splice(refInCodeFile, 1);
+		content = codeFileLines.join("\n");
+		new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
+		return content;
+	});
 }
 
 //──────────────────────────────────────────────────────────────────────────────

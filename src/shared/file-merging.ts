@@ -72,31 +72,31 @@ export async function mergeFiles(
 	});
 
 	// MERGE CONTENT into `mergeKeepFile`
-	const mergeKeep = await app.vault.read(mergeKeepFile);
-	const mergeAway = await app.vault.read(mergeAwayFile);
-	const mergeKeepContent = mergeKeep.slice(getFrontMatterInfo(mergeKeep).contentStart);
-	const mergeAwayContent = mergeAway.slice(getFrontMatterInfo(mergeAway).contentStart);
+	const mergeAwayText = await app.vault.cachedRead(mergeAwayFile);
+	await app.vault.process(mergeKeepFile, (mergeKeepText) => {
+		const mergeKeepContent = mergeKeepText.slice(getFrontMatterInfo(mergeKeepText).contentStart);
+		const mergeAwayContent = mergeAwayText.slice(getFrontMatterInfo(mergeAwayText).contentStart);
 
-	let discardedInfo = "";
-	const hasDiscardedProps = Object.keys(discardedProps).length > 0;
-	if (hasDiscardedProps) {
-		const listOfDiscarded = stringifyYaml(discardedProps)
-			.trim()
-			.split("\n")
-			.map((item) => "- " + item);
-		const heading = "#### Properties that could be not be automatically merged";
-		discardedInfo = "\n" + [heading, ...listOfDiscarded, "", "---"].join("\n") + "\n\n";
-	}
+		let discardedInfo = "";
+		const hasDiscardedProps = Object.keys(discardedProps).length > 0;
+		if (hasDiscardedProps) {
+			const listOfDiscarded = stringifyYaml(discardedProps)
+				.trim()
+				.split("\n")
+				.map((item) => "- " + item);
+			const heading = "#### Properties that could be not be automatically merged";
+			discardedInfo = "\n" + [heading, ...listOfDiscarded, "", "---"].join("\n") + "\n\n";
+		}
 
-	const mergedContent = (mergeKeepContent + "\n" + mergeAwayContent)
-		.replaceAll("**Paragraph extracted from:**\n", "")
-		.replace(/\n{2,}/g, "\n");
-	const mergeKeepRawfm = mergeKeep.slice(0, getFrontMatterInfo(mergeKeep).contentStart);
-	await app.vault.process(mergeKeepFile, () => mergeKeepRawfm + discardedInfo + mergedContent);
+		const mergedContent = (mergeKeepContent + "\n" + mergeAwayContent)
+			.replaceAll("**Paragraph extracted from:**\n", "")
+			.replace(/\n{2,}/g, "\n");
+		const mergeKeepRawFm = mergeKeepText.slice(0, getFrontMatterInfo(mergeKeepText).contentStart);
+		return mergeKeepRawFm + discardedInfo + mergedContent;
+	});
 
 	reloadLivePreview(app);
-	// move cursor to beginning of file, if in edit mode
-	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 });
+	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 }); // move cursor to BoL
 
 	// POINT REFERENCES from `mergeAway` to `mergeKeep`
 	const filesPointingToMergeAway: string[] = [];

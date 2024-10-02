@@ -43,7 +43,9 @@ export async function createCodeBlockFile(
 
 	let codeblockFile = app.vault.getFileByPath(filepath);
 	if (codeblockFile) {
-		await app.vault.process(codeblockFile, () => content.join("\n"));
+		// Using `vault.modify` over `vault.process` is okay here, since the any
+		// existing content is supposed to be discarded/overwritten.
+		await app.vault.modify(codeblockFile, content.join("\n"));
 	} else {
 		codeblockFile = await app.vault.create(filepath, content.join("\n"));
 	}
