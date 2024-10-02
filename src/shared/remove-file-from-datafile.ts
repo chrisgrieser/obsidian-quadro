@@ -48,7 +48,7 @@ export async function removeAllFileRefsFromDataFile(plugin: Quadro, refFile: TFi
 /** Delete a reference to a CodeFile or ExtractionFile.
  * returns an error msg (empty string if no error).
  * TODO: requires references to be formatted as wikilinks, update to work with
-* all links */
+ * all links */
 export async function removeSingleFileRefFromDatafile(
 	app: App,
 	refFile: TFile,
@@ -76,6 +76,6 @@ export async function removeSingleFileRefFromDatafile(
 
 	// remove link to CODEFILE from DATAFILE line
 	dataFileLines[lnumInDataFile] = dataFileLine.replace(linkToCodeFile, "");
-	await app.vault.modify(dataFile, dataFileLines.join("\n"));
+	await app.vault.process(dataFile, () => dataFileLines.join("\n"));
 	return "";
 }

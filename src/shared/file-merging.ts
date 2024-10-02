@@ -92,7 +92,8 @@ export async function mergeFiles(
 		.replaceAll("**Paragraph extracted from:**\n", "")
 		.replace(/\n{2,}/g, "\n");
 	const mergeKeepRawfm = mergeKeep.slice(0, getFrontMatterInfo(mergeKeep).contentStart);
-	await app.vault.modify(mergeKeepFile, mergeKeepRawfm + discardedInfo + mergedContent);
+	await app.vault.process(mergeKeepFile, () => mergeKeepRawfm + discardedInfo + mergedContent);
+
 	reloadLivePreview(app);
 	// move cursor to beginning of file, if in edit mode
 	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 });
@@ -111,21 +112,21 @@ export async function mergeFiles(
 		if (!linkedFile) continue;
 
 		// UPDATE LINKS safely
-		let content = await app.vault.read(linkedFile);
-		const outlinks = app.metadataCache.getFileCache(linkedFile)?.links || [];
-		for (const link of outlinks) {
-			// skip if not pointing to `mergeAwayFile`
-			if (link.link !== mergeAwayFile.basename && link.link !== mergeAwayFile.path) continue;
+		await app.vault.process(linkedFile, (content) => {
+			const outlinks = app.metadataCache.getFileCache(linkedFile)?.links || [];
+			for (const link of outlinks) {
+				// skip if not pointing to `mergeAwayFile`
+				if (link.link !== mergeAwayFile.basename && link.link !== mergeAwayFile.path) continue;
 
-			// point links to `mergeKeepFile`
-			const alias = isCodeFile ? "|" + getFullCode(plugin, mergeKeepFile) : "";
-			const newLinkText = `[[${mergeKeepFile.basename}${alias}]]`;
-			const { start, end } = link.position;
-			content = content.slice(0, start.offset) + newLinkText + content.slice(end.offset);
-			changedLinksCount++;
-		}
-
-		await app.vault.modify(linkedFile, content);
+				// point links to `mergeKeepFile`
+				const alias = isCodeFile ? "|" + getFullCode(plugin, mergeKeepFile) : "";
+				const newLinkText = `[[${mergeKeepFile.basename}${alias}]]`;
+				const { start, end } = link.position;
+				content = content.slice(0, start.offset) + newLinkText + content.slice(end.offset);
+				changedLinksCount++;
+			}
+			return content;
+		});
 		changedFilesCount++;
 	}
 

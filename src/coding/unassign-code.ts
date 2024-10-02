@@ -80,7 +80,7 @@ async function unassignCodeWhileInDataFile(
 
 	// remove corresponding line in CODEFILE
 	codeFileLines.splice(refInCodeFile, 1);
-	await app.vault.modify(code.tFile, codeFileLines.join("\n"));
+	await app.vault.process(code.tFile, () => codeFileLines.join("\n"));
 	new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
 }
 
