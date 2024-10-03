@@ -5,6 +5,7 @@ import {
 	insertReferenceToDatafile,
 	prepareDatafileLineUpdate,
 } from "src/shared/add-ref-to-datafile";
+import { incrementProgress } from "src/shared/progress-tracker";
 import {
 	activeFileHasInvalidName,
 	ambiguousSelection,
@@ -93,6 +94,8 @@ async function extractOfType(
 	// Open EXTRACTION-FILE
 	await openExtractionInNewWin(plugin, extractionFile);
 	moveCursorToFirstProperty(app, "value");
+
+	incrementProgress(plugin, "extraction", "new");
 }
 
 export function extractFromParagraphCommand(plugin: Quadro): void {

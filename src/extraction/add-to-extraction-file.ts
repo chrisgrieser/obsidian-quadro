@@ -5,6 +5,7 @@ import {
 	prepareDatafileLineUpdate,
 } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { incrementProgress } from "src/shared/progress-tracker";
 import {
 	ambiguousSelection,
 	getActiveEditor,
@@ -75,6 +76,8 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 			lineWithoutId,
 			blockId,
 		);
+
+		incrementProgress(this.plugin, "extraction", "added-to-existing");
 	}
 }
 

@@ -1,7 +1,7 @@
 import { Notice } from "obsidian";
 import Quadro from "src/main";
+import { incrementProgress } from "src/shared/progress-tracker";
 import { typeOfFile } from "src/shared/utils";
-import { isCodeTemplateFile } from "./coding-utils";
 
 // INFO
 // Wrap existing Obsidian command to make it more accessible for users new to
@@ -12,6 +12,7 @@ import { isCodeTemplateFile } from "./coding-utils";
 export function renameCodeCommand(plugin: Quadro): void {
 	if (typeOfFile(plugin) === "Code File") {
 		plugin.app.commands.executeCommandById("workspace:edit-file-title");
+		incrementProgress(plugin, "coding", "rename");
 	} else {
 		new Notice("You must be in a Code File.", 4000);
 	}

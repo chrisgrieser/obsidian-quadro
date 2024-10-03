@@ -2,6 +2,7 @@ import { Notice, Setting, TFile, getFrontMatterInfo, normalizePath } from "obsid
 import Quadro from "src/main";
 import { CodeGroupSuggest } from "src/shared/folder-suggest";
 import { ExtendedInputModal } from "src/shared/modals";
+import { incrementProgress } from "src/shared/progress-tracker";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
 class InputForOneFile extends ExtendedInputModal {
@@ -202,6 +203,7 @@ async function createCodeFile(
 		return false;
 	}
 	new Notice(`Created new code file: "${fullCode}"`, 3500);
+	incrementProgress(plugin, "coding", "new"); // = triggers once per new file
 	return newCodeFile;
 }
 

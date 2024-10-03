@@ -8,6 +8,7 @@ import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys"
 import { deepExtend } from "./settings/deep-extend";
 import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
+import { incrementProgress } from "./shared/progress-tracker";
 import { ensureCorrectPropertyTypes } from "./shared/utils";
 import { updateStatusbar } from "./statusbar";
 import { setupTrashWatcher } from "./trashing-watcher";
@@ -52,6 +53,13 @@ export default class Quadro extends Plugin {
 			}
 			this.addCommand(cmdObj);
 		}
+
+		// TEST
+		this.addCommand({
+			id: "test",
+			name: "AA Test",
+			callback: (): Promise<void> => incrementProgress(this, "extraction", "test"),
+		});
 
 		// STATUSBAR
 		this.statusbar.addClass(this.cssclass);

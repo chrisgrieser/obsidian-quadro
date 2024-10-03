@@ -1,6 +1,7 @@
 import { around } from "monkey-around";
 import { Notice, TFile } from "obsidian";
 import Quadro from "./main";
+import { incrementProgress } from "./shared/progress-tracker";
 import { typeOfFile } from "./shared/utils";
 
 /** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to
@@ -24,6 +25,11 @@ export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 					const msg = `Quadro: Intercepted deletion of "${file.name}", deleting all references to the ${filetype} before proceeding with deletion.`;
 					console.info(msg);
 					await removeAllFileRefs(plugin, file);
+
+					const group = filetype === "Code File" ? "coding" : "extraction";
+					incrementProgress(plugin, group, "delete");
+				} else {
+					incrementProgress(plugin, "other", "delete");
 				}
 
 				await originalMethod.apply(vault, [file, useSystemTrash]);

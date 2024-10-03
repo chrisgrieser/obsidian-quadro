@@ -2,6 +2,7 @@ import { Notice, TFile } from "obsidian";
 import Quadro from "src/main";
 import { mergeFiles } from "src/shared/file-merging";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { incrementProgress } from "src/shared/progress-tracker";
 import { getActiveEditor, typeOfFile } from "src/shared/utils";
 import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
 
@@ -32,6 +33,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		const { plugin, mergeKeepFile } = this;
 		const backupDir = plugin.settings.coding.folder;
 		await mergeFiles(plugin, mergeKeepFile, mergeAwayFile, backupDir, "Code File");
+		incrementProgress(plugin, "coding", "merge");
 	}
 }
 

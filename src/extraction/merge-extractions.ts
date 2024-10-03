@@ -2,6 +2,7 @@ import { Notice, TFile, TFolder } from "obsidian";
 import Quadro from "src/main";
 import { mergeFiles } from "src/shared/file-merging";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { incrementProgress } from "src/shared/progress-tracker";
 import { getActiveEditor, typeOfFile } from "src/shared/utils";
 import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils";
 
@@ -34,6 +35,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		const { plugin, mergeKeepFile } = this;
 		const backupDir = mergeKeepFile.parent?.path || "";
 		await mergeFiles(plugin, mergeKeepFile, mergeAwayFile, backupDir, "Extraction File");
+		incrementProgress(plugin, "extraction", "merge");
 	}
 }
 

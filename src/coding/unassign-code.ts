@@ -2,6 +2,7 @@ import { Editor, Notice, TFile } from "obsidian";
 import Quadro from "src/main";
 import { BLOCKID_REGEX } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { incrementProgress } from "src/shared/progress-tracker";
 import { WIKILINK_REGEX, ambiguousSelection, getActiveEditor, typeOfFile } from "src/shared/utils";
 import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
@@ -30,18 +31,19 @@ class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 		return codeFileDisplay(this.plugin, code.tFile);
 	}
 	onChooseItem(code: Code): void {
-		unassignCodeWhileInDataFile(this.editor, this.dataFile, code);
+		unassignCodeWhileInDataFile(this.plugin, this.editor, this.dataFile, code);
 	}
 }
 
 //──────────────────────────────────────────────────────────────────────────────
 
 async function unassignCodeWhileInDataFile(
+	plugin: Quadro,
 	editor: Editor,
 	dataFile: TFile,
 	code: Code,
 ): Promise<void> {
-	const app = editor.editorComponent.app;
+	const app = plugin.app;
 	const ln = editor.getCursor().line;
 	const lineText = editor.getLine(ln);
 
@@ -87,6 +89,8 @@ async function unassignCodeWhileInDataFile(
 		codeFileLines.splice(refInCodeFile, 1);
 		content = codeFileLines.join("\n");
 		new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
+		incrementProgress(plugin, "coding", "unassign");
+
 		return content;
 	});
 }
@@ -120,7 +124,7 @@ export function unassignCodeCommand(plugin: Quadro): void {
 	if (codesInPara.length === 0) {
 		new Notice("Line does not contain any codes to remove.", 3500);
 	} else if (codesInPara.length === 1) {
-		unassignCodeWhileInDataFile(editor, dataFile, codesInPara[0] as Code);
+		unassignCodeWhileInDataFile(plugin, editor, dataFile, codesInPara[0] as Code);
 	} else {
 		new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInPara).open();
 	}

@@ -5,6 +5,7 @@ import {
 	prepareDatafileLineUpdate,
 } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { incrementProgress } from "src/shared/progress-tracker";
 import {
 	activeFileHasInvalidName,
 	ambiguousSelection,
@@ -85,6 +86,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		// CODEFILE Changes
 		const textToAppend = `![[${dataFile.path.slice(0, -3)}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
+		incrementProgress(this.plugin, "coding", "assign");
 	}
 }
 
