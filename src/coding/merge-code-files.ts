@@ -29,8 +29,9 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		return codeFileDisplay(this.plugin, codeFile);
 	}
 	async onChooseItem(mergeAwayFile: TFile): Promise<void> {
-		const backupDir = this.plugin.settings.coding.folder;
-		await mergeFiles(this.plugin, this.mergeKeepFile, mergeAwayFile, backupDir, true);
+		const { plugin, mergeKeepFile } = this;
+		const backupDir = plugin.settings.coding.folder;
+		await mergeFiles(plugin, mergeKeepFile, mergeAwayFile, backupDir, "Code File");
 	}
 }
 

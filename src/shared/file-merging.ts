@@ -23,7 +23,7 @@ export async function mergeFiles(
 	mergeKeepFile: TFile,
 	mergeAwayFile: TFile,
 	backupDir: string,
-	isCodeFile: boolean,
+	filetype: "Code File" | "Extraction File",
 ): Promise<void> {
 	const { app, settings } = plugin;
 
@@ -123,7 +123,7 @@ export async function mergeFiles(
 
 			rangesToUpdate.sort((a, b) => b[0] - a[0]); // backwards so offsets do not shift
 			for (const [start, end] of rangesToUpdate) {
-				const alias = isCodeFile ? "|" + getFullCode(plugin, mergeKeepFile) : "";
+				const alias = filetype === "Code File" ? "|" + getFullCode(plugin, mergeKeepFile) : "";
 				const newLinkText = `[[${mergeKeepFile.basename}${alias}]]`;
 				content = content.slice(0, start) + newLinkText + content.slice(end);
 				updatedLinksCount++;

@@ -7,11 +7,6 @@ export function getFullCode(plugin: Quadro, tFile: TFile): string {
 	return tFile.path.slice(plugin.settings.coding.folder.length + 1, -3);
 }
 
-export function isCodeTemplateFile(plugin: Quadro, tFile: TFile | null): boolean {
-	if (!tFile) return false;
-	return tFile.path === plugin.settings.coding.folder + "/Template.md";
-}
-
 export function countTimesCodeIsAssigned(plugin: Quadro, codeFile: TFile): number {
 	const outgoingLinks = plugin.app.metadataCache.resolvedLinks[codeFile.path] || {};
 	let codesAssigned = 0;

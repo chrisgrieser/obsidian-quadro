@@ -31,8 +31,9 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	async onChooseItem(mergeAwayFile: TFile): Promise<void> {
-		const backupDir = this.mergeKeepFile.parent?.path || "";
-		await mergeFiles(this.plugin, this.mergeKeepFile, mergeAwayFile, backupDir, false);
+		const { plugin, mergeKeepFile } = this;
+		const backupDir = mergeKeepFile.parent?.path || "";
+		await mergeFiles(plugin, mergeKeepFile, mergeAwayFile, backupDir, "Extraction File");
 	}
 }
 
