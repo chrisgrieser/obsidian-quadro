@@ -287,7 +287,7 @@ The underlying folder structure for coding looks like this:
 #### Coding capabilities
 <!-- LTeX: enabled=false -->
 
-| Action                                    | Description                                                                                                                                                                                                                            |             Sidebar Button             | Default Hotkey | Capability Provider                                                                                              |
+| Action                                    | Description                                                                                                                                                                                                                            |             Sidebar button             | Default hotkey | Capability provider                                                                                              |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------: | :------------: | ---------------------------------------------------------------------------------------------------------------- |
 | Assign code                               | Assign a code to the current paragraph, any selected text is highlighted. (overlapping highlights not supported though). <br><br>Select `Create new code` or press `shift ⏎` to create a new code file and assign it to the paragraph. |   ![Icon](./docs/icons/plus-circle.svg)    | `mod+shift+a`  | Quadro                                                                                                           |
 | Rename code                               | All references to the Code File are automatically updated. (You can also rename by right-clicking a file or link and selecting "Rename.")                                                                                              |   ![Icon](./docs/icons/circle-slash.svg)   | `mod+shift+r`  | [Obsidian Built-in][rename]                                                                                      |
@@ -425,7 +425,7 @@ enter as `Path` the extraction type you would like to aggregate, for example
 
 #### Extraction capabilities
 
-| Action                                | Description                                                                                                                                                                                                                                                                                             |            Sidebar Button                 | Default Hotkey | Capability Provider                                      |
+| Action                                | Description                                                                                                                                                                                                                                                                                             |            Sidebar button                 | Default hotkey | Capability provider                                      |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------:     | :------------: | -------------------------------------------------------- |
 | Extract from paragraph                | Creates an Extraction File from Extraction Template.                                                                                                                                                                                                                                                    |   ![Icon](./docs/icons/plus-square.svg)       | `mod+shift+e`  | Quadro                                                   |
 | Add paragraph to last Extraction File | Adds a reference to the last modified Extraction file to the current paragraph. Useful when information is spread across to paragraphs.                                                                                                                                                                 |   ![Icon](./docs/icons/square-asterisk.svg)   | `mod+shift+l`  | Quadro                                                   |
@@ -451,7 +451,7 @@ extraction actions are counted in a JSON file `progress.json`. Furthermore, the
 command `Mark current Data File as read` also increments the count of read Data
 Files in the `progress.json` file.
 
-| Action                           | Description                                                                               |                Sidebar Button                 | Default Hotkey | Capability Provider |
+| Action                           | Description                                                                               |                Sidebar button                 | Default hotkey | Capability provider |
 | -------------------------------- | ----------------------------------------------------------------------------------------- | :-------------------------------------------: | :------------: | ------------------- |
 | Mark current Data File as read   | Sets a property `read` for the current file to `true` and increments the `progress.json`. |     ![Icon](./docs/icons/file-check.svg)      | `mod+shift+r`  | Quadro              |
 | Show data analysis progress file | Reveals the `progress.json` file in the system explorer.                                  | ![Icon](./docs/icons/flag-triangle-right.svg) |                | Quadro              |
@@ -478,7 +478,7 @@ action in the Obsidian settings under `Hotkeys`.
 The plugin behavior can be customized in the `Quadro` tab of the Obsidian
 settings. Aside from folder locations, there are a few settings which change the
 way codes and extractions are presented. Note that these are not technical or
-personal decisions, but methodological decisions as they may change your choice
+personal decisions, but **methodological decisions** as they may change your choice
 of codes and extraction values.
 
 ## Installation & update
