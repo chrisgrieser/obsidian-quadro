@@ -1,5 +1,4 @@
-import { moment } from "obsidian";
-import { Editor, TFile } from "obsidian";
+import { Editor, TFile, moment } from "obsidian";
 
 /** DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note
  * INFO blockIds may only contain letters, numbers, and a hyphen */

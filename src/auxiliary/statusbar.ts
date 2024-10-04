@@ -1,7 +1,7 @@
-import { countTimesCodeIsAssigned } from "./coding/coding-utils";
-import { getExtractionsOfType } from "./extraction/extraction-utils";
-import Quadro from "./main";
-import { typeOfFile } from "./shared/utils";
+import { countTimesCodeIsAssigned } from "src/coding/coding-utils";
+import { getExtractionsOfType } from "src/extraction/extraction-utils";
+import Quadro from "src/main";
+import { typeOfFile } from "src/shared/utils";
 
 // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: linear enough so it's fine
 export function updateStatusbar(plugin: Quadro): void {

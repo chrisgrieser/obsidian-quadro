@@ -1,8 +1,8 @@
 import { Editor, Notice, TFile } from "obsidian";
+import { incrementProgress } from "src/auxiliary/progress-tracker";
 import Quadro from "src/main";
 import { BLOCKID_REGEX } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { incrementProgress } from "src/shared/progress-tracker";
 import { WIKILINK_REGEX, ambiguousSelection, getActiveEditor, typeOfFile } from "src/shared/utils";
 import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 

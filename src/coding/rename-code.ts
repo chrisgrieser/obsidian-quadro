@@ -1,6 +1,6 @@
 import { Notice } from "obsidian";
+import { incrementProgress } from "src/auxiliary/progress-tracker";
 import Quadro from "src/main";
-import { incrementProgress } from "src/shared/progress-tracker";
 import { typeOfFile } from "src/shared/utils";
 
 // INFO

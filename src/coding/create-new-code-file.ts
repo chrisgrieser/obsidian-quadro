@@ -1,8 +1,8 @@
 import { Notice, Setting, TFile, getFrontMatterInfo, normalizePath } from "obsidian";
+import { incrementProgress } from "src/auxiliary/progress-tracker";
 import Quadro from "src/main";
 import { CodeGroupSuggest } from "src/shared/folder-suggest";
 import { ExtendedInputModal } from "src/shared/modals";
-import { incrementProgress } from "src/shared/progress-tracker";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
 class InputForOneFile extends ExtendedInputModal {

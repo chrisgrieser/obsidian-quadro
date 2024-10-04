@@ -1,4 +1,6 @@
 import { Command, Plugin } from "obsidian";
+import { PROGRESS_COMMANDS } from "./auxiliary/progress-tracker";
+import { updateStatusbar } from "./auxiliary/statusbar";
 import { processCodeOverviewCodeblock } from "./coding/code-overview";
 import { CODING_COMMANDS } from "./coding/coding-commands";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
@@ -8,10 +10,8 @@ import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys"
 import { deepExtend } from "./settings/deep-extend";
 import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
-import { PROGRESS_COMMANDS } from "./shared/progress-tracker";
+import { setupTrashWatcher } from "./shared/trashing-watcher";
 import { ensureCorrectPropertyTypes } from "./shared/utils";
-import { updateStatusbar } from "./statusbar";
-import { setupTrashWatcher } from "./trashing-watcher";
 
 // biome-ignore lint/style/noDefaultExport: required for Obsidian plugins to work
 export default class Quadro extends Plugin {

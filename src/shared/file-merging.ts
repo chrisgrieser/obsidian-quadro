@@ -1,10 +1,10 @@
-import { moment } from "obsidian";
 import {
 	App,
 	FrontMatterCache,
 	Notice,
 	TFile,
 	getFrontMatterInfo,
+	moment,
 	normalizePath,
 	stringifyYaml,
 } from "obsidian";

@@ -1,11 +1,11 @@
 import { Editor, Notice, TFile } from "obsidian";
+import { incrementProgress } from "src/auxiliary/progress-tracker";
 import Quadro from "src/main";
 import {
 	insertReferenceToDatafile,
 	prepareDatafileLineUpdate,
 } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { incrementProgress } from "src/shared/progress-tracker";
 import {
 	ambiguousSelection,
 	getActiveEditor,

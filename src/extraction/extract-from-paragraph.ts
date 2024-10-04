@@ -1,11 +1,10 @@
-import { moment } from "obsidian";
-import { Editor, Notice, TFolder, getFrontMatterInfo } from "obsidian";
+import { Editor, Notice, TFolder, getFrontMatterInfo, moment } from "obsidian";
+import { incrementProgress } from "src/auxiliary/progress-tracker";
 import Quadro from "src/main";
 import {
 	insertReferenceToDatafile,
 	prepareDatafileLineUpdate,
 } from "src/shared/add-ref-to-datafile";
-import { incrementProgress } from "src/shared/progress-tracker";
 import {
 	activeFileHasInvalidName,
 	ambiguousSelection,
