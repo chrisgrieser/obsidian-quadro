@@ -1,4 +1,4 @@
-import { moment } from "obsidian";
+import { moment, normalizePath } from "obsidian";
 import { CommandData } from "src/coding/coding-commands";
 import Quadro from "src/main";
 
@@ -15,7 +15,7 @@ type TotalProgress = Record<string, ProgressForDay>;
 export const PROGRESS_COMMANDS: CommandData[] = [
 	{
 		id: "show-progress",
-		name: "Show data analayis progress file (WIP)",
+		name: "Show data analysis progress file",
 		func: revealProgressFile,
 		icon: "loader",
 	},
@@ -24,9 +24,13 @@ export const PROGRESS_COMMANDS: CommandData[] = [
 //──────────────────────────────────────────────────────────────────────────────
 
 function getProgressFilepath(plugin: Quadro): string {
-	const storageLocation = `${plugin.app.vault.configDir}/plugins/${plugin.manifest.id}/`;
+	const storageLocation = plugin.settings.analysis.folder;
 	const filename = "progress.json";
-	return storageLocation + filename;
+	return normalizePath(storageLocation + "/" + filename);
+}
+
+function revealProgressFile(plugin: Quadro): void {
+	plugin.app.showInFolder(getProgressFilepath(plugin));
 }
 
 export async function incrementProgress(
@@ -49,8 +53,4 @@ export async function incrementProgress(
 	progress[datestamp][group][action]++;
 
 	app.vault.adapter.write(progressFilepath, JSON.stringify(progress, null, 2));
-}
-
-function revealProgressFile(plugin: Quadro): void {
-	plugin.app.showInFolder(getProgressFilepath(plugin));
 }

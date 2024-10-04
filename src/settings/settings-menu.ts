@@ -226,7 +226,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Analysis folder")
-			.setDesc("Location where overviews and exports are placed.")
+			.setDesc("Location where overviews, progress, and exports are placed.")
 			.addSearch((text) => {
 				new FolderSuggest(this.plugin, text.inputEl);
 				text
