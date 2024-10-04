@@ -3,9 +3,9 @@ import { CommandData } from "src/coding/coding-commands";
 import Quadro from "src/main";
 
 type ProgressForDay = {
-	extraction?: Record<string, number>;
-	coding?: Record<string, number>;
-	other?: Record<string, number>;
+	"Code File"?: Record<string, number>;
+	"Extraction File"?: Record<string, number>;
+	"Data File"?: Record<string, number>;
 };
 
 type TotalProgress = Record<string, ProgressForDay>;
@@ -17,7 +17,7 @@ export const PROGRESS_COMMANDS: CommandData[] = [
 		id: "show-progress",
 		name: "Show data analysis progress file",
 		func: revealProgressFile,
-		icon: "loader",
+		icon: "flag-triangle-right",
 	},
 ];
 
@@ -35,7 +35,7 @@ function revealProgressFile(plugin: Quadro): void {
 
 export async function incrementProgress(
 	plugin: Quadro,
-	group: "extraction" | "coding" | "other",
+	group: keyof ProgressForDay,
 	action: string,
 ): Promise<void> {
 	const { app } = plugin;

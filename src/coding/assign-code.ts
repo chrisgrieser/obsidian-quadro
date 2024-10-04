@@ -86,7 +86,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		// CODEFILE Changes
 		const textToAppend = `![[${dataFile.path.slice(0, -3)}#${blockId}]]\n`;
 		await this.app.vault.append(codeFile, textToAppend);
-		incrementProgress(this.plugin, "coding", "assign");
+		incrementProgress(this.plugin, "Code File", "assign");
 	}
 }
 

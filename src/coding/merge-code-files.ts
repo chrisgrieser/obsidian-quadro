@@ -33,7 +33,7 @@ class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 		const { plugin, mergeKeepFile } = this;
 		const backupDir = plugin.settings.coding.folder;
 		await mergeFiles(plugin, mergeKeepFile, mergeAwayFile, backupDir, "Code File");
-		incrementProgress(plugin, "coding", "merge");
+		incrementProgress(plugin, "Code File", "merge");
 	}
 }
 

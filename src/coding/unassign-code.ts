@@ -89,7 +89,7 @@ async function unassignCodeWhileInDataFile(
 		codeFileLines.splice(refInCodeFile, 1);
 		content = codeFileLines.join("\n");
 		new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
-		incrementProgress(plugin, "coding", "unassign");
+		incrementProgress(plugin, "Code File", "unassign");
 
 		return content;
 	});

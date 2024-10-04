@@ -12,7 +12,7 @@ import { typeOfFile } from "src/shared/utils";
 export function renameCodeCommand(plugin: Quadro): void {
 	if (typeOfFile(plugin) === "Code File") {
 		plugin.app.commands.executeCommandById("workspace:edit-file-title");
-		incrementProgress(plugin, "coding", "rename");
+		incrementProgress(plugin, "Code File", "rename");
 	} else {
 		new Notice("You must be in a Code File.", 4000);
 	}

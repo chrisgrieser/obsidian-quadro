@@ -18,18 +18,15 @@ export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 		trash: (originalMethod) => {
 			return async (file, useSystemTrash): Promise<void> => {
 				const filetype = typeOfFile(plugin, file);
-				const isCodeOrExtractionFile =
-					filetype === "Code File" || filetype === "Extraction File";
+				const isCodeOrExtractionFile = filetype === "Code File";
 
 				if (isCodeOrExtractionFile && file instanceof TFile) {
 					const msg = `Quadro: Intercepted deletion of "${file.name}", deleting all references to the ${filetype} before proceeding with deletion.`;
 					console.info(msg);
 					await removeAllFileRefs(plugin, file);
-
-					const group = filetype === "Code File" ? "coding" : "extraction";
-					incrementProgress(plugin, group, "delete");
-				} else {
-					incrementProgress(plugin, "other", "delete");
+					incrementProgress(plugin, filetype, "delete");
+				} else if (filetype === "Data File") {
+					incrementProgress(plugin, filetype, "delete");
 				}
 
 				await originalMethod.apply(vault, [file, useSystemTrash]);

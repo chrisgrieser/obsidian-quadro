@@ -77,7 +77,7 @@ class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 			blockId,
 		);
 
-		incrementProgress(this.plugin, "extraction", "added-to-existing");
+		incrementProgress(this.plugin, "Extraction File", "added paragraph");
 	}
 }
 

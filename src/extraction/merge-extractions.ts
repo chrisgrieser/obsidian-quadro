@@ -35,7 +35,7 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 		const { plugin, mergeKeepFile } = this;
 		const backupDir = mergeKeepFile.parent?.path || "";
 		await mergeFiles(plugin, mergeKeepFile, mergeAwayFile, backupDir, "Extraction File");
-		incrementProgress(plugin, "extraction", "merge");
+		incrementProgress(plugin, "Extraction File", "merge");
 	}
 }
 

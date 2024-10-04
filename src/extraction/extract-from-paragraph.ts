@@ -94,7 +94,7 @@ async function extractOfType(
 	await openExtractionInNewWin(plugin, extractionFile);
 	moveCursorToFirstProperty(app, "value");
 
-	incrementProgress(plugin, "extraction", "new");
+	incrementProgress(plugin, "Extraction File", "new");
 }
 
 export function extractFromParagraphCommand(plugin: Quadro): void {

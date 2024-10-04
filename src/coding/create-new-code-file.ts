@@ -203,7 +203,7 @@ async function createCodeFile(
 		return false;
 	}
 	new Notice(`Created new code file: "${fullCode}"`, 3500);
-	incrementProgress(plugin, "coding", "new"); // = triggers once per new file
+	incrementProgress(plugin, "Code File", "new"); // = triggers once per new file
 	return newCodeFile;
 }
 
