@@ -18,35 +18,36 @@ the style of _Qualitative Content Analysis_.
 <!-- toc -->
 
 - [Introduction](#introduction)
-	* [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
-	* [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
-	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
+  * [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
+  * [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
+  * [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
-	* [Getting started](#getting-started)
-		+ [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
-		+ [Example vault for Quadro](#example-vault-for-quadro)
-		+ [Experienced Obsidian users](#experienced-obsidian-users)
-		+ [Using a separate vault](#using-a-separate-vault)
-		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
-	* [Coding](#coding)
-		+ [How coding works in Quadro](#how-coding-works-in-quadro)
-		+ [Coding capabilities](#coding-capabilities)
-	* [Extraction](#extraction)
-		+ [How extraction works in Quadro](#how-extraction-works-in-quadro)
-		+ [Aggregate extractions](#aggregate-extractions)
-		+ [Extraction capabilities](#extraction-capabilities)
+  * [Getting started](#getting-started)
+    + [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
+    + [Example vault for Quadro](#example-vault-for-quadro)
+    + [Experienced Obsidian users](#experienced-obsidian-users)
+    + [Using a separate vault](#using-a-separate-vault)
+    + [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
+  * [Coding](#coding)
+    + [How coding works in Quadro](#how-coding-works-in-quadro)
+    + [Coding capabilities](#coding-capabilities)
+  * [Extraction](#extraction)
+    + [How extraction works in Quadro](#how-extraction-works-in-quadro)
+    + [Aggregate extractions](#aggregate-extractions)
+    + [Extraction capabilities](#extraction-capabilities)
+  * [Progress tracking & theoretical saturation](#progress-tracking--theoretical-saturation)
 - [Configuration](#configuration)
-	* [Buttons](#buttons)
-	* [Hotkeys](#hotkeys)
-	* [Plugin behavior](#plugin-behavior)
+  * [Buttons](#buttons)
+  * [Hotkeys](#hotkeys)
+  * [Plugin behavior](#plugin-behavior)
 - [Installation & update](#installation--update)
 - [Development](#development)
-	* [Contribute](#contribute)
-	* [Cssclasses](#cssclasses)
+  * [Contribute](#contribute)
+  * [Cssclasses](#cssclasses)
 - [Credits](#credits)
-	* [Acknowledgments](#acknowledgments)
-	* [Recommended citation of this project](#recommended-citation-of-this-project)
-	* [About the developer](#about-the-developer)
+  * [Acknowledgments](#acknowledgments)
+  * [Recommended citation of this project](#recommended-citation-of-this-project)
+  * [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
@@ -443,6 +444,25 @@ enter as `Path` the extraction type you would like to aggregate, for example
 - ⚠️ Renaming or moving Extraction/Data Files should be done from within
   Obsidian. Using the Windows Explorer or macOS Finder does not trigger the
   automatic updating of references, meaning a loss of information.
+
+### Progress tracking & theoretical saturation
+_Quadro_ also offers some basic progress tracking capabilities. Most coding and
+extraction actions are counted in a JSON file `progress.json`. Furthermore, the
+command `Mark current Data File as read` also increments the count of read Data
+Files in the `progress.json` file.
+
+| Action                           | Description                                                                               |                Sidebar Button                 | Default Hotkey | Capability Provider |
+| -------------------------------- | ----------------------------------------------------------------------------------------- | :-------------------------------------------: | :------------: | ------------------- |
+| Mark current Data File as read   | Sets a property `read` for the current file to `true` and increments the `progress.json`. |     ![Icon](./docs/icons/file-check.svg)      | `mod+shift+r`  | Quadro              |
+| Show data analysis progress file | Reveals the `progress.json` file in the system explorer.                                  | ![Icon](./docs/icons/flag-triangle-right.svg) |                | Quadro              |
+
+The progress tracking is not only useful for accountability and planning, but
+also has **methodological value**. For instance, you could operationalize
+**theoretical saturation** for a coding-based investigation by examining the
+ratio of newly created codes to paragraphs being assigned to existing codes. Or
+you could investigate the **theoretical saturation** of an extraction-based
+project by looking at the ratio of newly created extractions to paragraphs only
+being assigned to existing extractions.
 
 ## Configuration
 
