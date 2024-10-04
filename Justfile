@@ -25,6 +25,9 @@ check-tsc:
 release:
     node .release.mjs
 
+analyze:
+    node .esbuild.mjs analyze
+
 init:
     #!/usr/bin/env zsh
     git config core.hooksPath .githooks
