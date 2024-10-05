@@ -24,6 +24,7 @@ export const PROGRESS_COMMANDS: CommandData[] = [
 		id: "mark-datafile-as-read",
 		name: "Mark current Data File as read",
 		func: markDatafileAsRead,
+		hotkeyLetter: "r",
 		icon: "file-check",
 	},
 ];
