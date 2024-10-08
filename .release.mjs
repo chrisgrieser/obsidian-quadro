@@ -53,7 +53,7 @@ writeJson("package-lock.json", packageLock);
 
 const gitCommands = [
 	"git add manifest.json versions.json package.json package-lock.json",
-	`git commit -m "release: ${nextVersion}"`,
+	`git commit --no-verify --message="release: ${nextVersion}"`, // skip hook, since only bumping
 	"git pull --no-progress",
 	"git push --no-progress",
 	`git tag ${nextVersion}`, // tag triggers the release action
