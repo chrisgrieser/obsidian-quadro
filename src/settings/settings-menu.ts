@@ -87,7 +87,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Shortened statusbar text")
-			.setDesc('For example, displays "20C" instead of "Code 20x assigned".')
+			.setDesc('For example, instead of "Code 20x assigned" the statusbar will display "20C".')
 			.addToggle((toggle) =>
 				toggle.setValue(settings.statusbar.shortened).onChange(async (value) => {
 					settings.statusbar.shortened = value;
@@ -208,7 +208,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			.setDesc(
 				"Property which should be displayed when selecting an Extraction File, " +
 					"for instance when merging Extraction Files. If a list of properties " +
-					"is specified, the first one that exists in the Extraction File is used. ",
+					"is specified, the first one that exists in the Extraction File is used. " +
+					"For a list of properties, enter one property per line.",
 			)
 			.addTextArea((textarea) =>
 				textarea
