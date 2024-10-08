@@ -61,10 +61,18 @@ export function updateStatusbar(plugin: Quadro): void {
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	const text = segments
-		// singular/plural s
-		.map((segment) => (segment.startsWith("1 ") ? segment.slice(0, -1) : segment))
-		.join(shortened ? " " : ", ");
-	statusbar.style.cssText = "display: block";
+	// GUARD
+	if (segments.length === 0) {
+		statusbar.setText("");
+		statusbar.style.cssText = "display: none";
+		return;
+	}
+
+	const text = shortened
+		? segments.join(" ")
+		: segments // singular/plural s
+				.map((segment) => (segment.startsWith("1 ") ? segment.slice(0, -1) : segment))
+				.join(", ");
 	statusbar.setText(text);
+	statusbar.style.cssText = "display: block";
 }
