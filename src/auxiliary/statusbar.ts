@@ -6,6 +6,7 @@ import { typeOfFile } from "src/shared/utils";
 // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: linear enough so it's fine
 export function updateStatusbar(plugin: Quadro): void {
 	const { app, statusbar, settings } = plugin;
+	const shortened = settings.statusbar.shortened;
 	const segments: string[] = [];
 	const filetype = typeOfFile(plugin);
 	const activeFile = app.workspace.getActiveFile();
@@ -61,5 +62,6 @@ export function updateStatusbar(plugin: Quadro): void {
 		// singular/plural s
 		.map((segment) => (segment.startsWith("1 ") ? segment.slice(0, -1) : segment))
 		.join(", ");
+	statusbar.style.cssText = "display: block";
 	statusbar.setText(text);
 }
