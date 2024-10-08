@@ -1,4 +1,5 @@
 import { PluginSettingTab, Setting, normalizePath } from "obsidian";
+import { updateStatusbar } from "src/auxiliary/statusbar";
 import { suppressCertainFrontmatterSuggestions } from "src/frontmatter-modifications/suppress-suggestions";
 import { setCssForWidthOfKeys } from "src/frontmatter-modifications/width-of-keys";
 import Quadro from "src/main";
@@ -82,6 +83,17 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 						await this.plugin.saveSettings();
 						setCssForWidthOfKeys(this.plugin);
 					}),
+			);
+
+		new Setting(containerEl)
+			.setName("Shortened statusbar text")
+			.setDesc('For example, displays "20C" instead of "Code 20x assigned".')
+			.addToggle((toggle) =>
+				toggle.setValue(settings.statusbar.shortened).onChange(async (value) => {
+					settings.statusbar.shortened = value;
+					updateStatusbar(this.plugin);
+					await this.plugin.saveSettings();
+				}),
 			);
 
 		// CODING

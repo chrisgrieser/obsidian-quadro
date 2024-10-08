@@ -48,6 +48,9 @@ export const DEFAULT_SETTINGS = {
 	},
 	suppressSuggestionInFields: [] as string[],
 	propertiesKeysWidthPercent: 35,
+	statusbar: {
+		shortened: false,
+	},
 };
 
 export type QuadroSettings = typeof DEFAULT_SETTINGS;

@@ -14,6 +14,7 @@ export function updateStatusbar(plugin: Quadro): void {
 	// GUARD
 	if (!activeFile || !["Data File", "Code File", "Extraction File"].includes(filetype)) {
 		statusbar.setText("");
+		statusbar.style.cssText = "display: none"; // avoids padding of empty statusbar item
 		return;
 	}
 
@@ -22,8 +23,9 @@ export function updateStatusbar(plugin: Quadro): void {
 	// CODEFILE: outgoing links = times code was assigned
 	if (filetype === "Code File") {
 		const codeFile = activeFile;
-		const codeAssignedCount = countTimesCodeIsAssigned(plugin, codeFile);
-		segments.push(`Code ${codeAssignedCount}x assigned`);
+		const count = countTimesCodeIsAssigned(plugin, codeFile);
+		const text = shortened ? `${count}C` : `Code ${count}x assigned`;
+		segments.push(text);
 	}
 
 	// EXTRACTION FILE: number of extractions made for the type
@@ -31,21 +33,22 @@ export function updateStatusbar(plugin: Quadro): void {
 		const extractionType = activeFile.parent;
 		if (extractionType) {
 			const count = getExtractionsOfType(plugin, extractionType).length;
-			segments.push(`${count}x extracted`);
+			const text = shortened ? `${count}E` : `${count}x extracted`;
+			segments.push(text);
 		}
 	}
 
 	// DATAFILE: differentiate links by whether they are extractions or codes
 	else if (filetype === "Data File") {
 		const outgoingLinks = app.metadataCache.resolvedLinks[activeFile.path] || {};
-		let codeAssignedCount = 0;
-		let extractionsMade = 0;
+		let codes = 0;
+		let extractions = 0;
 		for (const [filepath, count] of Object.entries(outgoingLinks)) {
-			if (filepath.startsWith(settings.coding.folder + "/")) codeAssignedCount += count;
-			if (filepath.startsWith(settings.extraction.folder + "/")) extractionsMade++;
+			if (filepath.startsWith(settings.coding.folder + "/")) codes += count;
+			if (filepath.startsWith(settings.extraction.folder + "/")) extractions++;
 		}
-		if (codeAssignedCount > 0) segments.push(`${codeAssignedCount} Codes`);
-		if (extractionsMade > 0) segments.push(`${extractionsMade} Extractions`);
+		if (codes > 0) segments.push(`${codes}${shortened ? "C" : " Codes"}`);
+		if (extractions > 0) segments.push(`${extractions}${shortened ? "E" : " Extractions"}`);
 	}
 
 	// any type of file: count invalid links
@@ -61,7 +64,7 @@ export function updateStatusbar(plugin: Quadro): void {
 	const text = segments
 		// singular/plural s
 		.map((segment) => (segment.startsWith("1 ") ? segment.slice(0, -1) : segment))
-		.join(", ");
+		.join(shortened ? " " : ", ");
 	statusbar.style.cssText = "display: block";
 	statusbar.setText(text);
 }
