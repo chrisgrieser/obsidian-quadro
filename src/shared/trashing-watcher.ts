@@ -21,8 +21,6 @@ export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 				const isCodeOrExtractionFile = filetype === "Code File";
 
 				if (isCodeOrExtractionFile && file instanceof TFile) {
-					const msg = `Quadro: Intercepted deletion of "${file.name}", deleting all references to the ${filetype} before proceeding with deletion.`;
-					console.info(msg);
 					await removeAllFileRefs(plugin, file);
 					incrementProgress(plugin, filetype, "delete");
 				} else if (filetype === "Data File") {
@@ -79,8 +77,11 @@ async function removeAllFileRefs(plugin: Quadro, refFile: TFile): Promise<void> 
 	const s1 = removedLinksCount === 1 ? "" : "s";
 	const s2 = changedFilesCount === 1 ? "" : "s";
 	const msg = [
-		`"${refFile.basename}" was deleted.`,
+		"Quadro",
+		`${refFile.basename}" was deleted.`,
+		"",
 		`${removedLinksCount} reference${s1} in ${changedFilesCount} file${s2} have been removed.`,
-	].join("\n\n");
+	].join("\n");
+	console.info(msg);
 	new Notice(msg, 8000);
 }

@@ -1,6 +1,6 @@
 # Quadro
-![GitHub Download Count](https://img.shields.io/github/downloads/chrisgrieser/obsidian-quadro/total?label=GitHub%20Downloads&style=plastic)
-![Obsidian Store Download Count](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=Obsidian%20Downloads&query=%24%5B%22quadro%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
+![GitHub download count](https://img.shields.io/github/downloads/chrisgrieser/obsidian-quadro/total?label=GitHub%20Downloads&style=plastic)
+![Obsidian store download count](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=Obsidian%20Downloads&query=%24%5B%22quadro%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
 ![Last release](https://img.shields.io/github/v/release/chrisgrieser/obsidian-quadro?label=Latest%20Release&style=plastic)
 
 _**Qua**litative **D**ata analysis **R**ealized in **O**bsidian_
@@ -215,6 +215,19 @@ Bear, or Roam](https://help.obsidian.md/import) is supported as well.
 It is, however, possible to export the results done with _Quadro_, to
 collaborate with other researchers. You can either export individual files as
 PDF, or [export aggregated results as CSV](#extraction-capabilities).
+
+### Modification of Obsidian core behavior
+To work correctly, _Quadro_ modifies some behavior of Obsidian core:
+- If a Code File or Extraction File is deleted, _Quadro_ will remove all
+  references to it to avoid leaving dead links.
+- Since _Quadro_ heavily relies on [block
+  references](https://help.obsidian.md/Linking+notes+and+files/Internal+links.md#Link+to+a+block+in+a+note)
+  and [embedded
+  blocks](https://help.obsidian.md/Linking+notes+and+files/Embed+files.md#Embed+a+note+in+another+note),
+  their styling is adapted.
+
+As mentioned before, it is recommended to use a separate vault for data analysis
+with _Quadro_.
 
 ### Coding
 
