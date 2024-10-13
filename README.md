@@ -28,6 +28,7 @@ the style of _Qualitative Content Analysis_.
     + [Experienced Obsidian users](#experienced-obsidian-users)
     + [Using a separate vault](#using-a-separate-vault)
     + [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
+  * [Modification of Obsidian core behavior](#modification-of-obsidian-core-behavior)
   * [Coding](#coding)
     + [How coding works in Quadro](#how-coding-works-in-quadro)
     + [Coding capabilities](#coding-capabilities)
@@ -444,7 +445,7 @@ enter as `Path` the extraction type you would like to aggregate, for example
 | Add paragraph to last Extraction File | Adds a reference to the last modified Extraction file to the current paragraph. Useful when information is spread across to paragraphs.                                                                                                                                                                 |   ![Icon](./docs/icons/square-asterisk.svg)   | `mod+shift+l`  | Quadro                                                   |
 | Merge extractions                     | Merge the _current_ Extraction File into another Extraction File. All references from data files are updated to point to the merged file.                                                                                                                                                               |     ![Icon](./docs/icons/square-dot.svg)      |       —        | Quadro                                                   |
 | Create new extraction type            | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                                |   ![Icon](./docs/icons/box-select.svg)        |       —        | Quadro                                                   |
-| Show Extraction Type Overview         | Creates an auto-updating overview of an Extraction Type and their values.                                                                                                                                                                                                                               |  ![Icon](./docs/icons/square-equal.svg)       |       —        | Quadro                                                   |
+| Show Extraction type overview         | Creates an auto-updating overview of an Extraction Type and their values.                                                                                                                                                                                                                               |  ![Icon](./docs/icons/square-equal.svg)       |       —        | Quadro                                                   |
 | Co-occurrent extraction dimensions    | Find extractions where two dimensions have a specific value, by using a query such as `["cause of the issue": fragmentation] ["type of compatibility":backward]` in the Obsidian Search. <br><br>[Further Documentation][search]                                                                        |                   —                       | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                   |
 | Rename dimension globally             | Renaming a property field within a file only affects the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties pops up in the sidebar, where you can rename properties via right-click. |                   —                       |       —        | [Obsidian Core Plugin: Properties View][properties view] |
 | Export all extractions as `.csv`      | All extractions for all extraction types are exported as `,`-separated `.csv`.                                                                                                                                                                                                                          | ![Icon](./docs/icons/arrow-up-square.svg)     |       —        | Quadro                                                   |
@@ -499,9 +500,10 @@ of codes and extraction values.
 - **Installation:** [Install in Obsidian](https://obsidian.md/plugins?id=quadro)
 - **Update:** In Obsidian, go to `Settings` → `Community plugins` → `Check for
   updates` → `Update all`.
-- **Bug reports & feature requests:** [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).
-- **Questions & general discussion** [GitHub Discussion
-  Forum](https://github.com/chrisgrieser/obsidian-quadro/discussions).
+- **Bug reports & feature requests:** [GitHub issue
+  tracker](https://github.com/chrisgrieser/obsidian-quadro/issues).
+- **Questions & general discussion** [GitHub discussion
+  forum](https://github.com/chrisgrieser/obsidian-quadro/discussions).
 
 ## Development
 
