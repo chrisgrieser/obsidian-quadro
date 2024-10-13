@@ -18,7 +18,7 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 		name: "Extract from paragraph",
 		func: extractFromParagraphCommand,
 		hotkeyLetter: "e",
-		icon: "plus-square",
+		icon: "square-plus",
 	},
 	{
 		id: "extract-existing-extraction-file",
@@ -37,13 +37,13 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 		id: "create-new-extraction-type",
 		name: "Create new Extraction Type",
 		func: createNewExtractionTypeCommand,
-		icon: "box-select",
+		icon: "box-select", // in lucid 0.447 renamed to `square-dashed`
 	},
 	{
 		id: "export-all-extractions-as-csv",
 		name: "Export all extractions as .csv",
 		func: exportExtractionsAsCsv,
-		icon: "arrow-up-square",
+		icon: "square-arrow-up",
 	},
 	{
 		id: "extractiontypes-overview",

@@ -28,7 +28,7 @@ export const CODING_COMMANDS: CommandData[] = [
 		name: "Assign code to paragraph",
 		func: assignCodeCommand,
 		hotkeyLetter: "a",
-		icon: "plus-circle",
+		icon: "circle-plus",
 	},
 	{
 		id: "rename-code",
@@ -42,13 +42,13 @@ export const CODING_COMMANDS: CommandData[] = [
 		name: "Remove code from paragraph",
 		func: unassignCodeCommand,
 		hotkeyLetter: "d",
-		icon: "minus-circle",
+		icon: "circle-minus",
 	},
 	{
 		id: "delete-code-everywhere",
 		name: "Delete Code File and all references to it",
 		func: deleteCodeEverywhereCommand,
-		icon: "x-circle",
+		icon: "circle-x",
 	},
 	{
 		id: "merge-codes",
