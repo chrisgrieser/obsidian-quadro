@@ -18,7 +18,8 @@ export function setupTrashWatcher(plugin: Quadro): ReturnType<typeof around> {
 		trash: (originalMethod) => {
 			return async (file, useSystemTrash): Promise<void> => {
 				const filetype = typeOfFile(plugin, file);
-				const isCodeOrExtractionFile = filetype === "Code File";
+				const isCodeOrExtractionFile =
+					filetype === "Code File" || filetype === "Extraction File";
 
 				if (isCodeOrExtractionFile && file instanceof TFile) {
 					await removeAllFileRefs(plugin, file);
