@@ -1,5 +1,4 @@
 import { Notice, TFile, moment, normalizePath } from "obsidian";
-import { CommandData } from "src/coding/coding-commands";
 import Quadro from "src/main";
 import { typeOfFile } from "src/shared/utils";
 
@@ -13,35 +12,17 @@ type TotalProgress = Record<string, ProgressForDay>;
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export const PROGRESS_COMMANDS: CommandData[] = [
-	{
-		id: "show-progress",
-		name: "Show data analysis progress file",
-		func: revealProgressFile,
-		icon: "flag-triangle-right",
-	},
-	{
-		id: "mark-datafile-as-read",
-		name: "Mark current Data File as read",
-		func: markDatafileAsRead,
-		hotkeyLetter: "r",
-		icon: "file-check",
-	},
-];
-
-//──────────────────────────────────────────────────────────────────────────────
-
 function getProgressFilepath(plugin: Quadro): string {
 	const storageLocation = plugin.settings.analysis.folder;
 	const filename = "progress.json";
 	return normalizePath(storageLocation + "/" + filename);
 }
 
-function revealProgressFile(plugin: Quadro): void {
+export function revealProgressFile(plugin: Quadro): void {
 	plugin.app.showInFolder(getProgressFilepath(plugin));
 }
 
-function markDatafileAsRead(plugin: Quadro): void {
+export function markDatafileAsRead(plugin: Quadro): void {
 	const app = plugin.app;
 	const currentFile = app.workspace.getActiveFile();
 

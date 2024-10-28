@@ -1,5 +1,5 @@
 import { Command, Plugin } from "obsidian";
-import { PROGRESS_COMMANDS } from "./auxiliary/progress-tracker";
+import { AUXILIARY_COMMANDS } from "./auxiliary/auxiliary-commands";
 import { updateStatusbar } from "./auxiliary/statusbar";
 import { processCodeOverviewCodeblock } from "./coding/code-overview";
 import { CODING_COMMANDS } from "./coding/coding-commands";
@@ -32,7 +32,7 @@ export default class Quadro extends Plugin {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		// COMMANDS
-		for (const cmd of [...CODING_COMMANDS, ...EXTRACTION_COMMANDS, ...PROGRESS_COMMANDS]) {
+		for (const cmd of [...CODING_COMMANDS, ...EXTRACTION_COMMANDS, ...AUXILIARY_COMMANDS]) {
 			const ribbon = this.addRibbonIcon(cmd.icon, `Quadro: ${cmd.name}`, () => cmd.func(this));
 			ribbon.addClasses([this.cssclass, "quadro-ribbon-button"]);
 
