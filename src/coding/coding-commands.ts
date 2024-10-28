@@ -34,7 +34,6 @@ export const CODING_COMMANDS: CommandData[] = [
 		id: "rename-code",
 		name: "Rename code",
 		func: renameCodeCommand,
-		hotkeyLetter: "r",
 		icon: "circle-slash",
 	},
 	{
