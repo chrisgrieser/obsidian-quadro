@@ -36,7 +36,9 @@ the style of _Qualitative Content Analysis_.
     + [How extraction works in Quadro](#how-extraction-works-in-quadro)
     + [Aggregate extractions](#aggregate-extractions)
     + [Extraction capabilities](#extraction-capabilities)
-  * [Progress tracking & theoretical saturation](#progress-tracking--theoretical-saturation)
+  * [Auxiliary commands](#auxiliary-commands)
+    + [Open random Data Files](#open-random-data-files)
+    + [Progress tracking & theoretical saturation](#progress-tracking--theoretical-saturation)
 - [Configuration](#configuration)
   * [Buttons](#buttons)
   * [Hotkeys](#hotkeys)
@@ -459,16 +461,26 @@ enter as `Path` the extraction type you would like to aggregate, for example
   Obsidian. Using the Windows Explorer or macOS Finder does not trigger the
   automatic updating of references, meaning a loss of information.
 
-### Progress tracking & theoretical saturation
+### Auxiliary commands
+
+#### Open random Data Files
+Depending on methodological considerations, it can make sense to analyze Data
+files in random order.
+
+| Action                           | Description                                                                   |              Sidebar button            | Default hotkey |
+| -------------------------------- | ----------------------------------------------------------------------------- | :------------------------------------: | :------------: |
+| Open random unread Data File     | Open a random file in the vault that has the property `read` set to `false`   |   ![Icon](./docs/icons/shuffle.svg)    | `mod+shift+n`  |
+
+#### Progress tracking & theoretical saturation
 _Quadro_ also offers some basic progress tracking capabilities. Most coding and
 extraction actions are counted in a JSON file `progress.json`. Furthermore, the
 command `Mark current Data File as read` also increments the count of read Data
 Files in the `progress.json` file.
 
-| Action                           | Description                                                                               |                Sidebar button                 | Default hotkey | Capability provider |
-| -------------------------------- | ----------------------------------------------------------------------------------------- | :-------------------------------------------: | :------------: | ------------------- |
-| Mark current Data File as read   | Sets a property `read` for the current file to `true` and increments the `progress.json`. |     ![Icon](./docs/icons/file-check.svg)      | `mod+shift+r`  | Quadro              |
-| Show data analysis progress file | Reveals the `progress.json` file in the system explorer.                                  | ![Icon](./docs/icons/flag-triangle-right.svg) |                | Quadro              |
+| Action                           | Description                                                                               |                Sidebar button                 | Default hotkey |
+| -------------------------------- | ----------------------------------------------------------------------------------------- | :-------------------------------------------: | :------------: |
+| Mark current Data File as read   | Sets a property `read` for the current file to `true` and increments the `progress.json`. |     ![Icon](./docs/icons/file-check.svg)      | `mod+shift+r`  |
+| Show data analysis progress file | Reveals the `progress.json` file in the system explorer.                                  | ![Icon](./docs/icons/flag-triangle-right.svg) |                |
 
 The progress tracking is not only useful for accountability and planning, but
 also has **methodological value**. For instance, you could operationalize

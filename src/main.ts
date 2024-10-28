@@ -23,6 +23,7 @@ export default class Quadro extends Plugin {
 		codeOverview: "quadro-code-overview",
 	};
 	backupDirName = "pre-merge-backups";
+	readKey = "read"; // progress & random note
 
 	statusbar = this.addStatusBarItem();
 	trashWatcherUninstaller?: () => void;

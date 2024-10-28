@@ -25,6 +25,7 @@ export function revealProgressFile(plugin: Quadro): void {
 export function markDatafileAsRead(plugin: Quadro): void {
 	const app = plugin.app;
 	const currentFile = app.workspace.getActiveFile();
+	const targetKey = plugin.readKey;
 
 	// GUARD
 	const isDataFile =
@@ -33,7 +34,7 @@ export function markDatafileAsRead(plugin: Quadro): void {
 		new Notice("Current file is not a Data File.", 4000);
 		return;
 	}
-	const alreadyRead = app.metadataCache.getFileCache(currentFile)?.frontmatter?.read;
+	const alreadyRead = app.metadataCache.getFileCache(currentFile)?.frontmatter?.[targetKey];
 	if (alreadyRead) {
 		new Notice("Data File already marked as read.", 4000);
 		return;

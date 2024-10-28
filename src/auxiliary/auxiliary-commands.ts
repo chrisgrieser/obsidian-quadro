@@ -1,7 +1,15 @@
 import { CommandData } from "src/coding/coding-commands";
+import { openRandomUnreadDatafile } from "./open-random-datafile";
 import { markDatafileAsRead, revealProgressFile } from "./progress-tracker";
 
 export const AUXILIARY_COMMANDS: CommandData[] = [
+	{
+		id: "open-random-unread-datafile",
+		name: "Open random unread Data File",
+		func: openRandomUnreadDatafile,
+		hotkeyLetter: "n",
+		icon: "shuffle",
+	},
 	{
 		id: "show-progress",
 		name: "Show data analysis progress file",
