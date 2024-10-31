@@ -1,5 +1,6 @@
 import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile, normalizePath } from "obsidian";
 import Quadro from "src/main";
+import { BACKUP_DIRNAME } from "src/settings/constants";
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
 
@@ -23,7 +24,7 @@ export function typeOfFile(
 	if (!file || !(file instanceof TFile) || file.extension !== "md") return "Not Markdown";
 
 	if (file.name === "Template.md") return "Template";
-	if (file.path.includes(plugin.backupDirName)) return "Backup";
+	if (file.path.includes(BACKUP_DIRNAME)) return "Backup";
 	if (file.path.startsWith(settings.coding.folder + "/")) return "Code File";
 	if (file.path.startsWith(settings.extraction.folder + "/")) return "Extraction File";
 	return "Data File";

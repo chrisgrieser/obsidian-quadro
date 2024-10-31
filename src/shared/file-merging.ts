@@ -10,6 +10,7 @@ import {
 } from "obsidian";
 import { getFullCode } from "src/coding/coding-utils";
 import Quadro from "src/main";
+import { BACKUP_DIRNAME } from "src/settings/constants";
 import { getActiveEditor } from "./utils";
 
 /** FIX embedded blocks not being loaded correctly */
@@ -28,7 +29,7 @@ export async function mergeFiles(
 	const { app, settings } = plugin;
 
 	// PRE-MERGE BACKUP
-	backupDir = normalizePath(backupDir + "/" + plugin.backupDirName);
+	backupDir = normalizePath(backupDir + "/" + BACKUP_DIRNAME);
 	if (!app.vault.getFolderByPath(backupDir)) await app.vault.createFolder(backupDir);
 	const timestamp = moment().format("YY-MM-DD_HH-mm-ss"); // ensures unique filename
 	await app.vault.copy(mergeKeepFile, `${backupDir}/${mergeKeepFile.basename} ${timestamp}.md`);
@@ -144,7 +145,7 @@ export async function mergeFiles(
 	const msg = [
 		`"${mergeAwayFile.basename}" merged into "${mergeKeepFile.basename}".`,
 		`${updatedLinksCount} reference${s1} in ${changedFilesCount} file${s2} updated.`,
-		`A backup of the original files has been saved in the subfolder "${plugin.backupDirName}."`,
+		`A backup of the original files has been saved in the subfolder "${BACKUP_DIRNAME}."`,
 	].join("\n\n");
 	new Notice(msg, 10000);
 }

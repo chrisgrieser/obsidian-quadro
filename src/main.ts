@@ -7,6 +7,7 @@ import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
 import { processExtractiontypeOverviewCodeblock } from "./extraction/extractiontypes-overview";
 import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions";
 import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys";
+import { CODEBLOCK_LABELS } from "./settings/constants";
 import { deepExtend } from "./settings/deep-extend";
 import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
@@ -18,13 +19,6 @@ export default class Quadro extends Plugin {
 	styleElSuppressSuggestionsInFields?: HTMLStyleElement;
 	styleElPropertyKeyWidth?: HTMLStyleElement;
 	cssclass = this.manifest.id;
-	codeblockLabels = {
-		extractionOverview: "quadro-extractiontype-overview",
-		codeOverview: "quadro-code-overview",
-	};
-	backupDirName = "pre-merge-backups";
-	readKey = "read"; // progress & random note
-
 	statusbar = this.addStatusBarItem();
 	trashWatcherUninstaller?: () => void;
 	settings: QuadroSettings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
@@ -75,28 +69,18 @@ export default class Quadro extends Plugin {
 		ensureCorrectPropertyTypes(this.app);
 
 		// CODE BLOCKS
-		this.registerMarkdownCodeBlockProcessor(this.codeblockLabels.codeOverview, (_source, el) => {
+		this.registerMarkdownCodeBlockProcessor(CODEBLOCK_LABELS.codeOverview, (_source, el) => {
 			el.innerHTML = processCodeOverviewCodeblock(this);
 			el.addClass(this.cssclass);
 		});
-		this.registerMarkdownCodeBlockProcessor(
-			this.codeblockLabels.extractionOverview,
-			(source, el) => {
-				el.innerHTML = processExtractiontypeOverviewCodeblock(this, source);
-				el.addClass(this.cssclass);
-			},
-		);
+		this.registerMarkdownCodeBlockProcessor(CODEBLOCK_LABELS.extractionOverview, (source, el) => {
+			el.innerHTML = processExtractiontypeOverviewCodeblock(this, source);
+			el.addClass(this.cssclass);
+		});
 		// add yaml-syntax highlighting to codeblocks
-		window.CodeMirror.defineMode(this.codeblockLabels.extractionOverview, (config) =>
+		window.CodeMirror.defineMode(CODEBLOCK_LABELS.extractionOverview, (config) =>
 			window.CodeMirror.getMode(config, "yaml"),
 		);
-
-		// DEPRECATION old extraction overview code blocks
-		this.registerMarkdownCodeBlockProcessor("quadro-extractiontypes-overview", (_, el) => {
-			el.innerHTML =
-				"INFO: This overview is outdated. Please delete this file and re-run " +
-				'"Show extraction type overview".';
-		});
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
@@ -105,7 +89,7 @@ export default class Quadro extends Plugin {
 		if (this.trashWatcherUninstaller) this.trashWatcherUninstaller();
 
 		// de-register yaml-syntax highlighting
-		window.CodeMirror.defineMode(this.codeblockLabels.extractionOverview, (config) =>
+		window.CodeMirror.defineMode(CODEBLOCK_LABELS.extractionOverview, (config) =>
 			window.CodeMirror.getMode(config, ""),
 		);
 

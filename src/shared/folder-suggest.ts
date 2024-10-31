@@ -1,5 +1,6 @@
 import { AbstractInputSuggest, TFolder } from "obsidian";
 import Quadro from "src/main";
+import { BACKUP_DIRNAME } from "src/settings/constants";
 
 export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 	textInputEl: HTMLInputElement;
@@ -45,7 +46,7 @@ export class CodeGroupSuggest extends FolderSuggest {
 		const matchingFolders = this.foldersInVault.filter((folder) => {
 			const matchesQuery = folder.path.includes(query);
 			const isInCodeFolder = folder.path.startsWith(settings.coding.folder + "/");
-			const notBackupFolder = !folder.path.includes(this.plugin.backupDirName);
+			const notBackupFolder = !folder.path.includes(BACKUP_DIRNAME);
 			return matchesQuery && isInCodeFolder && notBackupFolder;
 		});
 

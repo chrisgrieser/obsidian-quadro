@@ -1,5 +1,6 @@
 import { parseYaml } from "obsidian";
 import Quadro from "src/main";
+import { CODEBLOCK_LABELS } from "src/settings/constants";
 import { createCodeBlockFile } from "src/shared/utils";
 import {
 	SuggesterForExtractionTypes,
@@ -18,7 +19,7 @@ export function extractiontypesOverviewCommand(plugin: Quadro): void {
 				"Click the `</>` icon to edit the filter, for example: `filter: 'word'`, " +
 				"and move the cursor out of the codeblock. (Leave it empty to show all values.)",
 			"",
-			"```" + plugin.codeblockLabels.extractionOverview,
+			"```" + CODEBLOCK_LABELS.extractionOverview,
 			`extraction-type: "${selectedExtrType.name}"`,
 			'filter: ""',
 			"```",

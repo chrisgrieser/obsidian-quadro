@@ -1,5 +1,6 @@
 import { TFile, TFolder } from "obsidian";
 import Quadro from "src/main";
+import { CODEBLOCK_LABELS } from "src/settings/constants";
 import { createCodeBlockFile } from "src/shared/utils";
 import { countTimesCodeIsAssigned } from "./coding-utils";
 
@@ -7,7 +8,7 @@ export async function codeOverviewCommand(plugin: Quadro): Promise<void> {
 	const content = [
 		"*This file updates automatically, any manual changes to it will be lost.*",
 		"",
-		"```" + plugin.codeblockLabels.codeOverview,
+		"```" + CODEBLOCK_LABELS.codeOverview,
 		"```",
 		"",
 	];
