@@ -57,7 +57,7 @@ export function updateStatusbar(plugin: Quadro): void {
 	for (const [_, value] of Object.entries(unresolvedLinks)) {
 		unresolvedTotal += value;
 	}
-	if (unresolvedTotal > 0) segments.push(`${unresolvedTotal} invalid links`);
+	if (unresolvedTotal > 0) segments.push(`${unresolvedTotal}${shortened ? "?" : "invalid links"}`);
 
 	//───────────────────────────────────────────────────────────────────────────
 
