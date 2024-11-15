@@ -74,10 +74,8 @@ standard for plaintext files. This means:
   conducted with proprietary research software such as `MAXQDA` or `atlas.ti`.
 - The data is interoperable with other applications, meaning it can easily be
   combined with other text analysis tools such as
-  [AntConc](https://www.laurenceanthony.net/software/antconc/), or with browser
-  extensions like [MarkDownload](https://chromewebstore.google.com/detail/markdownload-markdown-web/pcmpcfapbekmbjjkdalcgopdkipoggdi)
-  to fetch website contents.
-- The markdown files are stored offline by default, meeting the key requirements
+  [AntConc](https://www.laurenceanthony.net/software/antconc/).
+- The markdown files are stored offline by default, meeting key requirements
   for research ethics and protection of research data.
 
 Being an Obsidian plugin, the Qualitative Data Analysis is embedded in the
@@ -91,10 +89,8 @@ extensive functionality and plugin ecosystem of Obsidian:
 - The qualitative analysis is easily extended with a [comprehensive ecosystem of
   more than 1000 plugins](https://obsidian.md/plugins), for example
   [Projects](https://obsidian.md/plugins?id=obsidian-projects) for advanced data
-  aggregation, [Relay](https://github.com/no-instructions/relay) for
-  live-collaboration like in Google Docs, or
-  [YTranscript](https://obsidian.md/plugins?id=ytranscript) for automatic
-  fetching of YouTube video transcripts.
+  aggregation, or [Relay](https://github.com/no-instructions/relay) for
+  live-collaboration like in Google Docs.
 - Obsidian has been [stress tested and confirmed to be able to handle 20 000+ files](https://www.reddit.com/r/ObsidianMD/comments/zrzqq0/testing_the_scalability_of_obsidian_with_large/).
 - All this allows the researcher to customize the analysis to the particular
   needs of their research. Case-specific adaption of research methods
@@ -104,6 +100,14 @@ extensive functionality and plugin ecosystem of Obsidian:
 - Using Obsidian allows you to employ a keyboard-driven workflow with minimal
   usage of the mouse.
 
+Obsidian is [free to use for academic purposes](https://obsidian.md/license),
+and _Quadro_ is also free to use. 
+- Especially for students writing their theses, this saves a lot of unnecessary
+  hassle with licenses.
+- Unlicensed use of research software can lead to [journal articles being
+  retracted](https://retractionwatch.com/2024/11/08/complaint-from-engineering-software-company-prompts-two-retractions/).
+  Using free or open source tools like _Quadro_ avoids this issue entirely.
+
 If there is a more tech-savvy researcher in the research team, the advantages of
 _Quadro_ go even further:
 - Being Open Source, this plugin can be modified and customized to fit their
@@ -111,10 +115,6 @@ _Quadro_ go even further:
   and commonly used programming language.)
 - By storing the data in markdown files, all research data can be fully
   version-controlled with `git`.
-
-Obsidian is [free to use for academic purposes](https://obsidian.md/license),
-and _Quadro_ is also free to use. Especially for students writing their
-theses, this saves a lot of unnecessary hassle with licenses.
 
 ### For Obsidian users not familiar with QDA
 In Qualitative Data Analysis, "coding" is a form of fine-grained tagging of text
