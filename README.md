@@ -101,7 +101,7 @@ extensive functionality and plugin ecosystem of Obsidian:
   usage of the mouse.
 
 Obsidian is [free to use for academic purposes](https://obsidian.md/license),
-and _Quadro_ is also free to use. 
+and _Quadro_ is also free to use.
 - Especially for students writing their theses, this saves a lot of unnecessary
   hassle with licenses.
 - Unlicensed use of research software can lead to [journal articles being
