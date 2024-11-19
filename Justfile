@@ -19,7 +19,7 @@ build-and-reload:
 check-all:
     zsh ./.githooks/pre-commit
 
-check-tsc:
+check-tsc-qf:
     npx tsc --noEmit --skipLibCheck --strict && echo "Typescript OK"
 
 release:
