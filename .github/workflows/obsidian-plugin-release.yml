@@ -1,4 +1,4 @@
-name: Release Obsidian Plugin
+name: Release
 
 on:
   push:
@@ -6,29 +6,20 @@ on:
 
 env:
   PLUGIN_NAME: ${{ github.event.repository.name }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-permissions:
-  contents: write
 
 #───────────────────────────────────────────────────────────────────────────────
 
 jobs:
   build:
     runs-on: macos-latest
+    permissions: { contents: write }
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        # by default, no tags and only a single commit is fetched. To use git
-        # history in the next step, we need to fetch all history.
-        with:
-          fetch-depth: 0 # 0 = all history
-          fetch-tags: true
 
       - name: Setup node
         uses: actions/setup-node@v4
-        with:
-          node-version: "22.x"
+        with: { node-version: "22.x" }
 
       - name: Build plugin
         run: |
@@ -38,27 +29,11 @@ jobs:
           cp main.js manifest.json styles.css ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
 
-      - name: Create changelog
-        run: |
-          count_tags="$(git tag | wc -l)"
-          if [[ $count_tags -ge 2 ]]; then 
-            previous_tag=$(git tag --sort=-creatordate | head -2 | tail -1)
-            ref="$previous_tag"
-          else
-            root_commit=$(git rev-list --max-parents=0 HEAD)
-            ref="$root_commit"
-          fi
-          prev_commit_messages=$(git log "$ref"..HEAD^ --format='- %s' |
-            sed -E "s/^- ([^ ]+): /- **\1**: /")
-          echo "### Changelog" > CHANGELOG.txt
-          echo "$prev_commit_messages" >> CHANGELOG.txt
-
-      # DOCS https://github.com/softprops/action-gh-release?tab=readme-ov-file#%EF%B8%8F-uploading-release-assets
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          token: ${{ env.GITHUB_TOKEN }}
-          body_path: CHANGELOG.txt
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generate_release_notes: true
           files: |
             ${{ env.PLUGIN_NAME }}.zip
             main.js
