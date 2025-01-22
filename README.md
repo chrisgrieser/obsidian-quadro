@@ -18,39 +18,39 @@ the style of _Qualitative Content Analysis_.
 <!-- toc -->
 
 - [Introduction](#introduction)
-  * [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
-  * [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
-  * [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
+	* [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
+	* [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
+	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
-  * [Getting started](#getting-started)
-    + [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
-    + [Example vault for Quadro](#example-vault-for-quadro)
-    + [Experienced Obsidian users](#experienced-obsidian-users)
-    + [Using a separate vault](#using-a-separate-vault)
-    + [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
-  * [Modification of Obsidian core behavior](#modification-of-obsidian-core-behavior)
-  * [Coding](#coding)
-    + [How coding works in Quadro](#how-coding-works-in-quadro)
-    + [Coding capabilities](#coding-capabilities)
-  * [Extraction](#extraction)
-    + [How extraction works in Quadro](#how-extraction-works-in-quadro)
-    + [Aggregate extractions](#aggregate-extractions)
-    + [Extraction capabilities](#extraction-capabilities)
-  * [Auxiliary commands](#auxiliary-commands)
-    + [Open random Data Files](#open-random-data-files)
-    + [Progress tracking & theoretical saturation](#progress-tracking--theoretical-saturation)
+	* [Getting started](#getting-started)
+		+ [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
+		+ [Example vault for Quadro](#example-vault-for-quadro)
+		+ [Experienced Obsidian users](#experienced-obsidian-users)
+		+ [Using a separate vault](#using-a-separate-vault)
+		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
+	* [Modification of Obsidian core behavior](#modification-of-obsidian-core-behavior)
+	* [Coding](#coding)
+		+ [How coding works in Quadro](#how-coding-works-in-quadro)
+		+ [Coding capabilities](#coding-capabilities)
+	* [Extraction](#extraction)
+		+ [How extraction works in Quadro](#how-extraction-works-in-quadro)
+		+ [Aggregate extractions](#aggregate-extractions)
+		+ [Extraction capabilities](#extraction-capabilities)
+	* [Auxiliary commands](#auxiliary-commands)
+		+ [Open random Data Files](#open-random-data-files)
+		+ [Progress tracking & theoretical saturation](#progress-tracking--theoretical-saturation)
 - [Configuration](#configuration)
-  * [Buttons](#buttons)
-  * [Hotkeys](#hotkeys)
-  * [Plugin behavior](#plugin-behavior)
+	* [Buttons](#buttons)
+	* [Hotkeys](#hotkeys)
+	* [Plugin behavior](#plugin-behavior)
 - [Installation & update](#installation--update)
 - [Development](#development)
-  * [Contribute](#contribute)
-  * [Cssclasses](#cssclasses)
+	* [Contribute](#contribute)
+	* [CSS classes](#css-classes)
 - [Credits](#credits)
-  * [Acknowledgments](#acknowledgments)
-  * [Recommended citation of this project](#recommended-citation-of-this-project)
-  * [About the developer](#about-the-developer)
+	* [Acknowledgments](#acknowledgments)
+	* [Recommended citation of this project](#recommended-citation-of-this-project)
+	* [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
@@ -63,7 +63,7 @@ qualitative data analysis.
 
 All data is stored as [Markdown](https://www.markdownguide.org/) files.
 **Markdown** is a human-readable, non-proprietary, and commonly used open
-standard for plaintext files. This means:
+standard for plain text files. This means:
 - There is no lock-in / dependency to a particular app, the data can be
   analyzed in any app supporting Markdown. (In fact, the data is stored in plain
   text and can thus even be opened with and read with `Notepad.exe` or
@@ -75,7 +75,7 @@ standard for plaintext files. This means:
 - The data is interoperable with other applications, meaning it can easily be
   combined with other text analysis tools such as
   [AntConc](https://www.laurenceanthony.net/software/antconc/).
-- The markdown files are stored offline by default, meeting key requirements
+- The Markdown files are stored offline by default, meeting key requirements
   for research ethics and protection of research data.
 
 Being an Obsidian plugin, the Qualitative Data Analysis is embedded in the
@@ -90,7 +90,7 @@ extensive functionality and plugin ecosystem of Obsidian:
   more than 1000 plugins](https://obsidian.md/plugins), for example
   [Projects](https://obsidian.md/plugins?id=obsidian-projects) for advanced data
   aggregation, or [Relay](https://github.com/no-instructions/relay) for
-  live-collaboration like in Google Docs.
+  live-collaboration like in `Google Docs`.
 - Obsidian has been [stress tested and confirmed to be able to handle 20 000+ files](https://www.reddit.com/r/ObsidianMD/comments/zrzqq0/testing_the_scalability_of_obsidian_with_large/).
 - All this allows the researcher to customize the analysis to the particular
   needs of their research. Case-specific adaption of research methods
@@ -113,7 +113,7 @@ _Quadro_ go even further:
 - Being Open Source, this plugin can be modified and customized to fit their
   needs. (It is written is TypeScript / JavaScript, a particularly accessible
   and commonly used programming language.)
-- By storing the data in markdown files, all research data can be fully
+- By storing the data in Markdown files, all research data can be fully
   version-controlled with `git`.
 
 ### For Obsidian users not familiar with QDA
@@ -123,7 +123,7 @@ segments, and "extraction" is a transforming prose text into structured data.
 _Coding_ is implemented in _Quadro_ via "bidirectional" links between Data Files
 and Code Files by inserting wikilinks in _both_ files. (Obsidian itself does
 have backlinks, but those are unidirectional links, since the implicit backlink
-is only inferred and not stored anywhere in the markdown file.).
+is only inferred and not stored anywhere in the Markdown file.).
 
 It makes use of Obsidian's
 [note-embedding](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note)
@@ -255,7 +255,7 @@ consectetur cupidatat. [[MyCode]] ^id-240302-124012
 ```
 
 **Code Files**
-All markdown files in the folder `{vault-root}/Codes` are considered code
+All Markdown files in the folder `{vault-root}/Codes` are considered code
 files. (The folder is configurable.)
 
 When a code is assigned, a link back to the original location in the Data File
@@ -372,7 +372,7 @@ where you initiated the extraction. In the rendered view, the file contains a
 
 ![Showcase Extraction](./docs/showcase-extraction.png)
 
-The underlying plaintext view of the file looks like this:
+The underlying plain text view of the file looks like this:
 
 ```md
 Filepath: ./Extractions/Career Visions/Career Visions 001.md
@@ -537,7 +537,7 @@ just check-all # runs the pre-commit hook (without committing)
 > This repo uses a pre-commit hook, which prevents commits that do not pass all
 > the checks.
 
-### Cssclasses
+### CSS classes
 Every single modal, prompt, settings-tab, or button added by this plugin has
 the class `.quadro`, so theme designers can easily change the appearance of this
 plugin.
@@ -547,7 +547,7 @@ plugin.
 
 ### Acknowledgments
 Thanks to [Ryan Murphy](https://fulcra.design/About/) who gave me the idea for this
-project with a [blogpost of
+project with a [blog post of
 his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
 
 ### Recommended citation of this project
@@ -571,13 +571,12 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 
 _For bug reports and features requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues)._
 
-<a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'>
-<img height='36' style='border:0px;height:36px;'
-src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at
-ko-fi.com'/></a>
+<a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'> <img height='36'
+style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
+border='0' alt='Buy Me a Coffee at ko-fi.com'/></a>
 
 [^1]: Note that the timestamp is assigned the _first time_ the paragraph is
 	assigned a code. The timestamp is not updated when the paragraph you remove
 	the code or assign another code, since the paragraph ID needs to be
 	immutable to ensure reliable references to it. Think of the timestamp as
-	"first time the paragraph a code has been assigned."
+	"first time the paragraph a code has been assigned".
