@@ -10,8 +10,9 @@ alternative to [MAXQDA](https://www.maxqda.com/) and
 [atlas.ti](https://atlasti.com/), using Markdown to store data and research
 codes.
 
-_Quadro_ supports both, coding in the style of _Grounded Theory_ and extraction in
-the style of _Qualitative Content Analysis_.
+Quadro supports both, coding in the tradition of Grounded Theory, and data
+extraction following the principles of Qualitative Content Analysis (as outlined
+by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 
 ## Table of Contents
 
@@ -336,6 +337,9 @@ The underlying folder structure for coding looks like this:
   updating of references, meaning a loss of information.
 
 ### Extraction
+Quadro implements extraction following the principles of [Qualitative Content
+Analysis as outlined by Gläser and
+Laudel](https://doi.org/10.17169/fqs-20.3.3386).
 
 #### How extraction works in Quadro
 Extraction is implemented similarly to coding, using two basic file types, Data
