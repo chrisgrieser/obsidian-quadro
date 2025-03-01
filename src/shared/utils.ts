@@ -9,9 +9,7 @@ export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\]/;
 
 //──────────────────────────────────────────────────────────────────────────────
 
-/** returns type of file. If no file is given, checks
- * the active file. Returns false is there is no active file or the file is not
- * a markdown file. */
+/** Returns type of file. If no file is given, checks the active file. */
 export function typeOfFile(
 	plugin: Quadro,
 	file?: TAbstractFile | string | null,
