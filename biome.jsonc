@@ -20,8 +20,9 @@
 			"suspicious": {
 				"noConsole": {
 					"level": "info",
-					"options": { "allow": ["assert", "error", "info", "warn"] } // only disallow `.log`
-				}
+					"options": { "allow": ["assert", "error", "info", "warn", "debug"] } // only disallow `.log`
+				},
+				"noDebugger": "off" // dropped automatically by `esbuild`
 			},
 			"correctness": {
 				"noUndeclaredDependencies": "off", // incompatible with typescript's default auto-imports
