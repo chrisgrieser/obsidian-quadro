@@ -7,8 +7,7 @@
 			"nursery": {
 				"all": true,
 				"useImportRestrictions": "off", // over-complicating stuff
-				"noSecrets": "off", // buggy, many false positives
-				"useGuardForIn": "off"
+				"noSecrets": "off" // buggy, many false positives
 			},
 			"complexity": {
 				"noExcessiveCognitiveComplexity": "info",

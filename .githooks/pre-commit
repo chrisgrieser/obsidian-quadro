@@ -6,7 +6,12 @@ cd "$(git rev-parse --show-toplevel)"
 echo "Pre-Commit Hook"
 
 echo "(1/4) Biome"
-npx biome check --write --error-on-warnings --log-kind="compact"
+if [[ "$1" == "check-all" ]]; then
+	npx biome check --write --error-on-warnings --log-kind="compact"
+else
+	# `--staged` so unused things in unstaged files does not block commit
+	npx biome check --error-on-warnings --staged --no-errors-on-unmatched --log-kind="compact"
+fi
 
 echo "(2/4) TypeScript"
 npx tsc --noEmit --skipLibCheck --strict

@@ -1,6 +1,6 @@
 set quiet := true
 
-test_vault := "$HOME/Vaults/phd-data-analysis"
+test_vault := "$HOME/Vaults/writing-vault/"
 
 #───────────────────────────────────────────────────────────────────────────────
 
@@ -20,7 +20,7 @@ build-and-reload:
     open "obsidian://reload-plugin?id=$plugin_id&vault=$vault_name"
 
 check-all:
-    zsh ./.githooks/pre-commit
+    git hook run pre-commit -- "check-all"
 
 check-tsc-qf:
     npx tsc --noEmit --skipLibCheck --strict && echo "Typescript OK"
