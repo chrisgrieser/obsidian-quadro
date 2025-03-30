@@ -66,9 +66,9 @@ All data is stored as [Markdown](https://www.markdownguide.org/) files.
 **Markdown** is a human-readable, non-proprietary, and commonly used open
 standard for plain text files. This means:
 - There is no lock-in / dependency to a particular app, the data can be
-  analyzed in any app supporting Markdown. (In fact, the data is stored in plain
-  text and can thus even be opened with and read with `Notepad.exe` or
-  `TextEdit.app`)
+  analyzed in any app supporting Markdown. (In fact, the data is stored in
+  plaintext and can thus even be opened with and read with `Notepad.exe` or
+  `TextEdit.app`.)
 - The research data is therefore future-proof, fulfilling the requirement of
   long-term archiving of qualitative data. It is guaranteed that the data can
   still be read even in 50 years, a guarantee that does not exist for research
@@ -76,8 +76,8 @@ standard for plain text files. This means:
 - The data is interoperable with other applications, meaning it can easily be
   combined with other text analysis tools such as
   [AntConc](https://www.laurenceanthony.net/software/antconc/).
-- The Markdown files are stored offline by default, meeting key requirements
-  for research ethics and protection of research data.
+- The Markdown files are stored offline by default, meeting key requirements for
+  research ethics and protection of research data.
 
 Being an Obsidian plugin, the Qualitative Data Analysis is embedded in the
 extensive functionality and plugin ecosystem of Obsidian:
@@ -261,8 +261,7 @@ files. (The folder is configurable.)
 
 When a code is assigned, a link back to the original location in the Data File
 is appended to the code file. The link has the format
-`[[{filename-datafile}#^{id-of-paragraph}]]`, with the `id` being a time
-stamp.[^1]
+`[[{filename-datafile}#^{id-of-paragraph}]]`, with the `id` being a timestamp.[^1]
 
 ```md
 Filepath: ./Codes/MyCode.md
@@ -342,7 +341,7 @@ Analysis as outlined by Gläser and
 Laudel](https://doi.org/10.17169/fqs-20.3.3386).
 
 #### How extraction works in Quadro
-Extraction is implemented similarly to coding, using two basic file types, Data
+Extraction is implemented similarly to coding, using two basic filetypes, Data
 Files and Extraction Files.
 
 **Data Files**
@@ -376,7 +375,7 @@ where you initiated the extraction. In the rendered view, the file contains a
 
 ![Showcase Extraction](./docs/showcase-extraction.png)
 
-The underlying plain text view of the file looks like this:
+The underlying plaintext view of the file looks like this:
 
 ```md
 Filepath: ./Extractions/Career Visions/Career Visions 001.md
