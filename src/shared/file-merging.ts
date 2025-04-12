@@ -45,8 +45,10 @@ export async function mergeFiles(
 	const mergeAwayFrontmatter = app.metadataCache.getFileCache(mergeAwayFile)?.frontmatter || {};
 
 	const discardedProps: FrontMatterCache = {};
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: okay here
 	await app.fileManager.processFrontMatter(mergeKeepFile, (mergeKeepFrontmatter) => {
 		for (const key in mergeAwayFrontmatter) {
+			if (!Object.hasOwn(mergeAwayFrontmatter, key)) continue;
 			const val1 = mergeKeepFrontmatter[key];
 			const val2 = mergeAwayFrontmatter[key];
 			const val1Empty = !val1 && val1 !== 0 && val1 !== false;

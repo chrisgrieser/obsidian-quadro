@@ -66,7 +66,7 @@ export function getActiveEditor(app: App): Editor | undefined {
 /** check if selection is unambiguous, ensuring that subsequent calls of
  * `getLine` or `getCursor` behave predictably */
 export function ambiguousSelection(editor: Editor): boolean {
-	const emptyLine = editor.getLine(editor.getCursor().line).trim() === ""
+	const emptyLine = editor.getLine(editor.getCursor().line).trim() === "";
 	if (emptyLine) {
 		new Notice("Current line is empty.\n\nMove cursor to a paragraph and try again.", 4000);
 		return true;

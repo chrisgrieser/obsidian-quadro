@@ -133,7 +133,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			)
 			.addDropdown((dropdown) => {
 				for (const key in sortFuncs) {
-					dropdown.addOption(key, key);
+					if (Object.hasOwn(sortFuncs, key)) dropdown.addOption(key, key);
 				}
 				dropdown.setValue(settings.coding.sortFunc).onChange(async (value) => {
 					settings.coding.sortFunc = value as SortFuncChoices;
