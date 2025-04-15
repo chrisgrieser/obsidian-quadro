@@ -1,6 +1,6 @@
 set quiet := true
 
-test_vault := "$HOME/Vaults/writing-vault/"
+test_vault := "$HOME/Vaults/phd-data-analysis/"
 
 #───────────────────────────────────────────────────────────────────────────────
 
