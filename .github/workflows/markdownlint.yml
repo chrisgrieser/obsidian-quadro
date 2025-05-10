@@ -1,18 +1,12 @@
 name: Markdownlint check
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "**.md"
-      - ".github/workflows/markdownlint.yml"
-      - ".markdownlint.*" # markdownlint config files
+  # not on `push`, since that's covered by pre-commit checks
   pull_request:
-    paths:
-      - "**.md"
+    paths: ["**.md"]
 
 jobs:
-  markdownlint:
+  markdownlint-check:
     name: Markdownlint
     runs-on: ubuntu-latest
     steps:

@@ -1,0 +1,19 @@
+name: Biome check
+
+on:
+  # not on `push`, since that's covered by pre-commit checks
+  pull_request:
+    paths:
+      - "**.ts"
+      - "**.css"
+      - "**.jsonc?"
+      - "**.m?js"
+
+jobs:
+  biome-check:
+    name: Biome PR check
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: biomejs/setup-biome@v2
+      - run: biome ci
