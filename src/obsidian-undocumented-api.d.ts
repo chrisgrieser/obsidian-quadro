@@ -59,10 +59,8 @@ declare module "obsidian" {
 			};
 		};
 		metadataTypeManager: {
-			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
 			getPropertyInfo(property: string): PropertyInfo;
 			/** @internal */
-			// biome-ignore lint/correctness/noUndeclaredVariables: tsserver auto-removes the import as unused
 			setType(property: string, type: PropertyWidgetType): void;
 		};
 	}

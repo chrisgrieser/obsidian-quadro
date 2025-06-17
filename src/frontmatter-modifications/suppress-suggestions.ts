@@ -1,4 +1,4 @@
-import Quadro from "src/main";
+import type Quadro from "src/main";
 
 // EXAMPLE css needed to suppress suggestions in the field "foobar"
 // .app-container:has(.metadata-property[data-property-key="foobar"] .metadata-input-longtext:focus-within)~.suggestion-container {

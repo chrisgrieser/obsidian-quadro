@@ -1,6 +1,6 @@
-import { Editor, Notice, TFile } from "obsidian";
+import { type Editor, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import {
 	insertReferenceToDatafile,
 	prepareDatafileLineUpdate,

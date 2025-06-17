@@ -1,6 +1,6 @@
-import { Notice, TFile, TFolder } from "obsidian";
+import { Notice, type TFile, type TFolder } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { mergeFiles } from "src/shared/file-merging";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor, typeOfFile } from "src/shared/utils";

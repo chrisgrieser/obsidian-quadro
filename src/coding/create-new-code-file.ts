@@ -1,6 +1,6 @@
-import { Notice, Setting, TFile, getFrontMatterInfo, normalizePath } from "obsidian";
+import { getFrontMatterInfo, Notice, normalizePath, Setting, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { CodeGroupSuggest } from "src/shared/folder-suggest";
 import { ExtendedInputModal } from "src/shared/modals";
 

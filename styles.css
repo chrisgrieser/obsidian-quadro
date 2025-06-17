@@ -1,9 +1,3 @@
-.variable-safety-for-obsidian-css {
-	--text-faint: "";
-}
-
-/* ────────────────────────────────────────────────────────────────────────── */
-
 /* NOTE
 Overwriting of (some) core styling is done on purpose. As noted in the README,
 Quadro is intended to be used in specialized vaults, solely dedicated to QDA.

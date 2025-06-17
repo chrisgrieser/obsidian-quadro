@@ -1,5 +1,5 @@
 import { Notice } from "obsidian";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { READ_KEY } from "src/settings/constants";
 
 export async function openRandomUnreadDatafile(plugin: Quadro): Promise<void> {

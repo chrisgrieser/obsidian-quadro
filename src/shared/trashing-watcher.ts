@@ -1,7 +1,7 @@
 import { around } from "monkey-around";
 import { Notice, TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { typeOfFile } from "./utils";
 
 /** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to
@@ -53,7 +53,6 @@ async function removeAllFileRefs(plugin: Quadro, refFile: TFile): Promise<void> 
 		const outdatedFile = app.vault.getFileByPath(filepath);
 		if (!outdatedFile) continue;
 
-		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: okay here
 		await app.vault.process(outdatedFile, (content) => {
 			const outlinks = app.metadataCache.getFileCache(outdatedFile)?.links || [];
 			const rangesToRemove: [number, number][] = [];

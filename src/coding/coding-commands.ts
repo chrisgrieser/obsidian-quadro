@@ -1,5 +1,5 @@
-import { IconName } from "obsidian";
-import Quadro from "src/main";
+import type { IconName } from "obsidian";
+import type Quadro from "src/main";
 import { assignCodeCommand } from "./assign-code";
 import { codeOverviewCommand } from "./code-overview";
 import { bulkCreateCodeFilesCommand } from "./create-new-code-file";

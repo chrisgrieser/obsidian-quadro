@@ -1,5 +1,5 @@
-import { Notice, TFile, moment, normalizePath } from "obsidian";
-import Quadro from "src/main";
+import { moment, Notice, normalizePath, TFile } from "obsidian";
+import type Quadro from "src/main";
 import { READ_KEY } from "src/settings/constants";
 import { typeOfFile } from "src/shared/utils";
 

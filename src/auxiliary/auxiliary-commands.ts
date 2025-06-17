@@ -1,4 +1,4 @@
-import { CommandData } from "src/coding/coding-commands";
+import type { CommandData } from "src/coding/coding-commands";
 import { openRandomUnreadDatafile } from "./open-random-datafile";
 import { markDatafileAsRead, revealProgressFile } from "./progress-tracker";
 

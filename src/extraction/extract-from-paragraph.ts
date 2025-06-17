@@ -1,6 +1,6 @@
-import { Editor, Notice, TFolder, getFrontMatterInfo, moment } from "obsidian";
+import { type Editor, getFrontMatterInfo, moment, Notice, type TFolder } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import {
 	insertReferenceToDatafile,
 	prepareDatafileLineUpdate,
@@ -14,11 +14,11 @@ import {
 	typeOfFile,
 } from "src/shared/utils";
 import {
-	SuggesterForExtractionTypes,
 	getAllExtractionTypes,
 	getExtractionsOfType,
 	moveCursorToFirstProperty,
 	openExtractionInNewWin,
+	SuggesterForExtractionTypes,
 } from "./extraction-utils";
 
 async function extractOfType(

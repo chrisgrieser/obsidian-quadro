@@ -1,6 +1,5 @@
-import { moment } from "obsidian";
-import { Notice, TFile, normalizePath } from "obsidian";
-import Quadro from "src/main";
+import { moment, Notice, normalizePath, TFile } from "obsidian";
+import type Quadro from "src/main";
 import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
 
 // CONFIG (not worth a separate setting)
@@ -15,7 +14,6 @@ function createCsvRow(cells: string[], csvSeparator: string): string {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: todo
 export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
 	const { app, settings } = plugin;
 	const csvSeparator = settings.extraction.csvSeparator;

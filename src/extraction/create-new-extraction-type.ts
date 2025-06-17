@@ -1,5 +1,5 @@
-import { Notice, Setting, normalizePath } from "obsidian";
-import Quadro from "src/main";
+import { Notice, normalizePath, Setting } from "obsidian";
+import type Quadro from "src/main";
 import { ExtendedInputModal } from "src/shared/modals";
 import { moveCursorToFirstProperty, openExtractionInNewWin } from "./extraction-utils";
 

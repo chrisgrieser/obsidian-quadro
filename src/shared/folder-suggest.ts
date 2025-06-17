@@ -1,5 +1,5 @@
 import { AbstractInputSuggest, TFolder } from "obsidian";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { BACKUP_DIRNAME } from "src/settings/constants";
 
 export class FolderSuggest extends AbstractInputSuggest<TFolder> {

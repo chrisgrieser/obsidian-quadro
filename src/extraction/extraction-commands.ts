@@ -1,4 +1,4 @@
-import { CommandData } from "src/coding/coding-commands";
+import type { CommandData } from "src/coding/coding-commands";
 import { addToExistingExtractionFileCommand } from "./add-to-extraction-file";
 import { createNewExtractionTypeCommand } from "./create-new-extraction-type";
 import { exportExtractionsAsCsv } from "./export-extractions-as-csv";

@@ -1,4 +1,4 @@
-import { TFile } from "obsidian";
+import type { TFile } from "obsidian";
 
 export const sortFuncs = {
 	"last used first": (a: TFile, b: TFile): number => b.stat.mtime - a.stat.mtime,

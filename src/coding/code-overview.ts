@@ -1,5 +1,5 @@
 import { TFile, TFolder } from "obsidian";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { CODEBLOCK_LABELS } from "src/settings/constants";
 import { createCodeBlockFile } from "src/shared/utils";
 import { countTimesCodeIsAssigned } from "./coding-utils";

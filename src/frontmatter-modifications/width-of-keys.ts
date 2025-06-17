@@ -1,4 +1,4 @@
-import Quadro from "src/main";
+import type Quadro from "src/main";
 
 // INFO CSS needed
 // body .metadata-property-key { min-width: 40%; }

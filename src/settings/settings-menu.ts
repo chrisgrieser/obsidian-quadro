@@ -1,16 +1,16 @@
-import { PluginSettingTab, Setting, normalizePath } from "obsidian";
+import { normalizePath, PluginSettingTab, Setting } from "obsidian";
 import { updateStatusbar } from "src/auxiliary/statusbar";
 import { suppressCertainFrontmatterSuggestions } from "src/frontmatter-modifications/suppress-suggestions";
 import { setCssForWidthOfKeys } from "src/frontmatter-modifications/width-of-keys";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { FolderSuggest } from "src/shared/folder-suggest";
 import {
-	CsvSeparatorChoices,
-	DEFAULT_SETTINGS,
-	OpeningModes,
-	SortFuncChoices,
+	type CsvSeparatorChoices,
 	csvSeparators,
+	DEFAULT_SETTINGS,
+	type OpeningModes,
 	openingModes,
+	type SortFuncChoices,
 	sortFuncs,
 } from "./defaults";
 

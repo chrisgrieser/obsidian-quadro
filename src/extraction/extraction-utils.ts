@@ -1,13 +1,13 @@
 import {
-	App,
-	FrontMatterCache,
+	type App,
+	type FrontMatterCache,
 	MarkdownView,
 	Notice,
-	TFile,
+	type TFile,
 	TFolder,
-	WorkspaceTabs,
+	type WorkspaceTabs,
 } from "obsidian";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { LIVE_PREVIEW, typeOfFile } from "src/shared/utils";
 

@@ -1,6 +1,6 @@
-import { ButtonComponent, FuzzySuggestModal, Instruction, Modal } from "obsidian";
-import Quadro from "src/main";
-import { QuadroSettings } from "src/settings/defaults";
+import { type ButtonComponent, FuzzySuggestModal, type Instruction, Modal } from "obsidian";
+import type Quadro from "src/main";
+import type { QuadroSettings } from "src/settings/defaults";
 
 /** adds navigation via tab & the common instructions */
 export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {

@@ -3,45 +3,15 @@
 {
 	"linter": {
 		"rules": {
-			"all": true,
-			"nursery": {
-				"all": true,
-				"useImportRestrictions": "off", // over-complicating stuff
-				"noSecrets": "off" // buggy, many false positives
-			},
-			"complexity": {
-				"noExcessiveCognitiveComplexity": "info",
-				"useSimplifiedLogicExpression": "off" // complains about negated and-conditions
-			},
-			"performance": {
-				"useTopLevelRegex": "off" // often not needed
-			},
-			"suspicious": {
-				"noConsole": {
-					"level": "info",
-					"options": { "allow": ["assert", "error", "info", "warn", "debug"] } // only disallow `.log`
-				},
-				"noDebugger": "off" // dropped automatically by `esbuild`
-			},
-			"correctness": {
-				"noUndeclaredDependencies": "off", // incompatible with typescript's default auto-imports
-				"useImportExtensions": "off", // incompatible with typescript's default auto-imports
-				"noNodejsModules": "off" // Obsidian is client-site, thus requiring them
-			},
 			"style": {
-				"useBlockStatements": "off", // too much clutter
-				"useImportType": "off", // incompatible with typescript's default auto-imports
 				"useTemplate": "off", // too strict, simple concatenations are often fine
-				"noParameterAssign": "off", // not useful
-				"useNamingConvention": { "level": "info", "options": { "strictCase": false } }
+				"useNamingConvention": "on"
 			}
 		}
 	},
-	"javascript": {
-		"globals": ["activeDocument", "activeWindow"] // electron
-	},
 	"formatter": {
 		"useEditorconfig": true,
+		"lineWidth": 100, // FIX set explicitly, since editorconfig is not respected
 		"formatWithErrors": true
 	},
 	"files": {

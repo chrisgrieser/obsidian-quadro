@@ -1,5 +1,5 @@
 import { Notice } from "obsidian";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { getActiveEditor, typeOfFile } from "src/shared/utils";
 
 /** Trigger deletion of references to CODEFILE via command. Convenience Command

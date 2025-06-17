@@ -1,4 +1,4 @@
-import { Command, Plugin } from "obsidian";
+import { type Command, Plugin } from "obsidian";
 import { AUXILIARY_COMMANDS } from "./auxiliary/auxiliary-commands";
 import { updateStatusbar } from "./auxiliary/statusbar";
 import { processCodeOverviewCodeblock } from "./coding/code-overview";
@@ -9,12 +9,11 @@ import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression
 import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys";
 import { CODEBLOCK_LABELS } from "./settings/constants";
 import { deepExtend } from "./settings/deep-extend";
-import { DEFAULT_SETTINGS, QuadroSettings } from "./settings/defaults";
+import { DEFAULT_SETTINGS, type QuadroSettings } from "./settings/defaults";
 import { QuadroSettingsMenu } from "./settings/settings-menu";
 import { setupTrashWatcher } from "./shared/trashing-watcher";
 import { ensureCorrectPropertyTypes } from "./shared/utils";
 
-// biome-ignore lint/style/noDefaultExport: required for Obsidian plugins to work
 export default class Quadro extends Plugin {
 	styleElSuppressSuggestionsInFields?: HTMLStyleElement;
 	styleElPropertyKeyWidth?: HTMLStyleElement;

@@ -1,9 +1,8 @@
 import { countTimesCodeIsAssigned } from "src/coding/coding-utils";
 import { getExtractionsOfType } from "src/extraction/extraction-utils";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { typeOfFile } from "src/shared/utils";
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: linear enough so it's fine
 export function updateStatusbar(plugin: Quadro): void {
 	const { app, statusbar, settings } = plugin;
 	const shortened = settings.statusbar.shortened;

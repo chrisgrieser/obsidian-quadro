@@ -1,15 +1,15 @@
 import {
-	App,
-	FrontMatterCache,
-	Notice,
-	TFile,
+	type App,
+	type FrontMatterCache,
 	getFrontMatterInfo,
 	moment,
+	Notice,
 	normalizePath,
 	stringifyYaml,
+	type TFile,
 } from "obsidian";
 import { getFullCode } from "src/coding/coding-utils";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { BACKUP_DIRNAME } from "src/settings/constants";
 import { getActiveEditor } from "./utils";
 
@@ -45,7 +45,6 @@ export async function mergeFiles(
 	const mergeAwayFrontmatter = app.metadataCache.getFileCache(mergeAwayFile)?.frontmatter || {};
 
 	const discardedProps: FrontMatterCache = {};
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: okay here
 	await app.fileManager.processFrontMatter(mergeKeepFile, (mergeKeepFrontmatter) => {
 		for (const key in mergeAwayFrontmatter) {
 			if (!Object.hasOwn(mergeAwayFrontmatter, key)) continue;
@@ -114,7 +113,6 @@ export async function mergeFiles(
 		const outdatedFile = app.vault.getFileByPath(filepath);
 		if (!outdatedFile) continue;
 
-		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: okay here
 		await app.vault.process(outdatedFile, (content) => {
 			const outlinks = app.metadataCache.getFileCache(outdatedFile)?.links || [];
 			const rangesToUpdate: [number, number][] = [];

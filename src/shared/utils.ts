@@ -1,5 +1,13 @@
-import { App, Editor, Notice, OpenViewState, TAbstractFile, TFile, normalizePath } from "obsidian";
-import Quadro from "src/main";
+import {
+	type App,
+	type Editor,
+	Notice,
+	normalizePath,
+	type OpenViewState,
+	type TAbstractFile,
+	TFile,
+} from "obsidian";
+import type Quadro from "src/main";
 import { BACKUP_DIRNAME } from "src/settings/constants";
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };

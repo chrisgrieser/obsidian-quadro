@@ -1,10 +1,10 @@
-import { Editor, Notice, TFile } from "obsidian";
+import { type Editor, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
-import Quadro from "src/main";
+import type Quadro from "src/main";
 import { BLOCKID_REGEX } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { WIKILINK_REGEX, ambiguousSelection, getActiveEditor, typeOfFile } from "src/shared/utils";
-import { Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
+import { ambiguousSelection, getActiveEditor, typeOfFile, WIKILINK_REGEX } from "src/shared/utils";
+import { type Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -62,7 +62,6 @@ async function unassignCodeWhileInDataFile(
 	app.vault.process(code.tFile, (content) => {
 		// search for reference line in Codefile
 		const codeFileLines = content.split("\n");
-		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: later
 		const refInCodeFile = codeFileLines.findIndex((line) => {
 			if (!line.includes(blockId)) return false;
 			const linksInLine = line.match(new RegExp(WIKILINK_REGEX, "g")) || [];
