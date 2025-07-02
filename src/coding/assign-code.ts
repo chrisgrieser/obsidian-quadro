@@ -95,12 +95,18 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 export function assignCodeCommand(plugin: Quadro): void {
 	const { app } = plugin;
 	const editor = getActiveEditor(app);
-	if (!editor || ambiguousSelection(editor)) return;
+
+	// GUARD preconditions for coding
+	const invalid =
+		!editor ||
+		ambiguousSelection(editor) ||
+		selHasHighlightMarkup(editor) ||
+		activeFileHasInvalidName(app);
+	if (invalid) return;
 	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to assign a code.", 4000);
 		return;
 	}
-	if (selHasHighlightMarkup(editor) || activeFileHasInvalidName(app)) return;
 
 	// Determine codes already assigned to paragraph, so they can be excluded
 	// from the list of codes in the Suggester

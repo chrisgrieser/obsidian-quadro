@@ -101,13 +101,18 @@ export function extractFromParagraphCommand(plugin: Quadro): void {
 	const { app } = plugin;
 	const editor = getActiveEditor(app);
 
-	// GUARD
-	if (!editor || ambiguousSelection(editor)) return;
+	// GUARD preconditions for extraction
+	const invalid =
+		!editor ||
+		ambiguousSelection(editor) ||
+		selHasHighlightMarkup(editor) ||
+		activeFileHasInvalidName(app);
+	if (invalid) return;
 	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to make an extraction.", 4000);
 		return;
 	}
-	if (selHasHighlightMarkup(editor) || activeFileHasInvalidName(app)) return;
+
 	const extractionTypes = getAllExtractionTypes(plugin);
 	if (!extractionTypes) return;
 

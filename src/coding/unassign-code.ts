@@ -3,7 +3,7 @@ import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
 import { BLOCKID_REGEX } from "src/shared/add-ref-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { ambiguousSelection, getActiveEditor, typeOfFile, WIKILINK_REGEX } from "src/shared/utils";
+import { getActiveEditor, typeOfFile, WIKILINK_REGEX } from "src/shared/utils";
 import { type Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -104,19 +104,19 @@ async function unassignCodeWhileInDataFile(
 export function unassignCodeCommand(plugin: Quadro): void {
 	const app = plugin.app;
 	const editor = getActiveEditor(app);
-	if (!editor || ambiguousSelection(editor)) return;
 
 	// GUARD
+	if (!editor) return;
 	if (typeOfFile(plugin) !== "Data File") {
 		new Notice("You must be in a Data File to unassign a code.", 4000);
 		return;
 	}
-
 	const dataFile = editor.editorComponent.view.file;
 	if (!dataFile) {
 		new Notice("No file open.", 4000);
 		return;
 	}
+
 	const paragraphText = editor.getLine(editor.getCursor().line);
 	const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText);
 
