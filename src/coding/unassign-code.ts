@@ -44,21 +44,21 @@ async function unassignCodeWhileInDataFile(
 	code: Code,
 ): Promise<void> {
 	const app = plugin.app;
-	const ln = editor.getCursor().line;
-	const lineText = editor.getLine(ln);
-
-	// remove link from DATAFILE
-	const updatedLine = lineText.replace(code.wikilink, "");
-	editor.setLine(ln, updatedLine);
+	const cursor = editor.getCursor();
+	const lineText = editor.getLine(cursor.line);
 
 	// GUARD no blockid
 	const [blockId] = lineText.match(BLOCKID_REGEX) || [];
 	if (!blockId) {
-		new Notice("No ID found in current line.\nReference in Code File thus not deleted.", 0);
+		new Notice("Cannot unassign code: No id found at current line.", 0);
 		return;
 	}
 
-	// CODEFILE
+	// 1. remove link from DATAFILE
+	const updatedLine = lineText.replace(code.wikilink, "");
+	editor.setLine(cursor.line, updatedLine);
+
+	// 2. remove link from CODEFILE
 	app.vault.process(code.tFile, (content) => {
 		// search for reference line in Codefile
 		const codeFileLines = content.split("\n");
