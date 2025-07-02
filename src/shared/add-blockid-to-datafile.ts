@@ -22,7 +22,8 @@ export function prepareDatafileLineUpdate(editor: Editor): {
 	// 2. get existing blockID or generate new one
 	const [blockIdOfLine] = lineText.match(BLOCKID_REGEX) || [];
 
-	const blockId = blockIdOfLine || "^id-" + moment().format("YYMMDD-HHmmss");
+	const blockId = blockIdOfLine || "^id-" + moment().format("YY-MM-DD--HH-mm-ss");
+	const blockId = blockIdOfLine || "^id-" + moment().format("YYYY-MM-DD--HH-mm-ss");
 	const lineWithoutId = blockIdOfLine ? lineText.slice(0, -blockIdOfLine.length) : lineText;
 	return { blockId: blockId, lineWithoutId: lineWithoutId.trim() };
 }
