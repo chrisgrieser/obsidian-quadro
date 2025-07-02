@@ -2,9 +2,9 @@ import { type Editor, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
 import {
-	insertReferenceToDatafile,
+	insertblockIdInDatafile,
 	prepareDatafileLineUpdate,
-} from "src/shared/add-ref-to-datafile";
+} from "src/shared/add-blockid-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import {
 	activeFileHasInvalidName,
@@ -81,7 +81,7 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 
 		// DATAFILE Changes
 		const { blockId, lineWithoutId } = prepareDatafileLineUpdate(editor);
-		insertReferenceToDatafile(editor, codeFile, fullCode, lineWithoutId, blockId);
+		insertblockIdInDatafile(editor, codeFile, fullCode, lineWithoutId, blockId);
 
 		// CODEFILE Changes
 		const textToAppend = `![[${dataFile.path.slice(0, -3)}#${blockId}]]\n`;

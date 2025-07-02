@@ -11,7 +11,7 @@
 	},
 	"formatter": {
 		"useEditorconfig": true,
-		"lineWidth": 100,  // needs to be set despite editorconfig https://github.com/biomejs/biome/issues/6475#issuecomment-2994126794
+		"lineWidth": 100, // needs to be set despite editorconfig https://github.com/biomejs/biome/issues/6475#issuecomment-2994126794
 		"formatWithErrors": true
 	},
 	"files": {

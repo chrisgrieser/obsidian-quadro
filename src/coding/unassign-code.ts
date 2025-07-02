@@ -1,7 +1,7 @@
 import { type Editor, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
-import { BLOCKID_REGEX } from "src/shared/add-ref-to-datafile";
+import { BLOCKID_REGEX } from "src/shared/add-blockid-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor, typeOfFile, WIKILINK_REGEX } from "src/shared/utils";
 import { type Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";

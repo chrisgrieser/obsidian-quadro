@@ -2,9 +2,9 @@ import { type Editor, getFrontMatterInfo, moment, Notice, type TFolder } from "o
 import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
 import {
-	insertReferenceToDatafile,
+	insertblockIdInDatafile,
 	prepareDatafileLineUpdate,
-} from "src/shared/add-ref-to-datafile";
+} from "src/shared/add-blockid-to-datafile";
 import {
 	activeFileHasInvalidName,
 	ambiguousSelection,
@@ -88,7 +88,7 @@ async function extractOfType(
 
 	// update DATAFILE
 	const label = extractionFile.basename;
-	insertReferenceToDatafile(editor, extractionFile, label, lineWithoutId, blockId);
+	insertblockIdInDatafile(editor, extractionFile, label, lineWithoutId, blockId);
 
 	// Open EXTRACTION-FILE
 	await openExtractionInNewWin(plugin, extractionFile);
