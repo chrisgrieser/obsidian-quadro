@@ -57,6 +57,8 @@ async function unassignCodeWhileInDataFile(
 	// 1. remove link from DATAFILE
 	const updatedLine = lineText.replace(code.wikilink, "");
 	editor.setLine(cursor.line, updatedLine);
+	cursor.ch = Math.min(updatedLine.length - 1, cursor.ch);
+	editor.setCursor(cursor); // restore cursor position
 
 	// 2. remove link from CODEFILE
 	app.vault.process(code.tFile, (content) => {
