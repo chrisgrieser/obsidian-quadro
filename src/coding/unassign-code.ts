@@ -3,7 +3,12 @@ import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
 import { BLOCKID_REGEX } from "src/shared/add-blockid-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, typeOfFile, WIKILINK_REGEX } from "src/shared/utils";
+import {
+	getActiveEditor,
+	moveToLastLineOfParagraph,
+	typeOfFile,
+	WIKILINK_REGEX,
+} from "src/shared/utils";
 import { type Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -119,8 +124,9 @@ export function unassignCodeCommand(plugin: Quadro): void {
 		return;
 	}
 
-	const paragraphText = editor.getLine(editor.getCursor().line);
-	const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, paragraphText);
+	const lnum = moveToLastLineOfParagraph(editor); // to remove from multiline paragraphs, see #15
+	const lineText = editor.getLine(lnum);
+	const codesInPara = getCodesFilesInParagraphOfDatafile(plugin, dataFile, lineText);
 
 	if (codesInPara.length === 0) {
 		new Notice("Line does not contain any codes to remove.", 3500);

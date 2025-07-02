@@ -21,14 +21,20 @@ export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\]/;
 export function typeOfFile(
 	plugin: Quadro,
 	file?: TAbstractFile | string | null,
-): "Data File" | "Code File" | "Extraction File" | "Template" | "Backup" | "Not Markdown" {
+):
+	| "Data File"
+	| "Code File"
+	| "Extraction File"
+	| "Template"
+	| "Backup"
+	| "Not Markdown"
+	| "No File" {
 	const { app, settings } = plugin;
-
 	if (!file) file = app.workspace.getActiveFile();
 	if (typeof file === "string") file = app.vault.getFileByPath(file);
 
-	if (!file || !(file instanceof TFile) || file.extension !== "md") return "Not Markdown";
-
+	if (!file) return "No File";
+	if (!(file instanceof TFile) || file.extension !== "md") return "Not Markdown";
 	if (file.name === "Template.md") return "Template";
 	if (file.path.includes(BACKUP_DIRNAME)) return "Backup";
 	if (file.path.startsWith(settings.coding.folder + "/")) return "Code File";
@@ -110,6 +116,20 @@ export function activeFileHasInvalidName(app: App): boolean {
 	const msg = `The current file contains an invalid character: ${invalidChar}\n\nRename the file and try again.`;
 	new Notice(msg, 0);
 	return true;
+}
+
+/** needed, since Obsidian block-ids are only valid on the last line of a paragraph */
+export function moveToLastLineOfParagraph(editor: Editor): number {
+	let lnum = editor.getCursor().line;
+	while (true) {
+		// beyond end of file, `editor.getLine` also returns "", thus this check suffices
+		const nextLineIsBlank = editor.getLine(lnum + 1).trim() === "";
+		const currentLineIsListItem = editor.getLine(lnum).match(/^\s*([-*+]|[0-9]+\.)\s/);
+		if (nextLineIsBlank || currentLineIsListItem) break;
+		lnum++;
+		editor.setCursor({ line: lnum, ch: 0 });
+	}
+	return lnum;
 }
 
 //──────────────────────────────────────────────────────────────────────────────

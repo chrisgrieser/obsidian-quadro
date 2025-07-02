@@ -1,4 +1,5 @@
 import { type Editor, moment, type TFile } from "obsidian";
+import { moveToLastLineOfParagraph } from "./utils";
 
 // DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note
 export const BLOCKID_REGEX = /\^[\w-]+$/;
@@ -18,14 +19,7 @@ export function prepareDatafileLineUpdate(editor: Editor): {
 	// 2. move cursor to last line of paragraph
 	// (This is relevant since when there are soft line breaks in a paragraph,
 	// block-ids are only valid on the last line of the paragraph, see #12.)
-	let lnum: number;
-	while (true) {
-		lnum = editor.getCursor().line;
-		const nextLineIsBlank = editor.getLine(lnum + 1).trim() === "";
-		const currentLineIsListItem = editor.getLine(lnum).match(/^\s*([-*+]|[0-9]+\.)\s/);
-		if (nextLineIsBlank || currentLineIsListItem) break;
-		editor.setCursor({ line: lnum + 1, ch: 0 });
-	}
+	const lnum = moveToLastLineOfParagraph(editor);
 
 	// 3. get existing blockID or generate new one
 	const lineText = editor.getLine(lnum);
