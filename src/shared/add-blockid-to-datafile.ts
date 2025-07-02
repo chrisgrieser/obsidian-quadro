@@ -7,22 +7,29 @@ export function prepareDatafileLineUpdate(editor: Editor): {
 	blockId: string;
 	lineWithoutId: string;
 } {
-	const lnum = editor.getCursor().line;
-	let lineText = editor.getLine(lnum);
-
 	// 1. update line text with highlight markup (if selection)
 	const selection = editor.getSelection();
 	if (selection) {
 		// spaces need to be moved outside, otherwise they make the highlights invalid
 		const highlightAdded = selection.replace(/^( ?)(.+?)( ?)$/g, "$1==$2==$3");
 		editor.replaceSelection(highlightAdded);
-		lineText = editor.getLine(lnum);
 	}
 
-	// 2. get existing blockID or generate new one
-	const [blockIdOfLine] = lineText.match(BLOCKID_REGEX) || [];
+	// 2. move cursor to last line of paragraph
+	// (This is relevant since when there are soft line breaks in a paragraph,
+	// block-ids are only valid on the last line of the paragraph, see #12.)
+	let lnum: number;
+	while (true) {
+		lnum = editor.getCursor().line;
+		const nextLineIsBlank = editor.getLine(lnum + 1).trim() === "";
+		const currentLineIsListItem = editor.getLine(lnum).match(/^\s*([-*+]|[0-9]+\.)\s/);
+		if (nextLineIsBlank || currentLineIsListItem) break;
+		editor.setCursor({ line: lnum + 1, ch: 0 });
+	}
 
-	const blockId = blockIdOfLine || "^id-" + moment().format("YY-MM-DD--HH-mm-ss");
+	// 3. get existing blockID or generate new one
+	const lineText = editor.getLine(lnum);
+	const [blockIdOfLine] = lineText.match(BLOCKID_REGEX) || [];
 	const blockId = blockIdOfLine || "^id-" + moment().format("YYYY-MM-DD--HH-mm-ss");
 	const lineWithoutId = blockIdOfLine ? lineText.slice(0, -blockIdOfLine.length) : lineText;
 	return { blockId: blockId, lineWithoutId: lineWithoutId.trim() };
