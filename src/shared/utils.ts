@@ -82,20 +82,20 @@ export function getActiveEditor(app: App): Editor | undefined {
 export function ambiguousSelection(editor: Editor): boolean {
 	const emptyLine = editor.getLine(editor.getCursor().line).trim() === "";
 	if (emptyLine) {
-		new Notice("Current line is empty.\n\nMove cursor to a paragraph and try again.", 4000);
+		new Notice("Current line is empty.\n\nMove cursor to a paragraph and try again.", 5000);
 		return true;
 	}
 
-	const multilineSelection = editor.getCursor("head").line !== editor.getCursor("anchor").line;
-	const multipleSelections = editor.listSelections().length > 1;
-	if (multilineSelection || multipleSelections) {
-		new Notice(
-			"Paragraph ambiguous since multiple lines are selected.\n\n" +
-				"Unselect, move your cursor to the paragraph you want to affect, and use the command again.",
-			5000,
-		);
+	let msg = "";
+	if (editor.listSelections().length > 1) msg = "Multiple selections are not supported.";
+	if (editor.getSelection().includes("\n\n")) msg = "Multiple paragraphs are selected.";
+	if (editor.getSelection().match(/^\n|\n$/)) msg = "Selection starts or ends with a line break.";
+	if (msg) {
+		msg += "\n\nChange your selection and try again.";
+		new Notice(msg, 5000);
 		return true;
 	}
+
 	return false;
 }
 
