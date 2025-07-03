@@ -3,12 +3,8 @@ import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
 import { BLOCKID_REGEX } from "src/shared/add-blockid-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import {
-	getActiveEditor,
-	moveToLastLineOfParagraph,
-	typeOfFile,
-	WIKILINK_REGEX,
-} from "src/shared/utils";
+import { getActiveEditor, moveToLastLineOfParagraph, WIKILINK_REGEX } from "src/shared/utils";
+import { typeOfFile } from "src/shared/validation";
 import { type Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
 
 //──────────────────────────────────────────────────────────────────────────────

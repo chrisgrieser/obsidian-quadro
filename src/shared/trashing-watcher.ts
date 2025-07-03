@@ -2,7 +2,7 @@ import { around } from "monkey-around";
 import { Notice, TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
-import { typeOfFile } from "./utils";
+import { typeOfFile } from "./validation";
 
 /** MONKEY-AROUND `app.vault.trash` to intercept attempts of the user to
  * delete files via native Obsidian methods. Check if the file is a CODE FILE,

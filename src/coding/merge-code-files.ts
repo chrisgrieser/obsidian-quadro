@@ -3,7 +3,8 @@ import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
 import { mergeFiles } from "src/shared/file-merging";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { getActiveEditor, typeOfFile } from "src/shared/utils";
+import { getActiveEditor } from "src/shared/utils";
+import { typeOfFile } from "src/shared/validation";
 import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {

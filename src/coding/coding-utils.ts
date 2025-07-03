@@ -1,7 +1,8 @@
 import type { TFile } from "obsidian";
 import type Quadro from "src/main";
 import { sortFuncs } from "src/settings/defaults";
-import { typeOfFile, WIKILINK_REGEX } from "src/shared/utils";
+import { WIKILINK_REGEX } from "src/shared/utils";
+import { typeOfFile } from "src/shared/validation";
 
 export function getFullCode(plugin: Quadro, tFile: TFile): string {
 	return tFile.path.slice(plugin.settings.coding.folder.length + 1, -3);

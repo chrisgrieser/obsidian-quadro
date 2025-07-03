@@ -1,7 +1,7 @@
 import { countTimesCodeIsAssigned } from "src/coding/coding-utils";
 import { getExtractionsOfType } from "src/extraction/extraction-utils";
 import type Quadro from "src/main";
-import { typeOfFile } from "src/shared/utils";
+import { typeOfFile } from "src/shared/validation";
 
 export function updateStatusbar(plugin: Quadro): void {
 	const { app, statusbar, settings } = plugin;

@@ -6,12 +6,8 @@ import {
 	prepareDatafileLineUpdate,
 } from "src/shared/add-blockid-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import {
-	ambiguousSelection,
-	getActiveEditor,
-	selHasHighlightMarkup,
-	typeOfFile,
-} from "src/shared/utils";
+import { getActiveEditor } from "src/shared/utils";
+import { ambiguousSelection, selHasHighlightMarkup, typeOfFile } from "src/shared/validation";
 import { getExtractionFileDisplay } from "./extraction-utils";
 
 class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {

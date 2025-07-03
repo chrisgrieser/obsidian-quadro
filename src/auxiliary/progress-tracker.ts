@@ -1,7 +1,7 @@
 import { moment, Notice, normalizePath, TFile } from "obsidian";
 import type Quadro from "src/main";
 import { READ_KEY } from "src/settings/constants";
-import { typeOfFile } from "src/shared/utils";
+import { typeOfFile } from "src/shared/validation";
 
 type ProgressForDay = {
 	"Code File"?: Record<string, number>;

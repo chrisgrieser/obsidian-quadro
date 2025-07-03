@@ -5,14 +5,13 @@ import {
 	insertblockIdInDatafile,
 	prepareDatafileLineUpdate,
 } from "src/shared/add-blockid-to-datafile";
+import { ensureCorrectPropertyTypes, getActiveEditor } from "src/shared/utils";
 import {
 	activeFileHasInvalidName,
 	ambiguousSelection,
-	ensureCorrectPropertyTypes,
-	getActiveEditor,
 	selHasHighlightMarkup,
 	typeOfFile,
-} from "src/shared/utils";
+} from "src/shared/validation";
 import {
 	getAllExtractionTypes,
 	getExtractionsOfType,

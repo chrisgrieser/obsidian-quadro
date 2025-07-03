@@ -1,7 +1,7 @@
 import { Notice } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
 import type Quadro from "src/main";
-import { typeOfFile } from "src/shared/utils";
+import { typeOfFile } from "src/shared/validation";
 
 // INFO
 // Wrap existing Obsidian command to make it more accessible for users new to

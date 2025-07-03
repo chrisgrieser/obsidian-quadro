@@ -6,13 +6,13 @@ import {
 	prepareDatafileLineUpdate,
 } from "src/shared/add-blockid-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
+import { getActiveEditor } from "src/shared/utils";
 import {
 	activeFileHasInvalidName,
 	ambiguousSelection,
-	getActiveEditor,
 	selHasHighlightMarkup,
 	typeOfFile,
-} from "../shared/utils";
+} from "src/shared/validation";
 import {
 	codeFileDisplay,
 	getAllCodeFiles,

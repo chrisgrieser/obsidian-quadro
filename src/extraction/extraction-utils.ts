@@ -9,7 +9,8 @@ import {
 } from "obsidian";
 import type Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
-import { LIVE_PREVIEW, typeOfFile } from "src/shared/utils";
+import { LIVE_PREVIEW } from "src/shared/utils";
+import { typeOfFile } from "src/shared/validation";
 
 export async function openExtractionInNewWin(plugin: Quadro, tfile: TFile): Promise<void> {
 	const { app, settings } = plugin;
