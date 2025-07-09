@@ -1,5 +1,12 @@
 import { type Editor, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
+import {
+	codeFileDisplay,
+	getAllCodeFiles,
+	getCodesFilesInParagraphOfDatafile,
+	getFullCode,
+} from "src/coding/coding-utils";
+import { createOneCodeFile } from "src/coding/create-new-code-file";
 import type Quadro from "src/main";
 import {
 	insertblockIdInDatafile,
@@ -13,13 +20,6 @@ import {
 	selHasHighlightMarkup,
 	typeOfFile,
 } from "src/shared/validation";
-import {
-	codeFileDisplay,
-	getAllCodeFiles,
-	getCodesFilesInParagraphOfDatafile,
-	getFullCode,
-} from "./coding-utils.ts";
-import { createOneCodeFile } from "./create-new-code-file.ts";
 
 type CodeAssignItem = TFile | "new-code-file";
 

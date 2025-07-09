@@ -1,11 +1,15 @@
 import { type Editor, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
+import {
+	type Code,
+	codeFileDisplay,
+	getCodesFilesInParagraphOfDatafile,
+} from "src/coding/coding-utils";
 import type Quadro from "src/main";
 import { BLOCKID_REGEX } from "src/shared/add-blockid-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor, moveToLastLineOfParagraph, WIKILINK_REGEX } from "src/shared/utils";
 import { typeOfFile } from "src/shared/validation";
-import { type Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils.ts";
 
 //──────────────────────────────────────────────────────────────────────────────
 

@@ -1,5 +1,6 @@
 import { type Editor, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
+import { getExtractionFileDisplay } from "src/extraction/extraction-utils";
 import type Quadro from "src/main";
 import {
 	insertblockIdInDatafile,
@@ -8,7 +9,6 @@ import {
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor } from "src/shared/utils";
 import { ambiguousSelection, selHasHighlightMarkup, typeOfFile } from "src/shared/validation";
-import { getExtractionFileDisplay } from "./extraction-utils.ts";
 
 class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 	editor: Editor;

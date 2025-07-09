@@ -1,4 +1,6 @@
-// DOCS https://biomejs.dev/reference/configuration/
+// DOCS
+// https://biomejs.dev/reference/configuration/
+// https://biomejs.dev/linter/javascript/rules/
 //──────────────────────────────────────────────────────────────────────────────
 {
 	"linter": {

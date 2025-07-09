@@ -1,10 +1,10 @@
 import type { CommandData } from "src/coding/coding-commands";
-import { addToExistingExtractionFileCommand } from "./add-to-extraction-file.ts";
-import { createNewExtractionTypeCommand } from "./create-new-extraction-type.ts";
-import { exportExtractionsAsCsv } from "./export-extractions-as-csv.ts";
-import { extractFromParagraphCommand } from "./extract-from-paragraph.ts";
-import { extractiontypesOverviewCommand } from "./extractiontypes-overview.ts";
-import { mergeExtractionFilesCommand } from "./merge-extractions.ts";
+import { addToExistingExtractionFileCommand } from "src/extraction/add-to-extraction-file";
+import { createNewExtractionTypeCommand } from "src/extraction/create-new-extraction-type";
+import { exportExtractionsAsCsv } from "src/extraction/export-extractions-as-csv";
+import { extractFromParagraphCommand } from "src/extraction/extract-from-paragraph";
+import { extractiontypesOverviewCommand } from "src/extraction/extractiontypes-overview";
+import { mergeExtractionFilesCommand } from "src/extraction/merge-extractions";
 
 // INFO Adding a few hotkey by default, since this plugin is going to be
 // used by many people not familiar with Obsidian. Requiring them to

@@ -11,7 +11,7 @@ import {
 import { getFullCode } from "src/coding/coding-utils";
 import type Quadro from "src/main";
 import { BACKUP_DIRNAME } from "src/settings/constants";
-import { getActiveEditor } from "./utils.ts";
+import { getActiveEditor } from "src/shared/utils";
 
 /** FIX embedded blocks not being loaded correctly */
 function reloadLivePreview(app: App): void {

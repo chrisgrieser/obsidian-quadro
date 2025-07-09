@@ -1,11 +1,11 @@
 import { Notice, type TFile, type TFolder } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
+import { getExtractionFileDisplay, getExtractionsOfType } from "src/extraction/extraction-utils";
 import type Quadro from "src/main";
 import { mergeFiles } from "src/shared/file-merging";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor } from "src/shared/utils";
 import { typeOfFile } from "src/shared/validation";
-import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils.ts";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	mergeKeepFile: TFile;

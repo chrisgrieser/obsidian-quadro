@@ -1,5 +1,12 @@
 import { type Editor, getFrontMatterInfo, moment, Notice, type TFolder } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
+import {
+	getAllExtractionTypes,
+	getExtractionsOfType,
+	moveCursorToFirstProperty,
+	openExtractionInNewWin,
+	SuggesterForExtractionTypes,
+} from "src/extraction/extraction-utils";
 import type Quadro from "src/main";
 import {
 	insertblockIdInDatafile,
@@ -12,13 +19,6 @@ import {
 	selHasHighlightMarkup,
 	typeOfFile,
 } from "src/shared/validation";
-import {
-	getAllExtractionTypes,
-	getExtractionsOfType,
-	moveCursorToFirstProperty,
-	openExtractionInNewWin,
-	SuggesterForExtractionTypes,
-} from "./extraction-utils.ts";
 
 async function extractOfType(
 	plugin: Quadro,

@@ -1,12 +1,12 @@
 import { parseYaml } from "obsidian";
-import type Quadro from "src/main";
-import { CODEBLOCK_LABELS } from "src/settings/constants";
-import { createCodeBlockFile } from "src/shared/utils";
 import {
 	getExtractionsOfType,
 	getPropertiesForExtractionType,
 	SuggesterForExtractionTypes,
-} from "./extraction-utils.ts";
+} from "src/extraction/extraction-utils";
+import type Quadro from "src/main";
+import { CODEBLOCK_LABELS } from "src/settings/constants";
+import { createCodeBlockFile } from "src/shared/utils";
 
 export function extractiontypesOverviewCommand(plugin: Quadro): void {
 	new SuggesterForExtractionTypes(plugin, async (selectedExtrType) => {

@@ -3,7 +3,6 @@ import { updateStatusbar } from "src/auxiliary/statusbar.ts";
 import { suppressCertainFrontmatterSuggestions } from "src/frontmatter-modifications/suppress-suggestions.ts";
 import { setCssForWidthOfKeys } from "src/frontmatter-modifications/width-of-keys.ts";
 import type Quadro from "src/main.ts";
-import { FolderSuggest } from "src/shared/folder-suggest.ts";
 import {
 	type CsvSeparatorChoices,
 	csvSeparators,
@@ -12,7 +11,8 @@ import {
 	openingModes,
 	type SortFuncChoices,
 	sortFuncs,
-} from "./defaults.ts";
+} from "src/settings/defaults";
+import { FolderSuggest } from "src/shared/folder-suggest.ts";
 
 //──────────────────────────────────────────────────────────────────────────────
 

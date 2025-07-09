@@ -1,7 +1,7 @@
 import { Notice, normalizePath, Setting } from "obsidian";
+import { moveCursorToFirstProperty, openExtractionInNewWin } from "src/extraction/extraction-utils";
 import type Quadro from "src/main";
 import { ExtendedInputModal } from "src/shared/modals";
-import { moveCursorToFirstProperty, openExtractionInNewWin } from "./extraction-utils.ts";
 
 class InputForNewExtractionType extends ExtendedInputModal {
 	onSubmit: (nameOfNewType: string) => void;
