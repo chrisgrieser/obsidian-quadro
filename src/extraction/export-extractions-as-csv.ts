@@ -1,6 +1,6 @@
 import { moment, Notice, normalizePath, TFile } from "obsidian";
 import type Quadro from "src/main";
-import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils";
+import { getAllExtractionTypes, getPropertiesForExtractionType } from "./extraction-utils.ts";
 
 // CONFIG (not worth a separate setting)
 const naString = "-";

@@ -1,18 +1,18 @@
 import { type Command, Plugin } from "obsidian";
-import { AUXILIARY_COMMANDS } from "./auxiliary/auxiliary-commands";
-import { updateStatusbar } from "./auxiliary/statusbar";
-import { processCodeOverviewCodeblock } from "./coding/code-overview";
-import { CODING_COMMANDS } from "./coding/coding-commands";
-import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands";
-import { processExtractiontypeOverviewCodeblock } from "./extraction/extractiontypes-overview";
-import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions";
-import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys";
-import { CODEBLOCK_LABELS } from "./settings/constants";
-import { deepExtend } from "./settings/deep-extend";
-import { DEFAULT_SETTINGS, type QuadroSettings } from "./settings/defaults";
-import { QuadroSettingsMenu } from "./settings/settings-menu";
-import { setupTrashWatcher } from "./shared/trashing-watcher";
-import { ensureCorrectPropertyTypes } from "./shared/utils";
+import { AUXILIARY_COMMANDS } from "./auxiliary/auxiliary-commands.ts";
+import { updateStatusbar } from "./auxiliary/statusbar.ts";
+import { processCodeOverviewCodeblock } from "./coding/code-overview.ts";
+import { CODING_COMMANDS } from "./coding/coding-commands.ts";
+import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands.ts";
+import { processExtractiontypeOverviewCodeblock } from "./extraction/extractiontypes-overview.ts";
+import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions.ts";
+import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys.ts";
+import { CODEBLOCK_LABELS } from "./settings/constants.ts";
+import { deepExtend } from "./settings/deep-extend.ts";
+import { DEFAULT_SETTINGS, type QuadroSettings } from "./settings/defaults.ts";
+import { QuadroSettingsMenu } from "./settings/settings-menu.ts";
+import { setupTrashWatcher } from "./shared/trashing-watcher.ts";
+import { ensureCorrectPropertyTypes } from "./shared/utils.ts";
 
 export default class Quadro extends Plugin {
 	styleElSuppressSuggestionsInFields?: HTMLStyleElement;

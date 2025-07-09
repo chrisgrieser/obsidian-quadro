@@ -25,6 +25,8 @@
 		"noPropertyAccessFromIndexSignature": false, // not useful https://stackoverflow.com/a/70748402/22114136
 
 		// helpers
+		"allowSyntheticDefaultImports": true,
+		"allowImportingTsExtensions": true,
 		"isolatedModules": true,
 		"esModuleInterop": false, // setting to true causes issues with Obsidian's imported `moment`
 		"importHelpers": true,

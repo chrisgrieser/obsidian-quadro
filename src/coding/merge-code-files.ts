@@ -5,7 +5,7 @@ import { mergeFiles } from "src/shared/file-merging";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor } from "src/shared/utils";
 import { typeOfFile } from "src/shared/validation";
-import { codeFileDisplay, getAllCodeFiles } from "./coding-utils";
+import { codeFileDisplay, getAllCodeFiles } from "./coding-utils.ts";
 
 class SuggesterForCodeMerging extends ExtendedFuzzySuggester<TFile> {
 	mergeKeepFile: TFile;

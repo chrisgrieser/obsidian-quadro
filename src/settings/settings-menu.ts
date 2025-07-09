@@ -1,9 +1,9 @@
 import { normalizePath, PluginSettingTab, Setting } from "obsidian";
-import { updateStatusbar } from "src/auxiliary/statusbar";
-import { suppressCertainFrontmatterSuggestions } from "src/frontmatter-modifications/suppress-suggestions";
-import { setCssForWidthOfKeys } from "src/frontmatter-modifications/width-of-keys";
-import type Quadro from "src/main";
-import { FolderSuggest } from "src/shared/folder-suggest";
+import { updateStatusbar } from "src/auxiliary/statusbar.ts";
+import { suppressCertainFrontmatterSuggestions } from "src/frontmatter-modifications/suppress-suggestions.ts";
+import { setCssForWidthOfKeys } from "src/frontmatter-modifications/width-of-keys.ts";
+import type Quadro from "src/main.ts";
+import { FolderSuggest } from "src/shared/folder-suggest.ts";
 import {
 	type CsvSeparatorChoices,
 	csvSeparators,
@@ -12,7 +12,7 @@ import {
 	openingModes,
 	type SortFuncChoices,
 	sortFuncs,
-} from "./defaults";
+} from "./defaults.ts";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -188,7 +188,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Ignore properties on merging")
 			.setDesc(
-				"List of properties, one per line, which should not trigger manual incongruence resolvement when merging Extraction Files. " +
+				"List of properties, one per line, which should not trigger manual incongruence resolution when merging Extraction Files. " +
 					"The properties are still added to the frontmatter, there merging just happens automatically without considering potential conflicts. " +
 					"This is intended for properties where it does not matter which value is chosen, such as IDs. ",
 			)

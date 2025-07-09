@@ -5,7 +5,7 @@ import { BLOCKID_REGEX } from "src/shared/add-blockid-to-datafile";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor, moveToLastLineOfParagraph, WIKILINK_REGEX } from "src/shared/utils";
 import { typeOfFile } from "src/shared/validation";
-import { type Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils";
+import { type Code, codeFileDisplay, getCodesFilesInParagraphOfDatafile } from "./coding-utils.ts";
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -38,12 +38,12 @@ class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-async function unassignCodeWhileInDataFile(
+function unassignCodeWhileInDataFile(
 	plugin: Quadro,
 	editor: Editor,
 	dataFile: TFile,
 	code: Code,
-): Promise<void> {
+): void {
 	const app = plugin.app;
 	const cursor = editor.getCursor();
 	const lineText = editor.getLine(cursor.line);

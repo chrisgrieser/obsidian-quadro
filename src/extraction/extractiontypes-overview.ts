@@ -6,7 +6,7 @@ import {
 	getExtractionsOfType,
 	getPropertiesForExtractionType,
 	SuggesterForExtractionTypes,
-} from "./extraction-utils";
+} from "./extraction-utils.ts";
 
 export function extractiontypesOverviewCommand(plugin: Quadro): void {
 	new SuggesterForExtractionTypes(plugin, async (selectedExtrType) => {

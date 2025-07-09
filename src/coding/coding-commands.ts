@@ -1,12 +1,12 @@
 import type { IconName } from "obsidian";
 import type Quadro from "src/main";
-import { assignCodeCommand } from "./assign-code";
-import { codeOverviewCommand } from "./code-overview";
-import { bulkCreateCodeFilesCommand } from "./create-new-code-file";
-import { deleteCodeEverywhereCommand } from "./delete-code-everywhere";
-import { mergeCodeFilesCommand } from "./merge-code-files";
-import { renameCodeCommand } from "./rename-code";
-import { unassignCodeCommand } from "./unassign-code";
+import { assignCodeCommand } from "./assign-code.ts";
+import { codeOverviewCommand } from "./code-overview.ts";
+import { bulkCreateCodeFilesCommand } from "./create-new-code-file.ts";
+import { deleteCodeEverywhereCommand } from "./delete-code-everywhere.ts";
+import { mergeCodeFilesCommand } from "./merge-code-files.ts";
+import { renameCodeCommand } from "./rename-code.ts";
+import { unassignCodeCommand } from "./unassign-code.ts";
 
 export interface CommandData {
 	id: string;

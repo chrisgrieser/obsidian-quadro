@@ -5,7 +5,7 @@ import { mergeFiles } from "src/shared/file-merging";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor } from "src/shared/utils";
 import { typeOfFile } from "src/shared/validation";
-import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils";
+import { getExtractionFileDisplay, getExtractionsOfType } from "./extraction-utils.ts";
 
 class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	mergeKeepFile: TFile;

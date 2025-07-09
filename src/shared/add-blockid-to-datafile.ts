@@ -1,5 +1,5 @@
 import { type Editor, moment, type TFile } from "obsidian";
-import { moveToLastLineOfParagraph } from "./utils";
+import { moveToLastLineOfParagraph } from "./utils.ts";
 
 // DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note
 export const BLOCKID_REGEX = /\^[\w-]+$/;

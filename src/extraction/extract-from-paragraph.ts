@@ -18,7 +18,7 @@ import {
 	moveCursorToFirstProperty,
 	openExtractionInNewWin,
 	SuggesterForExtractionTypes,
-} from "./extraction-utils";
+} from "./extraction-utils.ts";
 
 async function extractOfType(
 	plugin: Quadro,

@@ -18,8 +18,8 @@ import {
 	getAllCodeFiles,
 	getCodesFilesInParagraphOfDatafile,
 	getFullCode,
-} from "./coding-utils";
-import { createOneCodeFile } from "./create-new-code-file";
+} from "./coding-utils.ts";
+import { createOneCodeFile } from "./create-new-code-file.ts";
 
 type CodeAssignItem = TFile | "new-code-file";
 

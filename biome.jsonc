@@ -2,12 +2,52 @@
 //──────────────────────────────────────────────────────────────────────────────
 {
 	"linter": {
+		"domains": { "project": "all", "test": "all" },
+
+		// last rule update: 2025-07-09
 		"rules": {
+			"performance": {
+				"noBarrelFile": "on"
+			},
 			"style": {
-				"useTemplate": "off", // too strict, simple concatenations are often fine
-				"useNamingConvention": "on"
+				"useNamingConvention": "on",
+				"useShorthandAssign": "on",
+				"useForOf": "on",
+				"useFilenamingConvention": "on",
+				"useDefaultSwitchClause": "on",
+				"useConsistentArrayType": "on",
+				"useAtIndex": "on",
+				"noYodaExpression": "on",
+				"noUselessElse": "on",
+				"noUnusedTemplateLiteral": "on",
+				"noSubstr": "on",
+				"noProcessEnv": "on",
+				"noNestedTernary": "on",
+				"noInferrableTypes": "on", // typos: ignore-line
+				"useTemplate": "off" // too strict, simple concatenations are often fine
+			},
+			"suspicious": {
+				"noConsole": {
+					"level": "warn",
+					"options": { "allow": ["assert", "error", "info", "warn", "debug"] }
+				},
+				"useErrorMessage": "on",
+				"useAwait": "on",
+				"noVar": "on",
+				"noEmptyBlockStatements": "on"
+			},
+			"complexity": {
+				"useWhile": "on",
+				"noUselessStringConcat": "on"
+			},
+			"correctness": {
+				"noUndeclaredDependencies": "off", // incompatible with non-relative typescript imports
+				"noUndeclaredVariables": "on"
 			}
 		}
+	},
+	"javascript": {
+		"globals": ["activeDocument", "activeWindow"] // Electron
 	},
 	"formatter": {
 		"useEditorconfig": true,

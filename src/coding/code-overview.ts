@@ -2,7 +2,7 @@ import { TFile, TFolder } from "obsidian";
 import type Quadro from "src/main";
 import { CODEBLOCK_LABELS } from "src/settings/constants";
 import { createCodeBlockFile } from "src/shared/utils";
-import { countTimesCodeIsAssigned } from "./coding-utils";
+import { countTimesCodeIsAssigned } from "./coding-utils.ts";
 
 export async function codeOverviewCommand(plugin: Quadro): Promise<void> {
 	const content = [

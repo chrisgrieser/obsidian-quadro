@@ -8,7 +8,7 @@ import {
 import { ExtendedFuzzySuggester } from "src/shared/modals";
 import { getActiveEditor } from "src/shared/utils";
 import { ambiguousSelection, selHasHighlightMarkup, typeOfFile } from "src/shared/validation";
-import { getExtractionFileDisplay } from "./extraction-utils";
+import { getExtractionFileDisplay } from "./extraction-utils.ts";
 
 class SuggesterForExtractionAdding extends ExtendedFuzzySuggester<TFile> {
 	editor: Editor;

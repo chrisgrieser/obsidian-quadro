@@ -1,6 +1,6 @@
 import type { CommandData } from "src/coding/coding-commands";
-import { openRandomUnreadDatafile } from "./open-random-datafile";
-import { markDatafileAsRead, revealProgressFile } from "./progress-tracker";
+import { openRandomUnreadDatafile } from "./open-random-datafile.ts";
+import { markDatafileAsRead, revealProgressFile } from "./progress-tracker.ts";
 
 export const AUXILIARY_COMMANDS: CommandData[] = [
 	{
