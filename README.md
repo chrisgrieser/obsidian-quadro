@@ -5,7 +5,7 @@
 
 _**Qua**litative **D**ata analysis **R**ealized in **O**bsidian_
 
-Quadro is an Obsidian plugin for social-scientific Qualitative Data Analysis
+Quadro is an Obsidian plugin for social-scientific qualitative data analysis
 (QDA). It is an open alternative to [MAXQDA](https://www.maxqda.com/) and
 [atlas.ti](https://atlasti.com/), using Markdown to store data and codes.
 
@@ -117,8 +117,9 @@ _Quadro_ go even further:
   version-controlled with `git`.
 
 ### For Obsidian users not familiar with QDA
-In Qualitative Data Analysis, "coding" is a form of fine-grained tagging of text
-segments, and "extraction" is a transforming prose text into structured data.
+In qualitative data analysis, "coding" is a form of fine-grained tagging of text
+segments, and "extraction" denotes the transforming of prose text into structured 
+data.
 
 _Coding_ is implemented in _Quadro_ via "bidirectional" links between Data Files
 and Code Files by inserting wikilinks in _both_ files. (Obsidian itself does
@@ -156,7 +157,7 @@ support the creation of those Extraction Files.
   of a paragraph. Coding of individual words is not supported.
 - Due to the nature of Markdown markup, assigning multiple codes to **partially
   overlapping paragraph segments** is not supported. This restriction only
-  applies to partial overlaps, assigning multiple codes to the same paragraph or
+  applies to _partial overlaps_, assigning multiple codes to the same paragraph or
   segment works, of course.
 
 ## Usage
@@ -193,20 +194,20 @@ the capabilities of _Quadro_.
 #### Using a separate vault
 It is recommended to create a separate vault for data analysis and
 install the plugin there, for several reasons:
-- QDA does not follow the "common logic of note-taking," thus often requiring a
+- QDA does not follow the common logic of note-taking, thus often requiring a
   different set of plugins and settings from your regular vault.
 - Separate vaults mean that suggestions, such as for properties, are also
   separated.
 - To make Obsidian easier to use for qualitative research, _Quadro_ also does
-  some (minor) modifications to the core layout of Obsidian, for instance wider
-  property keys.
-- For archival purposes, the research data is already separated.
-- For collaborative work in a research team, the data is stored in separately
+  some (minor) modifications to the core Obsidian behavior, such as all file
+  deletions being monitored. 
+- For archival purposes, the research data is already separated from your notes.
+- For collaborative work in a research team, the data is stored separately
   from personal notes.
 
 #### Migrating from an existing research project with other QDA software
-Unfortunately, this is not supported. Main reason being that commercial QDA
-software use proprietary formats, the exact reason why researchers should
+Unfortunately, this is not supported. The main reason is that commercial QDA
+software uses proprietary formats, the exact reason why researchers should
 use research software utilizing open formats to begin with.
 
 If your research data is
