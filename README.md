@@ -5,12 +5,11 @@
 
 _**Qua**litative **D**ata analysis **R**ealized in **O**bsidian_
 
-Obsidian plugin for social-scientific Qualitative Data Analysis (QDA). An open
-alternative to [MAXQDA](https://www.maxqda.com/) and
-[atlas.ti](https://atlasti.com/), using Markdown to store data and research
-codes.
+Quadro is an Obsidian plugin for social-scientific Qualitative Data Analysis
+(QDA). It is an open alternative to [MAXQDA](https://www.maxqda.com/) and
+[atlas.ti](https://atlasti.com/), using Markdown to store data and codes.
 
-Quadro supports both, coding in the tradition of Grounded Theory, and data
+The plugin supports coding in the tradition of Grounded Theory, and data
 extraction following the principles of Qualitative Content Analysis (as outlined
 by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 
