@@ -31,7 +31,7 @@
 			"suspicious": {
 				"noConsole": {
 					"level": "warn",
-					"options": { "allow": ["assert", "error", "info", "warn", "debug"] }
+					"options": { "allow": ["assert", "error", "warn", "info", "debug", "trace"] }
 				},
 				"useErrorMessage": "on",
 				"useAwait": "on",
