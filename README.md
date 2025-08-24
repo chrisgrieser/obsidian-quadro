@@ -118,7 +118,7 @@ _Quadro_ go even further:
 
 ### For Obsidian users not familiar with QDA
 In qualitative data analysis, "coding" is a form of fine-grained tagging of text
-segments, and "extraction" denotes the transforming of prose text into structured 
+segments, and "extraction" denotes the transforming of prose text into structured
 data.
 
 _Coding_ is implemented in _Quadro_ via "bidirectional" links between Data Files
@@ -200,7 +200,7 @@ install the plugin there, for several reasons:
   separated.
 - To make Obsidian easier to use for qualitative research, _Quadro_ also does
   some (minor) modifications to the core Obsidian behavior, such as all file
-  deletions being monitored. 
+  deletions being monitored.
 - For archival purposes, the research data is already separated from your notes.
 - For collaborative work in a research team, the data is stored separately
   from personal notes.
@@ -582,4 +582,4 @@ border='0' alt='Buy Me a Coffee at ko-fi.com'/></a>
 	assigned a code. The timestamp is not updated when the paragraph you remove
 	the code or assign another code, since the paragraph ID needs to be
 	immutable to ensure reliable references to it. Think of the timestamp as
-	"first time the paragraph a code has been assigned".
+	"first time the paragraph a code has been assigned."
