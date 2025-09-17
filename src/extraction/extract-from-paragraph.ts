@@ -68,11 +68,16 @@ async function extractOfType(
 	const { blockId, lineWithoutId } = prepareDatafileLineUpdate(editor);
 
 	// insert data into TEMPLATE
+	const templateFrontmatterLines = templateFrontmatter.split("\n").filter((line) => {
+		const empty = line.trim() === "";
+		const reservedProperty = line.match(/^extraction-(date|source):/); // prevent duplicates
+		return !empty && !reservedProperty;
+	});
 	const fullSource = `${dataFile.path.slice(0, -3)}#${blockId}`; // slice to rm `.md`
 	const timestamp = moment().format("YYYY-MM-DDTHH:mm"); // obsidian has trouble with timezone data
 	const newFrontmatter = [
 		"---",
-		...templateFrontmatter.split("\n"),
+		...templateFrontmatterLines,
 		"extraction-date: " + timestamp,
 		"extraction-source:",
 		`  - "[[${fullSource}]]"`,
