@@ -1,6 +1,6 @@
 set quiet := true
 
-test_vault := "$HOME/Vaults/phd-data-analysis/"
+test_vault := "$HOME/Vaults/phd-data-analysis"
 
 #───────────────────────────────────────────────────────────────────────────────
 
@@ -11,8 +11,7 @@ build-and-reload:
 
     plugin_id=$(grep '"id"' "./manifest.json" | cut -d'"' -f4)
     mkdir -p "{{ test_vault }}/.obsidian/plugins/$plugin_id/"
-    cp -f "main.js" "{{ test_vault }}/.obsidian/plugins/$plugin_id/main.js"
-    cp -f "manifest.json" "{{ test_vault }}/.obsidian/plugins/$plugin_id/manifest.json"
+    cp -f "main.js" "styles.css" "manifest.json" "{{ test_vault }}/.obsidian/plugins/$plugin_id/"
     vault_name=$(basename "{{ test_vault }}")
     open "obsidian://open?vault=$vault_name"
 
@@ -38,6 +37,4 @@ init:
     node .esbuild.mjs
 
 update-deps:
-    #!/usr/bin/env zsh
-    npm update
-    node .esbuild.mjs
+    npm update && node .esbuild.mjs
