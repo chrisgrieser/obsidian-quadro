@@ -24,41 +24,41 @@ anyway.
 /* ────────────────────────────────────────────────────────────────────────── */
 /* EMBEDDED LINKS */
 
-.markdown-embed.internal-embed.inline-embed {
-	--between-embeds-spacing: 2rem;
+body .markdown-embed.internal-embed.internal-embed {
 	border: none;
 	padding: 0;
-	padding-bottom: var(--between-embeds-spacing);
-}
+	padding-bottom: 2rem; /* i.e., spacing between embeddings */
 
-/* show location of embedded block links */
-.markdown-embed.internal-embed.inline-embed::after {
-	/* destination is saved in `alt` attribute */
-	content: attr(alt);
-	color: var(--text-faint);
-	padding-left: 1.75rem;
-	padding-top: 4px;
-	font-size: 90%;
-}
+	/* show location of embedded block links */
+	&::after {
+		content: attr(alt); /* destination is saved in `alt` attribute */
+		color: var(--text-faint);
+		padding-left: 1.75rem;
+		padding-top: 4px;
+		font-size: 90%;
+	}
 
-/* move link down to destination text */
-.markdown-embed.internal-embed.inline-embed .markdown-embed-link {
-	top: unset;
-	left: 0;
-}
+	/* move link down to destination text */
+	.markdown-embed-link {
+		top: unset;
+		left: 0;
+	}
 
-/* remove wasted space */
-.markdown-embed.internal-embed.inline-embed .markdown-embed-title {
-	display: none;
-}
+	/* remove space wasters */
+	.markdown-embed-title {
+		display: none;
+	}
 
-.markdown-embed.internal-embed.inline-embed p {
-	margin-bottom: 0;
-}
+	p {
+		margin-bottom: 0;
+	}
 
-/* spacing added by some themes (e.g. Prism) */
-body .internal-embed .markdown-embed-content {
-	padding: 0;
+	.markdown-embed-content {
+		padding: 0; /* added by some themes */
+		.markdown-preview-view {
+			padding: 0;
+		}
+	}
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
