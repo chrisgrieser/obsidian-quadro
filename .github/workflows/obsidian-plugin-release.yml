@@ -31,7 +31,7 @@ jobs:
 
       - name: Create release notes
         id: release_notes
-        uses: mikepenz/release-changelog-builder-action@v5
+        uses: mikepenz/release-changelog-builder-action@v6
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
