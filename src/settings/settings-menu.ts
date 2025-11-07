@@ -87,7 +87,8 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Shortened statusbar text")
-			.setDesc('For example, instead of "Code 20x assigned" the statusbar will display "20C".')
+			// eslint-disable-next-line obsidianmd/ui/sentence-case -- PENDING https://github.com/obsidianmd/eslint-plugin/issues/71
+			.setDesc('For example, instead of "20 Codes," the statusbar will display "20C."')
 			.addToggle((toggle) =>
 				toggle.setValue(settings.statusbar.shortened).onChange(async (value) => {
 					settings.statusbar.shortened = value;
@@ -145,7 +146,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 		new Setting(containerEl).setName("Extraction").setHeading();
 
 		new Setting(containerEl)
-			.setName("Extraction folder")
+			.setName("Extraction Folder")
 			.setDesc("Location where the Extraction Files are stored.")
 			.addSearch((text) => {
 				new FolderSuggest(this.plugin, text.inputEl);
@@ -223,7 +224,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			);
 		new Setting(containerEl)
 			.setName("CSV separator")
-			.setDesc("Separator used when exporting extractions as .csv files.")
+			.setDesc("Separator used when exporting extractions as CSV file.")
 			.addDropdown((dropdown) => {
 				dropdown
 					.addOptions(csvSeparators)

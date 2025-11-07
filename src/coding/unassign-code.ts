@@ -55,7 +55,7 @@ function unassignCodeWhileInDataFile(
 	// GUARD no blockid
 	const [blockId] = lineText.match(BLOCKID_REGEX) || [];
 	if (!blockId) {
-		new Notice("Cannot unassign code: No id found at current line.", 0);
+		new Notice("Cannot unassign code: no ID found at current line.", 0);
 		return;
 	}
 

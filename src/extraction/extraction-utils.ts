@@ -144,7 +144,7 @@ export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
 
 	const extFolder = app.vault.getFolderByPath(settings.extraction.folder);
 	if (!extFolder) {
-		new Notice("ERROR: Could not find Extraction Folder.", 0);
+		new Notice("Error: could not find Extraction Folder.", 0);
 		return;
 	}
 

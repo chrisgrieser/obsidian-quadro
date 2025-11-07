@@ -10,6 +10,7 @@ AI-assisted code is not discouraged if it has been properly reviewed;
 this disclosure is for transparency. -->
 
 ## Checklist
+- [ ] I ran `git hook run pre-commit -- "check-all"` and all checks passed.
 - [ ] Variable names follow `camelCase` convention.
 - [ ] All AI-generated code has been reviewed by a human.
 - [ ] Documentation (`README.md` and affected settings) has been updated

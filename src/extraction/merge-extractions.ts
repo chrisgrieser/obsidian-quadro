@@ -1,4 +1,4 @@
-import { Notice, type TFile, type TFolder } from "obsidian";
+import { Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
 import { getExtractionFileDisplay, getExtractionsOfType } from "src/extraction/extraction-utils";
 import type Quadro from "src/main";
@@ -17,7 +17,12 @@ class SuggesterForExtractionMerging extends ExtendedFuzzySuggester<TFile> {
 	}
 
 	getItems(): TFile[] {
-		const extractionType = this.mergeKeepFile.parent as TFolder;
+		const extractionType = this.mergeKeepFile.parent;
+		if (!extractionType) {
+			new Notice("No extraction type found (file to be extracted has no parent.)", 4000);
+			this.close();
+			return [];
+		}
 		const extractionsOfSameType = getExtractionsOfType(this.plugin, extractionType)
 			.filter((extrFile) => extrFile.path !== this.mergeKeepFile.path)
 			.sort((a, b) => b.stat.mtime - a.stat.mtime);

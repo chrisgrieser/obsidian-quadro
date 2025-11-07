@@ -14,7 +14,7 @@ class InputForNewExtractionType extends ExtendedInputModal {
 
 	override onOpen(): void {
 		const { contentEl } = this;
-		contentEl.createEl("h4", { text: "New Extraction Type" });
+		contentEl.createEl("h4", { text: "New extraction type" });
 		contentEl.addClass(this.plugin.cssclass);
 
 		const validInput = (name: string): boolean => name !== "";

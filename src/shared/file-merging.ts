@@ -135,8 +135,7 @@ export async function mergeFiles(
 	}
 
 	// DISCARD `mergeAway`
-	// Not using `app.vault.trash` as we already have a backup & to avoid the
-	// need to temporarily disable our trash-watcher.
+	// eslint-disable-next-line obsidianmd/prefer-file-manager-trash-file -- delete is okay, since we already have a backup
 	app.vault.delete(mergeAwayFile); // can be async
 
 	// NOTIFY

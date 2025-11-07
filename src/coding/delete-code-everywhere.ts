@@ -23,5 +23,6 @@ export async function deleteCodeEverywhereCommand(plugin: Quadro): Promise<void>
 
 	// due to our monkeying-around, `app.vault.trash` already triggers
 	// deleting references, so we do not need to do it here
+	// eslint-disable-next-line obsidianmd/prefer-file-manager-trash-file -- due to monkey around
 	await app.vault.trash(codeFile, true);
 }

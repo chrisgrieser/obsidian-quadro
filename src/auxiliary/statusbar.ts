@@ -13,7 +13,7 @@ export function updateStatusbar(plugin: Quadro): void {
 	// GUARD
 	if (!activeFile || !["Data File", "Code File", "Extraction File"].includes(filetype)) {
 		statusbar.setText("");
-		statusbar.style.cssText = "display: none"; // avoids padding of empty statusbar item
+		statusbar.setCssProps({ display: "none" }); // avoids padding of empty statusbar item
 		return;
 	}
 
@@ -63,7 +63,7 @@ export function updateStatusbar(plugin: Quadro): void {
 	// GUARD
 	if (segments.length === 0) {
 		statusbar.setText("");
-		statusbar.style.cssText = "display: none";
+		statusbar.setCssProps({ display: "none" });
 		return;
 	}
 
@@ -73,5 +73,5 @@ export function updateStatusbar(plugin: Quadro): void {
 				.map((segment) => (segment.startsWith("1 ") ? segment.slice(0, -1) : segment))
 				.join(", ");
 	statusbar.setText(text);
-	statusbar.style.cssText = "display: block";
+	statusbar.setCssProps({ display: "block" });
 }
