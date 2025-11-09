@@ -1,8 +1,19 @@
 # Extra Features
 
 ## Split-Code Command
-- Split code and move quotes to new code.
-- Also allows to move codes to an existing non-empty code file.
+- Splits a code and moves the selected quotes into a new code.  
+- Also allows moving quotes into an existing, non-empty code file.
+
+## Remove Code
+- Removes codes from both the data file and the code file.  
+- When a code is removed and no other codes remain assigned to the paragraph, the paragraph ID is also removed to prevent orphan entries.  
+- If a code is removed and no other codes remain assigned, the user is prompted to confirm whether to remove the paragraph’s highlighting.
+
+## Assign Highlight
+- Prevents duplicate highlighting when coding a paragraph that already has a highlight.  
+- When you highlight a section that is already highlighted, it extends the highlight to cover both selections instead of blocking the action.
+
+
 
 # Quadro
 ![GitHub download count](https://img.shields.io/github/downloads/chrisgrieser/obsidian-quadro/total?label=GitHub%20Downloads&style=plastic)

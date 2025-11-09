@@ -46,12 +46,8 @@ export function ambiguousSelection(editor: Editor): boolean {
 	return false;
 }
 
-export function selHasHighlightMarkup(editor: Editor): boolean {
-	const hasHighlightMarkupInSel = editor.getSelection().includes("==");
-	if (hasHighlightMarkupInSel) {
-		new Notice("Selection contains highlights.\nOverlapping highlights are not supported.", 4000);
-	}
-	return hasHighlightMarkupInSel;
+export function selHasHighlightMarkup(_: Editor): boolean {
+	return false;
 }
 
 export function activeFileHasInvalidName(app: App): boolean {

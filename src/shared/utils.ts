@@ -58,6 +58,41 @@ export function moveToLastLineOfParagraph(editor: Editor): number {
 
 //──────────────────────────────────────────────────────────────────────────────
 
+export interface ParagraphScope {
+	lines: string[];
+	start: number;
+	end: number;
+}
+
+export function getParagraphRangeFromLines(lines: string[], targetIndex: number): {
+	start: number;
+	end: number;
+} {
+	let start = targetIndex;
+	while (start > 0 && (lines[start - 1]?.trim() ?? "") !== "") start--;
+
+	let end = targetIndex;
+	while (end + 1 < lines.length && (lines[end + 1]?.trim() ?? "") !== "") end++;
+
+	return { start, end };
+}
+
+export function getFullParagraphScope(editor: Editor): ParagraphScope {
+	const { line } = editor.getCursor();
+	let start = line;
+	while (start > 0 && editor.getLine(start - 1).trim() !== "") start--;
+
+	let end = line;
+	while (editor.getLine(end + 1)?.trim() !== "") end++;
+
+	const lines: string[] = [];
+	for (let idx = start; idx <= end; idx++) lines.push(editor.getLine(idx));
+
+	return { lines, start, end };
+}
+
+//──────────────────────────────────────────────────────────────────────────────
+
 /** Changed types breaks some things, such as the display of dates in
  * some plguins. Therefore, we are ensuring the correct type here.
  * NOTE `setType` is marked as internal, so keep an eye on it. */
