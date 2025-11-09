@@ -4,6 +4,7 @@ import { codeOverviewCommand } from "src/coding/code-overview";
 import { bulkCreateCodeFilesCommand } from "src/coding/create-new-code-file";
 import { deleteCodeEverywhereCommand } from "src/coding/delete-code-everywhere";
 import { mergeCodeFilesCommand } from "src/coding/merge-code-files";
+import { splitCodeCommand } from "src/coding/split-code";
 import { renameCodeCommand } from "src/coding/rename-code";
 import { unassignCodeCommand } from "src/coding/unassign-code";
 import type Quadro from "src/main";
@@ -54,6 +55,12 @@ export const CODING_COMMANDS: CommandData[] = [
 		name: "Merge another Code File into current Code File",
 		func: mergeCodeFilesCommand,
 		icon: "circle-dot",
+	},
+	{
+		id: "split-code",
+		name: "Split selected references into another Code File",
+		func: splitCodeCommand,
+		icon: "git-fork",
 	},
 	{
 		id: "bulk-create-new-code-files",
