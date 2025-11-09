@@ -42,6 +42,24 @@ class SuggesterForCodeToUnassign extends ExtendedFuzzySuggester<Code> {
 
 //──────────────────────────────────────────────────────────────────────────────
 
+const LINK_CLEANUP_SPACES = /\s+\^/;
+
+function escapeRegExp(text: string): string {
+	return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function removeCodeLinkFromLine(line: string, wikilink: string): string {
+	const pattern = new RegExp(`\\s*${escapeRegExp(wikilink)}\\s*`);
+	let updated = line.replace(pattern, " ");
+	updated = updated.replace(LINK_CLEANUP_SPACES, " ^");
+	return updated.replace(/\s{2,}/g, " ").trimEnd();
+}
+
+function removeBlockIdFromLine(line: string, blockId: string): string {
+	const pattern = new RegExp(`\\s*${escapeRegExp(blockId)}$`);
+	return line.replace(pattern, "").trimEnd();
+}
+
 function unassignCodeWhileInDataFile(
 	plugin: Quadro,
 	editor: Editor,
@@ -60,9 +78,11 @@ function unassignCodeWhileInDataFile(
 	}
 
 	// 1. remove link from DATAFILE
-	const updatedLine = lineText.replace(code.wikilink, "");
+	let updatedLine = removeCodeLinkFromLine(lineText, code.wikilink);
+	const remainingCodes = getCodesFilesInParagraphOfDatafile(plugin, dataFile, updatedLine);
+	if (remainingCodes.length === 0) updatedLine = removeBlockIdFromLine(updatedLine, blockId);
 	editor.setLine(cursor.line, updatedLine);
-	cursor.ch = Math.min(updatedLine.length - 1, cursor.ch);
+	cursor.ch = Math.max(Math.min(updatedLine.length, cursor.ch), 0);
 	editor.setCursor(cursor); // restore cursor position
 
 	// 2. remove link from CODEFILE
@@ -92,13 +112,18 @@ function unassignCodeWhileInDataFile(
 		}
 
 		// remove reference line from CODEFILE
-		codeFileLines.splice(refInCodeFile, 1);
+		const hasNext = refInCodeFile + 1 < codeFileLines.length;
+		if (hasNext && codeFileLines[refInCodeFile + 1]?.trim() === "") {
+			codeFileLines.splice(refInCodeFile, 2);
+		} else {
+			codeFileLines.splice(refInCodeFile, 1);
+		}
 		content = codeFileLines.join("\n");
-		new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
-		incrementProgress(plugin, "Code File", "unassign");
-
 		return content;
 	});
+
+	new Notice(`Assignment of code "${code.tFile.basename}" removed.`, 3500);
+	incrementProgress(plugin, "Code File", "unassign");
 }
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -114,10 +139,23 @@ export function unassignCodeCommand(plugin: Quadro): void {
 
 	// GUARD
 	if (!editor) return;
-	if (typeOfFile(plugin) !== "Data File") {
-		new Notice("You must be in a Data File to unassign a code.", 4000);
+	const fileType = typeOfFile(plugin);
+
+	if (fileType === "Code File") {
+		const codeFile = editor.editorComponent.view.file;
+		if (!codeFile) {
+			new Notice("No file open.", 4000);
+			return;
+		}
+		void unassignCodeWhileInCodeFile(plugin, editor, codeFile);
 		return;
 	}
+
+	if (fileType !== "Data File") {
+		new Notice("You must be in a Data or Code File to unassign a code.", 4000);
+		return;
+	}
+
 	const dataFile = editor.editorComponent.view.file;
 	if (!dataFile) {
 		new Notice("No file open.", 4000);
@@ -135,4 +173,67 @@ export function unassignCodeCommand(plugin: Quadro): void {
 	} else {
 		new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInPara).open();
 	}
+}
+
+async function unassignCodeWhileInCodeFile(plugin: Quadro, editor: Editor, codeFile: TFile): Promise<void> {
+	const { app } = plugin;
+	const cursor = editor.getCursor();
+	const lineNumber = cursor.line;
+	const lineText = editor.getLine(lineNumber);
+	const match = lineText.match(WIKILINK_REGEX);
+
+	if (!match) {
+		new Notice("Current line does not reference a data paragraph.", 3500);
+		return;
+	}
+
+	const [, target, suffix] = match;
+	const blockId =
+		suffix?.match(/\^[\w-]+/)?.[0] ??
+		lineText.match(BLOCKID_REGEX)?.[0];
+	if (!blockId) {
+		new Notice("No paragraph ID detected in the selected reference.", 3500);
+		return;
+	}
+
+	const dataFile = app.metadataCache.getFirstLinkpathDest(target, codeFile.path);
+	if (!dataFile || typeOfFile(plugin, dataFile) !== "Data File") {
+		new Notice("Referenced paragraph no longer resolves to a data file.", 0);
+		return;
+	}
+
+	let removed = false;
+	await app.vault.process(dataFile, (content) => {
+		const lines = content.split("\n");
+		const lineIdx = lines.findIndex((line) => line.includes(blockId));
+		if (lineIdx < 0) {
+			new Notice(`No paragraph with ID "${blockId}" found in "${dataFile.basename}".`, 0);
+			return content;
+		}
+
+		const codes = getCodesFilesInParagraphOfDatafile(plugin, dataFile, lines[lineIdx]);
+		const code = codes.find((item) => item.tFile.path === codeFile.path);
+		if (!code) {
+			new Notice(`Paragraph does not reference "${codeFile.basename}" anymore.`, 0);
+			return content;
+		}
+
+		let updatedLine = removeCodeLinkFromLine(lines[lineIdx], code.wikilink);
+		const remainingCodes = getCodesFilesInParagraphOfDatafile(plugin, dataFile, updatedLine);
+		if (remainingCodes.length === 0) updatedLine = removeBlockIdFromLine(updatedLine, blockId);
+		lines[lineIdx] = updatedLine;
+		removed = true;
+		return lines.join("\n");
+	});
+
+	if (!removed) return;
+
+	const from = { line: lineNumber, ch: 0 };
+	const hasNext = lineNumber + 1 < editor.lineCount();
+	const to = hasNext ? { line: lineNumber + 1, ch: 0 } : { line: lineNumber, ch: lineText.length };
+	editor.replaceRange("", from, to);
+	editor.setCursor({ line: Math.min(lineNumber, editor.lineCount() - 1), ch: 0 });
+
+	new Notice(`Assignment of code "${codeFile.basename}" removed.`, 3500);
+	incrementProgress(plugin, "Code File", "unassign");
 }
