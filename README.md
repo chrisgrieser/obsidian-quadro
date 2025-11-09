@@ -1,3 +1,9 @@
+# Extra Features
+
+## Split-Code Command
+- Split code and move quotes to new code.
+- Also allows to move codes to an existing non-empty code file.
+
 # Quadro
 ![GitHub download count](https://img.shields.io/github/downloads/chrisgrieser/obsidian-quadro/total?label=GitHub%20Downloads&style=plastic)
 ![Obsidian store download count](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=Obsidian%20Downloads&query=%24%5B%22quadro%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
