@@ -86,3 +86,15 @@ body .markdown-embed.internal-embed.internal-embed {
 	width: 100%;
 	min-height: 10rem;
 }
+
+.quadro-modal__body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.quadro-modal__actions {
+	display: flex;
+	gap: 0.75rem;
+	justify-content: flex-start;
+}

@@ -12,6 +12,7 @@
 ## Assign Highlight
 - Prevents duplicate highlighting when coding a paragraph that already has a highlight.  
 - When you highlight a section that is already highlighted, it extends the highlight to cover both selections instead of blocking the action.
+- Allow multiple code selection.
 
 
 

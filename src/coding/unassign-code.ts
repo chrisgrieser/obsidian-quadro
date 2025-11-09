@@ -65,9 +65,10 @@ class ConfirmHighlightRemovalModal extends Modal {
 		const { contentEl } = this;
 		this.modalEl.addClass(this.plugin.cssclass);
 		contentEl.empty();
-		contentEl.createEl("p", { text: this.message });
+		const body = contentEl.createDiv({ cls: "quadro-modal__body" });
+		body.createEl("p", { text: this.message });
 
-		const buttons = contentEl.createDiv({ cls: "modal-button-row" });
+		const buttons = body.createDiv({ cls: "quadro-modal__actions" });
 
 		const removeBtn = buttons.createEl("button", { text: "Remove highlight" });
 		removeBtn.addClass("mod-cta");
