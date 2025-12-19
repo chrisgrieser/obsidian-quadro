@@ -27,7 +27,7 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
         - [Example vault for Quadro](#example-vault-for-quadro)
         - [Experienced Obsidian users](#experienced-obsidian-users)
         - [Using a separate vault](#using-a-separate-vault)
-        - [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
+        - [Migrating from an existing project with other QDA software](#migrating-from-an-existing-project-with-other-qda-software)
     - [Modification of Obsidian core behavior](#modification-of-obsidian-core-behavior)
     - [Coding](#coding)
         - [How coding works in Quadro](#how-coding-works-in-quadro)
@@ -144,7 +144,7 @@ data in a structured form. Quadro uses a simplistic templating mechanism to
 support the creation of those Extraction Files.
 
 ### Brief methodological comparison with other QDA software
-**Advantages**
+**Advantages** <!-- rumdl-disable-line MD036 -->
 - **Interoperability**: Can be freely combined with other QDA software.
 - **Flexibility**: You can use codes, extractions, or freely combine both.
 - **Customizability**: Implicit assumptions of QDA software, such as the initial
@@ -154,7 +154,7 @@ support the creation of those Extraction Files.
   ecosystem. As opposed to other research software, extending the functionality
   in most cases does not require technical expertise coding experience.
 
-**Disadvantages**
+**Disadvantages** <!-- rumdl-disable-line MD036 -->
 - The **unit of coding** is restricted to paragraphs and to a degree segments
   of a paragraph. Coding of individual words is not supported.
 - Due to the nature of Markdown markup, assigning multiple codes to
@@ -179,7 +179,7 @@ support the creation of those Extraction Files.
 #### Example vault for Quadro
 There is a [pre-configured example
 vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
-*Quadro*. Apart from some pre-installed plugins for QDA, it includes some mock
+*Quadro*. Apart from some preinstalled plugins for QDA, it includes some mock
 data with exemplary codes and extractions, and showcases of extraction
 capabilities, to demonstrate the capabilities of *Quadro*.
 
@@ -207,7 +207,7 @@ install the plugin there, for several reasons:
 - For collaborative work in a research team, the data is stored separately
   from personal notes.
 
-#### Migrating from an existing research project with other QDA software
+#### Migrating from an existing project with other QDA software
 Unfortunately, this is not supported. The main reason is that commercial QDA
 software uses proprietary formats, the exact reason why researchers should
 use research software utilizing open formats to begin with.
@@ -241,9 +241,9 @@ with *Quadro*.
 There are two basic types of files for the analysis, Data Files and Code Files,
 which are both stored as [Markdown files](https://www.markdownguide.org/).
 
-**Data Files**
+**Data Files** <!-- rumdl-disable-line MD036 -->
 The empirical material as text files. They can be stored anywhere in the vault
-as `.md` files. (A separate sub-folder named `Data` is recommended though.) As
+as `.md` files. (A separate subfolder named `Data` is recommended though.) As
 *Quadro* assigns codes to whole paragraphs, these data files should
 be split up into smaller segments.
 
@@ -257,7 +257,7 @@ Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
 consectetur cupidatat. [[MyCode]] ^id-240302-124012
 ```
 
-**Code Files**
+**Code Files** <!-- rumdl-disable-line MD036 -->
 All Markdown files in the folder `{vault-root}/Codes` are considered code
 files. (The folder is configurable.)
 
@@ -304,7 +304,7 @@ The underlying folder structure for coding looks like this:
 > not supported.
 
 #### Coding capabilities
-<!-- LTeX: enabled=false -->
+<!-- rumdl-disable MD033 for `<br>` -->
 
 | Action                                    | Description                                                                                                                                                                                                                            |               Sidebar button               | Default hotkey | Capability provider                                                                                              |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------: | :------------: | ---------------------------------------------------------------------------------------------------------------- |
@@ -314,13 +314,13 @@ The underlying folder structure for coding looks like this:
 | Delete Code File and all references to it | Moves the Code File to the trash, *and* deletes all references to it.                                                                                                                                                                  |     ![Icon](./docs/icons/circle-x.svg)     |       —        | Quadro                                                                                                           |
 | Bulk-create new codes                     | Create multiple new codes at once (without assigning them to a paragraph).                                                                                                                                                             |  ![Icon](./docs/icons/circle-dashed.svg)   |       —        | Quadro                                                                                                           |
 | Merge codes                               | Merge the *current* Code File into another Code File. All references from data files are updated to point to the merged file.                                                                                                          |    ![Icon](./docs/icons/circle-dot.svg)    |       —        | Quadro                                                                                                           |
-| Code grouping                             | Codes can be arranged in sub-folders via drag-and-drop in the File Explorer.                                                                                                                                                           |                     —                      |       —        | [Obsidian Built-in][move file]                                                                                   |
+| Code grouping                             | Codes can be arranged in subfolders via drag-and-drop in the File Explorer.                                                                                                                                                            |                     —                      |       —        | [Obsidian Built-in][move file]                                                                                   |
 | Show code overview                        | Creates an auto-updating overview of all codes in a nested list with code assignment counts.                                                                                                                                           |   ![Icon](./docs/icons/circle-equal.svg)   |       —        | Quadro                                                                                                           |
 | Axial coding                              | Using the Canvas plugins, you can freely arrange entities on a board, and connect them via lines and arrows, suitable for Axial Coding. <br><br>[Further Documentation][core-canvas]                                                   | ![Icon](./docs/icons/layout-dashboard.svg) |       —        | [Obsidian Core Plugin: Canvas][core-canvas]<br><br>[Obsidian Community Plugin: Semantic Canvas][semantic-canvas] |
 | Investigation of code co-occurrences      | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                                                                                                              |                     —                      | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                                                                           |
 | Visualization of code relationships       | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph]                                                                                   |     ![Icon](./docs/icons/git-fork.svg)     |    `mod+g`     | [Obsidian Core Plugin: Graph View][graph]                                                                        |
 
-<!-- LTeX: enabled=true -->
+<!-- rumdl-disable MD033 -->
 
 [rename]: https://help.obsidian.md/Files+and+folders/Manage+notes#Rename+a+note
 [graph]: https://help.obsidian.md/Plugins/Graph+view
@@ -347,7 +347,7 @@ Laudel](https://doi.org/10.17169/fqs-20.3.3386).
 Extraction is implemented similarly to coding, using two basic filetypes, Data
 Files and Extraction Files.
 
-**Data Files**
+**Data Files** <!-- rumdl-disable-line MD036 -->
 The empirical material as text files. They can be stored anywhere in the vault
 as `.md` files.
 
@@ -361,7 +361,7 @@ Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
 consectetur cupidatat. [[Career Visions/1]] ^id-240302-124012
 ```
 
-**Extraction Files**
+**Extraction Files** <!-- rumdl-disable-line MD036 -->
 Extraction is implemented via Markdown metadata ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)),
 which is supported via [Obsidian Properties](https://help.obsidian.md/Editing+and+formatting/Properties).
 
@@ -374,9 +374,9 @@ indicating what type of extraction it is.
 You can then fill out the fields of newly created file. The
 `extraction-source` key contains a link back to the paragraph in the Data File
 where you initiated the extraction. In the rendered view, the file contains a
-`Properties` header that can conveniently be filled out:
+`Properties` header which can conveniently be filled out:
 
-![Showcase Extraction](./docs/showcase-extraction.png)
+![Showcase extraction](./docs/showcase-extraction.png)
 
 The underlying plaintext view of the file looks like this:
 
@@ -394,10 +394,10 @@ extraction-source: "[[Field Notes 3#^id-240302-124012]]"
 **Paragraph extracted from:** ![[Field Notes 3#^id-240302-124012]]
 ```
 
-**Extraction Templates (Extraction Types)**
-The available extraction types are determined by the sub-folders of
+**Extraction Templates (Extraction Types)** <!-- rumdl-disable-line MD036 -->
+The available extraction types are determined by the subfolders of
 `{vault-root}/Extractions/`. The fields that are created for filling in
-information are determined by the `Template.md` file located in that sub-folder.
+information are determined by the `Template.md` file located in that subfolder.
 For the example above, the Extraction Template looks like this:
 The corresponding template for the extraction type is located in the same
 folder, but has the filename `Template.md`.
@@ -452,7 +452,7 @@ enter as `Path` the extraction type you would like to aggregate, for example
 | Extract from paragraph                | Creates an Extraction File from Extraction Template.                                                                                                                                                                                                                                                    |   ![Icon](./docs/icons/square-plus.svg)     | `mod+shift+e`  | Quadro                                                   |
 | Add paragraph to last Extraction File | Adds a reference to the last modified Extraction file to the current paragraph. Useful when information is spread across to paragraphs.                                                                                                                                                                 |   ![Icon](./docs/icons/square-asterisk.svg) | `mod+shift+l`  | Quadro                                                   |
 | Merge extractions                     | Merge the *current* Extraction File into another Extraction File. All references from data files are updated to point to the merged file.                                                                                                                                                               |     ![Icon](./docs/icons/square-dot.svg)    |       —        | Quadro                                                   |
-| Create new extraction type            | Creates a new Extraction Type (= a new sub-folder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                               |   ![Icon](./docs/icons/box-select.svg)      |       —        | Quadro                                                   |
+| Create new extraction type            | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                                |   ![Icon](./docs/icons/box-select.svg)      |       —        | Quadro                                                   |
 | Show Extraction type overview         | Creates an auto-updating overview of an Extraction Type and their values.                                                                                                                                                                                                                               |  ![Icon](./docs/icons/square-equal.svg)     |       —        | Quadro                                                   |
 | Co-occurrent extraction dimensions    | Find extractions where two dimensions have a specific value, by using a query such as `["cause of the issue": fragmentation] ["type of compatibility":backward]` in the Obsidian Search. <br><br>[Further Documentation][search]                                                                        |                   —                         | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                   |
 | Rename dimension globally             | Renaming a property field within a file only affects the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties pops up in the sidebar, where you can rename properties via right-click. |                   —                         |       —        | [Obsidian Core Plugin: Properties View][properties view] |
@@ -499,7 +499,7 @@ being assigned to existing extractions.
 ## Configuration
 
 ### Buttons
-To remove or re-arrange buttons, go to the Obsidian settings: `Appearance` →
+To remove or rearrange buttons, go to the Obsidian settings: `Appearance` →
 `Ribbon Menu` → `Manage`.
 
 ### Hotkeys
