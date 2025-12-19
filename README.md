@@ -3,7 +3,7 @@
 ![Obsidian store download count](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=Obsidian%20Downloads&query=%24%5B%22quadro%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
 ![Last release](https://img.shields.io/github/v/release/chrisgrieser/obsidian-quadro?label=Latest%20Release&style=plastic)
 
-_**Qua**litative **D**ata analysis **R**ealized in **O**bsidian_
+***Qua**litative **D**ata analysis **R**ealized in **O**bsidian*
 
 Quadro is an Obsidian plugin for social-scientific qualitative data analysis
 (QDA). It is an open alternative to [MAXQDA](https://www.maxqda.com/) and
@@ -18,39 +18,39 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 <!-- toc -->
 
 - [Introduction](#introduction)
-	* [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
-	* [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
-	* [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
+    - [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
+    - [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
+    - [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
-	* [Getting started](#getting-started)
-		+ [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
-		+ [Example vault for Quadro](#example-vault-for-quadro)
-		+ [Experienced Obsidian users](#experienced-obsidian-users)
-		+ [Using a separate vault](#using-a-separate-vault)
-		+ [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
-	* [Modification of Obsidian core behavior](#modification-of-obsidian-core-behavior)
-	* [Coding](#coding)
-		+ [How coding works in Quadro](#how-coding-works-in-quadro)
-		+ [Coding capabilities](#coding-capabilities)
-	* [Extraction](#extraction)
-		+ [How extraction works in Quadro](#how-extraction-works-in-quadro)
-		+ [Aggregate extractions](#aggregate-extractions)
-		+ [Extraction capabilities](#extraction-capabilities)
-	* [Auxiliary commands](#auxiliary-commands)
-		+ [Open random Data Files](#open-random-data-files)
-		+ [Progress tracking & theoretical saturation](#progress-tracking--theoretical-saturation)
+    - [Getting started](#getting-started)
+        - [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
+        - [Example vault for Quadro](#example-vault-for-quadro)
+        - [Experienced Obsidian users](#experienced-obsidian-users)
+        - [Using a separate vault](#using-a-separate-vault)
+        - [Migrating from an existing research project with other QDA software](#migrating-from-an-existing-research-project-with-other-qda-software)
+    - [Modification of Obsidian core behavior](#modification-of-obsidian-core-behavior)
+    - [Coding](#coding)
+        - [How coding works in Quadro](#how-coding-works-in-quadro)
+        - [Coding capabilities](#coding-capabilities)
+    - [Extraction](#extraction)
+        - [How extraction works in Quadro](#how-extraction-works-in-quadro)
+        - [Aggregate extractions](#aggregate-extractions)
+        - [Extraction capabilities](#extraction-capabilities)
+    - [Auxiliary commands](#auxiliary-commands)
+        - [Open random Data Files](#open-random-data-files)
+        - [Progress tracking & theoretical saturation](#progress-tracking--theoretical-saturation)
 - [Configuration](#configuration)
-	* [Buttons](#buttons)
-	* [Hotkeys](#hotkeys)
-	* [Plugin behavior](#plugin-behavior)
+    - [Buttons](#buttons)
+    - [Hotkeys](#hotkeys)
+    - [Plugin behavior](#plugin-behavior)
 - [Installation & update](#installation--update)
 - [Development](#development)
-	* [Contribute](#contribute)
-	* [CSS classes](#css-classes)
+    - [Contribute](#contribute)
+    - [CSS classes](#css-classes)
 - [Credits](#credits)
-	* [Acknowledgments](#acknowledgments)
-	* [Recommended citation of this project](#recommended-citation-of-this-project)
-	* [About the developer](#about-the-developer)
+    - [Acknowledgments](#acknowledgments)
+    - [Recommended citation of this project](#recommended-citation-of-this-project)
+    - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
@@ -91,25 +91,27 @@ extensive functionality and plugin ecosystem of Obsidian:
   [Projects](https://obsidian.md/plugins?id=obsidian-projects) for advanced data
   aggregation, or [Relay](https://github.com/no-instructions/relay) for
   live-collaboration like in `Google Docs`.
-- Obsidian has been [stress tested and confirmed to be able to handle 20 000+ files](https://www.reddit.com/r/ObsidianMD/comments/zrzqq0/testing_the_scalability_of_obsidian_with_large/).
+- Obsidian has been
+  [stress tested and confirmed to be able to handle 20 000+ files](https://www.reddit.com/r/ObsidianMD/comments/zrzqq0/testing_the_scalability_of_obsidian_with_large/).
 - All this allows the researcher to customize the analysis to the particular
   needs of their research. Case-specific adaption of research methods
   is a key demand of qualitative research (which strictly speaking is not
   truly fulfilled when using standardized, proprietary research software).
-- Obsidian, as well as _Quadro_, both [have mobile support (Android and iOS)](https://obsidian.md/mobile).
+- Obsidian, as well as *Quadro*, both
+  [have mobile support (Android and iOS)](https://obsidian.md/mobile).
 - Using Obsidian allows you to employ a keyboard-driven workflow with minimal
   usage of the mouse.
 
 Obsidian is [free to use for academic purposes](https://obsidian.md/license),
-and _Quadro_ is also free to use.
+and *Quadro* is also free to use.
 - Especially for students writing their theses, this saves a lot of unnecessary
   hassle with licenses.
 - Unlicensed use of research software can lead to [journal articles being
   retracted](https://retractionwatch.com/2024/11/08/complaint-from-engineering-software-company-prompts-two-retractions/).
-  Using free or open source tools like _Quadro_ avoids this issue entirely.
+  Using free or open source tools like *Quadro* avoids this issue entirely.
 
 If there is a more tech-savvy researcher in the research team, the advantages of
-_Quadro_ go even further:
+*Quadro* go even further:
 - Being Open Source, this plugin can be modified and customized to fit their
   needs. (It is written is TypeScript / JavaScript, a particularly accessible
   and commonly used programming language.)
@@ -118,11 +120,11 @@ _Quadro_ go even further:
 
 ### For Obsidian users not familiar with QDA
 In qualitative data analysis, "coding" is a form of fine-grained tagging of text
-segments, and "extraction" denotes the transforming of prose text into structured
-data.
+segments, and "extraction" denotes the transforming of prose text into
+structured data.
 
-_Coding_ is implemented in _Quadro_ via "bidirectional" links between Data Files
-and Code Files by inserting wikilinks in _both_ files. (Obsidian itself does
+*Coding* is implemented in *Quadro* via "bidirectional" links between Data Files
+and Code Files by inserting wikilinks in *both* files. (Obsidian itself does
 have backlinks, but those are unidirectional links, since the implicit backlink
 is only inferred and not stored anywhere in the Markdown file.).
 
@@ -131,11 +133,11 @@ It makes use of Obsidian's
 functionality to keep track of coded text segments.
 - Codes are implemented as `[[wikilinks]]` instead of `#tags`, as the former
   allows for more flexibility, such as having separate file per code.
-- The distinct feature of this plugin is that its commands _always_ make edits
-  to two files (the data and the code file) _at the same time_, which is
+- The distinct feature of this plugin is that its commands *always* make edits
+  to two files (the data and the code file) *at the same time*, which is
   necessary to adequately handle the workflow common to coding in QDA.
 
-_Extraction_ is implemented by creating separate Extract Files for each
+*Extraction* is implemented by creating separate Extract Files for each
 extraction, using [YAML
 frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/) to store the
 data in a structured form. Quadro uses a simplistic templating mechanism to
@@ -148,17 +150,17 @@ support the creation of those Extraction Files.
 - **Customizability**: Implicit assumptions of QDA software, such as the initial
   order in which codes are presented in the code selection modal, can be
   customized to deal with different kinds of coder biases.
-- **Extensibility**: _Quadro_ can be easily extended via the Obsidian plugin
+- **Extensibility**: *Quadro* can be easily extended via the Obsidian plugin
   ecosystem. As opposed to other research software, extending the functionality
   in most cases does not require technical expertise coding experience.
 
 **Disadvantages**
 - The **unit of coding** is restricted to paragraphs and to a degree segments
   of a paragraph. Coding of individual words is not supported.
-- Due to the nature of Markdown markup, assigning multiple codes to **partially
-  overlapping paragraph segments** is not supported. This restriction only
-  applies to _partial overlaps_, assigning multiple codes to the same paragraph or
-  segment works, of course.
+- Due to the nature of Markdown markup, assigning multiple codes to
+  **partially overlapping paragraph segments** is not supported. This
+  restriction only applies to *partial overlaps*, assigning multiple codes to
+  the same paragraph or segment works, of course.
 
 ## Usage
 
@@ -177,9 +179,9 @@ support the creation of those Extraction Files.
 #### Example vault for Quadro
 There is a [pre-configured example
 vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
-_Quadro_. Apart from some pre-installed plugins for QDA, it includes some mock
+*Quadro*. Apart from some pre-installed plugins for QDA, it includes some mock
 data with exemplary codes and extractions, and showcases of extraction
-capabilities, to demonstrate the capabilities of _Quadro_.
+capabilities, to demonstrate the capabilities of *Quadro*.
 
 1. [Download the vault](https://github.com/chrisgrieser/quadro-example-vault/releases/latest/download/quadro-example-vault.zip).
 2. Open the directory `quadro-example-vault` as an Obsidian vault. ([If you are
@@ -189,7 +191,7 @@ capabilities, to demonstrate the capabilities of _Quadro_.
 #### Experienced Obsidian users
 If you are experienced with Obsidian, you can also directly install the plugin,
 though checking out the example vault is nonetheless helpful to get a grasp on
-the capabilities of _Quadro_.
+the capabilities of *Quadro*.
 
 #### Using a separate vault
 It is recommended to create a separate vault for data analysis and
@@ -198,7 +200,7 @@ install the plugin there, for several reasons:
   different set of plugins and settings from your regular vault.
 - Separate vaults mean that suggestions, such as for properties, are also
   separated.
-- To make Obsidian easier to use for qualitative research, _Quadro_ also does
+- To make Obsidian easier to use for qualitative research, *Quadro* also does
   some (minor) modifications to the core Obsidian behavior, such as all file
   deletions being monitored.
 - For archival purposes, the research data is already separated from your notes.
@@ -216,22 +218,22 @@ them](https://help.obsidian.md/import/markdown) though. Importing from [various
 other note-taking apps like Notion, Evernote, OneNote, Google Keep, Apple Notes,
 Bear, or Roam](https://help.obsidian.md/import) is supported as well.
 
-It is, however, possible to export the results done with _Quadro_, to
+It is, however, possible to export the results done with *Quadro*, to
 collaborate with other researchers. You can either export individual files as
 PDF, or [export aggregated results as CSV](#extraction-capabilities).
 
 ### Modification of Obsidian core behavior
-To work correctly, _Quadro_ modifies some behavior of Obsidian core:
-- If a Code File or Extraction File is deleted, _Quadro_ will remove all
+To work correctly, *Quadro* modifies some behavior of Obsidian core:
+- If a Code File or Extraction File is deleted, *Quadro* will remove all
   references to it to avoid leaving dead links.
-- Since _Quadro_ heavily relies on [block
+- Since *Quadro* heavily relies on [block
   references](https://help.obsidian.md/Linking+notes+and+files/Internal+links.md#Link+to+a+block+in+a+note)
   and [embedded
   blocks](https://help.obsidian.md/Linking+notes+and+files/Embed+files.md#Embed+a+note+in+another+note),
   their styling is adapted.
 
 As mentioned before it is recommended to use a separate vault for data analysis
-with _Quadro_.
+with *Quadro*.
 
 ### Coding
 
@@ -242,7 +244,7 @@ which are both stored as [Markdown files](https://www.markdownguide.org/).
 **Data Files**
 The empirical material as text files. They can be stored anywhere in the vault
 as `.md` files. (A separate sub-folder named `Data` is recommended though.) As
-_Quadro_ assigns codes to whole paragraphs, these data files should
+*Quadro* assigns codes to whole paragraphs, these data files should
 be split up into smaller segments.
 
 When a code is assigned, a link to the corresponding Code File and a unique
@@ -261,7 +263,8 @@ files. (The folder is configurable.)
 
 When a code is assigned, a link back to the original location in the Data File
 is appended to the code file. The link has the format
-`[[{filename-datafile}#^{id-of-paragraph}]]`, with the `id` being a timestamp.[^1]
+`[[{filename-datafile}#^{id-of-paragraph}]]`, with the `id` being a timestamp.
+[^1]
 
 ```md
 Filepath: ./Codes/MyCode.md
@@ -308,9 +311,9 @@ The underlying folder structure for coding looks like this:
 | Assign code                               | Assign a code to the current paragraph, any selected text is highlighted. (overlapping highlights not supported though). <br><br>Select `Create new code` or press `shift ⏎` to create a new code file and assign it to the paragraph. |   ![Icon](./docs/icons/circle-plus.svg)    | `mod+shift+a`  | Quadro                                                                                                           |
 | Rename code                               | All references to the Code File are automatically updated. (You can also rename by right-clicking a file or link and selecting "Rename.")                                                                                              |   ![Icon](./docs/icons/circle-slash.svg)   |                | [Obsidian Built-in][rename]                                                                                      |
 | Delete code from paragraph                | Removes a code from the current paragraph of a Data File or Code File. The reference is also removed from the corresponding other file.                                                                                                |   ![Icon](./docs/icons/circle-minus.svg)   | `mod+shift+d`  | Quadro                                                                                                           |
-| Delete Code File and all references to it | Moves the Code File to the trash, _and_ deletes all references to it.                                                                                                                                                                  |     ![Icon](./docs/icons/circle-x.svg)     |       —        | Quadro                                                                                                           |
+| Delete Code File and all references to it | Moves the Code File to the trash, *and* deletes all references to it.                                                                                                                                                                  |     ![Icon](./docs/icons/circle-x.svg)     |       —        | Quadro                                                                                                           |
 | Bulk-create new codes                     | Create multiple new codes at once (without assigning them to a paragraph).                                                                                                                                                             |  ![Icon](./docs/icons/circle-dashed.svg)   |       —        | Quadro                                                                                                           |
-| Merge codes                               | Merge the _current_ Code File into another Code File. All references from data files are updated to point to the merged file.                                                                                                          |    ![Icon](./docs/icons/circle-dot.svg)    |       —        | Quadro                                                                                                           |
+| Merge codes                               | Merge the *current* Code File into another Code File. All references from data files are updated to point to the merged file.                                                                                                          |    ![Icon](./docs/icons/circle-dot.svg)    |       —        | Quadro                                                                                                           |
 | Code grouping                             | Codes can be arranged in sub-folders via drag-and-drop in the File Explorer.                                                                                                                                                           |                     —                      |       —        | [Obsidian Built-in][move file]                                                                                   |
 | Show code overview                        | Creates an auto-updating overview of all codes in a nested list with code assignment counts.                                                                                                                                           |   ![Icon](./docs/icons/circle-equal.svg)   |       —        | Quadro                                                                                                           |
 | Axial coding                              | Using the Canvas plugins, you can freely arrange entities on a board, and connect them via lines and arrows, suitable for Axial Coding. <br><br>[Further Documentation][core-canvas]                                                   | ![Icon](./docs/icons/layout-dashboard.svg) |       —        | [Obsidian Core Plugin: Canvas][core-canvas]<br><br>[Obsidian Community Plugin: Semantic Canvas][semantic-canvas] |
@@ -329,8 +332,8 @@ The underlying folder structure for coding looks like this:
 - `mod` refers the `ctrl` on Windows and to `cmd` on macOS.
 - When there is a file `Codes/Template.md`, its frontmatter is used as template
   for any newly created code.
-- Splitting Code Files is not yet supported. Doing so with any other
-  method (such as another plugin) is likely going to result in broken references.
+- Splitting Code Files is not yet supported. Doing so with any other method
+  (such as another plugin) is likely going to result in broken references.
 - ⚠️ Renaming or moving Code/Data Files should be done from within Obsidian.
   Using the Windows Explorer or macOS Finder does not trigger the automatic
   updating of references, meaning a loss of information.
@@ -448,7 +451,7 @@ enter as `Path` the extraction type you would like to aggregate, for example
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------------: | :------------: | -------------------------------------------------------- |
 | Extract from paragraph                | Creates an Extraction File from Extraction Template.                                                                                                                                                                                                                                                    |   ![Icon](./docs/icons/square-plus.svg)     | `mod+shift+e`  | Quadro                                                   |
 | Add paragraph to last Extraction File | Adds a reference to the last modified Extraction file to the current paragraph. Useful when information is spread across to paragraphs.                                                                                                                                                                 |   ![Icon](./docs/icons/square-asterisk.svg) | `mod+shift+l`  | Quadro                                                   |
-| Merge extractions                     | Merge the _current_ Extraction File into another Extraction File. All references from data files are updated to point to the merged file.                                                                                                                                                               |     ![Icon](./docs/icons/square-dot.svg)    |       —        | Quadro                                                   |
+| Merge extractions                     | Merge the *current* Extraction File into another Extraction File. All references from data files are updated to point to the merged file.                                                                                                                                                               |     ![Icon](./docs/icons/square-dot.svg)    |       —        | Quadro                                                   |
 | Create new extraction type            | Creates a new Extraction Type (= a new sub-folder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                               |   ![Icon](./docs/icons/box-select.svg)      |       —        | Quadro                                                   |
 | Show Extraction type overview         | Creates an auto-updating overview of an Extraction Type and their values.                                                                                                                                                                                                                               |  ![Icon](./docs/icons/square-equal.svg)     |       —        | Quadro                                                   |
 | Co-occurrent extraction dimensions    | Find extractions where two dimensions have a specific value, by using a query such as `["cause of the issue": fragmentation] ["type of compatibility":backward]` in the Obsidian Search. <br><br>[Further Documentation][search]                                                                        |                   —                         | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                   |
@@ -475,7 +478,7 @@ files in random order.
 | Open random unread Data File     | Open a random file in the vault that has the property `read` set to `false`   |   ![Icon](./docs/icons/shuffle.svg)    | `mod+shift+n`  |
 
 #### Progress tracking & theoretical saturation
-_Quadro_ also offers some basic progress tracking capabilities. Most coding and
+*Quadro* also offers some basic progress tracking capabilities. Most coding and
 extraction actions are counted in a JSON file `progress.json`. Furthermore, the
 command `Mark current Data File as read` also increments the count of read Data
 Files in the `progress.json` file.
@@ -507,12 +510,12 @@ action in the Obsidian settings under `Hotkeys`.
 The plugin behavior can be customized in the `Quadro` tab of the Obsidian
 settings. Aside from folder locations, there are a few settings which change the
 way codes and extractions are presented. Note that these are not technical or
-personal decisions, but **methodological decisions** as they may change your choice
-of codes and extraction values.
+personal decisions, but **methodological decisions** as they may change your
+choice of codes and extraction values.
 
 ## Installation & update
-- **Requirements:** The oldest Obsidian version _Quadro_ supports is **1.5.8**.
-  Recent versions of _Quadro_ require at least Obsidian **version 1.7.4**.
+- **Requirements:** The oldest Obsidian version *Quadro* supports is **1.5.8**.
+  Recent versions of *Quadro* require at least Obsidian **version 1.7.4**.
 - **Installation:** [Install in Obsidian](https://obsidian.md/plugins?id=quadro)
 - **Update:** In Obsidian, go to `Settings` → `Community plugins` → `Check for
   updates` → `Update all`.
@@ -572,14 +575,16 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 - [Mastodon](https://pkm.social/@pseudometa)
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
 
-_For bug reports and features requests, please use the [GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues)._
+_For bug reports and features requests, please use the
+[GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues)
+._
 
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'> <img height='36'
 style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
 border='0' alt='Buy Me a Coffee at ko-fi.com'/></a>
 
-[^1]: Note that the timestamp is assigned the _first time_ the paragraph is
-	assigned a code. The timestamp is not updated when the paragraph you remove
-	the code or assign another code, since the paragraph ID needs to be
-	immutable to ensure reliable references to it. Think of the timestamp as
-	"first time the paragraph a code has been assigned".
+[^1]: Note that the timestamp is assigned the *first time* the paragraph is
+    assigned a code. The timestamp is not updated when the paragraph you remove
+    the code or assign another code, since the paragraph ID needs to be
+    immutable to ensure reliable references to it. Think of the timestamp as
+    "first time the paragraph a code has been assigned".
