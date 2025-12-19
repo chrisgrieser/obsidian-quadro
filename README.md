@@ -13,7 +13,7 @@ The plugin supports coding in the tradition of Grounded Theory, and data
 extraction following the principles of Qualitative Content Analysis (as outlined
 by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 
-## Table of Contents
+## Table of contents
 
 <!-- toc -->
 
@@ -176,6 +176,7 @@ support the creation of those Extraction Files.
   configurations are on a per-vault-basis, so you can have separate
   configurations for your note-taking and for your data analysis.
 
+<!-- rumdl-disable-next-line MD063 -->
 #### Example vault for Quadro
 There is a [pre-configured example
 vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
@@ -237,6 +238,7 @@ with *Quadro*.
 
 ### Coding
 
+<!-- rumdl-disable-next-line MD063 -->
 #### How coding works in Quadro
 There are two basic types of files for the analysis, Data Files and Code Files,
 which are both stored as [Markdown files](https://www.markdownguide.org/).
@@ -343,6 +345,7 @@ Quadro implements extraction following the principles of [Qualitative Content
 Analysis as outlined by Gläser and
 Laudel](https://doi.org/10.17169/fqs-20.3.3386).
 
+<!-- rumdl-disable-next-line MD063 -->
 #### How extraction works in Quadro
 Extraction is implemented similarly to coding, using two basic filetypes, Data
 Files and Extraction Files.
@@ -447,16 +450,16 @@ enter as `Path` the extraction type you would like to aggregate, for example
 
 #### Extraction capabilities
 
-| Action                                | Description                                                                                                                                                                                                                                                                                             |            Sidebar button                   | Default hotkey | Capability provider                                      |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------------: | :------------: | -------------------------------------------------------- |
-| Extract from paragraph                | Creates an Extraction File from Extraction Template.                                                                                                                                                                                                                                                    |   ![Icon](./docs/icons/square-plus.svg)     | `mod+shift+e`  | Quadro                                                   |
-| Add paragraph to last Extraction File | Adds a reference to the last modified Extraction file to the current paragraph. Useful when information is spread across to paragraphs.                                                                                                                                                                 |   ![Icon](./docs/icons/square-asterisk.svg) | `mod+shift+l`  | Quadro                                                   |
-| Merge extractions                     | Merge the *current* Extraction File into another Extraction File. All references from data files are updated to point to the merged file.                                                                                                                                                               |     ![Icon](./docs/icons/square-dot.svg)    |       —        | Quadro                                                   |
-| Create new extraction type            | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                                |   ![Icon](./docs/icons/box-select.svg)      |       —        | Quadro                                                   |
-| Show Extraction type overview         | Creates an auto-updating overview of an Extraction Type and their values.                                                                                                                                                                                                                               |  ![Icon](./docs/icons/square-equal.svg)     |       —        | Quadro                                                   |
-| Co-occurrent extraction dimensions    | Find extractions where two dimensions have a specific value, by using a query such as `["cause of the issue": fragmentation] ["type of compatibility":backward]` in the Obsidian Search. <br><br>[Further Documentation][search]                                                                        |                   —                         | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                   |
-| Rename dimension globally             | Renaming a property field within a file only affects the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties pops up in the sidebar, where you can rename properties via right-click. |                   —                         |       —        | [Obsidian Core Plugin: Properties View][properties view] |
-| Export all extractions as `.csv`      | All extractions for all extraction types are exported as `.csv`.                                                                                                                                                                                                                                        | ![Icon](./docs/icons/square-arrow-up.svg)   |       —        | Quadro                                                   |
+| Action                                | Description                                                                                                                                                                                                                                                                                             |              Sidebar button               | Default hotkey | Capability provider                                      |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------: | :------------: | -------------------------------------------------------- |
+| Extract from paragraph                | Creates an Extraction File from Extraction Template.                                                                                                                                                                                                                                                    |   ![Icon](./docs/icons/square-plus.svg)   | `mod+shift+e`  | Quadro                                                   |
+| Add paragraph to last Extraction File | Adds a reference to the last modified Extraction file to the current paragraph. Useful when information is spread across to paragraphs.                                                                                                                                                                 | ![Icon](./docs/icons/square-asterisk.svg) | `mod+shift+l`  | Quadro                                                   |
+| Merge extractions                     | Merge the *current* Extraction File into another Extraction File. All references from data files are updated to point to the merged file.                                                                                                                                                               |   ![Icon](./docs/icons/square-dot.svg)    |       —        | Quadro                                                   |
+| Create new extraction type            | Creates a new Extraction Type (= a new subfolder in "Extractions," alongside a new Extraction Template).                                                                                                                                                                                                |   ![Icon](./docs/icons/box-select.svg)    |       —        | Quadro                                                   |
+| Show Extraction type overview         | Creates an auto-updating overview of an Extraction Type and their values.                                                                                                                                                                                                                               |  ![Icon](./docs/icons/square-equal.svg)   |       —        | Quadro                                                   |
+| Co-occurrent extraction dimensions    | Find extractions where two dimensions have a specific value, by using a query such as `["cause of the issue": fragmentation] ["type of compatibility":backward]` in the Obsidian Search. <br><br>[Further Documentation][search]                                                                        |                     —                     | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                   |
+| Rename dimension globally             | Renaming a property field within a file only affects the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties pops up in the sidebar, where you can rename properties via right-click. |                     —                     |       —        | [Obsidian Core Plugin: Properties View][properties view] |
+| Export all extractions as `.csv`      | All extractions for all extraction types are exported as `.csv`.                                                                                                                                                                                                                                        | ![Icon](./docs/icons/square-arrow-up.svg) |       —        | Quadro                                                   |
 
 [properties view]: https://help.obsidian.md/Plugins/Properties+view
 
@@ -469,13 +472,13 @@ enter as `Path` the extraction type you would like to aggregate, for example
 
 ### Auxiliary commands
 
-#### Open random Data Files
+#### Open random data files
 Depending on methodological considerations, it can make sense to analyze Data
 files in random order.
 
-| Action                           | Description                                                                   |              Sidebar button            | Default hotkey |
-| -------------------------------- | ----------------------------------------------------------------------------- | :------------------------------------: | :------------: |
-| Open random unread Data File     | Open a random file in the vault that has the property `read` set to `false`   |   ![Icon](./docs/icons/shuffle.svg)    | `mod+shift+n`  |
+| Action                       | Description                                                                 |          Sidebar button           | Default hotkey |
+| ---------------------------- | --------------------------------------------------------------------------- | :-------------------------------: | :------------: |
+| Open random unread Data File | Open a random file in the vault that has the property `read` set to `false` | ![Icon](./docs/icons/shuffle.svg) | `mod+shift+n`  |
 
 #### Progress tracking & theoretical saturation
 *Quadro* also offers some basic progress tracking capabilities. Most coding and
