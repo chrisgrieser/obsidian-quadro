@@ -178,8 +178,7 @@ support the creation of those Extraction Files.
 
 <!-- rumdl-disable-next-line MD063 -->
 #### Example vault for Quadro
-There is a [pre-configured example
-vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
+There is a [pre-configured example vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
 *Quadro*. Apart from some preinstalled plugins for QDA, it includes some mock
 data with exemplary codes and extractions, and showcases of extraction
 capabilities, to demonstrate the capabilities of *Quadro*.
@@ -441,14 +440,10 @@ All in all, the underlying folder structure for extractions looks like this:
 There are various Obsidian plugins that allow you to get a spreadsheet-like
 overview of all extractions.
 
-The recommended one is the [Projects
-Plugin](https://obsidian.md/plugins?id=obsidian-projects), due to its
-flexibility, and it's long-term design philosophy.
+The recommended one is the [Obsidian Bases Plugin](https://help.obsidian.md/bases), due to its
+first-party support and extensive filtering, sorting, and aggregation features.
 
-To aggregate extractions, with the `Projects Plugin`, open the command palette
-with `cmd/ctrl+p`, search for the `Projects: Create New Project` command, and
-enter as `Path` the extraction type you would like to aggregate, for example
-`Extractions/Career Visions`.
+Please refer to the [Obsidian Bases documentation](https://help.obsidian.md/bases) for details.
 
 #### Extraction capabilities
 
