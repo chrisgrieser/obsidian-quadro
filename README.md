@@ -3,7 +3,7 @@
 ![Obsidian store download count](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=Obsidian%20Downloads&query=%24%5B%22quadro%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
 ![Last release](https://img.shields.io/github/v/release/chrisgrieser/obsidian-quadro?label=Latest%20Release&style=plastic)
 
-***Qua**litative **D**ata analysis **R**ealized in **O**bsidian*
+**Qua**litative **D**ata analysis **R**ealized in **O**bsidian
 
 Quadro is an Obsidian plugin for social-scientific qualitative data analysis
 (QDA). It is an open alternative to [MAXQDA](https://www.maxqda.com/) and
@@ -37,7 +37,7 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
         - [Aggregate extractions](#aggregate-extractions)
         - [Extraction capabilities](#extraction-capabilities)
     - [Auxiliary commands](#auxiliary-commands)
-        - [Open random Data Files](#open-random-data-files)
+        - [Open random data files](#open-random-data-files)
         - [Progress tracking & theoretical saturation](#progress-tracking--theoretical-saturation)
 - [Configuration](#configuration)
     - [Buttons](#buttons)
@@ -307,6 +307,7 @@ The underlying folder structure for coding looks like this:
 
 #### Coding capabilities
 <!-- rumdl-disable MD033 for `<br>` -->
+<!-- LTeX: enabled=false -->
 
 | Action                                    | Description                                                                                                                                                                                                                            |               Sidebar button               | Default hotkey | Capability provider                                                                                              |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------: | :------------: | ---------------------------------------------------------------------------------------------------------------- |
@@ -322,6 +323,7 @@ The underlying folder structure for coding looks like this:
 | Investigation of code co-occurrences      | In the Obsidian Search, use a query such as `line:([[MyCodeOne]] [[MyCodeTwo]])`. <br><br>[Further Documentation][search]                                                                                                              |                     —                      | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                                                                           |
 | Visualization of code relationships       | In the Graph View, use a query like `path:Codes OR path:Data`, and assign Data and Codes to different groups. <br><br>[Further Documentation][graph]                                                                                   |     ![Icon](./docs/icons/git-fork.svg)     |    `mod+g`     | [Obsidian Core Plugin: Graph View][graph]                                                                        |
 
+<!-- LTeX: enabled=true -->
 <!-- rumdl-disable MD033 -->
 
 [rename]: https://help.obsidian.md/Files+and+folders/Manage+notes#Rename+a+note
@@ -579,8 +581,7 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
 
 _For bug reports and features requests, please use the
-[GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues)
-._
+[GitHub issue tracker](https://github.com/chrisgrieser/obsidian-quadro/issues)._
 
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'> <img height='36'
 style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
