@@ -178,7 +178,7 @@ support the creation of those Extraction Files.
 
 <!-- rumdl-disable-next-line MD063 -->
 #### Example vault for Quadro
-There is a [pre-configured example vault](https://github.com/chrisgrieser/obsidian-quadro) to be used with
+There is a [pre-configured example vault](https://github.com/chrisgrieser/quadro-example-vault) to be used with
 *Quadro*. Apart from some preinstalled plugins for QDA, it includes some mock
 data with exemplary codes and extractions, and showcases of extraction
 capabilities, to demonstrate the capabilities of *Quadro*.
