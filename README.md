@@ -34,7 +34,6 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 ## Table of contents
 
 <!-- toc -->
-
 - [Introduction](#introduction)
     - [For academics not familiar with Obsidian](#for-academics-not-familiar-with-obsidian)
     - [For Obsidian users not familiar with QDA](#for-obsidian-users-not-familiar-with-qda)
@@ -42,16 +41,16 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 - [Usage](#usage)
     - [Getting started](#getting-started)
         - [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
-        - [Example vault for Quadro](#example-vault-for-quadro)
+        - [Example vault for quadro](#example-vault-for-quadro)
         - [Experienced Obsidian users](#experienced-obsidian-users)
         - [Using a separate vault](#using-a-separate-vault)
         - [Migrating from an existing project with other QDA software](#migrating-from-an-existing-project-with-other-qda-software)
     - [Modification of Obsidian core behavior](#modification-of-obsidian-core-behavior)
     - [Coding](#coding)
-        - [How coding works in Quadro](#how-coding-works-in-quadro)
+        - [How coding works in quadro](#how-coding-works-in-quadro)
         - [Coding capabilities](#coding-capabilities)
     - [Extraction](#extraction)
-        - [How extraction works in Quadro](#how-extraction-works-in-quadro)
+        - [How extraction works in quadro](#how-extraction-works-in-quadro)
         - [Aggregate extractions](#aggregate-extractions)
         - [Extraction capabilities](#extraction-capabilities)
     - [Auxiliary commands](#auxiliary-commands)
@@ -69,7 +68,6 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
     - [Acknowledgments](#acknowledgments)
     - [Recommended citation of this project](#recommended-citation-of-this-project)
     - [About the developer](#about-the-developer)
-
 <!-- tocstop -->
 
 ## Introduction
@@ -195,7 +193,7 @@ support the creation of those Extraction Files.
   configurations for your note-taking and for your data analysis.
 
 <!-- rumdl-disable-next-line MD063 -->
-#### Example vault for Quadro
+#### Example vault for quadro
 There is a [pre-configured example vault](https://github.com/chrisgrieser/quadro-example-vault) to be used with
 *Quadro*. Apart from some preinstalled plugins for QDA, it includes some mock
 data with exemplary codes and extractions, and showcases of extraction
@@ -256,7 +254,7 @@ with *Quadro*.
 ### Coding
 
 <!-- rumdl-disable-next-line MD063 -->
-#### How coding works in Quadro
+#### How coding works in quadro
 There are two basic types of files for the analysis, Data Files and Code Files,
 which are both stored as [Markdown files](https://www.markdownguide.org/).
 
@@ -365,7 +363,7 @@ Analysis as outlined by Gläser and
 Laudel](https://doi.org/10.17169/fqs-20.3.3386).
 
 <!-- rumdl-disable-next-line MD063 -->
-#### How extraction works in Quadro
+#### How extraction works in quadro
 Extraction is implemented similarly to coding, using two basic filetypes, Data
 Files and Extraction Files.
 
@@ -406,11 +404,13 @@ The underlying plaintext view of the file looks like this:
 Filepath: ./Extractions/Career Visions/Career Visions 001.md
 
 ---
+
 occupation: "painter"
 career stage: "novice"
 year of experience: 4
 extraction-date: 2024-03-02T12:40:12
-extraction-source: "[[Field Notes 3#^id-240302-124012]]"
+
+Extraction-source: "[[Field notes 3#^id-240302-124012]]"
 ---
 
 **Paragraph extracted from:** ![[Field Notes 3#^id-240302-124012]]
@@ -428,9 +428,11 @@ folder, but has the filename `Template.md`.
 Filepath: ./Extractions/Career Visions/Template.md
 
 ---
-occupation: 
-career stage: 
-year of experience: 
+
+occupation:
+career stage:
+
+Year of experience
 ---
 ```
 
