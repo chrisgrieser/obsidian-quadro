@@ -58,7 +58,7 @@ export function moveToLastLineOfParagraph(editor: Editor): number {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export interface ParagraphScope {
+interface ParagraphScope {
 	lines: string[];
 	start: number;
 	end: number;

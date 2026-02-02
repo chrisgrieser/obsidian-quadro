@@ -14,7 +14,7 @@ function orderPositions(
 	return { from: b, to: a };
 }
 
-export function selectionAlreadyHighlighted(editor: Editor): boolean {
+function selectionAlreadyHighlighted(editor: Editor): boolean {
 	const selections = editor.listSelections();
 	const first = selections[0];
 	if (!first) return false;
