@@ -22,9 +22,6 @@ import {
 } from "src/shared/validation";
 
 class CodeAssignmentModal extends ExtendedInputModal {
-	private editor: Editor;
-	private dataFile: TFile;
-	private plugin: Quadro;
 	private allCodeFiles: TFile[];
 	private assignedPaths: Set<string>;
 	private selectedCodes = new Map<string, TFile>();
@@ -34,11 +31,8 @@ class CodeAssignmentModal extends ExtendedInputModal {
 	private searchInput!: HTMLInputElement;
 	private assignButton!: HTMLButtonElement;
 
-	constructor(plugin: Quadro, editor: Editor, dataFile: TFile, alreadyAssigned: TFile[]) {
+	constructor(plugin: Quadro, _editor: Editor, _dataFile: TFile, alreadyAssigned: TFile[]) {
 		super(plugin);
-		this.plugin = plugin;
-		this.editor = editor;
-		this.dataFile = dataFile;
 		this.assignedPaths = new Set(alreadyAssigned.map((code) => code.path));
 		this.allCodeFiles = getAllCodeFiles(plugin).filter(
 			(codeFile) => !this.assignedPaths.has(codeFile.path),
@@ -73,11 +67,16 @@ class CodeAssignmentModal extends ExtendedInputModal {
 			}
 		});
 
-		const actionRow = body.createDiv({ cls: "quadro-modal__actions quadro-code-picker__actions" });
+		const actionRow = body.createDiv({
+			cls: "quadro-modal__actions quadro-code-picker__actions",
+		});
 		const newCodeBtn = actionRow.createEl("button", { text: "Create new code" });
 		newCodeBtn.addEventListener("click", () => {
 			createOneCodeFile(this.plugin, (codeFile) => {
-				this.allCodeFiles = [codeFile, ...this.allCodeFiles.filter((c) => c.path !== codeFile.path)];
+				this.allCodeFiles = [
+					codeFile,
+					...this.allCodeFiles.filter((c) => c.path !== codeFile.path),
+				];
 				this.toggleSelection(codeFile, true);
 			});
 		});
@@ -113,7 +112,10 @@ class CodeAssignmentModal extends ExtendedInputModal {
 		this.listEl.empty();
 		const filtered = this.getFilteredCodes();
 		if (filtered.length === 0) {
-			this.listEl.createDiv({ cls: "quadro-code-picker__empty", text: "No codes match your search." });
+			this.listEl.createDiv({
+				cls: "quadro-code-picker__empty",
+				text: "No codes match your search.",
+			});
 			this.listEl.scrollTop = previousScroll;
 			return;
 		}
@@ -124,7 +126,9 @@ class CodeAssignmentModal extends ExtendedInputModal {
 				attr: { type: "checkbox" },
 			});
 			checkbox.checked = this.selectedCodes.has(codeFile.path);
-			checkbox.addEventListener("change", () => this.toggleSelection(codeFile, checkbox.checked));
+			checkbox.addEventListener("change", () =>
+				this.toggleSelection(codeFile, checkbox.checked),
+			);
 
 			item.createSpan({ text: codeFileDisplay(this.plugin, codeFile) });
 
@@ -183,7 +187,11 @@ async function assignCodeToParagraph(
 	incrementProgress(plugin, "Code File", "assign");
 }
 
-async function ensureTrailingNewlineAndAppend(plugin: Quadro, file: TFile, text: string): Promise<void> {
+async function ensureTrailingNewlineAndAppend(
+	plugin: Quadro,
+	file: TFile,
+	text: string,
+): Promise<void> {
 	const { app } = plugin;
 	const currentContent = await app.vault.read(file);
 

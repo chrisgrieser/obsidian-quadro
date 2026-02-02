@@ -1,6 +1,10 @@
-import { MarkdownRenderer, Modal, Notice, TFile } from "obsidian";
+import { MarkdownRenderer, Modal, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
-import { getAllCodeFiles, getCodesFilesInParagraphOfDatafile, getFullCode } from "src/coding/coding-utils";
+import {
+	getAllCodeFiles,
+	getCodesFilesInParagraphOfDatafile,
+	getFullCode,
+} from "src/coding/coding-utils";
 import { createOneCodeFile } from "src/coding/create-new-code-file";
 import type Quadro from "src/main";
 import { ExtendedFuzzySuggester } from "src/shared/modals";
@@ -26,8 +30,12 @@ class TargetCodeSuggester extends ExtendedFuzzySuggester<CodeFileItem> {
 			if (event.isComposing) return;
 			event.preventDefault();
 			this.close();
-			this.onChooseItem("new-code-file");
+			this.onChooseItem("new-code-file", event);
 		});
+	}
+
+	override onChooseItem(_item: CodeFileItem, _evt: MouseEvent | KeyboardEvent): void {
+		// Default no-op; pickTargetCode() assigns the real handler.
 	}
 
 	getItems(): CodeFileItem[] {
@@ -56,7 +64,11 @@ class EmbedMultiSelectModal extends Modal {
 	private selectedIndices = new Set<number>();
 	private resolved = false;
 
-	constructor(plugin: Quadro, embeds: EmbedReference[], onSubmit: (selected: EmbedReference[]) => void) {
+	constructor(
+		plugin: Quadro,
+		embeds: EmbedReference[],
+		onSubmit: (selected: EmbedReference[]) => void,
+	) {
 		super(plugin.app);
 		this.plugin = plugin;
 		this.embeds = embeds;
@@ -127,8 +139,14 @@ function escapeRegExp(text: string): string {
 function sanitizeParagraph(text: string, blockId: string): string {
 	const blockRegex = new RegExp(`\\s*${escapeRegExp(blockId)}\\b`, "g");
 	let sanitized = text.replace(blockRegex, "");
-	sanitized = sanitized.replace(/\[\[(.+?)(?:\|(.+?))?\]\]/g, (_, target: string, alias: string | undefined) => alias ?? target);
-	sanitized = sanitized.replace(/!\[\[(.+?)(?:\|(.+?))?\]\]/g, (_, target: string, alias: string | undefined) => alias ?? target);
+	sanitized = sanitized.replace(
+		/\[\[(.+?)(?:\|(.+?))?\]\]/g,
+		(_, target: string, alias: string | undefined) => alias ?? target,
+	);
+	sanitized = sanitized.replace(
+		/!\[\[(.+?)(?:\|(.+?))?\]\]/g,
+		(_, target: string, alias: string | undefined) => alias ?? target,
+	);
 	sanitized = sanitized.replace(/\s{2,}/g, " ");
 	sanitized = sanitized.replace(/\n\s+/g, "\n");
 	return sanitized.trim();
@@ -198,7 +216,10 @@ async function collectEmbeds(
 			const blockId = linkPathPart.slice(hashIndex + 1);
 			if (!blockId.startsWith("^")) continue;
 
-			const dataFile = plugin.app.metadataCache.getFirstLinkpathDest(linkPath, sourceCodeFile.path);
+			const dataFile = plugin.app.metadataCache.getFirstLinkpathDest(
+				linkPath,
+				sourceCodeFile.path,
+			);
 			if (!dataFile) continue;
 			if (typeOfFile(plugin, dataFile) !== "Data File") continue;
 
@@ -291,7 +312,7 @@ async function removeEmbedsFromSource(
 		for (const [index, embedTexts] of embedsPerLine.entries()) {
 			if (index < 0 || index >= lines.length) continue;
 
-			let currentLine = lines[index];
+			const currentLine = lines[index];
 			if (!currentLine) continue;
 
 			let updatedLine = currentLine;
@@ -309,7 +330,10 @@ async function removeEmbedsFromSource(
 
 		if (!changed) return content;
 
-		const cleaned = lines.join("\n").replace(/\n{3,}/g, "\n\n").replace(/^\n+/, "");
+		const cleaned = lines
+			.join("\n")
+			.replace(/\n{3,}/g, "\n\n")
+			.replace(/^\n+/, "");
 		return cleaned;
 	});
 
@@ -344,7 +368,9 @@ async function appendEmbedsToTarget(
 	if (embedsToAppend.length === 0) return 0;
 
 	const needsLeadingNewline =
-		currentContent.length > 0 && !currentContent.endsWith("\n") && !currentContent.endsWith("\r\n");
+		currentContent.length > 0 &&
+		!currentContent.endsWith("\n") &&
+		!currentContent.endsWith("\r\n");
 	const textToAppend = `${needsLeadingNewline ? "\n" : ""}${embedsToAppend.join("\n")}\n`;
 	await plugin.app.vault.append(targetCodeFile, textToAppend);
 	return embedsToAppend.length;
@@ -458,14 +484,16 @@ export async function splitCodeCommand(plugin: Quadro): Promise<void> {
 		return;
 	}
 
-	for (let i = 0; i < selectedEmbeds.length; i++) {
+	for (const _ of selectedEmbeds) {
 		incrementProgress(plugin, "Code File", "unassign");
 		incrementProgress(plugin, "Code File", "assign");
 	}
 
 	const message = [
 		`Se dividieron ${selectedEmbeds.length} referencia(s) de "${getFullCode(plugin, sourceCodeFile)}" a "${getFullCode(plugin, targetCodeFile)}".`,
-		removed ? "• Embeds eliminados del código original." : "• Los embeds ya se habían eliminado del código original.",
+		removed
+			? "• Embeds eliminados del código original."
+			: "• Los embeds ya se habían eliminado del código original.",
 		appended > 0
 			? `• Embeds añadidos al código destino: ${appended}`
 			: "• Los embeds ya existían en el código destino.",
@@ -476,5 +504,3 @@ export async function splitCodeCommand(plugin: Quadro): Promise<void> {
 
 	new Notice(message, 6000);
 }
-
-

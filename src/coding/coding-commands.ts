@@ -4,8 +4,8 @@ import { codeOverviewCommand } from "src/coding/code-overview";
 import { bulkCreateCodeFilesCommand } from "src/coding/create-new-code-file";
 import { deleteCodeEverywhereCommand } from "src/coding/delete-code-everywhere";
 import { mergeCodeFilesCommand } from "src/coding/merge-code-files";
-import { splitCodeCommand } from "src/coding/split-code";
 import { renameCodeCommand } from "src/coding/rename-code";
+import { splitCodeCommand } from "src/coding/split-code";
 import { unassignCodeCommand } from "src/coding/unassign-code";
 import type Quadro from "src/main";
 

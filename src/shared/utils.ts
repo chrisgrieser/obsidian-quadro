@@ -64,7 +64,10 @@ export interface ParagraphScope {
 	end: number;
 }
 
-export function getParagraphRangeFromLines(lines: string[], targetIndex: number): {
+export function getParagraphRangeFromLines(
+	lines: string[],
+	targetIndex: number,
+): {
 	start: number;
 	end: number;
 } {

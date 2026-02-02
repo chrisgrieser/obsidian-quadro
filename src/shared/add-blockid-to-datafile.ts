@@ -4,7 +4,10 @@ import { getFullParagraphScope, moveToLastLineOfParagraph } from "src/shared/uti
 // DOCS https://help.obsidian.md/Linking+notes+and+files/Internal+links#Link+to+a+block+in+a+note
 export const BLOCKID_REGEX = /\^[\w-]+$/;
 
-function orderPositions(a: EditorPosition, b: EditorPosition): { from: EditorPosition; to: EditorPosition } {
+function orderPositions(
+	a: EditorPosition,
+	b: EditorPosition,
+): { from: EditorPosition; to: EditorPosition } {
 	if (a.line < b.line) return { from: a, to: b };
 	if (a.line > b.line) return { from: b, to: a };
 	if (a.ch <= b.ch) return { from: a, to: b };
@@ -13,8 +16,9 @@ function orderPositions(a: EditorPosition, b: EditorPosition): { from: EditorPos
 
 export function selectionAlreadyHighlighted(editor: Editor): boolean {
 	const selections = editor.listSelections();
-	if (selections.length === 0) return false;
-	const { anchor, head } = selections[0]!;
+	const first = selections[0];
+	if (!first) return false;
+	const { anchor, head } = first;
 	if (anchor.line !== head.line) return false;
 
 	const { from, to } = orderPositions(anchor, head);
@@ -24,7 +28,10 @@ export function selectionAlreadyHighlighted(editor: Editor): boolean {
 	const lineText = editor.getLine(from.line);
 	const beforeStart = Math.max(0, from.ch - 2);
 	const afterEnd = Math.min(lineText.length, to.ch + 2);
-	const result = editor.getRange({ line: from.line, ch: beforeStart }, { line: to.line, ch: afterEnd });
+	const result = editor.getRange(
+		{ line: from.line, ch: beforeStart },
+		{ line: to.line, ch: afterEnd },
+	);
 
 	return result.includes("==");
 }
@@ -51,20 +58,19 @@ export function prepareDatafileLineUpdate(editor: Editor): {
 				if (highlightStartMarker >= 0 && highlightEndMarker > highlightStartMarker) {
 					const linePlain = lineText.replace(/==/g, "");
 					const computePlainOffset = (ch: number): number =>
-						editor.getRange({ line: lineIndex, ch: 0 }, { line: lineIndex, ch }).replace(/==/g, "")
-							.length;
+						editor
+							.getRange({ line: lineIndex, ch: 0 }, { line: lineIndex, ch })
+							.replace(/==/g, "").length;
 
 					const selectionStartPlain = computePlainOffset(from.ch);
 					const selectionEndPlain = computePlainOffset(to.ch);
 
 					const highlightStartPlain = lineText
 						.slice(0, highlightStartMarker)
-						.replace(/==/g, "")
-						.length;
+						.replace(/==/g, "").length;
 					const highlightLengthPlain = lineText
 						.slice(highlightStartMarker + 2, highlightEndMarker)
-						.replace(/==/g, "")
-						.length;
+						.replace(/==/g, "").length;
 					const highlightEndPlain = highlightStartPlain + highlightLengthPlain;
 
 					if (
@@ -99,7 +105,12 @@ export function prepareDatafileLineUpdate(editor: Editor): {
 	const paragraphScope = getFullParagraphScope(editor);
 	const paragraphText = paragraphScope.lines.join("\n");
 
-	if (selection && !highlightHandled && !selectionAlreadyHighlighted(editor) && !paragraphText.includes("==")) {
+	if (
+		selection &&
+		!highlightHandled &&
+		!selectionAlreadyHighlighted(editor) &&
+		!paragraphText.includes("==")
+	) {
 		// spaces need to be moved outside, otherwise they make the highlights invalid
 		const highlightAdded = selection.replace(/^( ?)(.+?)( ?)$/g, "$1==$2==$3");
 		editor.replaceSelection(highlightAdded);

@@ -1,4 +1,4 @@
-import { Modal, type Editor, Notice, type TFile } from "obsidian";
+import { type Editor, Modal, Notice, type TFile } from "obsidian";
 import { incrementProgress } from "src/auxiliary/progress-tracker";
 import {
 	type Code,
@@ -266,7 +266,11 @@ export async function unassignCodeCommand(plugin: Quadro): Promise<void> {
 	}
 }
 
-async function unassignCodeWhileInCodeFile(plugin: Quadro, editor: Editor, codeFile: TFile): Promise<void> {
+async function unassignCodeWhileInCodeFile(
+	plugin: Quadro,
+	editor: Editor,
+	codeFile: TFile,
+): Promise<void> {
 	const { app } = plugin;
 	const cursor = editor.getCursor();
 	const lineNumber = cursor.line;
@@ -279,9 +283,7 @@ async function unassignCodeWhileInCodeFile(plugin: Quadro, editor: Editor, codeF
 	}
 
 	const [, target, suffix] = match;
-	const blockId =
-		suffix?.match(/\^[\w-]+/)?.[0] ??
-		lineText.match(BLOCKID_REGEX)?.[0];
+	const blockId = suffix?.match(/\^[\w-]+/)?.[0] ?? lineText.match(BLOCKID_REGEX)?.[0];
 	if (!blockId) {
 		new Notice("No paragraph ID detected in the selected reference.", 3500);
 		return;
@@ -314,7 +316,11 @@ async function unassignCodeWhileInCodeFile(plugin: Quadro, editor: Editor, codeF
 	const updatedParagraphLines = lines.slice(paragraphRange.start, paragraphRange.end + 1);
 	updatedParagraphLines[lineIdx - paragraphRange.start] = lines[lineIdx];
 	const updatedParagraphText = updatedParagraphLines.join("\n");
-	const remainingCodes = getCodesFilesInParagraphOfDatafile(plugin, dataFile, updatedParagraphText);
+	const remainingCodes = getCodesFilesInParagraphOfDatafile(
+		plugin,
+		dataFile,
+		updatedParagraphText,
+	);
 
 	const noCodesRemain = remainingCodes.length === 0;
 	if (noCodesRemain) {
@@ -326,7 +332,8 @@ async function unassignCodeWhileInCodeFile(plugin: Quadro, editor: Editor, codeF
 	const paragraphHasHighlight = updatedParagraphLines.some((line) => line.includes("=="));
 	if (paragraphHasHighlight && noCodesRemain) {
 		shouldRemoveHighlight = await promptToRemoveHighlight(plugin, dataFile);
-		if (shouldRemoveHighlight) removeHighlightFromLines(lines, paragraphRange.start, paragraphRange.end);
+		if (shouldRemoveHighlight)
+			removeHighlightFromLines(lines, paragraphRange.start, paragraphRange.end);
 	}
 
 	const newContent = lines.join("\n");

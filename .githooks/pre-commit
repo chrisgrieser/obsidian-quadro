@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 set -o errexit # block commit if there are any issues reported
 cd "$(git rev-parse --show-toplevel)"
 #───────────────────────────────────────────────────────────────────────────────
