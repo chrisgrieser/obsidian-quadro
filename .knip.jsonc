@@ -2,9 +2,6 @@
 {
 	"entry": ["src/main.ts"],
 	"project": ["**/*.ts"],
-
-	// used only in pre-commit hook / task,
-	"ignoreDependencies": ["markdownlint-cli", "eslint-plugin-obsidianmd"],
-
+	"ignoreDependencies": ["eslint-plugin-obsidianmd"], // used only in pre-commit hook / task,
 	"$schema": "https://unpkg.com/knip@5/schema-jsonc.json"
 }
