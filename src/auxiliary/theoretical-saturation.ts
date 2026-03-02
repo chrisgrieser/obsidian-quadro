@@ -129,7 +129,7 @@ export async function saturationForExtraction(plugin: Quadro): Promise<void> {
 	const buffer = Buffer.from(arrayBuffer).buffer;
 
 	// write png
-	const filename = "theoretical saturation for extraction.png";
+	const filename = "theoretical-saturation-for-extraction.png";
 	const outPath = normalizePath(plugin.settings.analysis.folder + "/" + filename);
 	await app.vault.adapter.writeBinary(outPath, buffer);
 	const pngTfile = app.vault.getFileByPath(outPath);
