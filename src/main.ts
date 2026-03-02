@@ -5,7 +5,7 @@ import { processCodeOverviewCodeblock } from "./coding/code-overview.ts";
 import { CODING_COMMANDS } from "./coding/coding-commands.ts";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands.ts";
 import { processExtractiontypeOverviewCodeblock } from "./extraction/extractiontypes-overview.ts";
-import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurpression } from "./frontmatter-modifications/suppress-suggestions.ts";
+import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurppression } from "./frontmatter-modifications/suppress-suggestions.ts";
 import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys.ts";
 import { CODEBLOCK_LABELS } from "./settings/constants.ts";
 import { deepExtend } from "./settings/deep-extend.ts";
@@ -30,11 +30,12 @@ export default class Quadro extends Plugin {
 			const ribbon = this.addRibbonIcon(cmd.icon, `Quadro: ${cmd.name}`, () => cmd.func(this));
 			ribbon.addClasses([this.cssclass, "quadro-ribbon-button"]);
 
+			const cb = cmd.editorNeeded ? "editorCallback" : "callback";
 			const cmdObj: Command = {
 				id: cmd.id,
 				name: cmd.name,
 				icon: cmd.icon, // only used on mobile toolbar
-				editorCallback: async (): Promise<void> => cmd.func(this),
+				[cb]: async (): Promise<void> => cmd.func(this),
 			};
 
 			// INFO Adding a few hotkey by default, since this plugin is going to be
@@ -63,7 +64,7 @@ export default class Quadro extends Plugin {
 		// SETTINGS
 		await this.loadSettings();
 		this.addSettingTab(new QuadroSettingsMenu(this));
-		setCssForSuggestionSurpression(this);
+		setCssForSuggestionSurppression(this);
 		setCssForWidthOfKeys(this);
 		ensureCorrectPropertyTypes(this.app);
 

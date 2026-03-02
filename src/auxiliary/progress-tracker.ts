@@ -9,11 +9,11 @@ type ProgressForDay = {
 	"Data File"?: Record<string, number>;
 };
 
-type TotalProgress = Record<string, ProgressForDay>;
+export type TotalProgress = Record<string, ProgressForDay>;
 
 //──────────────────────────────────────────────────────────────────────────────
 
-function getProgressFilepath(plugin: Quadro): string {
+export function getProgressFilepath(plugin: Quadro): string {
 	const storageLocation = plugin.settings.analysis.folder;
 	const filename = "progress.json";
 	return normalizePath(storageLocation + "/" + filename);

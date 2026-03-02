@@ -44,6 +44,7 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 		name: "Export all extractions as .csv",
 		func: exportExtractionsAsCsv,
 		icon: "square-arrow-up",
+		editorNeeded: false,
 	},
 	{
 		id: "extractiontypes-overview",

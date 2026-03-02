@@ -24,7 +24,7 @@ const result = await esbuild
 		minify: production || analyze,
 		drop: ["debugger"],
 		treeShaking: true,
-		logLevel: analyze ? "silent" : "info",
+		logLevel: analyze ? "silent" : "info", // set to debug for further info
 		metafile: analyze,
 	})
 	.catch(() => process.exit(1));

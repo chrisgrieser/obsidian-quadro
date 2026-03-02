@@ -14,6 +14,7 @@ export interface CommandData {
 	func: (plugin: Quadro) => void;
 	hotkeyLetter?: string;
 	icon: IconName;
+	editorNeeded?: boolean; // defaults to true
 }
 
 // INFO Adding a few hotkey by default, since this plugin is going to be
