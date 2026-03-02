@@ -23,16 +23,16 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 - [Usage](#usage)
     - [Getting started](#getting-started)
         - [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
-        - [Example vault for quadro](#example-vault-for-quadro)
+        - [Example vault for Quadro](#example-vault-for-quadro)
         - [Experienced Obsidian users](#experienced-obsidian-users)
         - [Using a separate vault](#using-a-separate-vault)
         - [Migrating from an existing project with other QDA software](#migrating-from-an-existing-project-with-other-qda-software)
     - [Modification of Obsidian core behavior](#modification-of-obsidian-core-behavior)
     - [Coding](#coding)
-        - [How coding works in quadro](#how-coding-works-in-quadro)
+        - [How coding works in Quadro](#how-coding-works-in-quadro)
         - [Coding capabilities](#coding-capabilities)
     - [Extraction](#extraction)
-        - [How extraction works in quadro](#how-extraction-works-in-quadro)
+        - [How extraction works in Quadro](#how-extraction-works-in-quadro)
         - [Aggregate extractions](#aggregate-extractions)
         - [Extraction capabilities](#extraction-capabilities)
     - [Auxiliary commands](#auxiliary-commands)
@@ -104,8 +104,8 @@ Obsidian is [free to use for academic purposes](https://obsidian.md/license),
 and *Quadro* is also free to use.
 - Especially for students writing their theses, this saves a lot of unnecessary
   hassle with licenses.
-- Unlicensed use of research software can lead to [journal articles being
-  retracted](https://retractionwatch.com/2024/11/08/complaint-from-engineering-software-company-prompts-two-retractions/).
+- Unlicensed use of research software can lead to
+  [journal articles being retracted](https://retractionwatch.com/2024/11/08/complaint-from-engineering-software-company-prompts-two-retractions/).
   Using free or open source tools like *Quadro* avoids this issue entirely.
 
 If there is a more tech-savvy researcher in the research team, the advantages of
@@ -175,16 +175,16 @@ support the creation of those Extraction Files.
   configurations for your note-taking and for your data analysis.
 
 <!-- rumdl-disable-next-line MD063 -->
-#### Example vault for quadro
-There is a [pre-configured example vault](https://github.com/chrisgrieser/quadro-example-vault) to be used with
-*Quadro*. Apart from some preinstalled plugins for QDA, it includes some mock
-data with exemplary codes and extractions, and showcases of extraction
-capabilities, to demonstrate the capabilities of *Quadro*.
+#### Example vault for Quadro
+There is a
+[pre-configured example vault](https://github.com/chrisgrieser/quadro-example-vault)
+to be used with *Quadro*. Apart from some preinstalled plugins for QDA, it
+includes some mock data with exemplary codes and extractions, and showcases of
+extraction capabilities, to demonstrate the capabilities of *Quadro*.
 
 1. [Download the vault](https://github.com/chrisgrieser/quadro-example-vault/releases/latest/download/quadro-example-vault.zip).
-2. Open the directory `quadro-example-vault` as an Obsidian vault. ([If you are
-   new to Obsidian, see the Obsidian Documentation on how to do
-   that.](https://help.obsidian.md/Getting+started/Create+a+vault#Open+existing+folder))
+2. Open the directory `quadro-example-vault` as an Obsidian vault.
+   ([If you are new to Obsidian, see the Obsidian Documentation on how to do that.](https://help.obsidian.md/Getting+started/Create+a+vault#Open+existing+folder))
 
 #### Experienced Obsidian users
 If you are experienced with Obsidian, you can also directly install the plugin,
@@ -224,10 +224,10 @@ PDF, or [export aggregated results as CSV](#extraction-capabilities).
 To work correctly, *Quadro* modifies some behavior of Obsidian core:
 - If a Code File or Extraction File is deleted, *Quadro* will remove all
   references to it to avoid leaving dead links.
-- Since *Quadro* heavily relies on [block
-  references](https://help.obsidian.md/Linking+notes+and+files/Internal+links.md#Link+to+a+block+in+a+note)
-  and [embedded
-  blocks](https://help.obsidian.md/Linking+notes+and+files/Embed+files.md#Embed+a+note+in+another+note),
+- Since *Quadro* heavily relies on
+  [block references](https://help.obsidian.md/Linking+notes+and+files/Internal+links.md#Link+to+a+block+in+a+note)
+  and
+  [embedded blocks](https://help.obsidian.md/Linking+notes+and+files/Embed+files.md#Embed+a+note+in+another+note),
   their styling is adapted.
 
 As mentioned before it is recommended to use a separate vault for data analysis
@@ -236,7 +236,7 @@ with *Quadro*.
 ### Coding
 
 <!-- rumdl-disable-next-line MD063 -->
-#### How coding works in quadro
+#### How coding works in Quadro
 There are two basic types of files for the analysis, Data Files and Code Files,
 which are both stored as [Markdown files](https://www.markdownguide.org/).
 
@@ -271,10 +271,9 @@ Filepath: ./Codes/MyCode.md
 ![[Interview 1#^id-240302-124012]]
 ```
 
-As the link is a so-called [embedded
-link](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note),
-Obsidian renders the respective paragraph of the Data File inside the Code
-File:
+As the link is a so-called
+[embedded link](https://help.obsidian.md/Linking+notes+and+files/Embed+files#Embed+a+note+in+another+note),
+Obsidian renders the respective paragraph of the Data File inside the Code File:
 
 ![Embedded block link in reading & source mode](./docs/embedded-blocklink_reading-and-source-mode.png)
 
@@ -345,7 +344,7 @@ Analysis as outlined by Gläser and
 Laudel](https://doi.org/10.17169/fqs-20.3.3386).
 
 <!-- rumdl-disable-next-line MD063 -->
-#### How extraction works in quadro
+#### How extraction works in Quadro
 Extraction is implemented similarly to coding, using two basic filetypes, Data
 Files and Extraction Files.
 
@@ -363,9 +362,11 @@ Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
 consectetur cupidatat. [[Career Visions/1]] ^id-240302-124012
 ```
 
-**Extraction Files** <!-- rumdl-disable-line MD036 -->
-Extraction is implemented via Markdown metadata ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)),
-which is supported via [Obsidian Properties](https://help.obsidian.md/Editing+and+formatting/Properties).
+**Extraction Files** <!-- rumdl-disable-line MD036 --> Extraction is implemented
+via Markdown metadata
+([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)), which
+is supported via
+[Obsidian Properties](https://help.obsidian.md/Editing+and+formatting/Properties).
 
 When making an extraction, you are presented with a choice of your extraction
 types. Upon selection, a new file is created in the folder that groups
@@ -442,12 +443,16 @@ All in all, the underlying folder structure for extractions looks like this:
 There are various Obsidian plugins that allow you to get a spreadsheet-like
 overview of all extractions.
 
-The recommended one is the [Obsidian Bases Plugin](https://help.obsidian.md/bases), due to its
-first-party support and extensive filtering, sorting, and aggregation features.
+The recommended one is the
+[Obsidian Bases Plugin](https://help.obsidian.md/bases), due to its first-party
+support and extensive filtering, sorting, and aggregation features.
 
-Please refer to the [Obsidian Bases documentation](https://help.obsidian.md/bases) for details.
+Please refer to the
+[Obsidian Bases documentation](https://help.obsidian.md/bases) for details.
 
 #### Extraction capabilities
+
+<!-- LTeX: enabled=false -->
 
 | Action                                | Description                                                                                                                                                                                                                                                                                             |              Sidebar button               | Default hotkey | Capability provider                                      |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------: | :------------: | -------------------------------------------------------- |
@@ -459,6 +464,8 @@ Please refer to the [Obsidian Bases documentation](https://help.obsidian.md/base
 | Co-occurrent extraction dimensions    | Find extractions where two dimensions have a specific value, by using a query such as `["cause of the issue": fragmentation] ["type of compatibility":backward]` in the Obsidian Search. <br><br>[Further Documentation][search]                                                                        |                     —                     | `mod+shift+f`  | [Obsidian Core Plugin: Search][search]                   |
 | Rename dimension globally             | Renaming a property field within a file only affects the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties pops up in the sidebar, where you can rename properties via right-click. |                     —                     |       —        | [Obsidian Core Plugin: Properties View][properties view] |
 | Export all extractions as `.csv`      | All extractions for all extraction types are exported as `.csv`.                                                                                                                                                                                                                                        | ![Icon](./docs/icons/square-arrow-up.svg) |       —        | Quadro                                                   |
+
+<!-- LTeX: enabled=true -->
 
 [properties view]: https://help.obsidian.md/Plugins/Properties+view
 
@@ -554,9 +561,9 @@ plugin.
 ## Credits
 
 ### Acknowledgments
-Thanks to [Ryan Murphy](https://fulcra.design/About/) who gave me the idea for this
-project with a [blog post of
-his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
+Thanks to [Ryan Murphy](https://fulcra.design/About/) who gave me the idea for
+this project with a
+[blog post of his](https://fulcra.design/Posts/An-Integrated-Qualitative-Analysis-Environment-with-Obsidian/).
 
 ### Recommended citation of this project
 Please cite this software project as (APA):
