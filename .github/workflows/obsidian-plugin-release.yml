@@ -19,7 +19,7 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v6
-        with: { node-version: "25.x" }
+        with: { node-version: current }
 
       - name: Build plugin
         run: |
