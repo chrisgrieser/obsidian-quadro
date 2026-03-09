@@ -46,13 +46,15 @@ export async function saturationForExtraction(plugin: Quadro): Promise<void> {
 		const newE = extractions.new ?? 0;
 		const addedE = extractions["added paragraph"] ?? 0;
 		const mergeE = extractions.merge ?? 0;
-		if (newE + addedE + mergeE === 0) continue; // avoid division by zero ( no extractions anyway )
-		const ratio = newE / (addedE + newE + mergeE);
+		const deleteE = extractions.delete ?? 0;
+		if (newE + addedE + mergeE + deleteE === 0) continue; // avoid division by zero ( no extractions anyway )
+		const ratio = newE / (newE + addedE + mergeE + deleteE);
 
 		extractionActionByDay.push({
 			newExtractions: newE,
 			addedToExtractions: addedE,
 			mergeExtractions: mergeE,
+			deletedExtractions: deleteE,
 			ratio: ratio,
 		});
 	}
