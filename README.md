@@ -46,6 +46,7 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 - [Development](#development)
     - [Contribute](#contribute)
     - [CSS classes](#css-classes)
+- [Works using Quadro <!-- rumdl-disable-line MD063 -->](#works-using-quadro-)
 - [Credits](#credits)
     - [Acknowledgments](#acknowledgments)
     - [Recommended citation of this project](#recommended-citation-of-this-project)
@@ -558,7 +559,14 @@ Every single modal, prompt, settings-tab, or button added by this plugin has
 the class `.quadro`, so theme designers can easily change the appearance of this
 plugin.
 
-<!-- vale Google.FirstPerson = NO -->
+## Works using Quadro <!-- rumdl-disable-line MD063 -->
+- [Expanding the margins in the history of sexuality & galleries, libraries,
+  archives, museums & special collections
+  (GLAMS)](https://dx.doi.org/10.14288/1.0449977)
+
+If you have completed a research project with *Quadro*, feel free to reach out
+and let me know about it to include it here.
+
 ## Credits
 
 ### Acknowledgments
