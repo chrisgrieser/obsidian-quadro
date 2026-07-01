@@ -82,12 +82,10 @@ export async function saturationForExtraction(plugin: Quadro): Promise<void> {
 			labels: countFromOneToN,
 			datasets: [
 				{
-					label: "% of new Extractions to all Extraction actions",
 					data: ratio,
 					borderColor: "black",
 				},
 				{
-					label: "trend (linear regression)",
 					data: linearRegression(ratio),
 					borderColor: "gray",
 					borderDash: [15, 15], // makes the line dashed
@@ -98,10 +96,11 @@ export async function saturationForExtraction(plugin: Quadro): Promise<void> {
 			animation: false,
 			responsive: false,
 			plugins: {
+				legend: { display: false },
 				title: {
 					display: true,
 					text: [
-						"Theoretical saturation of Extraction activities",
+						"Theoretical saturation of extraction activities",
 						"(the closer to 0%, the higher the theoretical saturation)",
 					],
 				},
@@ -110,10 +109,14 @@ export async function saturationForExtraction(plugin: Quadro): Promise<void> {
 				x: {
 					title: {
 						display: true,
-						text: "days with Extraction activity",
+						text: "days with extraction activity",
 					},
 				},
 				y: {
+					title: {
+						display: true,
+						text: "new information (% of new extractions to all extraction actions)",
+					},
 					// use percentages instead of 0.x
 					ticks: {
 						callback: (value) => `${(Number(value) * 100).toFixed(0)}%`,
