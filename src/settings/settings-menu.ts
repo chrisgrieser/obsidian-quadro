@@ -75,7 +75,6 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 			.addSlider((slider) =>
 				slider
 					.setLimits(20, 60, 5)
-					.setDynamicTooltip()
 					.setValue(settings.propertiesKeysWidthPercent)
 					.onChange(async (value) => {
 						settings.propertiesKeysWidthPercent = value;
