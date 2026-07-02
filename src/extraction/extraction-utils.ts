@@ -40,7 +40,7 @@ export function moveCursorToFirstProperty(app: App, type: "key" | "value"): void
 
 	// HACK unclear what exactly causes the race condition, since previous
 	// file opening is always awaited
-	setTimeout(() => {
+	window.setTimeout(() => {
 		const firstProperty =
 			app.workspace.getActiveViewOfType(MarkdownView)?.metadataEditor.rendered[0];
 		// TODO further debug which part is nulled https://discord.com/channels/686053708261228577/989603365606531104/1232745273680334888

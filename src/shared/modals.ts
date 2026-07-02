@@ -21,11 +21,12 @@ export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {
 		this.modalEl.addClass(plugin.cssclass);
 		this.setInstructions(this.hotkeyInstructions);
 
+		// using `activeDocument` instead of `document` for compatibility with popout window
 		this.scope.register([], "Tab", (): void => {
-			document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+			activeDocument.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
 		});
 		this.scope.register(["Shift"], "Tab", (): void => {
-			document.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+			activeDocument.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
 		});
 	}
 }
