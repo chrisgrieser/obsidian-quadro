@@ -13,7 +13,7 @@ export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 		this.plugin = plugin;
 		this.foldersInVault = plugin.app.vault
 			.getAllLoadedFiles()
-			.filter((abstractFile) => abstractFile instanceof TFolder) as TFolder[];
+			.filter((abstractFile) => abstractFile instanceof TFolder);
 	}
 
 	getSuggestions(query: string): TFolder[] {

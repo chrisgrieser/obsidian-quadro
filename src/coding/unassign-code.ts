@@ -131,7 +131,7 @@ export function unassignCodeCommand(plugin: Quadro): void {
 	if (codesInPara.length === 0) {
 		new Notice("Line does not contain any codes to remove.", 3500);
 	} else if (codesInPara.length === 1) {
-		unassignCodeWhileInDataFile(plugin, editor, dataFile, codesInPara[0] as Code);
+		unassignCodeWhileInDataFile(plugin, editor, dataFile, codesInPara[0]);
 	} else {
 		new SuggesterForCodeToUnassign(plugin, editor, dataFile, codesInPara).open();
 	}
