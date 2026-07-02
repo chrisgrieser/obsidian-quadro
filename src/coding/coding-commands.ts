@@ -1,6 +1,5 @@
 import type { IconName } from "obsidian";
 import { assignCodeCommand } from "src/coding/assign-code";
-import { codeOverviewCommand } from "src/coding/code-overview";
 import { bulkCreateCodeFilesCommand } from "src/coding/create-new-code-file";
 import { deleteCodeEverywhereCommand } from "src/coding/delete-code-everywhere";
 import { mergeCodeFilesCommand } from "src/coding/merge-code-files";
@@ -61,11 +60,5 @@ export const CODING_COMMANDS: CommandData[] = [
 		name: "Bulk create new Code Files",
 		func: bulkCreateCodeFilesCommand,
 		icon: "circle-dashed",
-	},
-	{
-		id: "code-overview-codeblock",
-		name: "Show code overview",
-		func: codeOverviewCommand,
-		icon: "circle-equal",
 	},
 ];

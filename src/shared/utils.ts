@@ -1,38 +1,9 @@
-import { type App, type Editor, Notice, normalizePath, type OpenViewState } from "obsidian";
-import type Quadro from "src/main";
+import { type App, type Editor, Notice, type OpenViewState } from "obsidian";
 
 export const LIVE_PREVIEW: OpenViewState = { state: { source: false, mode: "source" } };
 
 /** $0 matches the full link, $1 the link target */
 export const WIKILINK_REGEX = /\[\[(.+?)([|#].*?)?\]\]/;
-
-//──────────────────────────────────────────────────────────────────────────────
-
-export async function createCodeBlockFile(
-	plugin: Quadro,
-	name: string,
-	content: string[],
-): Promise<void> {
-	const { app, settings } = plugin;
-
-	const analysisFolder = settings.analysis.folder;
-	const analysisFolderExists = app.vault.getFolderByPath(analysisFolder);
-	if (!analysisFolderExists) app.vault.createFolder(analysisFolder);
-	const filepath = normalizePath(analysisFolder + `/${name}.md`);
-
-	let codeblockFile = app.vault.getFileByPath(filepath);
-	if (codeblockFile) {
-		// Using `vault.modify` over `vault.process` is okay here, since the
-		// existing content is supposed to be discarded/overwritten.
-		await app.vault.modify(codeblockFile, content.join("\n"));
-	} else {
-		codeblockFile = await app.vault.create(filepath, content.join("\n"));
-	}
-
-	await app.workspace.getLeaf().openFile(codeblockFile, LIVE_PREVIEW);
-	getActiveEditor(app)?.setCursor({ line: 0, ch: 0 });
-	app.commands.executeCommandById("file-explorer:reveal-active-file");
-}
 
 //──────────────────────────────────────────────────────────────────────────────
 

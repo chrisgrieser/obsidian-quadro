@@ -3,7 +3,6 @@ import { addToExistingExtractionFileCommand } from "src/extraction/add-to-extrac
 import { createNewExtractionTypeCommand } from "src/extraction/create-new-extraction-type";
 import { exportExtractionsAsCsv } from "src/extraction/export-extractions-as-csv";
 import { extractFromParagraphCommand } from "src/extraction/extract-from-paragraph";
-import { extractiontypesOverviewCommand } from "src/extraction/extractiontypes-overview";
 import { mergeExtractionFilesCommand } from "src/extraction/merge-extractions";
 
 // INFO Adding a few hotkey by default, since this plugin is going to be
@@ -45,11 +44,5 @@ export const EXTRACTION_COMMANDS: CommandData[] = [
 		func: exportExtractionsAsCsv,
 		icon: "square-arrow-up",
 		editorNeeded: false,
-	},
-	{
-		id: "extractiontypes-overview",
-		name: "Show extraction type overview",
-		func: extractiontypesOverviewCommand,
-		icon: "square-equal",
 	},
 ];

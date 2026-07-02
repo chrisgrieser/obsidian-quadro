@@ -1,10 +1,8 @@
 import { type Command, Plugin } from "obsidian";
 import { AUXILIARY_COMMANDS } from "./auxiliary/auxiliary-commands.ts";
 import { updateStatusbar } from "./auxiliary/statusbar.ts";
-import { processCodeOverviewCodeblock } from "./coding/code-overview.ts";
 import { CODING_COMMANDS } from "./coding/coding-commands.ts";
 import { EXTRACTION_COMMANDS } from "./extraction/extraction-commands.ts";
-import { processExtractiontypeOverviewCodeblock } from "./extraction/extractiontypes-overview.ts";
 import { suppressCertainFrontmatterSuggestions as setCssForSuggestionSurppression } from "./frontmatter-modifications/suppress-suggestions.ts";
 import { setCssForWidthOfKeys } from "./frontmatter-modifications/width-of-keys.ts";
 import { CODEBLOCK_LABELS } from "./settings/constants.ts";
@@ -67,20 +65,6 @@ export default class Quadro extends Plugin {
 		setCssForSuggestionSurppression(this);
 		setCssForWidthOfKeys(this);
 		ensureCorrectPropertyTypes(this.app);
-
-		// CODE BLOCKS
-		this.registerMarkdownCodeBlockProcessor(CODEBLOCK_LABELS.codeOverview, (_source, el) => {
-			el.innerHTML = processCodeOverviewCodeblock(this);
-			el.addClass(this.cssclass);
-		});
-		this.registerMarkdownCodeBlockProcessor(CODEBLOCK_LABELS.extractionOverview, (source, el) => {
-			el.innerHTML = processExtractiontypeOverviewCodeblock(this, source);
-			el.addClass(this.cssclass);
-		});
-		// add yaml-syntax highlighting to codeblocks
-		window.CodeMirror.defineMode(CODEBLOCK_LABELS.extractionOverview, (config) =>
-			window.CodeMirror.getMode(config, "yaml"),
-		);
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
