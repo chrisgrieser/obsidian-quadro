@@ -4,10 +4,10 @@ import type Quadro from "src/main";
 import { ExtendedInputModal } from "src/shared/modals";
 
 class InputForNewExtractionType extends ExtendedInputModal {
-	onSubmit: (nameOfNewType: string) => void;
+	onSubmit: (nameOfNewType: string) => Promise<void>;
 	nameOfNewType = "";
 
-	constructor(plugin: Quadro, onSubmit: (nameOfNewType: string) => void) {
+	constructor(plugin: Quadro, onSubmit: (nameOfNewType: string) => Promise<void>) {
 		super(plugin);
 		this.onSubmit = onSubmit;
 	}

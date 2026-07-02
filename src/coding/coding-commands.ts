@@ -10,7 +10,7 @@ import type Quadro from "src/main";
 export interface CommandData {
 	id: string;
 	name: string;
-	func: (plugin: Quadro) => void;
+	func: (plugin: Quadro) => void | Promise<void>;
 	hotkeyLetter?: string;
 	icon: IconName;
 	editorNeeded?: boolean; // defaults to true
