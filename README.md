@@ -600,5 +600,4 @@ Sponsors](https://github.com/sponsors/chrisgrieser?frequency=one-time).
 [^1]: Note that the timestamp is assigned the *first time* the paragraph is
     assigned a code. The timestamp is not updated when the paragraph you remove
     the code or assign another code, since the paragraph ID needs to be
-    immutable to ensure reliable references to it. Think of the timestamp as
-    "first time the paragraph a code has been assigned".
+    immutable to ensure reliable references to it.
