@@ -22,7 +22,7 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
     - [Brief methodological comparison with other QDA software](#brief-methodological-comparison-with-other-qda-software)
 - [Usage](#usage)
     - [Getting started](#getting-started)
-        - [Basics for academics new to Obsidian](#basics-for-academics-new-to-obsidian)
+        - [Introduction for academics unfamiliar with Obsidian](#introduction-for-academics-unfamiliar-with-obsidian)
         - [Example vault for Quadro](#example-vault-for-quadro)
         - [Experienced Obsidian users](#experienced-obsidian-users)
         - [Using a separate vault](#using-a-separate-vault)
@@ -41,12 +41,14 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 - [Configuration](#configuration)
     - [Buttons](#buttons)
     - [Hotkeys](#hotkeys)
-    - [Plugin behavior](#plugin-behavior)
+    - [Plugin-behavior](#plugin-behavior)
 - [Installation & update](#installation--update)
 - [Development](#development)
     - [Contribute](#contribute)
     - [CSS classes](#css-classes)
 - [Works using Quadro <!-- rumdl-disable-line MD063 -->](#works-using-quadro-)
+    - [Research](#research)
+    - [Other Obsidian plugins](#other-obsidian-plugins)
 - [Credits](#credits)
     - [Acknowledgments](#acknowledgments)
     - [Recommended citation of this project](#recommended-citation-of-this-project)
@@ -165,7 +167,7 @@ support the creation of those Extraction Files.
 
 ### Getting started
 
-#### Basics for academics new to Obsidian
+#### Introduction for academics unfamiliar with Obsidian
 - You should familiarize yourself with
   [Markdown](https://help.obsidian.md/Getting+started/Glossary#Markdown), a
   simple standard for human-readable text files, such as `**bold text**` for
@@ -515,7 +517,7 @@ To remove or rearrange buttons, go to the Obsidian settings: `Appearance` →
 Every hotkey can be customized by searching for the name of the respective
 action in the Obsidian settings under `Hotkeys`.
 
-### Plugin behavior
+### Plugin-behavior
 The plugin behavior can be customized in the `Quadro` tab of the Obsidian
 settings. Aside from folder locations, there are a few settings which change the
 way codes and extractions are presented. Note that these are not technical or
