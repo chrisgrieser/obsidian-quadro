@@ -558,12 +558,16 @@ the class `.quadro`, so theme designers can easily change the appearance of this
 plugin.
 
 ## Works using Quadro <!-- rumdl-disable-line MD063 -->
+If you have completed a research project with *Quadro* or a plugin/app that uses
+*Quadro*, feel free to reach out and let me know about it to include it here.
+
+### Research
 - [Expanding the margins in the history of sexuality & galleries, libraries,
   archives, museums & special collections
   (GLAMS)](https://dx.doi.org/10.14288/1.0449977)
 
-If you have completed a research project with *Quadro*, feel free to reach out
-and let me know about it to include it here.
+### Other Obsidian plugins
+- [parallax](https://github.com/maxonamission/obsidian-parallax)
 
 ## Credits
 
