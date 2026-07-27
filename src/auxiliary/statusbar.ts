@@ -4,7 +4,7 @@ import type Quadro from "src/main";
 import { typeOfFile } from "src/shared/validation";
 
 export function updateStatusbar(plugin: Quadro): void {
-	const { app, statusbar, settings } = plugin;
+	const { app, statusbar, pluginSettings: settings } = plugin;
 	const shortened = settings.statusbar.shortened;
 	const segments: string[] = [];
 	const filetype = typeOfFile(plugin);

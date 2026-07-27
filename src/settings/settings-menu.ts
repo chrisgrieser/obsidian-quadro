@@ -42,9 +42,9 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 	// are names for the specific QDA-filetypes. They are capitalized across the
 	// plugin, and therefore should also be capitalized in the settings menu for
 	// consistency.
-	display(): void {
+	override display(): void {
 		const { containerEl } = this;
-		const settings = this.plugin.settings;
+		const settings = this.plugin.pluginSettings;
 
 		containerEl.empty();
 		containerEl.addClass(this.plugin.cssclass);

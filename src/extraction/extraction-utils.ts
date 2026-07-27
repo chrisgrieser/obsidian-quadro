@@ -13,7 +13,7 @@ import { LIVE_PREVIEW } from "src/shared/utils";
 import { typeOfFile } from "src/shared/validation";
 
 export async function openExtractionInNewWin(plugin: Quadro, tfile: TFile): Promise<void> {
-	const { app, settings } = plugin;
+	const { app, pluginSettings: settings } = plugin;
 	const mode = settings.extraction.openingMode;
 
 	const currentLeaf = app.workspace.getLeaf();
@@ -72,7 +72,7 @@ export class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder>
 	}
 
 	getItemText(extractionType: TFolder): string {
-		const displayCount = this.plugin.settings.extraction.displayCount;
+		const displayCount = this.plugin.pluginSettings.extraction.displayCount;
 		if (!displayCount) return extractionType.name;
 
 		const count = getExtractionsOfType(this.plugin, extractionType).length;
@@ -87,7 +87,7 @@ export class SuggesterForExtractionTypes extends ExtendedFuzzySuggester<TFolder>
 //──────────────────────────────────────────────────────────────────────────────
 
 export function getExtractionFileDisplay(plugin: Quadro, extractionFile: TFile): string {
-	const { app, settings } = plugin;
+	const { app, pluginSettings: settings } = plugin;
 	const frontmatter = app.metadataCache.getFileCache(extractionFile)?.frontmatter;
 	const displayProps = settings.extraction.displayProperty;
 	if (!frontmatter || displayProps.length === 0) return extractionFile.basename;
@@ -140,7 +140,7 @@ export function getPropertiesForExtractionType(
 /** if extraction folder is missing, or has no valid extraction types, notifies
  * the user and returns undefined */
 export function getAllExtractionTypes(plugin: Quadro): TFolder[] | undefined {
-	const { app, settings } = plugin;
+	const { app, pluginSettings: settings } = plugin;
 
 	const extFolder = app.vault.getFolderByPath(settings.extraction.folder);
 	if (!extFolder) {

@@ -56,7 +56,7 @@ class InputForNewExtractionType extends ExtendedInputModal {
 }
 
 export function createNewExtractionTypeCommand(plugin: Quadro): void {
-	const { app, settings } = plugin;
+	const { app, pluginSettings: settings } = plugin;
 
 	new InputForNewExtractionType(plugin, async (nameOfNewType) => {
 		// CREATE NEW FOLDER

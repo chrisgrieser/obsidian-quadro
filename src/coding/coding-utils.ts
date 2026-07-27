@@ -5,7 +5,7 @@ import { WIKILINK_REGEX } from "src/shared/utils";
 import { typeOfFile } from "src/shared/validation";
 
 export function getFullCode(plugin: Quadro, tFile: TFile): string {
-	return tFile.path.slice(plugin.settings.coding.folder.length + 1, -3);
+	return tFile.path.slice(plugin.pluginSettings.coding.folder.length + 1, -3);
 }
 
 export function countTimesCodeIsAssigned(plugin: Quadro, codeFile: TFile): number {
@@ -53,7 +53,7 @@ export function getAllCodeFiles(plugin: Quadro): TFile[] {
 		.getMarkdownFiles()
 		.filter((tFile) => typeOfFile(plugin, tFile) === "Code File");
 
-	const sortFuncToUse = sortFuncs[plugin.settings.coding.sortFunc];
+	const sortFuncToUse = sortFuncs[plugin.pluginSettings.coding.sortFunc];
 	allCodeFiles.sort(sortFuncToUse);
 	return allCodeFiles;
 }
@@ -63,7 +63,7 @@ export function getAllCodeFiles(plugin: Quadro): TFile[] {
 export function codeFileDisplay(plugin: Quadro, codeFile: TFile): string {
 	const fullCode = getFullCode(plugin, codeFile);
 
-	const displayCount = plugin.settings.coding.displayCount;
+	const displayCount = plugin.pluginSettings.coding.displayCount;
 	if (!displayCount) return fullCode;
 
 	const count = countTimesCodeIsAssigned(plugin, codeFile);

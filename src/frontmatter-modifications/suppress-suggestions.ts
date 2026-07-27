@@ -6,7 +6,7 @@ import type Quadro from "src/main";
 // }
 
 export function suppressCertainFrontmatterSuggestions(plugin: Quadro): void {
-	const fieldSelector = plugin.settings.suppressSuggestionInFields
+	const fieldSelector = plugin.pluginSettings.suppressSuggestionInFields
 		.map((field) => `[data-property-key="${field}"]`)
 		.join(", ");
 

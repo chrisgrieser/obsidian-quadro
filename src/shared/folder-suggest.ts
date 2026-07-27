@@ -32,7 +32,7 @@ export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 }
 
 function pathRelativeToCodeFolder(plugin: Quadro, codeGroup: TFolder): string {
-	return codeGroup.path.slice(plugin.settings.coding.folder.length + 1) + "/";
+	return codeGroup.path.slice(plugin.pluginSettings.coding.folder.length + 1) + "/";
 }
 
 /** A Code Group is a subfolder of the code folder. */
@@ -41,7 +41,7 @@ export class CodeGroupSuggest extends FolderSuggest {
 		// only suggest folders in the Codes Folder, and only if a "/" was typed
 		if (!query.includes("/")) return [];
 
-		const settings = this.plugin.settings;
+		const settings = this.plugin.pluginSettings;
 
 		const matchingFolders = this.foldersInVault.filter((folder) => {
 			const matchesQuery = folder.path.includes(query);

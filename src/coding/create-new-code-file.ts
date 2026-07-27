@@ -152,7 +152,7 @@ async function createCodeFile(
 	fullCode: string,
 	codeDesc: string,
 ): Promise<TFile | false> {
-	const { app, settings } = plugin;
+	const { app, pluginSettings: settings } = plugin;
 	fullCode = fullCode
 		.replace(/\.md$/, "") // no extension
 		.replace(/[:#^?!"*<>|[\]\\]/g, "-") // no illegal characters

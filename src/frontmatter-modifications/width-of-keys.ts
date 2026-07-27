@@ -4,7 +4,7 @@ import type Quadro from "src/main";
 // body .metadata-property-key { min-width: 40%; }
 
 export function setCssForWidthOfKeys(plugin: Quadro): void {
-	const widthPercent = plugin.settings.propertiesKeysWidthPercent;
+	const widthPercent = plugin.pluginSettings.propertiesKeysWidthPercent;
 	const cssToApply = `body .metadata-property-key { min-width: ${widthPercent}% }`;
 
 	if (!plugin.styleElPropertyKeyWidth) {

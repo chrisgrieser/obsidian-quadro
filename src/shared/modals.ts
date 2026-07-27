@@ -17,7 +17,7 @@ export abstract class ExtendedFuzzySuggester<T> extends FuzzySuggestModal<T> {
 	constructor(plugin: Quadro) {
 		super(plugin.app);
 		this.plugin = plugin;
-		this.settings = plugin.settings;
+		this.settings = plugin.pluginSettings;
 		this.modalEl.addClass(plugin.cssclass);
 		this.setInstructions(this.hotkeyInstructions);
 

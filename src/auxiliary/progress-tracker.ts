@@ -14,7 +14,7 @@ export type TotalProgress = Record<string, ProgressForDay>;
 //──────────────────────────────────────────────────────────────────────────────
 
 export function getProgressFilepath(plugin: Quadro): string {
-	const storageLocation = plugin.settings.analysis.folder;
+	const storageLocation = plugin.pluginSettings.analysis.folder;
 	const filename = "progress.json";
 	return normalizePath(storageLocation + "/" + filename);
 }

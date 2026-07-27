@@ -26,7 +26,7 @@ export async function mergeFiles(
 	backupDir: string,
 	filetype: "Code File" | "Extraction File",
 ): Promise<void> {
-	const { app, settings } = plugin;
+	const { app, pluginSettings: settings } = plugin;
 
 	// PRE-MERGE BACKUP
 	backupDir = normalizePath(backupDir + "/" + BACKUP_DIRNAME);

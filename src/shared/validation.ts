@@ -14,7 +14,7 @@ export function typeOfFile(
 	| "Backup"
 	| "Not Markdown"
 	| "No File" {
-	const { app, settings } = plugin;
+	const { app, pluginSettings: settings } = plugin;
 	if (!file) file = app.workspace.getActiveFile();
 	if (typeof file === "string") file = app.vault.getFileByPath(file);
 

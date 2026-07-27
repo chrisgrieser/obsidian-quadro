@@ -18,7 +18,7 @@ function createCsvRow(cells: string[], csvSeparator: string): string {
 //──────────────────────────────────────────────────────────────────────────────
 
 export async function exportExtractionsAsCsv(plugin: Quadro): Promise<void> {
-	const { app, settings } = plugin;
+	const { app, pluginSettings: settings } = plugin;
 	const csvSeparator = settings.extraction.csvSeparator;
 
 	const extractionTypes = getAllExtractionTypes(plugin);
