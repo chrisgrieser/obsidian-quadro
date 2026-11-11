@@ -1,7 +1,7 @@
 // DOCS https://github.com/obsidianmd/eslint-plugin#usage
 //──────────────────────────────────────────────────────────────────────────────
 
-import tsparser from "@typescript-eslint/parser";
+import * as tsparser from "@typescript-eslint/parser";
 import { defineConfig } from "eslint/config";
 import obsidianmd from "eslint-plugin-obsidianmd";
 
@@ -12,7 +12,6 @@ export default defineConfig([
 			parser: tsparser,
 			parserOptions: { project: "./tsconfig.json" },
 		},
-		// @ts-expect-error
 		plugins: { obsidianmd: obsidianmd },
 		rules: {
 			// PENDING https://github.com/obsidianmd/eslint-plugin/pull/70
@@ -43,7 +42,6 @@ export default defineConfig([
 		},
 	},
 	{
-		// @ts-expect-error
 		plugins: { obsidianmd: obsidianmd },
 		rules: {
 			// special terms in the context of the plugin
