@@ -6,10 +6,9 @@ import { ExtendedInputModal } from "src/shared/modals";
 
 // SOURCE https://docs.obsidian.md/Plugins/User+interface/Modals#Accept+user+input
 class InputForOneFile extends ExtendedInputModal {
-	fullCode = "";
+	fullCode: string;
 	codeDesc = "";
 	onSubmit: (fullCode: string, codeDesc: string) => void;
-	prefill = "";
 
 	constructor(
 		plugin: Quadro,
@@ -18,15 +17,17 @@ class InputForOneFile extends ExtendedInputModal {
 	) {
 		super(plugin);
 		this.onSubmit = onSubmit;
-		this.prefill = prefill;
+		this.fullCode = prefill; // initialize
 	}
 
 	override onOpen(): void {
 		const { contentEl } = this;
 		contentEl.addClass(this.plugin.cssclass);
 
-		const validCode = (fullCode: string): boolean =>
-			fullCode !== "" && !fullCode.startsWith("/") && !fullCode.endsWith("/");
+		const validCode = (): boolean => {
+			const code = this.fullCode;
+			return code !== "" && !code.startsWith("/") && !code.endsWith("/");
+		};
 
 		const confirm = (): void => {
 			this.close();
@@ -54,13 +55,13 @@ class InputForOneFile extends ExtendedInputModal {
 				text
 					.onChange((value) => {
 						this.fullCode = value.trim();
-						this.confirmationButton?.setDisabled(!validCode(this.fullCode));
+						this.confirmationButton?.setDisabled(!validCode());
 					})
-					.setValue(this.prefill);
+					.setValue(this.fullCode);
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
-					if (event.key === "Enter" && validCode(this.fullCode)) {
+					if (event.key === "Enter" && validCode()) {
 						event.preventDefault(); // https://discord.com/channels/686053708261228577/840286264964022302/1232354740629671967
 						confirm();
 					}
@@ -79,7 +80,7 @@ class InputForOneFile extends ExtendedInputModal {
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
-					if (event.key === "Enter" && validCode(this.fullCode)) {
+					if (event.key === "Enter" && validCode()) {
 						event.preventDefault(); // https://discord.com/channels/686053708261228577/840286264964022302/1232354740629671967
 						confirm();
 					}
@@ -92,7 +93,7 @@ class InputForOneFile extends ExtendedInputModal {
 				this.confirmationButton = btn
 					.setButtonText("Create")
 					.setCta()
-					.setDisabled(true)
+					.setDisabled(!validCode())
 					.onClick(confirm);
 			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
