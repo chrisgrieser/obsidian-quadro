@@ -29,7 +29,8 @@ class InputForOneFile extends ExtendedInputModal {
 			return code !== "" && !code.startsWith("/") && !code.endsWith("/");
 		};
 
-		const confirm = (): void => {
+		const confirm = (event?: KeyboardEvent): void => {
+			if (event) event.preventDefault(); // https://discord.com/channels/686053708261228577/840286264964022302/1232354740629671967
 			this.close();
 			this.onSubmit(this.fullCode, this.codeDesc);
 		};
@@ -53,18 +54,15 @@ class InputForOneFile extends ExtendedInputModal {
 				text.inputEl.addClass("quadro-wide-input");
 
 				text
+					.setValue(this.fullCode) // i.e., prefills query from code selection modal
 					.onChange((value) => {
 						this.fullCode = value.trim();
 						this.confirmationButton?.setDisabled(!validCode());
-					})
-					.setValue(this.fullCode);
+					});
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
-					if (event.key === "Enter" && validCode()) {
-						event.preventDefault(); // https://discord.com/channels/686053708261228577/840286264964022302/1232354740629671967
-						confirm();
-					}
+					if (event.key === "Enter" && validCode()) confirm(event);
 				});
 			});
 
@@ -80,10 +78,7 @@ class InputForOneFile extends ExtendedInputModal {
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
-					if (event.key === "Enter" && validCode()) {
-						event.preventDefault(); // https://discord.com/channels/686053708261228577/840286264964022302/1232354740629671967
-						confirm();
-					}
+					if (event.key === "Enter" && validCode()) confirm(event);
 				});
 			});
 
@@ -94,7 +89,7 @@ class InputForOneFile extends ExtendedInputModal {
 					.setButtonText("Create")
 					.setCta()
 					.setDisabled(!validCode())
-					.onClick(confirm);
+					.onClick(() => confirm());
 			})
 			.addButton((btn) => btn.setButtonText("Cancel").onClick(() => this.close()));
 	}
@@ -135,7 +130,7 @@ class InputForMultipleFiles extends ExtendedInputModal {
 			})
 			.infoEl.remove();
 
-		// create & cancel button
+		// Create & Cancel buttons
 		new Setting(contentEl)
 			.addButton((btn) => {
 				this.confirmationButton = btn
