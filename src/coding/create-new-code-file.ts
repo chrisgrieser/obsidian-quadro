@@ -26,7 +26,8 @@ class InputForOneFile extends ExtendedInputModal {
 
 		const validCode = (): boolean => {
 			const code = this.fullCode;
-			return code !== "" && !code.startsWith("/") && !code.endsWith("/");
+			if (code.startsWith("/") || code.endsWith("/") || code.includes("//")) return false;
+			return code !== "";
 		};
 
 		const confirm = (event?: KeyboardEvent): void => {
