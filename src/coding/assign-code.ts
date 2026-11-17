@@ -21,7 +21,7 @@ import {
 	typeOfFile,
 } from "src/shared/validation";
 
-type CodeAssignItem = TFile | "new-code-file";
+type CodeAssignItem = TFile | "new-code-blank";
 
 class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> {
 	editor: Editor;
@@ -33,39 +33,40 @@ class SuggesterForCodeAssignment extends ExtendedFuzzySuggester<CodeAssignItem> 
 		this.editor = editor;
 		this.codesInPara = codesInPara;
 		this.dataFile = dataFile;
-
 		this.setPlaceholder("Select code to assign");
+
+		// Create new code
 		this.setInstructions([
 			...this.hotkeyInstructions,
-			{ command: "shift ⏎", purpose: "Create new code" },
+			{ command: "shift ⏎", purpose: "New code from query" },
 		]);
-
 		this.scope.register(["Shift"], "Enter", (event: KeyboardEvent): void => {
 			if (event.isComposing) return;
 			event.preventDefault();
+			const query = this.inputEl.value;
 			this.close();
-			this.onChooseItem("new-code-file");
+			createOneCodeFile(this.plugin, query, (codeFile) => this.assignCode(codeFile, this.dataFile));
 		});
 	}
 
-	// code-files, sorted by last use (which is relevant when query is empty)
+	// Code Files, sorted by last use (which is relevant when query is empty)
 	getItems(): CodeAssignItem[] {
 		const allCodeFiles = getAllCodeFiles(this.plugin);
 		const allNotAlreadyAssigned = allCodeFiles.filter(
 			(codeFile) => !this.codesInPara.find((code) => code.path === codeFile.path),
 		);
 
-		return [...allNotAlreadyAssigned, "new-code-file"];
+		return [...allNotAlreadyAssigned, "new-code-blank"];
 	}
 
 	getItemText(item: CodeAssignItem): string {
-		if (item === "new-code-file") return "⭑ Create new code";
+		if (item === "new-code-blank") return "⭑ Create new code";
 		return codeFileDisplay(this.plugin, item);
 	}
 
 	onChooseItem(codeFile: CodeAssignItem): void {
-		if (codeFile === "new-code-file") {
-			createOneCodeFile(this.plugin, (codeFile) => this.assignCode(codeFile, this.dataFile));
+		if (codeFile === "new-code-blank") {
+			createOneCodeFile(this.plugin, "", (codeFile) => this.assignCode(codeFile, this.dataFile));
 		} else {
 			this.assignCode(codeFile, this.dataFile);
 		}

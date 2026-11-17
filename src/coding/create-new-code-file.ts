@@ -9,10 +9,16 @@ class InputForOneFile extends ExtendedInputModal {
 	fullCode = "";
 	codeDesc = "";
 	onSubmit: (fullCode: string, codeDesc: string) => void;
+	prefill = "";
 
-	constructor(plugin: Quadro, onSubmit: (fullCode: string, codeDesc: string) => void) {
+	constructor(
+		plugin: Quadro,
+		prefill: string,
+		onSubmit: (fullCode: string, codeDesc: string) => void,
+	) {
 		super(plugin);
 		this.onSubmit = onSubmit;
+		this.prefill = prefill;
 	}
 
 	override onOpen(): void {
@@ -48,6 +54,7 @@ class InputForOneFile extends ExtendedInputModal {
 						this.fullCode = value.trim();
 						this.confirmationButton?.setDisabled(!validCode(this.fullCode));
 					})
+					.setValue(this.prefill)
 					.inputEl.addClass("quadro-wide-input");
 
 				// press enter to confirm
@@ -208,8 +215,12 @@ async function createCodeFile(
 }
 
 /** Prompts for name of new file, then runs callback on it. */
-export function createOneCodeFile(plugin: Quadro, callback: (codeFile: TFile) => void): void {
-	new InputForOneFile(plugin, async (fullCode, codeDesc) => {
+export function createOneCodeFile(
+	plugin: Quadro,
+	prefill: string,
+	callback: (codeFile: TFile) => void,
+): void {
+	new InputForOneFile(plugin, prefill, async (fullCode, codeDesc) => {
 		const codeFile = await createCodeFile(plugin, fullCode, codeDesc);
 		if (codeFile) callback(codeFile);
 	}).open();
