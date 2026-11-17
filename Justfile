@@ -33,6 +33,12 @@ check-tsc-qf:
 release:
     node .release.mjs
 
+[macos]
+open-obsidian-plugin-dashboard:
+    #!/usr/bin/env zsh
+    plugin_id=$(jq --raw-output ".id" ./manifest.json)
+    open "https://community.obsidian.md/account/plugins/$plugin_id"
+
 analyze:
     node .esbuild.mjs analyze
 
