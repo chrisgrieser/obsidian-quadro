@@ -30,7 +30,6 @@ class InputForOneFile extends ExtendedInputModal {
 		// info text
 		contentEl.createEl("h4", { text: "New code creation" });
 		contentEl.createEl("small", {
-			// eslint-disable-next-line obsidianmd/ui/sentence-case -- PENDING https://github.com/obsidianmd/eslint-plugin/issues/71
 			text: 'If there is a file "Template.md" at the root of the Codes Folder, the new Code File will be populated with its frontmatter.',
 		});
 		contentEl.createEl("br", {});
@@ -113,7 +112,6 @@ class InputForMultipleFiles extends ExtendedInputModal {
 			text: 'Use a slash ("/") in the name to create the Code File in a subfolder (group).',
 		});
 		contentEl.createEl("p", {
-			// eslint-disable-next-line obsidianmd/ui/sentence-case -- PENDING https://github.com/obsidianmd/eslint-plugin/issues/71
 			text: 'If there is a file "Template.md" at the root of the Codes Folder, the new Code Files will be populated with its frontmatter.',
 		});
 
