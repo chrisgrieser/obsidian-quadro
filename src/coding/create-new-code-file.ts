@@ -33,7 +33,7 @@ class InputForOneFile extends ExtendedInputModal {
 			this.onSubmit(this.fullCode, this.codeDesc);
 		};
 
-		// info text
+		// Info text
 		contentEl.createEl("h4", { text: "New code creation" });
 		contentEl.createEl("small", {
 			text: 'If there is a file "Template.md" at the root of the Codes Folder, the new Code File will be populated with its frontmatter.',
@@ -41,7 +41,7 @@ class InputForOneFile extends ExtendedInputModal {
 		contentEl.createEl("br", {});
 		contentEl.createEl("br", {});
 
-		// name input field
+		// Code name input field
 		new Setting(contentEl)
 			.setName("Name of the code")
 			.setDesc(
@@ -49,13 +49,14 @@ class InputForOneFile extends ExtendedInputModal {
 			)
 			.addText((text) => {
 				new CodeGroupSuggest(this.plugin, text.inputEl);
+				text.inputEl.addClass("quadro-wide-input");
+
 				text
 					.onChange((value) => {
 						this.fullCode = value.trim();
 						this.confirmationButton?.setDisabled(!validCode(this.fullCode));
 					})
-					.setValue(this.prefill)
-					.inputEl.addClass("quadro-wide-input");
+					.setValue(this.prefill);
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -66,16 +67,15 @@ class InputForOneFile extends ExtendedInputModal {
 				});
 			});
 
-		// description input field
+		// Code description input field
 		new Setting(contentEl)
 			.setName("Code description")
 			.setDesc('Will be added as metadata with the key "code description".')
 			.addText((text) => {
-				text
-					.onChange((value) => {
-						this.codeDesc = value.trim();
-					})
-					.inputEl.addClass("quadro-wide-input");
+				text.inputEl.addClass("quadro-wide-input");
+				text.onChange((value) => {
+					this.codeDesc = value.trim();
+				});
 
 				// press enter to confirm
 				text.inputEl.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -86,7 +86,7 @@ class InputForOneFile extends ExtendedInputModal {
 				});
 			});
 
-		// create & cancel button
+		// Create & Cancel buttons
 		new Setting(contentEl)
 			.addButton((btn) => {
 				this.confirmationButton = btn
