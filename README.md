@@ -46,7 +46,7 @@ by [Gläser and Laudel](https://doi.org/10.17169/fqs-20.3.3386)).
 - [Development](#development)
     - [Contribute](#contribute)
     - [CSS classes](#css-classes)
-- [Works using Quadro <!-- rumdl-disable-line MD063 -->](#works-using-quadro-)
+- [Works using Quadro](#works-using-quadro)
     - [Research](#research)
     - [Other Obsidian plugins](#other-obsidian-plugins)
 - [Credits](#credits)
@@ -145,7 +145,7 @@ data in a structured form. Quadro uses a simplistic templating mechanism to
 support the creation of those Extraction Files.
 
 ### Brief methodological comparison with other QDA software
-**Advantages** <!-- rumdl-disable-line MD036 -->
+**Advantages**
 - **Interoperability**: Can be freely combined with other QDA software.
 - **Flexibility**: You can use codes, extractions, or freely combine both.
 - **Customizability**: Implicit assumptions of QDA software, such as the initial
@@ -155,7 +155,7 @@ support the creation of those Extraction Files.
   ecosystem. As opposed to other research software, extending the functionality
   in most cases does not require technical expertise coding experience.
 
-**Disadvantages** <!-- rumdl-disable-line MD036 -->
+**Disadvantages**
 - The **unit of coding** is restricted to paragraphs and to a degree segments
   of a paragraph. Coding of individual words is not supported.
 - Due to the nature of Markdown markup, assigning multiple codes to
@@ -243,7 +243,7 @@ with *Quadro*.
 There are two basic types of files for the analysis, Data Files and Code Files,
 which are both stored as [Markdown files](https://www.markdownguide.org/).
 
-**Data Files** <!-- rumdl-disable-line MD036 -->
+**Data Files**  
 The empirical material as text files. They can be stored anywhere in the vault
 as `.md` files. (A separate subfolder named `Data` is recommended though.) As
 *Quadro* assigns codes to whole paragraphs, these data files should
@@ -259,7 +259,7 @@ Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
 consectetur cupidatat. [[MyCode]] ^id-240302-124012
 ```
 
-**Code Files** <!-- rumdl-disable-line MD036 -->
+**Code Files**  
 All Markdown files in the folder `{vault-root}/Codes` are considered code
 files. (The folder is configurable.)
 
@@ -305,7 +305,7 @@ The underlying folder structure for coding looks like this:
 > not supported.
 
 #### Coding capabilities
-<!-- rumdl-disable MD033 for `<br>` -->
+<!-- rumdl-disable MD033 --> <!-- for `<br>` -->
 <!-- LTeX: enabled=false -->
 
 | Action                                    | Description                                                                                                                                                                                                                            |               Sidebar button               | Default hotkey | Capability provider                                                                                              |
@@ -350,7 +350,7 @@ Laudel](https://doi.org/10.17169/fqs-20.3.3386).
 Extraction is implemented similarly to coding, using two basic filetypes, Data
 Files and Extraction Files.
 
-**Data Files** <!-- rumdl-disable-line MD036 -->
+**Data Files**  
 The empirical material as text files. They can be stored anywhere in the vault
 as `.md` files.
 
@@ -364,7 +364,8 @@ Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint
 consectetur cupidatat. [[Career Visions/1]] ^id-240302-124012
 ```
 
-**Extraction Files** <!-- rumdl-disable-line MD036 --> Extraction is implemented
+**Extraction Files**  
+Extraction is implemented
 via Markdown metadata
 ([YAML frontmatter](https://docs.zettlr.com/en/core/yaml-frontmatter/)), which
 is supported via
@@ -401,7 +402,7 @@ Extraction-source: "[[Field notes 3#^id-240302-124012]]"
 **Paragraph extracted from:** ![[Field Notes 3#^id-240302-124012]]
 ```
 
-**Extraction Templates (Extraction Types)** <!-- rumdl-disable-line MD036 -->
+**Extraction Templates (Extraction Types)**  
 The available extraction types are determined by the subfolders of
 `{vault-root}/Extractions/`. The fields that are created for filling in
 information are determined by the `Template.md` file located in that subfolder.
@@ -453,7 +454,6 @@ Please refer to the
 [Obsidian Bases documentation](https://help.obsidian.md/bases) for details.
 
 #### Extraction capabilities
-
 <!-- LTeX: enabled=false -->
 
 | Action                                | Description                                                                                                                                                                                                                                                                                             |              Sidebar button               | Default hotkey | Capability provider                                      |
@@ -466,7 +466,6 @@ Please refer to the
 | Rename dimension globally             | Renaming a property field within a file only affects the property for that file. To rename a property globally, use the Command Palette (`mod+p`), and search for `Properties View: Show all Properties`. A list of properties pops up in the sidebar, where you can rename properties via right-click. |                     —                     |       —        | [Obsidian Core Plugin: Properties View][properties view] |
 | Export all extractions as `.csv`      | All extractions for all extraction types are exported as `.csv`.                                                                                                                                                                                                                                        | ![Icon](./docs/icons/square-arrow-up.svg) |       —        | Quadro                                                   |
 | Show theoretical saturation           | Percentage of new extractions to all extraction activities.                                                                                                                                                                                                                                             |   ![Icon](./docs/icons/chart-line.svg)    |       —        | Quadro (using `Chart.js`)                                |
-
 <!-- LTeX: enabled=true -->
 
 [properties view]: https://help.obsidian.md/Plugins/Properties+view
@@ -559,7 +558,8 @@ Every single modal, prompt, settings-tab, or button added by this plugin has
 the class `.quadro`, so theme designers can easily change the appearance of this
 plugin.
 
-## Works using Quadro <!-- rumdl-disable-line MD063 -->
+<!-- rumdl-disable-next-line MD063 -->
+## Works using Quadro
 If you have completed a research project with *Quadro* or a plugin/app that uses
 *Quadro*, feel free to reach out and let me know about it to include it here.
 
