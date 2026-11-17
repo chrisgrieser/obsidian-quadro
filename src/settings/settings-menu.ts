@@ -86,8 +86,7 @@ export class QuadroSettingsMenu extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Shortened statusbar text")
-			// eslint-disable-next-line obsidianmd/ui/sentence-case -- PENDING https://github.com/obsidianmd/eslint-plugin/issues/71
-			.setDesc('For example, instead of "20 Codes," the statusbar will display "20C."')
+			.setDesc('For example, instead of "20 codes," the statusbar will display "20C."')
 			.addToggle((toggle) =>
 				toggle.setValue(settings.statusbar.shortened).onChange(async (value) => {
 					settings.statusbar.shortened = value;

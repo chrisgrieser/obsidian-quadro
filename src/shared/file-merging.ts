@@ -135,8 +135,7 @@ export async function mergeFiles(
 	}
 
 	// DISCARD `mergeAway`
-	// eslint-disable-next-line obsidianmd/prefer-file-manager-trash-file -- delete is okay, since we already have a backup
-	app.vault.delete(mergeAwayFile); // can be async
+	app.fileManager.trashFile(mergeAwayFile); // can be async
 
 	// NOTIFY
 	const s1 = updatedLinksCount === 1 ? "" : "s";
